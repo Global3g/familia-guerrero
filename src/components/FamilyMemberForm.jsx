@@ -332,6 +332,28 @@ function PersonBlock({ person, index, depth, onChange, onRemove }) {
                 placeholder="Ciudad, Estado, Pais"
               />
             </div>
+            <div>
+              <label className={labelClass}>
+                <Calendar className="w-3 h-3 inline mr-1 text-[#B8943E]" />
+                Fecha de boda
+              </label>
+              <input
+                type="date"
+                value={person.weddingDate || ''}
+                onChange={(e) => handleFieldChange('weddingDate', e.target.value)}
+                className={inputClass}
+              />
+            </div>
+            <div>
+              <label className={labelClass}>Lugar de boda</label>
+              <input
+                type="text"
+                value={person.weddingPlace || ''}
+                onChange={(e) => handleFieldChange('weddingPlace', e.target.value)}
+                className={inputClass}
+                placeholder="Iglesia, Ciudad"
+              />
+            </div>
           </div>
 
           {/* Spouse section */}
@@ -453,6 +475,7 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
 
   const handleMainCropComplete = (croppedFile) => {
     setMainCropSrc(null)
+    console.log('Crop complete, file:', croppedFile?.name, croppedFile?.size)
     if (croppedFile) {
       setPhoto(croppedFile)
       setPhotoPreview(URL.createObjectURL(croppedFile))
@@ -552,16 +575,25 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
+    console.log('=== SUBMIT ===', 'photo:', photo, 'photoPreview:', photoPreview ? 'yes' : 'no')
     setLoading(true)
     try {
       let photoURL = memberData?.photoURL || null
       if (photo) {
-        photoURL = await uploadPhoto(photo, `members/${Date.now()}`)
+        console.log('Uploading main photo...', photo.name, photo.size)
+        const uploaded = await uploadPhoto(photo, `members/${Date.now()}-${photo.name}`)
+        if (uploaded) {
+          photoURL = uploaded
+          console.log('Photo uploaded:', photoURL)
+        } else {
+          console.error('Photo upload returned null')
+        }
       }
       await onSave({ ...form, photoURL })
       onClose()
     } catch (error) {
       console.error('Error saving member:', error)
+      alert('Error al guardar: ' + error.message)
     } finally {
       setLoading(false)
     }

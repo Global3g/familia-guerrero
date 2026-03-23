@@ -1,32 +1,56 @@
 import { useState, useCallback } from 'react'
+import { createPortal } from 'react-dom'
 import Cropper from 'react-easy-crop'
 import { motion, AnimatePresence } from 'framer-motion'
 import { ZoomIn, ZoomOut, Check, X, RotateCw } from 'lucide-react'
 
 function createCroppedImage(imageSrc, pixelCrop) {
-  return new Promise((resolve) => {
+  return new Promise((resolve, reject) => {
     const image = new Image()
     image.onload = () => {
-      const canvas = document.createElement('canvas')
-      canvas.width = pixelCrop.width
-      canvas.height = pixelCrop.height
-      const ctx = canvas.getContext('2d')
-      ctx.drawImage(
-        image,
-        pixelCrop.x,
-        pixelCrop.y,
-        pixelCrop.width,
-        pixelCrop.height,
-        0,
-        0,
-        pixelCrop.width,
-        pixelCrop.height
-      )
-      canvas.toBlob((blob) => {
-        resolve(blob)
-      }, 'image/jpeg', 0.92)
+      try {
+        const canvas = document.createElement('canvas')
+        const size = Math.min(pixelCrop.width, pixelCrop.height, 800)
+        canvas.width = size
+        canvas.height = size
+        const ctx = canvas.getContext('2d')
+        ctx.drawImage(
+          image,
+          pixelCrop.x,
+          pixelCrop.y,
+          pixelCrop.width,
+          pixelCrop.height,
+          0,
+          0,
+          size,
+          size
+        )
+        canvas.toBlob((blob) => {
+          if (blob) {
+            console.log('Crop blob created:', blob.size, 'bytes')
+            resolve(blob)
+          } else {
+            console.error('toBlob returned null, falling back to dataURL')
+            // Fallback: convert dataURL to blob manually
+            const dataURL = canvas.toDataURL('image/jpeg', 0.92)
+            const arr = dataURL.split(',')
+            const mime = arr[0].match(/:(.*?);/)[1]
+            const bstr = atob(arr[1])
+            let n = bstr.length
+            const u8arr = new Uint8Array(n)
+            while (n--) u8arr[n] = bstr.charCodeAt(n)
+            resolve(new Blob([u8arr], { type: mime }))
+          }
+        }, 'image/jpeg', 0.92)
+      } catch (e) {
+        console.error('Canvas error:', e)
+        reject(e)
+      }
     }
-    image.crossOrigin = 'anonymous'
+    image.onerror = (e) => {
+      console.error('Image load error:', e)
+      reject(e)
+    }
     image.src = imageSrc
   })
 }
@@ -42,13 +66,35 @@ export default function ImageCropper({ isOpen, imageSrc, onComplete, onCancel, c
   }, [])
 
   const handleConfirm = async () => {
-    if (!croppedAreaPixels) return
-    const blob = await createCroppedImage(imageSrc, croppedAreaPixels)
-    const file = new File([blob], `crop-${Date.now()}.jpg`, { type: 'image/jpeg' })
-    onComplete(file)
+    if (!croppedAreaPixels) {
+      console.error('No cropped area pixels')
+      return
+    }
+    try {
+      const blob = await createCroppedImage(imageSrc, croppedAreaPixels)
+      if (!blob) {
+        console.error('Crop returned no blob')
+        return
+      }
+      const file = new File([blob], `crop-${Date.now()}.jpg`, { type: 'image/jpeg' })
+      console.log('Crop file created:', file.name, file.size, 'bytes')
+      onComplete(file)
+    } catch (e) {
+      console.error('Crop error:', e)
+      // Fallback: send original image as file
+      try {
+        const res = await fetch(imageSrc)
+        const blob = await res.blob()
+        const file = new File([blob], `photo-${Date.now()}.jpg`, { type: blob.type })
+        console.log('Fallback file created:', file.name, file.size)
+        onComplete(file)
+      } catch (e2) {
+        console.error('Fallback also failed:', e2)
+      }
+    }
   }
 
-  return (
+  return createPortal(
     <AnimatePresence>
       {isOpen && (
         <motion.div
@@ -61,12 +107,12 @@ export default function ImageCropper({ isOpen, imageSrc, onComplete, onCancel, c
 
           {/* Header */}
           <div className="relative z-10 flex items-center justify-between px-4 py-3 bg-black/50">
-            <button onClick={onCancel} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition text-sm">
+            <button type="button" onClick={onCancel} className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-white/80 hover:text-white hover:bg-white/10 transition text-sm">
               <X className="w-4 h-4" />
               Cancelar
             </button>
             <p className="text-white/70 text-sm font-medium">Ajusta la foto</p>
-            <button onClick={handleConfirm} className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-[#7A9E7E] text-white hover:bg-[#7A9E7E]/90 transition text-sm font-medium">
+            <button type="button" onClick={handleConfirm} className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-[#7A9E7E] text-white hover:bg-[#7A9E7E]/90 transition text-sm font-medium">
               <Check className="w-4 h-4" />
               Listo
             </button>
@@ -90,7 +136,7 @@ export default function ImageCropper({ isOpen, imageSrc, onComplete, onCancel, c
 
           {/* Controls */}
           <div className="relative z-10 flex items-center justify-center gap-6 px-4 py-4 bg-black/50">
-            <button onClick={() => setZoom(z => Math.max(1, z - 0.2))} className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition">
+            <button type="button" onClick={() => setZoom(z => Math.max(1, z - 0.2))} className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition">
               <ZoomOut className="w-5 h-5" />
             </button>
 
@@ -108,12 +154,13 @@ export default function ImageCropper({ isOpen, imageSrc, onComplete, onCancel, c
               <ZoomIn className="w-4 h-4 text-white/50" />
             </div>
 
-            <button onClick={() => setRotation(r => (r + 90) % 360)} className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition">
+            <button type="button" onClick={() => setRotation(r => (r + 90) % 360)} className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center text-white hover:bg-white/20 transition">
               <RotateCw className="w-5 h-5" />
             </button>
           </div>
         </motion.div>
       )}
-    </AnimatePresence>
+    </AnimatePresence>,
+    document.body
   )
 }

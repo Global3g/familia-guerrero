@@ -795,6 +795,7 @@ export default function FamilyTree() {
                                               <p className="text-base font-bold text-[#5D4037] truncate">{child.spouse.name}</p>
                                               {child.spouse.nickname && <p className="text-xs text-[#C4704B] italic">"{child.spouse.nickname}"</p>}
                                               <AgeBadge birthDate={child.spouse.birthDate} deathDate={child.spouse.deathDate} />
+                                              {child.spouse.location && <p className="text-xs text-[#7A9E7E] mt-0.5 flex items-center gap-0.5">📍 {child.spouse.location}</p>}
                                             </div>
                                           </>
                                         ) : (
@@ -804,6 +805,42 @@ export default function FamilyTree() {
                                     </>
                                   )}
                                 </div>
+
+
+                                {/* Wedding info for hijo */}
+                                {(child.weddingDate || child.weddingPlace) && (
+                                  <div className="px-5 py-2 flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-[#E0D5C8]/40">
+                                    {child.weddingDate && (
+                                      <span className="text-xs text-[#5D4037]/70 flex items-center gap-1">📅 {formatDate(child.weddingDate)}</span>
+                                    )}
+                                    {child.weddingPlace && (
+                                      <span className="text-xs text-[#5D4037]/70 flex items-center gap-1">⛪ {child.weddingPlace}</span>
+                                    )}
+                                    {child.weddingDate && (() => {
+                                      const wd = new Date(child.weddingDate)
+                                      const now = new Date()
+                                      let y = now.getFullYear() - wd.getFullYear()
+                                      if (now.getMonth() < wd.getMonth() || (now.getMonth() === wd.getMonth() && now.getDate() < wd.getDate())) y--
+                                      return y > 0 ? <span className="text-xs font-bold text-[#C4704B] flex items-center gap-1">💍 {y} años casados</span> : null
+                                    })()}
+                                  </div>
+                                )}
+
+                                {/* Bios */}
+                                {(child.bio || (child.spouse && typeof child.spouse === 'object' && child.spouse.bio)) && (
+                                  <div className="px-5 py-2 border-t border-[#E0D5C8]/40 space-y-1.5">
+                                    {child.bio && (
+                                      <p className="text-xs text-[#5D4037]/60 italic leading-relaxed">
+                                        <span className="font-semibold not-italic text-[#7A9E7E]">{child.name?.split(' ')[0]}:</span> {child.bio}
+                                      </p>
+                                    )}
+                                    {child.spouse && typeof child.spouse === 'object' && child.spouse.bio && (
+                                      <p className="text-xs text-[#5D4037]/60 italic leading-relaxed">
+                                        <span className="font-semibold not-italic text-[#C4704B]">{child.spouse.name?.split(' ')[0]}:</span> {child.spouse.bio}
+                                      </p>
+                                    )}
+                                  </div>
+                                )}
 
                                 {/* Children of this hijo (nietos) */}
                                 {child.children && child.children.length > 0 && (
@@ -870,6 +907,25 @@ export default function FamilyTree() {
                                             )}
 
                                             {/* Bio */}
+                                            {/* Wedding info */}
+                                            {(ggc.weddingDate || ggc.weddingPlace) && (
+                                              <div className="mt-3 pt-2 border-t border-[#E0D5C8]/40 flex flex-wrap items-center gap-x-4 gap-y-1">
+                                                {ggc.weddingDate && (
+                                                  <span className="text-xs text-[#5D4037]/70 flex items-center gap-1">📅 {formatDate(ggc.weddingDate)}</span>
+                                                )}
+                                                {ggc.weddingPlace && (
+                                                  <span className="text-xs text-[#5D4037]/70 flex items-center gap-1">⛪ {ggc.weddingPlace}</span>
+                                                )}
+                                                {ggc.weddingDate && (() => {
+                                                  const wd = new Date(ggc.weddingDate)
+                                                  const now = new Date()
+                                                  let y = now.getFullYear() - wd.getFullYear()
+                                                  if (now.getMonth() < wd.getMonth() || (now.getMonth() === wd.getMonth() && now.getDate() < wd.getDate())) y--
+                                                  return y > 0 ? <span className="text-xs font-bold text-[#C4704B] flex items-center gap-1">💍 {y} años casados</span> : null
+                                                })()}
+                                              </div>
+                                            )}
+
                                             {ggc.bio && <p className="text-xs text-[#5D4037]/60 italic mt-3 leading-relaxed">{ggc.bio}</p>}
                                           </div>
 
