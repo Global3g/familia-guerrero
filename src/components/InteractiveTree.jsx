@@ -13,9 +13,9 @@ import { motion } from 'framer-motion'
 import { GitBranch, Users, Heart, User, ZoomIn } from 'lucide-react'
 import { getFamilyMembers, getGrandparents } from '../firebase/familyService'
 
-const NODE_W = 190
-const V_GAP = 140
-const H_GAP = 30
+const NODE_W = 170
+const V_GAP = 130
+const H_GAP = 25
 
 function PersonNode({ data }) {
   const { name, photoURL, gender, isDeceased, role, spouse, isGrandparent } = data
@@ -29,6 +29,7 @@ function PersonNode({ data }) {
         backgroundColor: bgColor,
         borderColor,
         width: NODE_W,
+        minWidth: NODE_W,
         opacity: isDeceased ? 0.75 : 1,
       }}
     >
@@ -215,6 +216,7 @@ export default function InteractiveTree() {
           <p className="text-base max-w-2xl mx-auto mb-2" style={{ color: '#6B5B5B' }}>
             Navega por el arbol completo. Arrastra para moverte, usa scroll para zoom.
           </p>
+          <p className="text-xs mt-2 sm:hidden" style={{ color: '#B8943E' }}>Usa dos dedos para zoom, arrastra para moverte</p>
           <div className="flex items-center justify-center gap-6 text-xs text-[#5D4037]/50">
             <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-[#B8943E]" /> Abuelos</span>
             <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-[#7A9E7E]" /> Hombres</span>
@@ -228,8 +230,8 @@ export default function InteractiveTree() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="rounded-2xl overflow-hidden shadow-lg border border-[#E0D5C8]"
-          style={{ height: '600px', backgroundColor: '#FEFCF8' }}
+          className="rounded-2xl overflow-hidden shadow-lg border border-[#E0D5C8] h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px]"
+          style={{ backgroundColor: '#FEFCF8', touchAction: 'none' }}
         >
           {loading ? (
             <div className="h-full flex items-center justify-center">
@@ -246,12 +248,16 @@ export default function InteractiveTree() {
               onEdgesChange={onEdgesChange}
               nodeTypes={nodeTypes}
               fitView
-              fitViewOptions={{ padding: 0.3 }}
-              minZoom={0.2}
-              maxZoom={2}
+              fitViewOptions={{ padding: 0.2 }}
+              minZoom={0.1}
+              maxZoom={2.5}
               attributionPosition="bottom-left"
+              panOnScroll={false}
+              zoomOnPinch={true}
+              panOnDrag={true}
+              preventScrolling={true}
             >
-              <Controls position="top-right" style={{ borderRadius: '12px', overflow: 'hidden' }} />
+              <Controls position="top-right" showInteractive={false} style={{ borderRadius: '12px', overflow: 'hidden' }} />
               <Background color="#E0D5C830" gap={20} />
             </ReactFlow>
           ) : (

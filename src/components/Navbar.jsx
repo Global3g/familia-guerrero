@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Menu, X, Heart } from 'lucide-react'
+import { Menu, X, Heart, LogOut } from 'lucide-react'
+import NotificationBell from './NotificationBell'
 
 const navLinks = [
   { label: 'Origen', href: '#origen' },
@@ -10,7 +11,7 @@ const navLinks = [
   { label: 'Homenaje', href: '#homenaje' },
 ]
 
-export default function Navbar() {
+export default function Navbar({ user, onLogout }) {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
 
@@ -85,6 +86,24 @@ export default function Navbar() {
                 </a>
               </li>
             ))}
+            {user && (
+              <li><NotificationBell /></li>
+            )}
+            {user && (
+              <li>
+                <button
+                  onClick={onLogout}
+                  className={`flex items-center gap-1.5 font-sans text-sm font-medium px-3 py-2 rounded-md transition-colors duration-300 ${
+                    scrolled
+                      ? 'text-[#C4704B] hover:bg-[#C4704B]/10'
+                      : 'text-[#FDF8F0]/70 hover:text-[#FDF8F0] hover:bg-white/10'
+                  }`}
+                >
+                  <LogOut className="w-4 h-4" />
+                  Salir
+                </button>
+              </li>
+            )}
           </ul>
 
           {/* Mobile Hamburger */}

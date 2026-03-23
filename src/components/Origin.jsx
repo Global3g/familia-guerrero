@@ -15,15 +15,7 @@ import { grandparents as defaultGrandparents } from '../data/familyData'
 import { getGrandparents, saveGrandparents } from '../firebase/familyService'
 import GrandparentForm from './GrandparentForm'
 
-const formatDate = (dateStr) => {
-  if (!dateStr) return ''
-  const [year, month, day] = dateStr.split('-')
-  const months = [
-    'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio',
-    'Julio', 'Agosto', 'Septiembre', 'Octubre', 'Noviembre', 'Diciembre',
-  ]
-  return `${parseInt(day)} de ${months[parseInt(month) - 1]}, ${year}`
-}
+import formatDate from '../utils/formatDate'
 
 const ProfileCard = ({ person, index, onEdit }) => {
   const isGrandfather = index === 0

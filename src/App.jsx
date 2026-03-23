@@ -1,9 +1,12 @@
+import { useState, useEffect } from 'react'
+import { onAuthStateChanged, signOut } from 'firebase/auth'
+import { auth } from './firebase/config'
+import Login from './components/Login'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Origin from './components/Origin'
 import FamilyTree from './components/FamilyTree'
 import InteractiveTree from './components/InteractiveTree'
-import FamilyProfiles from './components/FamilyProfiles'
 import Timeline from './components/Timeline'
 import Gallery from './components/Gallery'
 import Events from './components/Events'
@@ -19,14 +22,37 @@ import Messages from './components/Messages'
 import Footer from './components/Footer'
 
 function App() {
+  const [user, setUser] = useState(null)
+  const [loading, setLoading] = useState(true)
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (u) => {
+      setUser(u)
+      setLoading(false)
+    })
+    return unsubscribe
+  }, [])
+
+  if (loading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-cream">
+        <div className="text-center">
+          <div className="inline-block w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#C4704B', borderTopColor: 'transparent' }} />
+          <p className="mt-3 text-sm" style={{ color: '#5D4037' }}>Cargando...</p>
+        </div>
+      </div>
+    )
+  }
+
+  if (!user) return <Login />
+
   return (
     <div className="min-h-screen bg-cream">
-      <Navbar />
+      <Navbar user={user} onLogout={() => signOut(auth)} />
       <Hero />
       <Origin />
       <FamilyTree />
       <InteractiveTree />
-      <FamilyProfiles />
       <Timeline />
       <Gallery />
       <Events />

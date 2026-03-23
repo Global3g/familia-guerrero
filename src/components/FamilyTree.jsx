@@ -5,6 +5,18 @@ import { grandparents as defaultGrandparents } from '../data/familyData'
 import { getFamilyMembers, saveFamilyMember, deleteFamilyMember, getGrandparents } from '../firebase/familyService'
 import FamilyMemberForm from './FamilyMemberForm'
 
+const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
+
+function formatDate(dateStr) {
+  if (!dateStr) return ''
+  const parts = dateStr.split('-')
+  if (parts.length !== 3) return dateStr
+  const day = parseInt(parts[2])
+  const month = parseInt(parts[1])
+  const year = parts[0]
+  return `${day} de ${monthNames[month - 1]} de ${year}`
+}
+
 function calcAge(birthDate, deathDate) {
   if (!birthDate) return null
   const birth = new Date(birthDate)
@@ -36,8 +48,9 @@ function PersonCircle({ name, photo, size = 'md' }) {
     md: 'w-24 h-24',
     lg: 'w-28 h-28',
     xl: 'w-36 h-36',
+    xxl: 'w-44 h-44',
   }
-  const iconSizes = { xs: 'w-5 h-5', sm: 'w-6 h-6', md: 'w-10 h-10', lg: 'w-12 h-12', xl: 'w-14 h-14' }
+  const iconSizes = { xs: 'w-5 h-5', sm: 'w-6 h-6', md: 'w-10 h-10', lg: 'w-12 h-12', xl: 'w-14 h-14', xxl: 'w-16 h-16' }
 
   return (
     <div
@@ -540,27 +553,20 @@ export default function FamilyTree() {
       <AnimatePresence>
         {selectedMember && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
             <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setSelectedMember(null)} />
             <motion.div
-              className="relative bg-[#FFF8F0] rounded-2xl shadow-2xl max-w-5xl w-full max-h-[92vh] overflow-y-auto"
+              className="relative bg-[#FFF8F0] rounded-2xl shadow-2xl max-w-7xl w-full max-h-[96vh] overflow-y-auto mx-2"
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
             >
               <div className="p-6 sm:p-8">
-                <button
-                  onClick={() => setSelectedMember(null)}
-                  className="absolute top-4 right-4 text-[#C4704B] hover:text-[#5D4037] transition"
-                >
-                  <span className="text-2xl">&times;</span>
-                </button>
-
-                {/* Family name title */}
+                {/* Premium hero banner */}
                 {(() => {
                   const sp = selectedMember.spouse
                   const spouseName = sp ? (typeof sp === 'object' ? sp.name : sp) : null
@@ -574,7 +580,6 @@ export default function FamilyTree() {
                   const memberLastName = getLastName(selectedMember.name)
                   const spouseLastName = spouseName ? getLastName(spouseName) : null
 
-                  // El apellido del hombre va primero
                   let familyTitle
                   if (!spouseLastName) {
                     familyTitle = `Familia ${memberLastName}`
@@ -589,304 +594,422 @@ export default function FamilyTree() {
                   } else {
                     familyTitle = `Familia ${memberLastName} ${spouseLastName}`
                   }
+
+                  // Calculate wedding years for stats
+                  let weddingYears = 0
+                  if (selectedMember.weddingDate) {
+                    const wd = new Date(selectedMember.weddingDate)
+                    const now = new Date()
+                    weddingYears = now.getFullYear() - wd.getFullYear()
+                    if (now.getMonth() < wd.getMonth() || (now.getMonth() === wd.getMonth() && now.getDate() < wd.getDate())) weddingYears--
+                    if (weddingYears < 0) weddingYears = 0
+                  }
+
+                  // Count total grandchildren
+                  const totalGrandchildren = selectedMember.children ? selectedMember.children.reduce((acc, child) => acc + (child.children ? child.children.length : 0), 0) : 0
+
                   return (
-                    <div className="text-center mb-6 pb-5 border-b border-[#C4704B]/10">
-                      <p className="text-xs text-[#B8943E] font-semibold uppercase tracking-widest mb-1">Nucleo familiar</p>
-                      <h2 className="text-2xl sm:text-3xl font-serif font-bold text-[#5D4037]">{familyTitle}</h2>
-                      <div className="flex items-center justify-center gap-3 mt-2">
-                        <div className="h-px w-10 bg-[#C4704B]/30" />
-                        <Heart className="w-4 h-4 text-[#C4704B] fill-[#C4704B]/30" />
-                        <div className="h-px w-10 bg-[#C4704B]/30" />
-                      </div>
-                    </div>
-                  )
-                })()}
-
-                {/* Couple display */}
-                <div className="flex items-start justify-center gap-4 sm:gap-8 mb-6">
-                  {/* Main person */}
-                  <div className="flex flex-col items-center text-center flex-1">
-                    <PersonCircle name={selectedMember.name} photo={selectedMember.photoURL} size="lg" />
-                    <h3 className="text-base sm:text-lg font-serif font-bold text-[#5D4037] mt-2 leading-tight">
-                      {selectedMember.name}
-                    </h3>
-                    {selectedMember.nickname && (
-                      <p className="text-xs text-[#C4704B] font-medium italic">"{selectedMember.nickname}"</p>
-                    )}
-                    <AgeBadge birthDate={selectedMember.birthDate} deathDate={selectedMember.deathDate} />
-                    {selectedMember.role && (
-                      <span className="inline-block mt-1 text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#7A9E7E]/10 text-[#7A9E7E]">
-                        {selectedMember.role}
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Heart */}
-                  {selectedMember.spouse && (
                     <>
-                      <div className="flex flex-col items-center pt-10 flex-shrink-0">
-                        <Heart className="w-6 h-6 text-[#C4704B] fill-[#C4704B]" />
+                      <div className="relative -mx-6 sm:-mx-8 -mt-6 sm:-mt-8 mb-6 rounded-t-2xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #5D4037, #C4704B, #B8943E)' }}>
+                        <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 50%, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+                        <div className="relative px-6 sm:px-8 pt-10 pb-8 text-center">
+                          <button onClick={() => setSelectedMember(null)} className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition">
+                            <span className="text-lg">&times;</span>
+                          </button>
+                          <p className="text-xs text-white/60 font-semibold uppercase tracking-[3px] mb-2">Nucleo familiar</p>
+                          <h2 className="text-2xl sm:text-4xl font-serif font-bold text-white drop-shadow-lg">{familyTitle}</h2>
+                          <div className="flex items-center justify-center gap-3 mt-3">
+                            <div className="h-px w-12 bg-white/30" />
+                            <Heart className="w-4 h-4 text-white/60 fill-white/40" />
+                            <div className="h-px w-12 bg-white/30" />
+                          </div>
+                        </div>
                       </div>
 
-                      {/* Spouse */}
-                      <div className="flex flex-col items-center text-center flex-1">
-                        {typeof selectedMember.spouse === 'object' ? (
+                      {/* Couple cards */}
+                      <div className="flex items-start justify-center gap-4 sm:gap-10 mb-8 px-2">
+                        {/* Main person card */}
+                        <div className="flex-1 max-w-[220px] bg-white rounded-2xl shadow-xl p-4 text-center border border-[#E0D5C8]/50">
+                          <div className="mb-3">
+                            <PersonCircle name={selectedMember.name} photo={selectedMember.photoURL} size="xxl" />
+                          </div>
+                          <h3 className="text-base font-serif font-bold text-[#5D4037]">{selectedMember.name}</h3>
+                          {selectedMember.nickname && (
+                            <p className="text-xs text-[#C4704B] font-medium italic">"{selectedMember.nickname}"</p>
+                          )}
+                          <AgeBadge birthDate={selectedMember.birthDate} deathDate={selectedMember.deathDate} />
+                          {selectedMember.role && (
+                            <span className="inline-block mt-1 text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#7A9E7E]/10 text-[#7A9E7E]">
+                              {selectedMember.role}
+                            </span>
+                          )}
+                        </div>
+
+                        {/* Heart connector */}
+                        {selectedMember.spouse && (
                           <>
-                            <PersonCircle name={selectedMember.spouse.name} photo={selectedMember.spouse.photoURL} size="lg" />
-                            <h3 className="text-base sm:text-lg font-serif font-bold text-[#5D4037] mt-2 leading-tight">
-                              {selectedMember.spouse.name}
-                            </h3>
-                            {selectedMember.spouse.nickname && (
-                              <p className="text-xs text-[#C4704B] font-medium italic">"{selectedMember.spouse.nickname}"</p>
-                            )}
-                            <AgeBadge birthDate={selectedMember.spouse.birthDate} deathDate={selectedMember.spouse.deathDate} />
-                            {selectedMember.spouse.bio && (
-                              <p className="text-[11px] text-[#5D4037]/60 italic mt-1 leading-relaxed">{selectedMember.spouse.bio}</p>
-                            )}
-                          </>
-                        ) : (
-                          <>
-                            <PersonCircle name={selectedMember.spouse} photo={null} size="lg" />
-                            <h3 className="text-base sm:text-lg font-serif font-bold text-[#5D4037] mt-2 leading-tight">
-                              {selectedMember.spouse}
-                            </h3>
+                            <div className="flex flex-col items-center pt-4 flex-shrink-0">
+                              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#C4704B] to-[#B8943E] flex items-center justify-center shadow-lg">
+                                <Heart className="w-5 h-5 text-white fill-white" />
+                              </div>
+                            </div>
+
+                            {/* Spouse card */}
+                            <div className="flex-1 max-w-[220px] bg-white rounded-2xl shadow-xl p-4 text-center border border-[#E0D5C8]/50">
+                              <div className="mb-3">
+                                {typeof selectedMember.spouse === 'object' ? (
+                                  <PersonCircle name={selectedMember.spouse.name} photo={selectedMember.spouse.photoURL} size="xxl" />
+                                ) : (
+                                  <PersonCircle name={selectedMember.spouse} photo={null} size="xxl" />
+                                )}
+                              </div>
+                              {typeof selectedMember.spouse === 'object' ? (
+                                <>
+                                  <h3 className="text-base font-serif font-bold text-[#5D4037]">{selectedMember.spouse.name}</h3>
+                                  {selectedMember.spouse.nickname && (
+                                    <p className="text-xs text-[#C4704B] font-medium italic">"{selectedMember.spouse.nickname}"</p>
+                                  )}
+                                  <AgeBadge birthDate={selectedMember.spouse.birthDate} deathDate={selectedMember.spouse.deathDate} />
+                                  {selectedMember.spouse.bio && (
+                                    <p className="text-[11px] text-[#5D4037]/60 italic mt-1 leading-relaxed">{selectedMember.spouse.bio}</p>
+                                  )}
+                                </>
+                              ) : (
+                                <h3 className="text-base font-serif font-bold text-[#5D4037]">{selectedMember.spouse}</h3>
+                              )}
+                            </div>
                           </>
                         )}
                       </div>
-                    </>
-                  )}
-                </div>
 
-                {selectedMember.bio && (
-                  <p className="text-sm text-[#5D4037]/70 leading-relaxed mb-6 italic text-center">{selectedMember.bio}</p>
-                )}
+                      {selectedMember.bio && (
+                        <p className="text-sm text-[#5D4037]/70 leading-relaxed mb-4 italic text-center">{selectedMember.bio}</p>
+                      )}
 
-                {/* Children (nietos) */}
-                {selectedMember.children && selectedMember.children.length > 0 && (
-                  <div className="space-y-4">
-                    <h4 className="text-sm font-semibold text-[#5D4037] uppercase tracking-wider flex items-center gap-2">
-                      <Users className="w-4 h-4 text-[#B8943E]" />
-                      Hijos ({selectedMember.children.length})
-                    </h4>
-                    {selectedMember.children.map((child, i) => (
-                      <div key={i} className="rounded-xl bg-[#FAF6EE] border border-[#7A9E7E]/10 p-4 relative group/child">
-                        {/* Move button */}
-                        <button
-                          onClick={() => setMovingPerson({ person: child, parentId: selectedMember.id, childIndex: i })}
-                          className="absolute top-2 right-2 w-7 h-7 rounded-full flex items-center justify-center bg-white/80 hover:bg-[#7A9E7E]/10 shadow text-[#7A9E7E] transition opacity-0 group-hover/child:opacity-100 z-10"
-                          title="Mover a otro familiar"
-                        >
-                          <ArrowRightLeft className="w-3.5 h-3.5" />
-                        </button>
+                      {/* Datos de la pareja - inline */}
+                      {(selectedMember.weddingDate || selectedMember.location) && (
+                        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mb-6 py-3 px-4 rounded-xl bg-white/60 border border-[#E0D5C8]/50">
+                          {selectedMember.weddingDate && (
+                            <div className="flex items-center gap-1.5 text-sm text-[#5D4037]">
+                              <span>📅</span>
+                              <span className="font-medium">{formatDate(selectedMember.weddingDate)}</span>
+                            </div>
+                          )}
+                          {selectedMember.weddingPlace && (
+                            <div className="flex items-center gap-1.5 text-sm text-[#5D4037]">
+                              <span>⛪</span>
+                              <span className="font-medium">{selectedMember.weddingPlace}</span>
+                            </div>
+                          )}
+                          {selectedMember.location && (
+                            <div className="flex items-center gap-1.5 text-sm text-[#7A9E7E]">
+                              <span>📍</span>
+                              <span className="font-medium">{selectedMember.location}</span>
+                            </div>
+                          )}
+                          {(() => {
+                            if (!selectedMember.weddingDate) return null
+                            const wd = new Date(selectedMember.weddingDate)
+                            const now = new Date()
+                            let y = now.getFullYear() - wd.getFullYear()
+                            if (now.getMonth() < wd.getMonth() || (now.getMonth() === wd.getMonth() && now.getDate() < wd.getDate())) y--
+                            return y > 0 ? (
+                              <div className="flex items-center gap-1.5 text-sm font-bold text-[#C4704B]">
+                                <span>💍</span>
+                                <span>{y} años de casados</span>
+                              </div>
+                            ) : null
+                          })()}
+                        </div>
+                      )}
 
-                        <div className="flex items-center gap-3 mb-2">
-                          <PersonCircle name={child.name} photo={child.photoURL} size="sm" />
-                          <div className="flex-1">
-                            <p className="text-sm font-bold text-[#5D4037] flex items-center gap-1.5">
-                              {child.name}
-                              <AgeBadge birthDate={child.birthDate} deathDate={child.deathDate} />
-                            </p>
-                            {child.nickname && <p className="text-xs text-[#5D4037]/60 italic">"{child.nickname}"</p>}
+                      {/* Quick stats pills */}
+                      <div className="flex flex-wrap justify-center gap-2 mb-8">
+                        {selectedMember.children?.length > 0 && (
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#7A9E7E]/10 text-[#7A9E7E] text-xs font-semibold">
+                            <Users className="w-3.5 h-3.5" /> {selectedMember.children.length} hijos
+                          </span>
+                        )}
+                        {totalGrandchildren > 0 && (
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#E8956D]/10 text-[#E8956D] text-xs font-semibold">
+                            <Users className="w-3.5 h-3.5" /> {totalGrandchildren} nietos
+                          </span>
+                        )}
+                        {selectedMember.location && (
+                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#C4704B]/10 text-[#C4704B] text-xs font-semibold">
+                            <span>📍</span> {selectedMember.location}
+                          </span>
+                        )}
+                      </div>
+
+                      {/* Children - each one with their complete family */}
+                      {selectedMember.children && selectedMember.children.length > 0 && (
+                        <div className="mb-8">
+                          <h4 className="text-sm font-serif font-semibold text-[#5D4037] uppercase tracking-wider flex items-center gap-2 mb-4">
+                            <Users className="w-4 h-4 text-[#B8943E]" />
+                            Hijos ({selectedMember.children.length})
+                          </h4>
+                          <div className="space-y-8">
+                            {selectedMember.children.map((child, i) => {
+                              const hijoColors = ['#7A9E7E', '#C4704B', '#B8943E', '#5D4037', '#E8956D', '#2C3E50', '#8D6E63', '#D4B96A']
+                              const hijoColor = hijoColors[i % hijoColors.length]
+                              return (
+                              <div key={i} className="bg-white rounded-2xl shadow-lg border-2 overflow-hidden group/child relative" style={{ borderColor: hijoColor }}>
+                                {/* Move button */}
+                                <button
+                                  onClick={() => setMovingPerson({ person: child, parentId: selectedMember.id, childIndex: i })}
+                                  className="absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center bg-white/80 hover:bg-[#7A9E7E]/10 shadow text-[#7A9E7E] transition opacity-0 group-hover/child:opacity-100 z-10"
+                                  title="Mover a otro familiar"
+                                >
+                                  <ArrowRightLeft className="w-3.5 h-3.5" />
+                                </button>
+
+                                {/* Colored header bar with name */}
+                                <div className="px-5 py-3" style={{ background: `linear-gradient(135deg, ${hijoColor}, ${hijoColor}CC)` }}>
+                                  <p className="text-xs font-bold uppercase tracking-widest text-white/80">{child.role || (child.gender === 'F' ? 'Hija' : child.gender === 'M' ? 'Hijo' : 'Hijo(a)')}</p>
+                                  <p className="text-lg font-serif font-bold text-white">{child.name.split(' ')[0]} {child.spouse && typeof child.spouse === 'object' ? `& ${child.spouse.name.split(' ')[0]}` : ''}</p>
+                                </div>
+
+                                {/* Couple: hijo + esposo/a side by side */}
+                                <div className="p-5 flex items-center gap-4">
+                                  {/* Hijo */}
+                                  <div className="flex items-center gap-3 flex-1 min-w-0">
+                                    <PersonCircle name={child.name} photo={child.photoURL} size="md" />
+                                    <div className="min-w-0">
+                                      <p className="text-base font-bold text-[#5D4037] truncate">{child.name}</p>
+                                      {child.nickname && <p className="text-xs text-[#C4704B] italic">"{child.nickname}"</p>}
+                                      <AgeBadge birthDate={child.birthDate} deathDate={child.deathDate} />
+                                      {child.location && <p className="text-xs text-[#7A9E7E] mt-0.5 flex items-center gap-0.5">📍 {child.location}</p>}
+                                    </div>
+                                  </div>
+
+                                  {/* Heart + Esposo/a */}
+                                  {child.spouse && (
+                                    <>
+                                      <Heart className="w-4 h-4 text-[#C4704B] fill-[#C4704B] flex-shrink-0" />
+                                      <div className="flex items-center gap-3 flex-1 min-w-0">
+                                        {typeof child.spouse === 'object' ? (
+                                          <>
+                                            <PersonCircle name={child.spouse.name} photo={child.spouse.photoURL} size="md" />
+                                            <div className="min-w-0">
+                                              <p className="text-base font-bold text-[#5D4037] truncate">{child.spouse.name}</p>
+                                              {child.spouse.nickname && <p className="text-xs text-[#C4704B] italic">"{child.spouse.nickname}"</p>}
+                                              <AgeBadge birthDate={child.spouse.birthDate} deathDate={child.spouse.deathDate} />
+                                            </div>
+                                          </>
+                                        ) : (
+                                          <p className="text-sm text-[#5D4037]/70">{child.spouse}</p>
+                                        )}
+                                      </div>
+                                    </>
+                                  )}
+                                </div>
+
+                                {/* Children of this hijo (nietos) */}
+                                {child.children && child.children.length > 0 && (
+                                  <div className="px-4 pb-4 pt-2 border-t border-[#E0D5C8]/40">
+                                    <p className="text-[10px] font-semibold text-[#B8943E] uppercase tracking-wider mb-2 flex items-center gap-1">
+                                      <Users className="w-3 h-3" />
+                                      Hijos de {child.name.split(' ')[0]} ({child.children.length})
+                                    </p>
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                                      {child.children.map((ggc, gi) => {
+                                        const cardColors = ['#7A9E7E', '#C4704B', '#B8943E', '#5D4037', '#E8956D']
+                                        const cardColor = cardColors[gi % cardColors.length]
+                                        return (
+                                        <div key={gi} className="rounded-2xl bg-white border-2 shadow-md overflow-hidden relative group/ggc" style={{ borderColor: cardColor }}>
+                                          {/* Move button */}
+                                          <button
+                                            onClick={() => setMovingPerson({ person: ggc, parentId: selectedMember.id, childIndex: i, grandchildIndex: gi })}
+                                            className="absolute top-2 right-2 w-7 h-7 rounded-full flex items-center justify-center bg-white/80 hover:bg-[#7A9E7E]/10 shadow text-[#7A9E7E] transition opacity-0 group-hover/ggc:opacity-100 z-10"
+                                            title="Mover"
+                                          >
+                                            <ArrowRightLeft className="w-3.5 h-3.5" />
+                                          </button>
+
+                                          {/* Colored header bar */}
+                                          <div className="px-4 py-2.5" style={{ background: `linear-gradient(135deg, ${cardColor}, ${cardColor}CC)` }}>
+                                            <p className="text-[10px] font-bold uppercase tracking-widest text-white">
+                                              {ggc.gender === 'F' ? 'Nieta' : ggc.gender === 'M' ? 'Nieto' : 'Nieto(a)'}
+                                            </p>
+                                          </div>
+
+                                          {/* Couple: nieto + esposo/a side by side */}
+                                          <div className="p-4">
+                                            <div className="flex items-center gap-3">
+                                              <PersonCircle name={ggc.name} photo={ggc.photoURL} size="md" />
+                                              <div className="flex-1 min-w-0">
+                                                <p className="text-base font-serif font-bold text-[#5D4037] truncate">{ggc.name}</p>
+                                                {ggc.nickname && <p className="text-xs text-[#C4704B] italic">"{ggc.nickname}"</p>}
+                                                <AgeBadge birthDate={ggc.birthDate} deathDate={ggc.deathDate} />
+                                                {ggc.location && (
+                                                  <p className="text-[11px] text-[#7A9E7E] mt-0.5 flex items-center gap-0.5">📍 {ggc.location}</p>
+                                                )}
+                                              </div>
+                                            </div>
+
+                                            {/* Spouse as partner */}
+                                            {ggc.spouse && (
+                                              <div className="mt-3 pt-3 border-t border-[#E0D5C8]/40">
+                                                <div className="flex items-center gap-3">
+                                                  <Heart className="w-4 h-4 flex-shrink-0" style={{ color: cardColor, fill: cardColor }} />
+                                                  {typeof ggc.spouse === 'object' ? (
+                                                    <>
+                                                      <PersonCircle name={ggc.spouse.name} photo={ggc.spouse.photoURL} size="md" />
+                                                      <div className="flex-1 min-w-0">
+                                                        <p className="text-base font-serif font-bold text-[#5D4037] truncate">{ggc.spouse.name}</p>
+                                                        {ggc.spouse.nickname && <p className="text-xs text-[#C4704B] italic">"{ggc.spouse.nickname}"</p>}
+                                                        <AgeBadge birthDate={ggc.spouse.birthDate} deathDate={ggc.spouse.deathDate} />
+                                                      </div>
+                                                    </>
+                                                  ) : (
+                                                    <p className="text-sm text-[#5D4037]/70">{ggc.spouse}</p>
+                                                  )}
+                                                </div>
+                                              </div>
+                                            )}
+
+                                            {/* Bio */}
+                                            {ggc.bio && <p className="text-xs text-[#5D4037]/60 italic mt-3 leading-relaxed">{ggc.bio}</p>}
+                                          </div>
+
+                                          {/* Bisnietos */}
+                                          {ggc.children && ggc.children.length > 0 && (
+                                            <div className="px-4 pb-4 pt-2 border-t border-[#E0D5C8]/30">
+                                              <p className="text-[10px] font-bold uppercase tracking-wider mb-2" style={{ color: cardColor }}>
+                                                <Users className="w-3 h-3 inline mr-1" />
+                                                Hijos de {ggc.name.split(' ')[0]} ({ggc.children.length})
+                                              </p>
+                                              <div className="space-y-2">
+                                                {ggc.children.map((bn, bi) => (
+                                                  <div key={bi} className="flex items-center gap-2 p-2.5 rounded-lg border" style={{ backgroundColor: `${cardColor}12`, borderColor: `${cardColor}25` }}>
+                                                    <PersonCircle name={bn.name} photo={bn.photoURL} size="sm" />
+                                                    <div className="flex-1 min-w-0">
+                                                      <p className="text-sm font-bold text-[#5D4037] truncate">{bn.name}</p>
+                                                      <AgeBadge birthDate={bn.birthDate} deathDate={bn.deathDate} />
+                                                    </div>
+                                                    {bn.spouse && (
+                                                      <div className="flex items-center gap-1.5 flex-shrink-0">
+                                                        <Heart className="w-2.5 h-2.5 text-[#C4704B]" />
+                                                        <span className="text-xs text-[#5D4037]/60 truncate max-w-[80px]">{typeof bn.spouse === 'object' ? bn.spouse.name : bn.spouse}</span>
+                                                      </div>
+                                                    )}
+                                                  </div>
+                                                ))}
+                                              </div>
+                                            </div>
+                                          )}
+                                        </div>
+                                        )
+                                      })}
+                                    </div>
+                                  </div>
+                                )}
+                              </div>
+                              )
+                            })}
                           </div>
-                          {child.spouse && (
-                            typeof child.spouse === 'object' ? (
-                              <div className="flex items-center gap-2 px-2 py-1 rounded-lg bg-[#C4704B]/5">
-                                <PersonCircle name={child.spouse.name} photo={child.spouse.photoURL} size="sm" />
+                        </div>
+                      )}
+
+                      {/* Momentos Importantes - with gradient left border */}
+                      {selectedMember.moments && selectedMember.moments.length > 0 && (
+                        <div className="mb-8">
+                          <h4 className="text-sm font-serif font-semibold text-[#5D4037] uppercase tracking-wider mb-4 flex items-center gap-2">
+                            <span className="w-4 h-4 text-[#B8943E]">★</span>
+                            Momentos Importantes
+                          </h4>
+                          <div className="space-y-3">
+                            {selectedMember.moments.map((m, i) => (
+                              <div key={i} className="flex gap-3 p-3 rounded-xl bg-white border border-[#E0D5C8]/50 shadow-sm relative overflow-hidden">
+                                <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl" style={{ background: 'linear-gradient(to bottom, #C4704B, #B8943E)' }} />
+                                <div className="w-10 h-10 rounded-full bg-[#B8943E]/10 flex items-center justify-center flex-shrink-0 ml-1">
+                                  <span className="text-[#B8943E] text-lg">★</span>
+                                </div>
                                 <div>
-                                  <p className="text-[10px] text-[#C4704B] font-medium">Esposo(a)</p>
-                                  <p className="text-xs font-semibold text-[#5D4037] flex items-center gap-1">
-                                    {child.spouse.name}
-                                    <AgeBadge birthDate={child.spouse.birthDate} deathDate={child.spouse.deathDate} />
-                                  </p>
+                                  <p className="text-sm font-bold text-[#5D4037]">{m.title}</p>
+                                  {m.date && <p className="text-[10px] text-[#B8943E] font-medium">{formatDate(m.date)}</p>}
+                                  {m.description && <p className="text-xs text-[#5D4037]/70 mt-0.5">{m.description}</p>}
                                 </div>
                               </div>
-                            ) : (
-                              <p className="text-xs text-[#7A9E7E] flex items-center gap-1">
-                                <Heart className="w-3 h-3 text-[#C4704B]" />
-                                {child.spouse}
-                              </p>
-                            )
-                          )}
+                            ))}
+                          </div>
                         </div>
-                        {child.bio && <p className="text-xs text-[#5D4037]/60 italic mb-2 ml-12">{child.bio}</p>}
+                      )}
 
-                        {/* Great-grandchildren (bisnietos) */}
-                        {child.children && child.children.length > 0 && (
-                          <div className="ml-6 pl-3 border-l-2 border-[#B8943E]/20 mt-3 space-y-2">
-                            <p className="text-[10px] font-semibold text-[#B8943E] uppercase tracking-wider">
-                              Hijos de {child.name.split(' ')[0]}
-                            </p>
-                            <div className="grid grid-cols-2 gap-2">
-                              {child.children.map((ggc, gi) => (
-                                <div key={gi} className="flex items-center gap-2 p-2 rounded-lg bg-[#FFFBF5] relative group/ggc">
-                                  <button
-                                    onClick={() => setMovingPerson({ person: ggc, parentId: selectedMember.id, childIndex: i, grandchildIndex: gi })}
-                                    className="absolute top-1 right-1 w-6 h-6 rounded-full flex items-center justify-center bg-white/80 hover:bg-[#7A9E7E]/10 shadow text-[#7A9E7E] transition opacity-0 group-hover/ggc:opacity-100 z-10"
-                                    title="Mover a otro familiar"
-                                  >
-                                    <ArrowRightLeft className="w-3 h-3" />
-                                  </button>
-                                  <PersonCircle name={ggc.name} photo={ggc.photoURL} size="sm" />
+                      {/* Galeria Familiar - bigger photos */}
+                      {selectedMember.gallery && selectedMember.gallery.length > 0 && (
+                        <div className="mb-8">
+                          <h4 className="text-sm font-serif font-semibold text-[#5D4037] uppercase tracking-wider mb-4 flex items-center gap-2">
+                            <span className="w-4 h-4 text-[#7A9E7E]">📷</span>
+                            Galeria Familiar
+                          </h4>
+                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                            {selectedMember.gallery.map((g, i) => (
+                              <div key={i} className="rounded-xl overflow-hidden border border-[#E0D5C8]/50 shadow-sm bg-white">
+                                {g.photoURL ? (
+                                  <img src={g.photoURL} alt={g.caption} className="w-full h-40 object-cover" />
+                                ) : (
+                                  <div className="w-full h-40 bg-gradient-to-br from-[#7A9E7E]/20 to-[#B8943E]/20 flex items-center justify-center">
+                                    <span className="text-2xl">📷</span>
+                                  </div>
+                                )}
+                                {g.caption && <p className="text-[10px] text-[#5D4037]/70 p-2 text-center">{g.caption}</p>}
+                              </div>
+                            ))}
+                          </div>
+                        </div>
+                      )}
+
+                      {/* Mensajes y Recuerdos - decorative quotes */}
+                      {selectedMember.messages && selectedMember.messages.length > 0 && (
+                        <div className="mb-8">
+                          <h4 className="text-sm font-serif font-semibold text-[#5D4037] uppercase tracking-wider mb-4 flex items-center gap-2">
+                            <span className="w-4 h-4 text-[#C4704B]">💬</span>
+                            Voces de la Familia
+                          </h4>
+                          <div className="space-y-3">
+                            {selectedMember.messages.map((msg, i) => (
+                              <div key={i} className="p-4 rounded-xl bg-white border border-[#E0D5C8]/50 shadow-sm relative">
+                                <span className="absolute top-2 left-3 text-4xl font-serif text-[#C4704B]/15 leading-none select-none">"</span>
+                                <div className="flex items-center gap-2 mb-2 relative">
+                                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#C4704B] to-[#B8943E] flex items-center justify-center shadow-sm">
+                                    <span className="text-white text-[11px] font-bold">{(msg.author || '?')[0].toUpperCase()}</span>
+                                  </div>
                                   <div>
-                                    <p className="text-xs font-semibold text-[#5D4037] flex items-center gap-1">
-                                      {ggc.name}
-                                      <AgeBadge birthDate={ggc.birthDate} deathDate={ggc.deathDate} />
-                                    </p>
-                                    {ggc.nickname && <p className="text-[9px] text-[#5D4037]/50 italic">"{ggc.nickname}"</p>}
-                                    {ggc.spouse && (
-                                      typeof ggc.spouse === 'object' ? (
-                                        <p className="text-[10px] text-[#C4704B] flex items-center gap-0.5">
-                                          <Heart className="w-2.5 h-2.5" /> {ggc.spouse.name}
-                                        </p>
-                                      ) : (
-                                        <p className="text-[10px] text-[#7A9E7E]">
-                                          <Heart className="w-2.5 h-2.5 inline text-[#C4704B]" /> {ggc.spouse}
-                                        </p>
-                                      )
-                                    )}
+                                    <p className="text-xs font-bold text-[#5D4037]">{msg.author}</p>
+                                    {msg.date && <p className="text-[9px] text-[#5D4037]/40">{formatDate(msg.date)}</p>}
                                   </div>
                                 </div>
-                              ))}
-                            </div>
+                                <p className="text-sm text-[#5D4037]/80 italic ml-10 relative">"{msg.message}"</p>
+                                <span className="absolute bottom-1 right-4 text-4xl font-serif text-[#C4704B]/15 leading-none select-none rotate-180">"</span>
+                              </div>
+                            ))}
                           </div>
-                        )}
+                        </div>
+                      )}
+
+                      {/* Actions footer - sticky frosted glass */}
+                      <div className="sticky bottom-0 -mx-6 sm:-mx-8 -mb-6 sm:-mb-8 px-6 sm:px-8 py-4 bg-[#FFF8F0]/90 backdrop-blur-md border-t border-[#E0D5C8]">
+                        <div className="flex gap-3">
+                          <button
+                            onClick={() => { setSelectedMember(null); setEditingMember(selectedMember); }}
+                            className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg bg-[#B8943E] text-white hover:bg-[#B8943E]/90 transition text-sm font-medium shadow-md"
+                          >
+                            <Pencil className="w-4 h-4" />
+                            Editar
+                          </button>
+                          <button
+                            onClick={() => { setSelectedMember(null); setDeletingMember(selectedMember); }}
+                            className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg border border-red-200 text-red-500 hover:bg-red-50 transition text-sm font-medium"
+                          >
+                            <Trash2 className="w-4 h-4" />
+                          </button>
+                        </div>
                       </div>
-                    ))}
-                  </div>
-                )}
-
-                {/* Datos de la Pareja */}
-                {(selectedMember.weddingDate || selectedMember.location) && (
-                  <div className="mt-6 p-4 rounded-xl bg-[#B8943E]/5 border border-[#B8943E]/10">
-                    <h4 className="text-sm font-semibold text-[#5D4037] uppercase tracking-wider mb-3 flex items-center gap-2">
-                      <Heart className="w-4 h-4 text-[#C4704B]" />
-                      Datos de la Pareja
-                    </h4>
-                    <div className="grid grid-cols-2 gap-3 text-sm">
-                      {selectedMember.weddingDate && (
-                        <div>
-                          <p className="text-[10px] text-[#5D4037]/50 uppercase">Fecha de matrimonio</p>
-                          <p className="text-[#5D4037] font-medium">{selectedMember.weddingDate}</p>
-                        </div>
-                      )}
-                      {selectedMember.weddingPlace && (
-                        <div>
-                          <p className="text-[10px] text-[#5D4037]/50 uppercase">Lugar de boda</p>
-                          <p className="text-[#5D4037] font-medium">{selectedMember.weddingPlace}</p>
-                        </div>
-                      )}
-                      {selectedMember.location && (
-                        <div>
-                          <p className="text-[10px] text-[#5D4037]/50 uppercase">Donde viven</p>
-                          <p className="text-[#5D4037] font-medium">{selectedMember.location}</p>
-                        </div>
-                      )}
-                      {selectedMember.weddingDate && (() => {
-                        const wd = new Date(selectedMember.weddingDate)
-                        const now = new Date()
-                        let years = now.getFullYear() - wd.getFullYear()
-                        if (now.getMonth() < wd.getMonth() || (now.getMonth() === wd.getMonth() && now.getDate() < wd.getDate())) years--
-                        return years > 0 ? (
-                          <div>
-                            <p className="text-[10px] text-[#5D4037]/50 uppercase">Aniversario</p>
-                            <p className="text-[#C4704B] font-bold">{years} años de casados</p>
-                          </div>
-                        ) : null
-                      })()}
-                    </div>
-                  </div>
-                )}
-
-                {/* Momentos Importantes */}
-                {selectedMember.moments && selectedMember.moments.length > 0 && (
-                  <div className="mt-6">
-                    <h4 className="text-sm font-semibold text-[#5D4037] uppercase tracking-wider mb-3 flex items-center gap-2">
-                      <span className="w-4 h-4 text-[#B8943E]">★</span>
-                      Momentos Importantes
-                    </h4>
-                    <div className="space-y-3">
-                      {selectedMember.moments.map((m, i) => (
-                        <div key={i} className="flex gap-3 p-3 rounded-xl bg-[#FFFBF5] border border-[#B8943E]/10">
-                          <div className="w-10 h-10 rounded-full bg-[#B8943E]/10 flex items-center justify-center flex-shrink-0">
-                            <span className="text-[#B8943E] text-lg">★</span>
-                          </div>
-                          <div>
-                            <p className="text-sm font-bold text-[#5D4037]">{m.title}</p>
-                            {m.date && <p className="text-[10px] text-[#B8943E] font-medium">{m.date}</p>}
-                            {m.description && <p className="text-xs text-[#5D4037]/70 mt-0.5">{m.description}</p>}
-                          </div>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Galeria Familiar */}
-                {selectedMember.gallery && selectedMember.gallery.length > 0 && (
-                  <div className="mt-6">
-                    <h4 className="text-sm font-semibold text-[#5D4037] uppercase tracking-wider mb-3 flex items-center gap-2">
-                      <span className="w-4 h-4 text-[#7A9E7E]">📷</span>
-                      Galeria Familiar
-                    </h4>
-                    <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                      {selectedMember.gallery.map((g, i) => (
-                        <div key={i} className="rounded-xl overflow-hidden border border-[#7A9E7E]/10">
-                          {g.photoURL ? (
-                            <img src={g.photoURL} alt={g.caption} className="w-full h-32 object-cover" />
-                          ) : (
-                            <div className="w-full h-32 bg-gradient-to-br from-[#7A9E7E]/20 to-[#B8943E]/20 flex items-center justify-center">
-                              <span className="text-2xl">📷</span>
-                            </div>
-                          )}
-                          {g.caption && <p className="text-[10px] text-[#5D4037]/70 p-2 text-center">{g.caption}</p>}
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Mensajes y Recuerdos */}
-                {selectedMember.messages && selectedMember.messages.length > 0 && (
-                  <div className="mt-6">
-                    <h4 className="text-sm font-semibold text-[#5D4037] uppercase tracking-wider mb-3 flex items-center gap-2">
-                      <span className="w-4 h-4 text-[#C4704B]">💬</span>
-                      Voces de la Familia
-                    </h4>
-                    <div className="space-y-3">
-                      {selectedMember.messages.map((msg, i) => (
-                        <div key={i} className="p-3 rounded-xl bg-[#FAF6EE] border border-[#C4704B]/10">
-                          <div className="flex items-center gap-2 mb-1">
-                            <div className="w-7 h-7 rounded-full bg-gradient-to-br from-[#C4704B] to-[#B8943E] flex items-center justify-center">
-                              <span className="text-white text-[10px] font-bold">{(msg.author || '?')[0].toUpperCase()}</span>
-                            </div>
-                            <div>
-                              <p className="text-xs font-bold text-[#5D4037]">{msg.author}</p>
-                              {msg.date && <p className="text-[9px] text-[#5D4037]/40">{msg.date}</p>}
-                            </div>
-                          </div>
-                          <p className="text-sm text-[#5D4037]/80 italic ml-9">"{msg.message}"</p>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
-
-                {/* Actions */}
-                <div className="flex gap-3 mt-8 pt-4 border-t border-[#C4704B]/10">
-                  <button
-                    onClick={() => { setSelectedMember(null); setEditingMember(selectedMember); }}
-                    className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg bg-[#B8943E] text-white hover:bg-[#B8943E]/90 transition text-sm font-medium"
-                  >
-                    <Pencil className="w-4 h-4" />
-                    Editar
-                  </button>
-                  <button
-                    onClick={() => { setSelectedMember(null); setDeletingMember(selectedMember); }}
-                    className="flex items-center justify-center gap-2 py-2.5 px-4 rounded-lg border border-red-200 text-red-500 hover:bg-red-50 transition text-sm font-medium"
-                  >
-                    <Trash2 className="w-4 h-4" />
-                  </button>
-                </div>
+                    </>
+                  )
+                })()}
               </div>
             </motion.div>
           </motion.div>

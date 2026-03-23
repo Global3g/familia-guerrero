@@ -812,7 +812,37 @@ window.submitForm = async function() {
       messages: [],
     }
 
-    // Find parent member by ID and add person as child
+    // Smart matching function - case insensitive, partial match
+    function namesMatch(name1, name2) {
+      if (!name1 || !name2) return false
+      const a = name1.toLowerCase().trim()
+      const b = name2.toLowerCase().trim()
+      // Exact match
+      if (a === b) return true
+      // One contains the other
+      if (a.includes(b) || b.includes(a)) return true
+      // Compare first and last words (first name + last name)
+      const partsA = a.split(/\s+/)
+      const partsB = b.split(/\s+/)
+      const firstMatch = partsA[0] === partsB[0]
+      const lastMatch = partsA[partsA.length - 1] === partsB[partsB.length - 1]
+      if (firstMatch && lastMatch) return true
+      // First name matches
+      if (firstMatch && (partsA.length === 1 || partsB.length === 1)) return true
+      return false
+    }
+
+    function findSimilar(children, name) {
+      // First try exact (case insensitive)
+      let idx = children.findIndex(c => c.name && c.name.toLowerCase().trim() === name.toLowerCase().trim())
+      if (idx >= 0) return { index: idx, exact: true }
+      // Then try partial
+      idx = children.findIndex(c => c.name && namesMatch(c.name, name))
+      if (idx >= 0) return { index: idx, exact: false }
+      return null
+    }
+
+    // Find parent member by ID and add/update person as child
     let saved = false
     if (parentId) {
       try {
@@ -822,25 +852,57 @@ window.submitForm = async function() {
           const member = parentDoc.data()
           const existingChildren = member.children || []
 
-          // Check if person already exists
-          const existingIndex = existingChildren.findIndex(c =>
-            c.name && c.name.toLowerCase() === personName.toLowerCase()
-          )
+          const match = findSimilar(existingChildren, personName)
 
           let updatedChildren
-          if (existingIndex >= 0) {
-            // Update existing — merge new data, keep existing children that aren't duplicated
-            updatedChildren = [...existingChildren]
-            const existing = updatedChildren[existingIndex]
-            const mergedKids = [...(existing.children || [])]
-            childrenData.forEach(nc => {
-              if (!mergedKids.some(ec => ec.name?.toLowerCase() === nc.name?.toLowerCase())) {
-                mergedKids.push(nc)
+          if (match) {
+            let shouldUpdate = match.exact
+
+            // If partial match, ask user to confirm
+            if (!match.exact) {
+              const existingName = existingChildren[match.index].name
+              shouldUpdate = confirm(
+                `Ya existe alguien con nombre similar:\n\n"${existingName}"\n\n¿Eres tu? Se actualizaran tus datos.\n\nSi no eres tu, presiona Cancelar para crearte como nuevo.`
+              )
+            }
+
+            if (shouldUpdate) {
+              // Update existing — merge data
+              updatedChildren = [...existingChildren]
+              const existing = updatedChildren[match.index]
+              const mergedKids = [...(existing.children || [])]
+              childrenData.forEach(nc => {
+                const kidMatch = mergedKids.findIndex(ec => namesMatch(ec.name, nc.name))
+                if (kidMatch >= 0) {
+                  // Update existing grandchild
+                  const existingGc = mergedKids[kidMatch]
+                  const mergedGcKids = [...(existingGc.children || [])]
+                  ;(nc.children || []).forEach(ngc => {
+                    if (!mergedGcKids.some(egc => namesMatch(egc.name, ngc.name))) {
+                      mergedGcKids.push(ngc)
+                    }
+                  })
+                  mergedKids[kidMatch] = { ...existingGc, ...nc, children: mergedGcKids }
+                } else {
+                  mergedKids.push(nc)
+                }
+              })
+              // Merge: new data overwrites old, but keep photo if new doesn't have one
+              const mergedPerson = { ...existing, ...personData }
+              if (!personData.photoURL && existing.photoURL) mergedPerson.photoURL = existing.photoURL
+              if (!personData.spouse && existing.spouse) mergedPerson.spouse = existing.spouse
+              else if (personData.spouse && existing.spouse && typeof existing.spouse === 'object') {
+                mergedPerson.spouse = { ...existing.spouse, ...personData.spouse }
+                if (!personData.spouse.photoURL && existing.spouse.photoURL) mergedPerson.spouse.photoURL = existing.spouse.photoURL
               }
-            })
-            updatedChildren[existingIndex] = { ...existing, ...personData, children: mergedKids }
+              mergedPerson.children = mergedKids
+              updatedChildren[match.index] = mergedPerson
+            } else {
+              // User said no — add as new
+              updatedChildren = [...existingChildren, personData]
+            }
           } else {
-            // Add as new child
+            // No match found — add as new child
             updatedChildren = [...existingChildren, personData]
           }
 
