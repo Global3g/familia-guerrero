@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<title>Formulario de Datos - Familia Guerrero</title>
+<style>
+  @page { margin: 1.5cm; size: letter; }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Georgia', serif; color: #3D2C2C; background: #fff; padding: 40px; line-height: 1.5; }
+  .header { text-align: center; margin-bottom: 30px; border-bottom: 3px solid #C4704B; padding-bottom: 20px; }
+  .header h1 { font-size: 28px; color: #5D4037; margin-bottom: 5px; }
+  .header h2 { font-size: 16px; color: #C4704B; font-weight: normal; }
+  .header p { font-size: 12px; color: #888; margin-top: 10px; }
+  .intro { background: #FDF8F0; border: 1px solid #E8D5C4; border-radius: 8px; padding: 15px; margin-bottom: 25px; font-size: 13px; color: #5D4037; }
+  .intro strong { color: #C4704B; }
+  .section { margin-bottom: 25px; page-break-inside: avoid; }
+  .section-title { font-size: 16px; font-weight: bold; color: #fff; background: #5D4037; padding: 8px 15px; border-radius: 6px 6px 0 0; }
+  .section-body { border: 1px solid #E0D5C8; border-top: none; border-radius: 0 0 6px 6px; padding: 15px; }
+  .field { margin-bottom: 12px; }
+  .field label { display: block; font-size: 11px; font-weight: bold; color: #C4704B; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 3px; }
+  .field .line { border-bottom: 1px solid #ccc; min-height: 22px; }
+  .field .line-tall { border-bottom: 1px solid #ccc; min-height: 44px; }
+  .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px 20px; }
+  .grid-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px 20px; }
+  .photo-box { width: 100px; height: 100px; border: 2px dashed #C4704B; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 10px; font-size: 10px; color: #C4704B; text-align: center; }
+  .subsection { background: #FAFAF5; border: 1px solid #E8E0D5; border-radius: 6px; padding: 12px; margin-top: 10px; }
+  .child-block { border: 1px dashed #B8943E; border-radius: 6px; padding: 12px; margin-bottom: 10px; }
+  .child-block h4 { font-size: 12px; color: #B8943E; margin-bottom: 8px; }
+  .note { font-size: 11px; color: #888; font-style: italic; margin-top: 5px; }
+  .page-break { page-break-before: always; }
+  .footer { text-align: center; margin-top: 30px; padding-top: 15px; border-top: 2px solid #C4704B; font-size: 11px; color: #888; }
+  .footer strong { color: #5D4037; }
+  .checklist { list-style: none; padding: 0; }
+  .checklist li { font-size: 12px; padding: 3px 0; }
+  .checklist li::before { content: "[ ] "; color: #C4704B; font-size: 14px; }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Familia Guerrero</h1>
+  <h2>Formulario de Datos Familiares</h2>
+  <p>Preservando nuestra historia para las generaciones que vienen</p>
+</div>
+
+<div class="intro">
+  <strong>Querida familia:</strong><br>
+  Estamos creando una pagina web para preservar la historia de nuestra familia Guerrero. Necesitamos la colaboracion de todos para reunir la informacion completa. Por favor, llena este formulario con los datos de <strong>tu nucleo familiar</strong> (tu, tu esposo/a, tus hijos y nietos). Si no tienes algun dato exacto, pon lo que recuerdes. Cada detalle cuenta.<br><br>
+  <strong>Que necesitamos?</strong> Este formulario + fotografias digitales (pueden ser por WhatsApp).
+</div>
+
+<div class="section">
+  <div class="section-title">1. Tus Datos Personales (Hijo/a de los abuelos)</div>
+  <div class="section-body">
+    <div style="text-align:center; margin-bottom: 15px;">
+      <div class="photo-box">PEGAR<br>FOTO</div>
+      <p class="note">Enviar foto digital por WhatsApp</p>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Nombre completo</label><div class="line"></div></div>
+      <div class="field"><label>Apodo / Como te dicen</label><div class="line"></div></div>
+      <div class="field"><label>Fecha de nacimiento</label><div class="line"></div></div>
+      <div class="field"><label>Lugar de nacimiento</label><div class="line"></div></div>
+      <div class="field"><label>Fecha de fallecimiento (si aplica)</label><div class="line"></div></div>
+      <div class="field"><label>Donde vives actualmente</label><div class="line"></div></div>
+    </div>
+    <div class="field"><label>Breve biografia (que te gusta, a que te dedicas, algo que te represente)</label><div class="line-tall"></div></div>
+    <div class="field"><label>Una frase o dicho que te represente</label><div class="line"></div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">2. Datos de tu Esposo(a)</div>
+  <div class="section-body">
+    <div style="text-align:center; margin-bottom: 15px;">
+      <div class="photo-box">PEGAR<br>FOTO</div>
+    </div>
+    <div class="grid-2">
+      <div class="field"><label>Nombre completo</label><div class="line"></div></div>
+      <div class="field"><label>Apodo / Como le dicen</label><div class="line"></div></div>
+      <div class="field"><label>Fecha de nacimiento</label><div class="line"></div></div>
+      <div class="field"><label>Lugar de nacimiento</label><div class="line"></div></div>
+      <div class="field"><label>Fecha de fallecimiento (si aplica)</label><div class="line"></div></div>
+      <div class="field"><label>A que se dedica / dedicaba</label><div class="line"></div></div>
+    </div>
+    <div class="field"><label>Breve biografia</label><div class="line-tall"></div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">3. Datos de la Pareja</div>
+  <div class="section-body">
+    <div class="grid-2">
+      <div class="field"><label>Fecha de matrimonio / union</label><div class="line"></div></div>
+      <div class="field"><label>Lugar de la boda</label><div class="line"></div></div>
+      <div class="field"><label>Donde viven / vivieron</label><div class="line"></div></div>
+      <div class="field"><label>Anos de casados</label><div class="line"></div></div>
+    </div>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<div class="section">
+  <div class="section-title">4. Tus Hijos (llena uno por cada hijo)</div>
+  <div class="section-body">
+    <div class="child-block"><h4>Hijo/a #1</h4><div class="grid-2"><div class="field"><label>Nombre completo</label><div class="line"></div></div><div class="field"><label>Apodo</label><div class="line"></div></div><div class="field"><label>Fecha de nacimiento</label><div class="line"></div></div><div class="field"><label>Fecha de fallecimiento (si aplica)</label><div class="line"></div></div></div><div class="field"><label>Esposo(a) - Nombre completo</label><div class="line"></div></div><div class="grid-2"><div class="field"><label>Fecha nac. del esposo(a)</label><div class="line"></div></div><div class="field"><label>Apodo del esposo(a)</label><div class="line"></div></div></div><div class="field"><label>Breve biografia</label><div class="line"></div></div><div class="field"><label>Hijos (nietos tuyos) - Nombre y fecha de nacimiento de cada uno:</label><div class="line-tall"></div></div></div>
+    <div class="child-block"><h4>Hijo/a #2</h4><div class="grid-2"><div class="field"><label>Nombre completo</label><div class="line"></div></div><div class="field"><label>Apodo</label><div class="line"></div></div><div class="field"><label>Fecha de nacimiento</label><div class="line"></div></div><div class="field"><label>Fecha de fallecimiento (si aplica)</label><div class="line"></div></div></div><div class="field"><label>Esposo(a) - Nombre completo</label><div class="line"></div></div><div class="grid-2"><div class="field"><label>Fecha nac. del esposo(a)</label><div class="line"></div></div><div class="field"><label>Apodo del esposo(a)</label><div class="line"></div></div></div><div class="field"><label>Breve biografia</label><div class="line"></div></div><div class="field"><label>Hijos (nietos tuyos) - Nombre y fecha de nacimiento de cada uno:</label><div class="line-tall"></div></div></div>
+    <div class="child-block"><h4>Hijo/a #3</h4><div class="grid-2"><div class="field"><label>Nombre completo</label><div class="line"></div></div><div class="field"><label>Apodo</label><div class="line"></div></div><div class="field"><label>Fecha de nacimiento</label><div class="line"></div></div><div class="field"><label>Fecha de fallecimiento (si aplica)</label><div class="line"></div></div></div><div class="field"><label>Esposo(a) - Nombre completo</label><div class="line"></div></div><div class="grid-2"><div class="field"><label>Fecha nac. del esposo(a)</label><div class="line"></div></div><div class="field"><label>Apodo del esposo(a)</label><div class="line"></div></div></div><div class="field"><label>Breve biografia</label><div class="line"></div></div><div class="field"><label>Hijos (nietos tuyos) - Nombre y fecha de nacimiento de cada uno:</label><div class="line-tall"></div></div></div>
+    <div class="child-block"><h4>Hijo/a #4</h4><div class="grid-2"><div class="field"><label>Nombre completo</label><div class="line"></div></div><div class="field"><label>Apodo</label><div class="line"></div></div><div class="field"><label>Fecha de nacimiento</label><div class="line"></div></div><div class="field"><label>Fecha de fallecimiento (si aplica)</label><div class="line"></div></div></div><div class="field"><label>Esposo(a) - Nombre completo</label><div class="line"></div></div><div class="grid-2"><div class="field"><label>Fecha nac. del esposo(a)</label><div class="line"></div></div><div class="field"><label>Apodo del esposo(a)</label><div class="line"></div></div></div><div class="field"><label>Breve biografia</label><div class="line"></div></div><div class="field"><label>Hijos (nietos tuyos) - Nombre y fecha de nacimiento de cada uno:</label><div class="line-tall"></div></div></div>
+    <p class="note">Si tienes mas de 4 hijos, usa hojas adicionales con el mismo formato.</p>
+  </div>
+</div>
+
+<div class="page-break"></div>
+
+<div class="section">
+  <div class="section-title">5. Momentos Importantes de tu Familia</div>
+  <div class="section-body">
+    <p class="note" style="margin-bottom:10px;">Bodas, graduaciones, viajes, logros, nacimientos especiales, cualquier momento que quieras que quede registrado.</p>
+    <div class="subsection"><div class="grid-3"><div class="field"><label>Momento / Evento</label><div class="line"></div></div><div class="field"><label>Fecha (aprox.)</label><div class="line"></div></div><div class="field"><label>Descripcion breve</label><div class="line"></div></div></div></div>
+    <div class="subsection"><div class="grid-3"><div class="field"><label>Momento / Evento</label><div class="line"></div></div><div class="field"><label>Fecha (aprox.)</label><div class="line"></div></div><div class="field"><label>Descripcion breve</label><div class="line"></div></div></div></div>
+    <div class="subsection"><div class="grid-3"><div class="field"><label>Momento / Evento</label><div class="line"></div></div><div class="field"><label>Fecha (aprox.)</label><div class="line"></div></div><div class="field"><label>Descripcion breve</label><div class="line"></div></div></div></div>
+    <div class="subsection"><div class="grid-3"><div class="field"><label>Momento / Evento</label><div class="line"></div></div><div class="field"><label>Fecha (aprox.)</label><div class="line"></div></div><div class="field"><label>Descripcion breve</label><div class="line"></div></div></div></div>
+    <div class="subsection"><div class="grid-3"><div class="field"><label>Momento / Evento</label><div class="line"></div></div><div class="field"><label>Fecha (aprox.)</label><div class="line"></div></div><div class="field"><label>Descripcion breve</label><div class="line"></div></div></div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">6. Recuerdos y Mensajes para la Familia</div>
+  <div class="section-body">
+    <div class="field"><label>Un recuerdo especial de los abuelos que quieras compartir:</label><div class="line-tall"></div><div class="line-tall" style="margin-top:5px;"></div></div>
+    <div class="field"><label>Un mensaje para la familia Guerrero (presente y futuras generaciones):</label><div class="line-tall"></div><div class="line-tall" style="margin-top:5px;"></div></div>
+    <div class="field"><label>Una tradicion o costumbre familiar que quieras preservar:</label><div class="line-tall"></div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">7. En Memoria (familiares que ya no estan)</div>
+  <div class="section-body">
+    <p class="note" style="margin-bottom:10px;">Si algun miembro de tu nucleo familiar ya fallecio, por favor llena estos datos para honrar su memoria.</p>
+    <div class="subsection"><div class="grid-2"><div class="field"><label>Nombre completo</label><div class="line"></div></div><div class="field"><label>Parentesco</label><div class="line"></div></div><div class="field"><label>Fecha de nacimiento</label><div class="line"></div></div><div class="field"><label>Fecha de fallecimiento</label><div class="line"></div></div></div><div class="field"><label>Unas palabras en su memoria / tributo:</label><div class="line-tall"></div></div><div class="field"><label>Su legado / lo que nos enseno:</label><div class="line"></div></div></div>
+    <div class="subsection"><div class="grid-2"><div class="field"><label>Nombre completo</label><div class="line"></div></div><div class="field"><label>Parentesco</label><div class="line"></div></div><div class="field"><label>Fecha de nacimiento</label><div class="line"></div></div><div class="field"><label>Fecha de fallecimiento</label><div class="line"></div></div></div><div class="field"><label>Unas palabras en su memoria / tributo:</label><div class="line-tall"></div></div><div class="field"><label>Su legado / lo que nos enseno:</label><div class="line"></div></div></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="section-title">8. Fotografias a Enviar (por WhatsApp)</div>
+  <div class="section-body">
+    <p class="note" style="margin-bottom:10px;">Marca las fotos que puedes enviar. Entre mas fotos, mejor quedara la pagina.</p>
+    <div class="grid-2">
+      <ul class="checklist">
+        <li>Foto tuya (individual, buena calidad)</li>
+        <li>Foto de tu esposo(a)</li>
+        <li>Foto de pareja (los dos juntos)</li>
+        <li>Foto de cada hijo</li>
+        <li>Foto de cada nieto</li>
+        <li>Foto familiar (todos juntos)</li>
+      </ul>
+      <ul class="checklist">
+        <li>Foto de tu boda</li>
+        <li>Fotos con los abuelos</li>
+        <li>Fotos de reuniones familiares</li>
+        <li>Fotos de momentos especiales</li>
+        <li>Fotos de los que ya no estan</li>
+        <li>Fotos antiguas que tengas</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <p><strong>Familia Guerrero</strong> - Preservando nuestro legado</p>
+  <p style="margin-top:5px;">Favor de entregar este formulario lleno + enviar las fotos digitales por WhatsApp</p>
+  <p style="margin-top:3px;">Gracias por ser parte de nuestra historia!</p>
+</div>
+
+</body>
+</html>

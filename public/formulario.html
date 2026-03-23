@@ -1,0 +1,907 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Familia Guerrero - Formulario</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Georgia', -apple-system, serif; background: #FDF8F0; color: #3D2C2C; min-height: 100vh; }
+
+  .container { max-width: 500px; margin: 0 auto; padding: 20px 16px; }
+
+  .header { text-align: center; padding: 30px 0 20px; }
+  .header h1 { font-size: 24px; color: #5D4037; margin-bottom: 4px; }
+  .header p { font-size: 13px; color: #7A9E7E; }
+
+  /* Progress bar */
+  .progress { display: flex; gap: 4px; margin-bottom: 24px; }
+  .progress-dot { flex: 1; height: 4px; border-radius: 4px; background: #E0D5C8; transition: background 0.3s; }
+  .progress-dot.active { background: #C4704B; }
+  .progress-dot.done { background: #7A9E7E; }
+
+  .step-info { text-align: center; margin-bottom: 20px; }
+  .step-info .step-num { font-size: 11px; color: #B8943E; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; }
+  .step-info h2 { font-size: 20px; color: #5D4037; margin-top: 4px; }
+  .step-info p { font-size: 13px; color: #8A7B6B; margin-top: 4px; }
+
+  /* Form elements */
+  .form-group { margin-bottom: 16px; }
+  .form-group label { display: block; font-size: 12px; font-weight: bold; color: #C4704B; text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px; }
+  .form-group input, .form-group textarea, .form-group select {
+    width: 100%; padding: 12px 14px; border: 2px solid #E0D5C8; border-radius: 12px;
+    font-size: 16px; font-family: inherit; background: white; color: #3D2C2C;
+    transition: border-color 0.2s; -webkit-appearance: none;
+  }
+  .form-group input:focus, .form-group textarea:focus, .form-group select:focus {
+    outline: none; border-color: #C4704B;
+  }
+  .form-group textarea { resize: none; min-height: 80px; }
+  .form-group .hint { font-size: 11px; color: #A09080; margin-top: 4px; }
+
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* Photo upload */
+  .photo-upload { text-align: center; margin-bottom: 20px; }
+  .photo-circle {
+    width: 100px; height: 100px; border-radius: 50%; border: 3px dashed #C4704B;
+    display: flex; align-items: center; justify-content: center; margin: 0 auto 8px;
+    cursor: pointer; overflow: hidden; transition: border-color 0.2s; background: #FFF8F0;
+  }
+  .photo-circle:hover { border-color: #7A9E7E; }
+  .photo-circle img { width: 100%; height: 100%; object-fit: cover; }
+  .photo-circle .placeholder { color: #C4704B; font-size: 12px; text-align: center; line-height: 1.3; }
+  .photo-upload input[type="file"] { display: none; }
+  .photo-upload .photo-label { font-size: 12px; color: #7A9E7E; cursor: pointer; }
+
+  /* Buttons */
+  .btn-row { display: flex; gap: 10px; margin-top: 24px; }
+  .btn { flex: 1; padding: 14px; border: none; border-radius: 12px; font-size: 16px; font-family: inherit; font-weight: bold; cursor: pointer; transition: all 0.2s; }
+  .btn-primary { background: #C4704B; color: white; }
+  .btn-primary:hover { background: #A85D3D; }
+  .btn-primary:disabled { background: #ccc; cursor: not-allowed; }
+  .btn-secondary { background: white; color: #5D4037; border: 2px solid #E0D5C8; }
+  .btn-secondary:hover { border-color: #C4704B; }
+  .btn-success { background: #7A9E7E; color: white; }
+
+  /* Child blocks */
+  .child-card { background: white; border: 2px solid #E0D5C8; border-radius: 16px; padding: 16px; margin-bottom: 12px; }
+  .child-card h3 { font-size: 14px; color: #7A9E7E; margin-bottom: 12px; padding-bottom: 8px; border-bottom: 1px solid #F0E8DE; }
+  .add-btn { width: 100%; padding: 12px; border: 2px dashed #7A9E7E; border-radius: 12px; background: transparent; color: #7A9E7E; font-size: 14px; font-family: inherit; cursor: pointer; transition: all 0.2s; }
+  .add-btn:hover { background: #7A9E7E10; }
+  .remove-btn { float: right; background: none; border: none; color: #E8756D; font-size: 20px; cursor: pointer; padding: 0 4px; }
+
+  /* Spouse section */
+  .spouse-card { background: #FFF5F0; border: 2px solid #E8C4B4; border-radius: 16px; padding: 16px; margin-bottom: 16px; }
+  .spouse-card h3 { font-size: 14px; color: #C4704B; margin-bottom: 12px; }
+
+  /* Success screen */
+  .success { text-align: center; padding: 60px 20px; }
+  .success .check { width: 80px; height: 80px; border-radius: 50%; background: #7A9E7E; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; font-size: 40px; color: white; }
+  .success h2 { font-size: 24px; color: #5D4037; margin-bottom: 8px; }
+  .success p { font-size: 14px; color: #7A6B5D; line-height: 1.6; }
+
+  /* Step visibility */
+  .step { display: none; }
+  .step.active { display: block; }
+
+  /* Animations */
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+  .step.active { animation: fadeIn 0.3s ease; }
+
+  /* Section divider */
+  .divider { height: 1px; background: linear-gradient(to right, transparent, #E0D5C8, transparent); margin: 20px 0; }
+
+  /* Crop modal */
+  .crop-overlay { position: fixed; inset: 0; z-index: 999; background: rgba(0,0,0,0.92); display: flex; flex-direction: column; }
+  .crop-overlay.hidden { display: none; }
+  .crop-header { display: flex; justify-content: space-between; align-items: center; padding: 12px 16px; }
+  .crop-header button { padding: 8px 16px; border: none; border-radius: 8px; font-size: 14px; font-family: inherit; font-weight: bold; cursor: pointer; }
+  .crop-cancel { background: transparent; color: white; }
+  .crop-done { background: #7A9E7E; color: white; }
+  .crop-container { flex: 1; position: relative; overflow: hidden; }
+  .crop-container img { max-width: 100%; max-height: 100%; display: block; }
+  .crop-controls { display: flex; justify-content: center; gap: 16px; padding: 12px; }
+  .crop-controls button { width: 44px; height: 44px; border-radius: 50%; border: none; background: rgba(255,255,255,0.15); color: white; font-size: 20px; cursor: pointer; display: flex; align-items: center; justify-content: center; }
+  .crop-controls input[type="range"] { width: 150px; accent-color: #7A9E7E; }
+</style>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.2/cropper.min.js"></script>
+</head>
+<body>
+
+<div class="container">
+  <div class="header">
+    <h1>Familia Guerrero</h1>
+    <p>Formulario de datos familiares</p>
+  </div>
+
+  <div class="progress" id="progress"></div>
+
+  <!-- STEP 0: INTRO -->
+  <div class="step active" id="step-0">
+    <div class="step-info">
+      <h2>Querida familia</h2>
+      <p>Estamos creando una pagina web para preservar la historia de nuestra familia. Necesitamos tu ayuda para reunir la informacion.</p>
+    </div>
+    <div style="background:white;border-radius:16px;padding:20px;margin-bottom:20px;border:2px solid #E0D5C8;">
+      <p style="font-size:14px;color:#5D4037;line-height:1.6;margin-bottom:12px;">
+        Este formulario tiene <strong>7 pasos sencillos</strong>. Puedes llenarlo en tu celular en pocos minutos.
+      </p>
+      <p style="font-size:13px;color:#8A7B6B;line-height:1.5;">
+        Llena los datos de tu nucleo familiar: los tuyos, los de tu esposo/a, tus hijos y nietos. Si no tienes algun dato exacto, pon lo que recuerdes.
+      </p>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-primary" onclick="nextStep()">Empezar</button>
+    </div>
+  </div>
+
+  <!-- STEP 1: TUS DATOS -->
+  <div class="step" id="step-1">
+    <div class="step-info">
+      <div class="step-num">Paso 1 de 8</div>
+      <h2>Tus datos</h2>
+      <p>Informacion basica sobre ti</p>
+    </div>
+    <div class="photo-upload">
+      <label for="photo-self">
+        <div class="photo-circle" id="preview-self">
+          <div class="placeholder">Toca para<br>subir foto</div>
+        </div>
+      </label>
+      <input type="file" id="photo-self" accept="image/*" onchange="previewPhoto(this,'preview-self')">
+      <div class="photo-label">Tu mejor foto</div>
+    </div>
+    <div class="form-group"><label>Nombre completo</label><input type="text" id="f-name" placeholder="Tu nombre completo"></div>
+    <div class="form-group"><label>Apodo</label><input type="text" id="f-nickname" placeholder="Como te dicen"><div class="hint">Opcional</div></div>
+    <div class="row">
+      <div class="form-group"><label>Genero</label><select id="f-gender"><option value="">Seleccionar</option><option value="M">Hombre</option><option value="F">Mujer</option></select></div>
+      <div class="form-group"><label>Fecha de nacimiento</label><input type="date" id="f-birthDate"></div>
+    </div>
+    <div class="form-group"><label>Donde vives</label><input type="text" id="f-location" placeholder="Ciudad, Estado"></div>
+    <div class="form-group"><label>Mi papa/mama es</label><select id="f-parentId" style="font-size:15px;"><option value="">Cargando familias...</option></select><div class="hint">Selecciona a tu papa o mama para ubicarte en el arbol</div></div>
+    <div class="form-group"><label>Breve biografia</label><textarea id="f-bio" placeholder="A que te dedicas, que te gusta, algo que te represente..."></textarea></div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="prevStep()">Atras</button>
+      <button class="btn btn-primary" onclick="nextStep()">Siguiente</button>
+    </div>
+  </div>
+
+  <!-- STEP 2: ESPOSO/A -->
+  <div class="step" id="step-2">
+    <div class="step-info">
+      <div class="step-num">Paso 2 de 8</div>
+      <h2>Tu esposo(a)</h2>
+      <p>Si tienes pareja, llena sus datos</p>
+    </div>
+    <div class="form-group"><label>Tienes esposo(a)?</label><select id="f-hasSpouse" onchange="toggleSpouse()"><option value="">Seleccionar</option><option value="si">Si</option><option value="no">No</option></select></div>
+    <div id="spouse-fields" style="display:none;">
+      <div class="spouse-card">
+        <h3>Datos del esposo(a)</h3>
+        <div class="photo-upload">
+          <label for="photo-spouse"><div class="photo-circle" id="preview-spouse"><div class="placeholder">Foto<br>esposo(a)</div></div></label>
+          <input type="file" id="photo-spouse" accept="image/*" onchange="previewPhoto(this,'preview-spouse')">
+        </div>
+        <div class="form-group"><label>Nombre completo</label><input type="text" id="f-spouseName"></div>
+        <div class="form-group"><label>Apodo</label><input type="text" id="f-spouseNickname"></div>
+        <div class="row">
+          <div class="form-group"><label>Genero</label><select id="f-spouseGender"><option value="">Seleccionar</option><option value="M">Hombre</option><option value="F">Mujer</option></select></div>
+          <div class="form-group"><label>Fecha de nacimiento</label><input type="date" id="f-spouseBirth"></div>
+        </div>
+        <div class="form-group"><label>Breve biografia</label><textarea id="f-spouseBio" placeholder="A que se dedica, algo que lo/la represente..."></textarea></div>
+      </div>
+      <div class="divider"></div>
+      <h3 style="font-size:14px;color:#B8943E;margin-bottom:12px;">Datos del matrimonio</h3>
+      <div class="row">
+        <div class="form-group"><label>Fecha de boda</label><input type="date" id="f-weddingDate"></div>
+        <div class="form-group"><label>Lugar de boda</label><input type="text" id="f-weddingPlace"></div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="prevStep()">Atras</button>
+      <button class="btn btn-primary" onclick="nextStep()">Siguiente</button>
+    </div>
+  </div>
+
+  <!-- STEP 3: HIJOS -->
+  <div class="step" id="step-3">
+    <div class="step-info">
+      <div class="step-num">Paso 3 de 8</div>
+      <h2>Tus hijos</h2>
+      <p>Agrega a cada uno de tus hijos</p>
+    </div>
+    <div id="children-list"></div>
+    <button class="add-btn" onclick="addChild()">+ Agregar hijo(a)</button>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="prevStep()">Atras</button>
+      <button class="btn btn-primary" onclick="nextStep()">Siguiente</button>
+    </div>
+  </div>
+
+  <!-- STEP 4: ESPOSOS DE HIJOS -->
+  <div class="step" id="step-4">
+    <div class="step-info">
+      <div class="step-num">Paso 4 de 8</div>
+      <h2>Parejas de tus hijos</h2>
+      <p>Si alguno de tus hijos tiene esposo(a), llena sus datos</p>
+    </div>
+    <div id="children-spouses-list"></div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="prevStep()">Atras</button>
+      <button class="btn btn-primary" onclick="nextStep()">Siguiente</button>
+    </div>
+  </div>
+
+  <!-- STEP 5: NIETOS -->
+  <div class="step" id="step-5">
+    <div class="step-info">
+      <div class="step-num">Paso 5 de 8</div>
+      <h2>Tus nietos</h2>
+      <p>Si tus hijos ya tienen hijos, agregalos aqui</p>
+    </div>
+    <div id="grandchildren-list"></div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="prevStep()">Atras</button>
+      <button class="btn btn-primary" onclick="nextStep()">Siguiente</button>
+    </div>
+  </div>
+
+  <!-- STEP 6: RECUERDOS -->
+  <div class="step" id="step-6">
+    <div class="step-info">
+      <div class="step-num">Paso 6 de 8</div>
+      <h2>Recuerdos y momentos</h2>
+      <p>Comparte algo especial de tu familia</p>
+    </div>
+    <div class="form-group"><label>Un recuerdo de los abuelos</label><textarea id="f-memory" placeholder="Algo que recuerdes de los abuelos Guerrero..."></textarea></div>
+    <div class="form-group"><label>Un mensaje para la familia</label><textarea id="f-message" placeholder="Un mensaje para las presentes y futuras generaciones..."></textarea></div>
+    <div class="form-group"><label>Una tradicion familiar</label><textarea id="f-tradition" placeholder="Una costumbre o tradicion que quieras preservar..."></textarea></div>
+    <div class="form-group"><label>Momentos importantes</label><textarea id="f-moments" placeholder="Bodas, graduaciones, viajes, logros... escribe los que quieras con fecha aproximada"></textarea><div class="hint">Ejemplo: Graduacion de Pedro - 2015, Viaje a Europa - 2018</div></div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="prevStep()">Atras</button>
+      <button class="btn btn-primary" onclick="nextStep()">Siguiente</button>
+    </div>
+  </div>
+
+  <!-- STEP 7: FOTOS ESPECIALES -->
+  <div class="step" id="step-7">
+    <div class="step-info">
+      <div class="step-num">Paso 7 de 8</div>
+      <h2>Fotos especiales</h2>
+      <p>Sube fotos de momentos importantes de tu familia</p>
+    </div>
+    <div style="background:white;border-radius:16px;padding:16px;border:2px solid #E0D5C8;margin-bottom:16px;">
+      <p style="font-size:13px;color:#5D4037;line-height:1.5;margin-bottom:12px;">Sube las fotos que quieras compartir. Cada una se guardara en la galeria de tu familia.</p>
+      <div id="special-photos-list"></div>
+      <button class="add-btn" onclick="addSpecialPhoto()">+ Agregar foto</button>
+    </div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="prevStep()">Atras</button>
+      <button class="btn btn-primary" onclick="nextStep()">Siguiente</button>
+    </div>
+  </div>
+
+  <!-- STEP 8: CONFIRMACION -->
+  <div class="step" id="step-8">
+    <div class="step-info">
+      <div class="step-num">Paso 8 de 8</div>
+      <h2>Revisar y enviar</h2>
+      <p>Verifica que todo este bien</p>
+    </div>
+    <div id="summary" style="background:white;border-radius:16px;padding:16px;border:2px solid #E0D5C8;margin-bottom:16px;"></div>
+    <div class="btn-row">
+      <button class="btn btn-secondary" onclick="prevStep()">Corregir</button>
+      <button class="btn btn-success" id="submit-btn" onclick="submitForm()">Enviar formulario</button>
+    </div>
+  </div>
+
+  <!-- SUCCESS -->
+  <div class="step" id="step-done">
+    <div class="success">
+      <div class="check">&#10003;</div>
+      <h2>Enviado!</h2>
+      <p>Gracias por ser parte de nuestra historia. Tu informacion ya fue guardada.<br><br>No olvides enviar tus fotos por WhatsApp.</p>
+      <div style="margin-top:30px;">
+        <button class="btn btn-primary" onclick="location.reload()">Llenar otro formulario</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Crop Modal -->
+<div class="crop-overlay hidden" id="crop-modal">
+  <div class="crop-header">
+    <button class="crop-cancel" onclick="cancelCrop()">Cancelar</button>
+    <span style="color:white;font-size:14px;">Ajusta la foto</span>
+    <button class="crop-done" onclick="confirmCrop()">Listo</button>
+  </div>
+  <div class="crop-container">
+    <img id="crop-image" src="">
+  </div>
+  <div class="crop-controls">
+    <button onclick="cropperInstance?.zoom(-0.1)">-</button>
+    <button onclick="cropperInstance?.rotate(-90)">&#x21BA;</button>
+    <button onclick="cropperInstance?.zoom(0.1)">+</button>
+  </div>
+</div>
+
+<script type="module">
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-app.js'
+import { getFirestore, collection, addDoc, getDocs, doc, setDoc, query, where } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-firestore.js'
+import { getStorage, ref, uploadBytes, getDownloadURL } from 'https://www.gstatic.com/firebasejs/11.0.1/firebase-storage.js'
+
+const app = initializeApp({
+  apiKey: "AIzaSyBWN-o1zMqZ5DKj3zTRkHi0f9LSIWr-F58",
+  authDomain: "guerrero-65fa4.firebaseapp.com",
+  projectId: "guerrero-65fa4",
+  storageBucket: "guerrero-65fa4.firebasestorage.app",
+  messagingSenderId: "990889658118",
+  appId: "1:990889658118:web:88cd42daa7d4f41187c087"
+})
+const db = getFirestore(app)
+
+const storage = getStorage(app)
+
+window.uploadPhotoFile = async function(file, path) {
+  try {
+    const storageRef = ref(storage, path)
+    const snapshot = await uploadBytes(storageRef, file)
+    return await getDownloadURL(snapshot.ref)
+  } catch (e) {
+    console.error('Error uploading:', e)
+    return null
+  }
+}
+
+window.fireDb = db
+window.addDoc = addDoc
+window.collection = collection
+window.getDocs = getDocs
+window.doc = doc
+window.setDoc = setDoc
+window.query = query
+window.where = where
+
+// Load family members for parent dropdown
+async function loadParents() {
+  try {
+    const snap = await getDocs(collection(db, 'familyMembers'))
+    const select = document.getElementById('f-parentId')
+    select.innerHTML = '<option value="">Selecciona a tu papa/mama</option>'
+    snap.docs.forEach(d => {
+      const m = d.data()
+      if (m.name) {
+        const opt = document.createElement('option')
+        opt.value = d.id
+        opt.textContent = m.name
+        select.appendChild(opt)
+      }
+    })
+  } catch (e) {
+    console.error('Error loading parents:', e)
+  }
+}
+loadParents()
+</script>
+
+<script>
+let currentStep = 0
+const totalSteps = 9
+let childCount = 0
+let specialPhotoCount = 0
+
+window.addSpecialPhoto = function() {
+  specialPhotoCount++
+  const list = document.getElementById('special-photos-list')
+  const card = document.createElement('div')
+  card.className = 'child-card'
+  card.id = `sp-card-${specialPhotoCount}`
+  card.innerHTML = `
+    <button class="remove-btn" onclick="document.getElementById('sp-card-${specialPhotoCount}').remove(); delete window.photoFiles['preview-sp-${specialPhotoCount}']">x</button>
+    <div style="display:flex;gap:12px;align-items:flex-start;">
+      <div class="photo-upload" style="margin:0;">
+        <label for="photo-sp-${specialPhotoCount}">
+          <div class="photo-circle" id="preview-sp-${specialPhotoCount}" style="width:80px;height:80px;border-radius:12px;">
+            <div class="placeholder" style="font-size:10px;">Toca para<br>subir</div>
+          </div>
+        </label>
+        <input type="file" id="photo-sp-${specialPhotoCount}" accept="image/*" onchange="previewPhoto(this,'preview-sp-${specialPhotoCount}')">
+      </div>
+      <div style="flex:1;">
+        <div class="form-group" style="margin-bottom:8px;">
+          <label>Que es esta foto?</label>
+          <select id="sp-type-${specialPhotoCount}" style="width:100%;padding:10px;border:2px solid #E0D5C8;border-radius:10px;font-size:14px;font-family:inherit;background:white;">
+            <option value="boda">Foto de boda</option>
+            <option value="reunion">Reunion familiar</option>
+            <option value="cumpleanos">Cumpleanos</option>
+            <option value="graduacion">Graduacion</option>
+            <option value="viaje">Viaje</option>
+            <option value="recuerdo">Recuerdo especial</option>
+            <option value="abuelos">Con los abuelos</option>
+            <option value="otro">Otro</option>
+          </select>
+        </div>
+        <div class="form-group" style="margin-bottom:0;">
+          <label>Descripcion</label>
+          <input type="text" id="sp-desc-${specialPhotoCount}" placeholder="Ej. Boda de Juan y Maria, 2015" style="font-size:14px;">
+        </div>
+      </div>
+    </div>
+  `
+  list.appendChild(card)
+}
+
+function updateProgress() {
+  const bar = document.getElementById('progress')
+  bar.innerHTML = ''
+  for (let i = 0; i < totalSteps; i++) {
+    const dot = document.createElement('div')
+    dot.className = 'progress-dot' + (i < currentStep ? ' done' : i === currentStep ? ' active' : '')
+    bar.appendChild(dot)
+  }
+}
+
+function showStep(n) {
+  document.querySelectorAll('.step').forEach(s => s.classList.remove('active'))
+  const step = document.getElementById(n === totalSteps ? 'step-done' : `step-${n}`)
+  if (step) step.classList.add('active')
+  currentStep = n
+  updateProgress()
+  window.scrollTo({ top: 0, behavior: 'smooth' })
+}
+
+window.nextStep = function() {
+  if (currentStep === 3) buildChildSpouses()
+  if (currentStep === 4) buildGrandchildren()
+  if (currentStep === 7) buildSummary()
+  showStep(currentStep + 1)
+}
+
+window.prevStep = function() { showStep(currentStep - 1) }
+
+window.toggleSpouse = function() {
+  document.getElementById('spouse-fields').style.display =
+    document.getElementById('f-hasSpouse').value === 'si' ? 'block' : 'none'
+}
+
+// Store photo files for upload
+window.photoFiles = {}
+window.cropperInstance = null
+window.currentCropTarget = null
+
+window.previewPhoto = function(input, previewId) {
+  const file = input.files[0]
+  if (!file) return
+  input.value = ''
+  const reader = new FileReader()
+  reader.onload = (e) => {
+    window.currentCropTarget = previewId
+    const modal = document.getElementById('crop-modal')
+    const img = document.getElementById('crop-image')
+    img.src = e.target.result
+
+    // Destroy previous cropper
+    if (window.cropperInstance) {
+      window.cropperInstance.destroy()
+      window.cropperInstance = null
+    }
+
+    modal.classList.remove('hidden')
+
+    // Wait for image to load then init cropper
+    img.onload = () => {
+      window.cropperInstance = new Cropper(img, {
+        aspectRatio: 1,
+        viewMode: 1,
+        dragMode: 'move',
+        cropBoxResizable: false,
+        cropBoxMovable: false,
+        background: false,
+        guides: false,
+        center: true,
+        highlight: false,
+        autoCropArea: 0.85,
+      })
+    }
+  }
+  reader.readAsDataURL(file)
+}
+
+window.cancelCrop = function() {
+  document.getElementById('crop-modal').classList.add('hidden')
+  if (window.cropperInstance) {
+    window.cropperInstance.destroy()
+    window.cropperInstance = null
+  }
+}
+
+window.confirmCrop = function() {
+  if (!window.cropperInstance || !window.currentCropTarget) return
+
+  const canvas = window.cropperInstance.getCroppedCanvas({
+    width: 400,
+    height: 400,
+    imageSmoothingQuality: 'high',
+  })
+
+  canvas.toBlob((blob) => {
+    const file = new File([blob], `crop-${Date.now()}.jpg`, { type: 'image/jpeg' })
+    const previewId = window.currentCropTarget
+
+    // Save file for upload
+    window.photoFiles[previewId] = file
+
+    // Show preview
+    const url = URL.createObjectURL(blob)
+    const el = document.getElementById(previewId)
+    el.innerHTML = `<img src="${url}">`
+    el.style.borderStyle = 'solid'
+    el.style.borderColor = '#7A9E7E'
+
+    // Close modal
+    document.getElementById('crop-modal').classList.add('hidden')
+    window.cropperInstance.destroy()
+    window.cropperInstance = null
+  }, 'image/jpeg', 0.92)
+}
+
+window.addChild = function() {
+  childCount++
+  const list = document.getElementById('children-list')
+  const card = document.createElement('div')
+  card.className = 'child-card'
+  card.id = `child-${childCount}`
+  card.innerHTML = `
+    <h3>Hijo(a) #${childCount} <button class="remove-btn" onclick="removeChild(${childCount})">x</button></h3>
+    <div class="photo-upload">
+      <label for="photo-child-${childCount}"><div class="photo-circle" id="preview-child-${childCount}" style="width:70px;height:70px;"><div class="placeholder" style="font-size:10px;">Foto</div></div></label>
+      <input type="file" id="photo-child-${childCount}" accept="image/*" onchange="previewPhoto(this,'preview-child-${childCount}')">
+    </div>
+    <div class="form-group"><label>Nombre completo</label><input type="text" id="child-name-${childCount}"></div>
+    <div class="row">
+      <div class="form-group"><label>Genero</label><select id="child-gender-${childCount}"><option value="">-</option><option value="M">Hombre</option><option value="F">Mujer</option></select></div>
+      <div class="form-group"><label>Nacimiento</label><input type="date" id="child-birth-${childCount}"></div>
+    </div>
+    <div class="form-group"><label>Apodo</label><input type="text" id="child-nick-${childCount}"></div>
+    <div class="form-group"><label>Donde vive</label><input type="text" id="child-loc-${childCount}" placeholder="Ciudad, Estado"></div>
+    <div class="form-group"><label>Breve biografia</label><textarea id="child-bio-${childCount}" rows="2"></textarea></div>
+  `
+  list.appendChild(card)
+}
+
+window.removeChild = function(id) {
+  document.getElementById(`child-${id}`)?.remove()
+}
+
+function getChildren() {
+  const kids = []
+  document.querySelectorAll('[id^="child-name-"]').forEach(el => {
+    const id = el.id.replace('child-name-', '')
+    const name = el.value.trim()
+    if (!name) return
+    kids.push({
+      id, name,
+      gender: document.getElementById(`child-gender-${id}`)?.value || '',
+      birthDate: document.getElementById(`child-birth-${id}`)?.value || '',
+      nickname: document.getElementById(`child-nick-${id}`)?.value || '',
+      location: document.getElementById(`child-loc-${id}`)?.value || '',
+      bio: document.getElementById(`child-bio-${id}`)?.value || '',
+      spouseName: '', spouseGender: '', spouseBirth: '', spouseNick: '',
+      grandchildren: [],
+    })
+  })
+  return kids
+}
+
+function buildChildSpouses() {
+  const kids = getChildren()
+  const list = document.getElementById('children-spouses-list')
+  list.innerHTML = ''
+  if (kids.length === 0) {
+    list.innerHTML = '<p style="text-align:center;color:#8A7B6B;padding:20px;">No agregaste hijos. Puedes pasar al siguiente paso.</p>'
+    return
+  }
+  kids.forEach(kid => {
+    const card = document.createElement('div')
+    card.className = 'spouse-card'
+    card.innerHTML = `
+      <h3>Esposo(a) de ${kid.name}</h3>
+      <div class="form-group"><label>Tiene esposo(a)?</label><select id="cs-has-${kid.id}" onchange="document.getElementById('cs-fields-${kid.id}').style.display=this.value==='si'?'block':'none'"><option value="no">No</option><option value="si">Si</option></select></div>
+      <div id="cs-fields-${kid.id}" style="display:none;">
+        <div class="photo-upload">
+          <label for="photo-cs-${kid.id}"><div class="photo-circle" id="preview-cs-${kid.id}" style="width:70px;height:70px;"><div class="placeholder" style="font-size:10px;">Foto</div></div></label>
+          <input type="file" id="photo-cs-${kid.id}" accept="image/*" onchange="previewPhoto(this,'preview-cs-${kid.id}')">
+        </div>
+        <div class="form-group"><label>Nombre completo</label><input type="text" id="cs-name-${kid.id}"></div>
+        <div class="row">
+          <div class="form-group"><label>Genero</label><select id="cs-gender-${kid.id}"><option value="">-</option><option value="M">Hombre</option><option value="F">Mujer</option></select></div>
+          <div class="form-group"><label>Nacimiento</label><input type="date" id="cs-birth-${kid.id}"></div>
+        </div>
+        <div class="form-group"><label>Apodo</label><input type="text" id="cs-nick-${kid.id}"></div>
+      </div>
+    `
+    list.appendChild(card)
+  })
+}
+
+function buildGrandchildren() {
+  const kids = getChildren()
+  const list = document.getElementById('grandchildren-list')
+  list.innerHTML = ''
+  if (kids.length === 0) {
+    list.innerHTML = '<p style="text-align:center;color:#8A7B6B;padding:20px;">No agregaste hijos. Puedes pasar al siguiente paso.</p>'
+    return
+  }
+  kids.forEach(kid => {
+    const section = document.createElement('div')
+    section.style.marginBottom = '16px'
+    section.innerHTML = `
+      <h3 style="font-size:14px;color:#5D4037;margin-bottom:8px;">Hijos de ${kid.name}</h3>
+      <div id="gc-list-${kid.id}"></div>
+      <button class="add-btn" style="margin-bottom:16px;" onclick="addGrandchild('${kid.id}','${kid.name}')">+ Agregar hijo de ${kid.name.split(' ')[0]}</button>
+    `
+    list.appendChild(section)
+  })
+}
+
+let gcCount = 0
+window.addGrandchild = function(parentId, parentName) {
+  gcCount++
+  const list = document.getElementById(`gc-list-${parentId}`)
+  const card = document.createElement('div')
+  card.className = 'child-card'
+  card.id = `gc-${gcCount}`
+  card.dataset.parent = parentId
+  card.innerHTML = `
+    <h3 style="font-size:13px;">Nieto(a) <button class="remove-btn" onclick="this.closest('.child-card').remove()">x</button></h3>
+    <div class="photo-upload">
+      <label for="photo-gc-${gcCount}"><div class="photo-circle" id="preview-gc-${gcCount}" style="width:60px;height:60px;"><div class="placeholder" style="font-size:9px;">Foto</div></div></label>
+      <input type="file" id="photo-gc-${gcCount}" accept="image/*" onchange="previewPhoto(this,'preview-gc-${gcCount}')">
+    </div>
+    <div class="form-group"><label>Nombre completo</label><input type="text" id="gc-name-${gcCount}"></div>
+    <div class="row">
+      <div class="form-group"><label>Genero</label><select id="gc-gender-${gcCount}"><option value="">-</option><option value="M">Hombre</option><option value="F">Mujer</option></select></div>
+      <div class="form-group"><label>Nacimiento</label><input type="date" id="gc-birth-${gcCount}"></div>
+    </div>
+    <div class="form-group"><label>Esposo(a) nombre</label><input type="text" id="gc-spouse-${gcCount}" placeholder="Si tiene"><div class="hint">Dejar vacio si no tiene</div></div>
+  `
+  list.appendChild(card)
+}
+
+function buildSummary() {
+  const name = document.getElementById('f-name').value || 'Sin nombre'
+  const kids = getChildren()
+  let html = `<p style="font-size:16px;font-weight:bold;color:#5D4037;margin-bottom:8px;">${name}</p>`
+
+  const spouse = document.getElementById('f-spouseName')?.value
+  if (spouse) html += `<p style="font-size:13px;color:#C4704B;">Esposo(a): ${spouse}</p>`
+
+  html += `<p style="font-size:13px;color:#7A9E7E;margin-top:4px;">${kids.length} hijos registrados</p>`
+
+  if (kids.length > 0) {
+    html += '<div style="margin-top:12px;border-top:1px solid #F0E8DE;padding-top:8px;">'
+    kids.forEach(k => {
+      html += `<p style="font-size:12px;color:#5D4037;padding:2px 0;">- ${k.name}</p>`
+    })
+    html += '</div>'
+  }
+
+  document.getElementById('summary').innerHTML = html
+
+  // Count photos
+  const photoCount = Object.keys(window.photoFiles).length
+  if (photoCount > 0) {
+    html += `<p style="font-size:12px;color:#7A9E7E;margin-top:8px;padding-top:8px;border-top:1px solid #F0E8DE;">📷 ${photoCount} foto${photoCount > 1 ? 's' : ''} lista${photoCount > 1 ? 's' : ''} para subir</p>`
+  }
+  document.getElementById('summary').innerHTML = html
+}
+
+window.submitForm = async function() {
+  const btn = document.getElementById('submit-btn')
+  btn.disabled = true
+  btn.textContent = 'Enviando...'
+
+  try {
+    const kids = getChildren()
+
+    // Attach spouse info to each kid
+    kids.forEach(kid => {
+      const has = document.getElementById(`cs-has-${kid.id}`)?.value
+      if (has === 'si') {
+        kid.spouseName = document.getElementById(`cs-name-${kid.id}`)?.value || ''
+        kid.spouseGender = document.getElementById(`cs-gender-${kid.id}`)?.value || ''
+        kid.spouseBirth = document.getElementById(`cs-birth-${kid.id}`)?.value || ''
+        kid.spouseNick = document.getElementById(`cs-nick-${kid.id}`)?.value || ''
+      }
+    })
+
+    // Attach grandchildren
+    document.querySelectorAll('[id^="gc-name-"]').forEach(el => {
+      const gcId = el.id.replace('gc-name-', '')
+      const parentId = el.closest('.child-card')?.dataset?.parent
+      const kid = kids.find(k => k.id === parentId)
+      if (kid && el.value.trim()) {
+        kid.grandchildren.push({
+          name: el.value.trim(),
+          gender: document.getElementById(`gc-gender-${gcId}`)?.value || '',
+          birthDate: document.getElementById(`gc-birth-${gcId}`)?.value || '',
+          spouse: document.getElementById(`gc-spouse-${gcId}`)?.value || '',
+          photoURL: photoURLs[`preview-gc-${gcId}`] || null,
+        })
+      }
+    })
+
+    // Upload all photos
+    btn.textContent = 'Subiendo fotos...'
+    const photoURLs = {}
+    const entries = Object.entries(window.photoFiles)
+    for (let i = 0; i < entries.length; i++) {
+      const [key, file] = entries[i]
+      btn.textContent = `Subiendo foto ${i + 1} de ${entries.length}...`
+      const url = await window.uploadPhotoFile(file, `formulario/${Date.now()}-${key}`)
+      if (url) photoURLs[key] = url
+    }
+    btn.textContent = 'Guardando datos...'
+
+    // Build person data in the SAME structure as familyMembers
+    const personName = document.getElementById('f-name')?.value || ''
+    const parentId = document.getElementById('f-parentId')?.value || ''
+
+    const spouseData = document.getElementById('f-hasSpouse')?.value === 'si' ? {
+      name: document.getElementById('f-spouseName')?.value || '',
+      nickname: document.getElementById('f-spouseNickname')?.value || '',
+      gender: document.getElementById('f-spouseGender')?.value || '',
+      birthDate: document.getElementById('f-spouseBirth')?.value || '',
+      bio: document.getElementById('f-spouseBio')?.value || '',
+      photoURL: photoURLs['preview-spouse'] || null,
+    } : null
+
+    // Build children array matching app structure
+    const childrenData = kids.map(kid => {
+      const childSpouse = kid.spouseName ? {
+        name: kid.spouseName,
+        gender: kid.spouseGender,
+        birthDate: kid.spouseBirth,
+        nickname: kid.spouseNick,
+        bio: '',
+        photoURL: photoURLs[`preview-cs-${kid.id}`] || null,
+      } : null
+
+      const grandkids = (kid.grandchildren || []).map(gc => ({
+        name: gc.name,
+        gender: gc.gender,
+        birthDate: gc.birthDate,
+        nickname: '',
+        bio: '',
+        location: '',
+        photoURL: gc.photoURL || null,
+        spouse: gc.spouse ? { name: gc.spouse, nickname: '', gender: '', birthDate: '', bio: '', photoURL: null } : null,
+        children: [],
+      }))
+
+      return {
+        name: kid.name,
+        nickname: kid.nickname,
+        gender: kid.gender,
+        birthDate: kid.birthDate,
+        deathDate: '',
+        bio: kid.bio,
+        location: kid.location,
+        photoURL: photoURLs[`preview-child-${kid.id}`] || null,
+        spouse: childSpouse,
+        children: grandkids,
+      }
+    })
+
+    const personData = {
+      name: personName,
+      nickname: document.getElementById('f-nickname')?.value || '',
+      gender: document.getElementById('f-gender')?.value || '',
+      birthDate: document.getElementById('f-birthDate')?.value || '',
+      deathDate: '',
+      location: document.getElementById('f-location')?.value || '',
+      bio: document.getElementById('f-bio')?.value || '',
+      photoURL: photoURLs['preview-self'] || null,
+      spouse: spouseData,
+      weddingDate: document.getElementById('f-weddingDate')?.value || '',
+      weddingPlace: document.getElementById('f-weddingPlace')?.value || '',
+      children: childrenData,
+      moments: [],
+      gallery: [],
+      messages: [],
+    }
+
+    // Find parent member by ID and add person as child
+    let saved = false
+    if (parentId) {
+      try {
+        const snap = await window.getDocs(window.collection(window.fireDb, 'familyMembers'))
+        const parentDoc = snap.docs.find(d => d.id === parentId)
+        if (parentDoc) {
+          const member = parentDoc.data()
+          const existingChildren = member.children || []
+
+          // Check if person already exists
+          const existingIndex = existingChildren.findIndex(c =>
+            c.name && c.name.toLowerCase() === personName.toLowerCase()
+          )
+
+          let updatedChildren
+          if (existingIndex >= 0) {
+            // Update existing — merge new data, keep existing children that aren't duplicated
+            updatedChildren = [...existingChildren]
+            const existing = updatedChildren[existingIndex]
+            const mergedKids = [...(existing.children || [])]
+            childrenData.forEach(nc => {
+              if (!mergedKids.some(ec => ec.name?.toLowerCase() === nc.name?.toLowerCase())) {
+                mergedKids.push(nc)
+              }
+            })
+            updatedChildren[existingIndex] = { ...existing, ...personData, children: mergedKids }
+          } else {
+            // Add as new child
+            updatedChildren = [...existingChildren, personData]
+          }
+
+          await window.setDoc(window.doc(window.fireDb, 'familyMembers', parentDoc.id), { ...member, children: updatedChildren }, { merge: true })
+          saved = true
+        }
+      } catch (e) {
+        console.error('Error finding parent:', e)
+      }
+    }
+
+    // If no parent found, save as top-level member
+    if (!saved) {
+      await window.addDoc(window.collection(window.fireDb, 'familyMembers'), personData)
+    }
+
+    // Save special photos to galleryPhotos collection
+    const spCards = document.querySelectorAll('[id^="sp-card-"]')
+    for (const card of spCards) {
+      const spId = card.id.replace('sp-card-', '')
+      const photoURL = photoURLs[`preview-sp-${spId}`]
+      if (!photoURL) continue
+      const spType = document.getElementById(`sp-type-${spId}`)?.value || 'otro'
+      const spDesc = document.getElementById(`sp-desc-${spId}`)?.value || ''
+      await window.addDoc(window.collection(window.fireDb, 'galleryPhotos'), {
+        photoURL,
+        caption: spDesc || spType,
+        category: spType === 'boda' ? 'bodas' : spType === 'reunion' ? 'reuniones' : spType === 'cumpleanos' ? 'cumpleanos' : spType === 'abuelos' ? 'abuelos' : 'recuerdos',
+        year: new Date().getFullYear(),
+        uploadedBy: personName,
+      })
+    }
+
+    // Also save memories to formResponses for reference
+    const memories = {
+      grandparentsMemory: document.getElementById('f-memory')?.value || '',
+      familyMessage: document.getElementById('f-message')?.value || '',
+      tradition: document.getElementById('f-tradition')?.value || '',
+      moments: document.getElementById('f-moments')?.value || '',
+    }
+    if (memories.grandparentsMemory || memories.familyMessage || memories.tradition || memories.moments) {
+      await window.addDoc(window.collection(window.fireDb, 'formResponses'), {
+        submittedAt: new Date().toISOString(),
+        personName,
+        parentId,
+        memories,
+        savedTo: saved ? 'existing-member' : 'new-member',
+      })
+    }
+
+    showStep(totalSteps)
+  } catch (err) {
+    console.error('Error:', err)
+    alert('Error al enviar. Intenta de nuevo.')
+    btn.disabled = false
+    btn.textContent = 'Enviar formulario'
+  }
+}
+
+updateProgress()
+</script>
+
+</body>
+</html>
