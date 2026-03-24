@@ -1,4 +1,4 @@
-const CACHE_NAME = 'familia-guerrero-v1'
+const CACHE_NAME = 'familia-guerrero-v2'
 const STATIC_ASSETS = ['/', '/index.html', '/manifest.json', '/favicon.svg']
 
 self.addEventListener('install', (e) => {
@@ -20,11 +20,14 @@ self.addEventListener('activate', (e) => {
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return
   const url = e.request.url
-  if (!url.startsWith('http')) return
+  // Only handle same-origin requests, skip external APIs, Firebase Storage, Google Fonts, etc.
+  if (!url.startsWith(self.location.origin)) return
+  // Skip API calls and dynamic content
+  if (url.includes('firestore') || url.includes('firebase') || url.includes('googleapis')) return
   e.respondWith(
     caches.match(e.request).then((cached) => {
       const fetched = fetch(e.request).then((response) => {
-        if (response.ok && url.startsWith(self.location.origin)) {
+        if (response.ok) {
           const clone = response.clone()
           caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone).catch(() => {}))
         }
