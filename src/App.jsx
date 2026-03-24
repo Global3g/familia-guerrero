@@ -24,8 +24,13 @@ import Gamification from './components/Gamification'
 import FamilyChat from './components/FamilyChat'
 import FamilyCalendar from './components/FamilyCalendar'
 import WeeklyBanner from './components/WeeklyBanner'
+import CoachMarks from './components/CoachMarks'
+import YourBranch from './components/YourBranch'
+import DigitalInvitation from './components/DigitalInvitation'
 
 // Lazy-loaded heavy components (ReactFlow, Recharts, Leaflet, etc.)
+const HorizontalTimeline = lazy(() => import('./components/HorizontalTimeline'))
+const Tree3D = lazy(() => import('./components/Tree3D'))
 const InteractiveTree = lazy(() => import('./components/InteractiveTree'))
 const Stats = lazy(() => import('./components/Stats'))
 const FamilyMap = lazy(() => import('./components/FamilyMap'))
@@ -168,6 +173,9 @@ function App() {
             <FamilyProgress />
           </div>
           <Origin />
+          <div className="max-w-4xl mx-auto px-4 py-4">
+            <YourBranch />
+          </div>
           <ShareExport />
           <div className="flex justify-center py-4">
             <PresentationButton onClick={() => setShowPresentation(true)} />
@@ -190,6 +198,9 @@ function App() {
           <Suspense fallback={<div className="flex justify-center py-20"><div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#C4704B', borderTopColor: 'transparent' }} /></div>}>
             <InteractiveTree />
           </Suspense>
+          <Suspense fallback={<div className="flex justify-center py-10"><div className="w-8 h-8 border-4 rounded-full animate-spin" style={{ borderColor: '#C4704B', borderTopColor: 'transparent' }} /></div>}>
+            <Tree3D />
+          </Suspense>
         </motion.div>
       )}
 
@@ -200,8 +211,12 @@ function App() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
+          <Suspense fallback={<div className="flex justify-center py-10"><div className="w-8 h-8 border-4 rounded-full animate-spin" style={{ borderColor: '#C4704B', borderTopColor: 'transparent' }} /></div>}>
+            <HorizontalTimeline />
+          </Suspense>
           <Timeline />
           <Events />
+          <DigitalInvitation />
         </motion.div>
       )}
 
@@ -267,6 +282,7 @@ function App() {
 
       <PresentationMode isOpen={showPresentation} onClose={() => setShowPresentation(false)} />
       <FamilyChat />
+      <CoachMarks />
       <Footer />
     </div>
   )
