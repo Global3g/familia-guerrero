@@ -12,21 +12,21 @@ function collectAllPeopleWithContext(members, grandparentsData) {
     if (gm?.name) people.push({ ...gm, context: 'Abuela', generation: 1 })
   }
 
-  const walk = (person, generation, parentName) => {
+  const walk = (person, generation, parentName, memberName) => {
     if (person.name) {
       const ctx = parentName ? `Hijo/a de ${parentName}` : 'Familia'
-      people.push({ ...person, context: ctx, generation })
+      people.push({ ...person, context: ctx, generation, parentName: memberName })
     }
     if (person.spouse && typeof person.spouse === 'object' && person.spouse.name) {
       const ctx = person.name ? `Esposo/a de ${person.name}` : 'Familia'
-      people.push({ ...person.spouse, context: ctx, generation })
+      people.push({ ...person.spouse, context: ctx, generation, parentName: memberName })
     }
     if (person.children) {
-      person.children.forEach((c) => walk(c, generation + 1, person.name))
+      person.children.forEach((c) => walk(c, generation + 1, person.name, memberName))
     }
   }
 
-  members.forEach((m) => walk(m, 2, null))
+  members.forEach((m) => walk(m, 2, null, m.name))
   return people
 }
 
@@ -80,6 +80,10 @@ export default function SearchBar() {
   }
 
   const handleSelect = (person) => {
+    // Dispatch custom event to navigate to this person in the tree
+    window.dispatchEvent(new CustomEvent('navigate-to-person', {
+      detail: { name: person.name, parentName: person.parentName }
+    }))
     setOpen(false)
     setQuery('')
     setResults([])

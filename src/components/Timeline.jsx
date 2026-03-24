@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, Baby, Star, Users, Award, Calendar, Plus, Pencil, Trash2, Save, Loader2, X } from 'lucide-react';
 
-import { getTimelineEvents, saveTimelineEvent, deleteTimelineEvent } from '../firebase/familyService';
+import { getTimelineEvents, saveTimelineEvent, deleteTimelineEvent, getFamilyMembers, getGrandparents } from '../firebase/familyService';
 import Modal from './Modal';
 
 const typeConfig = {
@@ -152,15 +152,17 @@ function EventCard({ event, config, IconComponent, align, onEdit, onDelete }) {
         borderColor: config.border,
       }}
     >
-      {/* Edit/Delete buttons */}
-      <div className={`absolute top-2 ${align === 'right' ? 'left-2' : 'right-2'} flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10`}>
-        <button onClick={onEdit} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-[#B8943E]/10 shadow text-[#B8943E] transition">
-          <Pencil className="w-3.5 h-3.5" />
-        </button>
-        <button onClick={onDelete} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-red-50 shadow text-red-400 hover:text-red-600 transition">
-          <Trash2 className="w-3.5 h-3.5" />
-        </button>
-      </div>
+      {/* Edit/Delete buttons (hidden for auto-generated events) */}
+      {!event._auto && (
+        <div className={`absolute top-2 ${align === 'right' ? 'left-2' : 'right-2'} flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10`}>
+          <button onClick={onEdit} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-[#B8943E]/10 shadow text-[#B8943E] transition">
+            <Pencil className="w-3.5 h-3.5" />
+          </button>
+          <button onClick={onDelete} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-red-50 shadow text-red-400 hover:text-red-600 transition">
+            <Trash2 className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
 
       {/* Type badge + year */}
       <div
@@ -190,6 +192,9 @@ function EventCard({ event, config, IconComponent, align, onEdit, onDelete }) {
           >
             {event.year}
           </span>
+        )}
+        {event._auto && (
+          <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#7A9E7E]/10 text-[#7A9E7E] font-medium">Auto</span>
         )}
       </div>
 
@@ -342,10 +347,47 @@ export default function Timeline() {
   }, [])
 
   const loadEvents = async () => {
-    const data = await getTimelineEvents()
-    if (data.length > 0) {
-      setEvents(data.sort((a, b) => (a.year || 0) - (b.year || 0)))
+    const [manual, members, gp] = await Promise.all([getTimelineEvents(), getFamilyMembers(), getGrandparents()])
+
+    const auto = []
+
+    // Grandparents births and wedding
+    if (gp) {
+      const gf = gp.grandfather
+      const gm = gp.grandmother
+      if (gf?.birthDate) auto.push({ year: parseInt(gf.birthDate.split('-')[0]), date: gf.birthDate, title: `Nace ${gf.fullName || gf.name}`, description: gf.role || 'Patriarca', type: 'nacimiento', _auto: true })
+      if (gm?.birthDate) auto.push({ year: parseInt(gm.birthDate.split('-')[0]), date: gm.birthDate, title: `Nace ${gm.fullName || gm.name}`, description: gm.role || 'Matriarca', type: 'nacimiento', _auto: true })
+      if (gp.weddingDate) auto.push({ year: parseInt(gp.weddingDate.split('-')[0]), date: gp.weddingDate, title: `Boda de ${(gf?.name || 'Abuelo').split(' ')[0]} y ${(gm?.name || 'Abuela').split(' ')[0]}`, description: gp.weddingPlace || '', type: 'boda', _auto: true })
+      if (gf?.deathDate) auto.push({ year: parseInt(gf.deathDate.split('-')[0]), date: gf.deathDate, title: `Partida de ${gf.fullName || gf.name}`, description: '', type: 'memorial', _auto: true })
+      if (gm?.deathDate) auto.push({ year: parseInt(gm.deathDate.split('-')[0]), date: gm.deathDate, title: `Partida de ${gm.fullName || gm.name}`, description: '', type: 'memorial', _auto: true })
     }
+
+    // Walk all members recursively
+    const walk = (person, depth) => {
+      if (person.birthDate) {
+        auto.push({ year: parseInt(person.birthDate.split('-')[0]), date: person.birthDate, title: `Nace ${person.name}`, description: '', type: 'nacimiento', _auto: true })
+      }
+      if (person.deathDate) {
+        auto.push({ year: parseInt(person.deathDate.split('-')[0]), date: person.deathDate, title: `Partida de ${person.name}`, description: '', type: 'memorial', _auto: true })
+      }
+      if (person.weddingDate && person.spouse) {
+        const spouseName = typeof person.spouse === 'object' ? person.spouse.name : person.spouse
+        auto.push({ year: parseInt(person.weddingDate.split('-')[0]), date: person.weddingDate, title: `Boda de ${person.name?.split(' ')[0]} y ${spouseName?.split(' ')[0]}`, description: person.weddingPlace || '', type: 'boda', _auto: true })
+      }
+      if (person.spouse && typeof person.spouse === 'object' && person.spouse.birthDate) {
+        auto.push({ year: parseInt(person.spouse.birthDate.split('-')[0]), date: person.spouse.birthDate, title: `Nace ${person.spouse.name}`, description: '', type: 'nacimiento', _auto: true })
+      }
+      if (person.children) person.children.forEach(c => walk(c, depth + 1))
+    }
+    members.forEach(m => walk(m, 0))
+
+    // Merge: manual events take priority. Remove auto events that match manual by similar title
+    const normalize = (s) => s?.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim()
+    const manualTitles = new Set(manual.map(m => normalize(m.title)))
+    const uniqueAuto = auto.filter(a => !manualTitles.has(normalize(a.title)))
+
+    const all = [...manual, ...uniqueAuto].sort((a, b) => (a.year || 0) - (b.year || 0))
+    setEvents(all)
   }
 
   const displayEvents = events

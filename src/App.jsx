@@ -53,6 +53,18 @@ function App() {
     return unsubscribe
   }, [])
 
+  useEffect(() => {
+    const handler = (e) => {
+      const { parentName } = e.detail
+      setActiveTab('arbol')
+      // The FamilyTree component will handle showing the member
+      // For now, just scroll to the tree section
+      setTimeout(() => window.scrollTo({ top: 200, behavior: 'smooth' }), 300)
+    }
+    window.addEventListener('navigate-to-person', handler)
+    return () => window.removeEventListener('navigate-to-person', handler)
+  }, [])
+
   if (loading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-cream">
