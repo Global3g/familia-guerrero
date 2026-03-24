@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Star, Heart, Sun, Camera, Plus, Pencil, Trash2, Save, Loader2 } from "lucide-react";
 import { memorials as defaultMemorials } from "../data/familyData";
-import { getMemorials, saveMemorial, deleteMemorial, uploadPhoto } from "../firebase/familyService";
+import { getMemorials, saveMemorial, deleteMemorial, uploadPhoto, getFamilyMembers, getGrandparents } from "../firebase/familyService";
 import Modal from './Modal';
 import ImageCropper from './ImageCropper';
 
@@ -295,11 +295,64 @@ export default function Memorial() {
   }, [])
 
   const loadMemorials = async () => {
-    const data = await getMemorials()
-    if (data.length > 0) setMemorials(data)
+    const [manualData, members, gp] = await Promise.all([getMemorials(), getFamilyMembers(), getGrandparents()])
+
+    // Collect deceased from the family tree
+    const fromTree = []
+    const walk = (person, parentName) => {
+      if (person.deathDate) {
+        fromTree.push({
+          name: person.name,
+          photoURL: person.photoURL,
+          birthDate: person.birthDate,
+          deathDate: person.deathDate,
+          relationship: person.role || (parentName ? `Familiar de ${parentName}` : ''),
+          tribute: person.bio || '',
+          legacy: '',
+          _source: 'tree',
+        })
+      }
+      if (person.spouse && typeof person.spouse === 'object' && person.spouse.deathDate) {
+        fromTree.push({
+          name: person.spouse.name,
+          photoURL: person.spouse.photoURL,
+          birthDate: person.spouse.birthDate,
+          deathDate: person.spouse.deathDate,
+          relationship: `Esposo(a) de ${person.name?.split(' ')[0] || ''}`,
+          tribute: person.spouse.bio || '',
+          legacy: '',
+          _source: 'tree',
+        })
+      }
+      if (person.children) person.children.forEach(c => walk(c, person.name?.split(' ')[0]))
+    }
+    if (gp) {
+      const gf = gp.grandfather
+      const gm = gp.grandmother
+      if (gf?.deathDate) fromTree.push({ name: gf.fullName || gf.name, photoURL: gf.photoURL || gf.photo, birthDate: gf.birthDate, deathDate: gf.deathDate, relationship: gf.role || 'Abuelo', tribute: gf.bio || '', legacy: gf.values?.[0] || '', _source: 'tree' })
+      if (gm?.deathDate) fromTree.push({ name: gm.fullName || gm.name, photoURL: gm.photoURL || gm.photo, birthDate: gm.birthDate, deathDate: gm.deathDate, relationship: gm.role || 'Abuela', tribute: gm.bio || '', legacy: gm.values?.[0] || '', _source: 'tree' })
+    }
+    members.forEach(m => walk(m, null))
+
+    // Merge: manual memorials take priority, add tree ones that aren't already in manual
+    const normalize = (n) => n?.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim()
+    const manualNames = new Set(manualData.map(m => normalize(m.name)))
+    const treeOnly = fromTree.filter(t => !manualNames.has(normalize(t.name)))
+
+    const all = [...manualData, ...treeOnly]
+
+    // Sort by deathDate (most recent first)
+    all.sort((a, b) => {
+      if (!a.deathDate && !b.deathDate) return 0
+      if (!a.deathDate) return 1
+      if (!b.deathDate) return -1
+      return b.deathDate.localeCompare(a.deathDate)
+    })
+
+    setMemorials(all)
   }
 
-  const displayMemorials = memorials.length > 0 ? memorials : defaultMemorials
+  const displayMemorials = memorials
 
   const handleSave = async (formData) => {
     const id = editingMemorial?.id || null
