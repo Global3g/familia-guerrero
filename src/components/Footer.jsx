@@ -33,7 +33,7 @@ export default function Footer() {
 
         {/* Legacy text */}
         <p className="font-sans text-sm text-[#FFF8F0]/40 tracking-wider">
-          Familia Guerrero &mdash; Preservando nuestro legado desde 1948
+          Familia Guerrero &mdash; Preservando nuestro legado desde 1906
         </p>
       </div>
     </footer>
