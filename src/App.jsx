@@ -14,6 +14,7 @@ import Memorial from './components/Memorial'
 import Traditions from './components/Traditions'
 import Messages from './components/Messages'
 import Footer from './components/Footer'
+import FamilyProgress from './components/FamilyProgress'
 
 // Lazy-loaded heavy components (ReactFlow, Recharts, Leaflet, etc.)
 const InteractiveTree = lazy(() => import('./components/InteractiveTree'))
@@ -92,6 +93,11 @@ function App() {
             )
           })}
         </nav>
+      </div>
+
+      {/* Progress bar */}
+      <div className="max-w-4xl mx-auto px-4 pt-4">
+        <FamilyProgress />
       </div>
 
       {/* Tab Content */}

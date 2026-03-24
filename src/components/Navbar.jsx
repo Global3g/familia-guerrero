@@ -1,15 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Menu, X, Heart, LogOut } from 'lucide-react'
+import { Menu, X, Heart, LogOut, Search } from 'lucide-react'
 import NotificationBell from './NotificationBell'
-
-const navLinks = [
-  { label: 'Origen', href: '#origen' },
-  { label: 'Árbol', href: '#arbol' },
-  { label: 'Galería', href: '#galeria' },
-  { label: 'Eventos', href: '#eventos' },
-  { label: 'Homenaje', href: '#homenaje' },
-]
 
 export default function Navbar({ user, onLogout }) {
   const [scrolled, setScrolled] = useState(false)
@@ -22,15 +14,6 @@ export default function Navbar({ user, onLogout }) {
     window.addEventListener('scroll', handleScroll, { passive: true })
     return () => window.removeEventListener('scroll', handleScroll)
   }, [])
-
-  const handleNavClick = (e, href) => {
-    e.preventDefault()
-    setMobileOpen(false)
-    const target = document.querySelector(href)
-    if (target) {
-      target.scrollIntoView({ behavior: 'smooth' })
-    }
-  }
 
   return (
     <motion.nav
@@ -69,60 +52,49 @@ export default function Navbar({ user, onLogout }) {
             </span>
           </a>
 
-          {/* Desktop Links */}
-          <ul className="hidden md:flex items-center gap-1 lg:gap-2">
-            {navLinks.map((link) => (
-              <li key={link.href}>
-                <a
-                  href={link.href}
-                  onClick={(e) => handleNavClick(e, link.href)}
-                  className={`relative font-sans text-sm lg:text-base font-medium px-3 py-2 rounded-md transition-colors duration-300 ${
-                    scrolled
-                      ? 'text-[#5D4037] hover:text-[#C4704B] hover:bg-[#5D4037]/5'
-                      : 'text-[#FDF8F0]/90 hover:text-[#FDF8F0] hover:bg-white/10'
-                  }`}
-                >
-                  {link.label}
-                </a>
-              </li>
-            ))}
-            {user && (
-              <li><NotificationBell /></li>
-            )}
-            {user && (
-              <li>
-                <button
-                  onClick={onLogout}
-                  className={`flex items-center gap-1.5 font-sans text-sm font-medium px-3 py-2 rounded-md transition-colors duration-300 ${
-                    scrolled
-                      ? 'text-[#C4704B] hover:bg-[#C4704B]/10'
-                      : 'text-[#FDF8F0]/70 hover:text-[#FDF8F0] hover:bg-white/10'
-                  }`}
-                >
-                  <LogOut className="w-4 h-4" />
-                  Salir
-                </button>
-              </li>
-            )}
-          </ul>
+          {/* Desktop Right Actions */}
+          {user && (
+            <div className="hidden md:flex items-center gap-2">
+              {/* Search Button (placeholder) */}
+              <button className="p-2 rounded-full hover:bg-[#5D4037]/10 transition">
+                <Search className="w-5 h-5" style={{ color: '#5D4037' }} />
+              </button>
+
+              <NotificationBell />
+
+              <button
+                onClick={onLogout}
+                className={`flex items-center gap-1.5 font-sans text-sm font-medium px-3 py-2 rounded-md transition-colors duration-300 ${
+                  scrolled
+                    ? 'text-[#C4704B] hover:bg-[#C4704B]/10'
+                    : 'text-[#FDF8F0]/70 hover:text-[#FDF8F0] hover:bg-white/10'
+                }`}
+              >
+                <LogOut className="w-4 h-4" />
+                Salir
+              </button>
+            </div>
+          )}
 
           {/* Mobile Hamburger */}
-          <button
-            onClick={() => setMobileOpen(!mobileOpen)}
-            className={`md:hidden p-2 rounded-lg transition-colors duration-300 ${
-              scrolled
-                ? 'text-[#5D4037] hover:bg-[#5D4037]/10'
-                : 'text-[#FDF8F0] hover:bg-white/10'
-            }`}
-            aria-label={mobileOpen ? 'Cerrar menú' : 'Abrir menú'}
-          >
-            {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-          </button>
+          {user && (
+            <button
+              onClick={() => setMobileOpen(!mobileOpen)}
+              className={`md:hidden p-2 rounded-lg transition-colors duration-300 ${
+                scrolled
+                  ? 'text-[#5D4037] hover:bg-[#5D4037]/10'
+                  : 'text-[#FDF8F0] hover:bg-white/10'
+              }`}
+              aria-label={mobileOpen ? 'Cerrar menu' : 'Abrir menu'}
+            >
+              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+            </button>
+          )}
         </div>
       </div>
 
       {/* Mobile Menu */}
-      {mobileOpen && (
+      {mobileOpen && user && (
         <motion.div
           initial={{ opacity: 0, height: 0 }}
           animate={{ opacity: 1, height: 'auto' }}
@@ -130,25 +102,34 @@ export default function Navbar({ user, onLogout }) {
           transition={{ duration: 0.3, ease: 'easeInOut' }}
           className="md:hidden bg-[#FDF8F0]/98 backdrop-blur-lg border-t border-[#5D4037]/10 shadow-lg"
         >
-          <ul className="flex flex-col px-4 py-4 gap-1">
-            {navLinks.map((link, i) => (
-              <motion.li
-                key={link.href}
-                initial={{ opacity: 0, x: -20 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ delay: i * 0.07, duration: 0.3 }}
-              >
-                <a
-                  href={link.href}
-                  onClick={(e) => handleNavClick(e, link.href)}
-                  className="flex items-center gap-3 font-sans text-base font-medium text-[#5D4037] hover:text-[#C4704B] hover:bg-[#5D4037]/5 px-4 py-3 rounded-lg transition-colors duration-200"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#B8943E]" />
-                  {link.label}
-                </a>
-              </motion.li>
-            ))}
-          </ul>
+          <div className="flex flex-col px-4 py-4 gap-2">
+            {/* Search Button (placeholder) */}
+            <button
+              onClick={() => setMobileOpen(false)}
+              className="flex items-center gap-3 font-sans text-base font-medium text-[#5D4037] hover:text-[#C4704B] hover:bg-[#5D4037]/5 px-4 py-3 rounded-lg transition-colors duration-200"
+            >
+              <Search className="w-5 h-5" />
+              Buscar
+            </button>
+
+            {/* Notification Bell */}
+            <div className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[#5D4037]/5 transition-colors duration-200">
+              <NotificationBell />
+              <span className="font-sans text-base font-medium text-[#5D4037]">Notificaciones</span>
+            </div>
+
+            {/* Logout */}
+            <button
+              onClick={() => {
+                setMobileOpen(false)
+                onLogout()
+              }}
+              className="flex items-center gap-3 font-sans text-base font-medium text-[#C4704B] hover:bg-[#C4704B]/10 px-4 py-3 rounded-lg transition-colors duration-200"
+            >
+              <LogOut className="w-5 h-5" />
+              Salir
+            </button>
+          </div>
         </motion.div>
       )}
     </motion.nav>
