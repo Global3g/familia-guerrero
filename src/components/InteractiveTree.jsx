@@ -265,7 +265,7 @@ export default function InteractiveTree() {
               panOnDrag={true}
               preventScrolling={true}
             >
-              <Controls position="top-right" showInteractive={false} style={{ borderRadius: '12px', overflow: 'hidden' }} />
+              <Controls position="top-right" style={{ borderRadius: '12px', overflow: 'hidden' }} />
               <Background color="#E0D5C830" gap={20} />
             </ReactFlow>
             </>

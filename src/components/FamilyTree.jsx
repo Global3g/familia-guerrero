@@ -1056,33 +1056,66 @@ export default function FamilyTree() {
                         <p className="text-sm text-[#5D4037]/40 text-center py-8">No hay momentos registrados.</p>
                       )}
 
-                      {/* TAB: Galeria */}
-                      {modalTab === 'galeria' && selectedMember.gallery && selectedMember.gallery.length > 0 && (
-                        <div className="mb-8">
-                          <h4 className="text-sm font-serif font-semibold text-[#5D4037] uppercase tracking-wider mb-4 flex items-center gap-2">
-                            <Camera className="w-4 h-4 text-[#7A9E7E]" />
-                            Galeria Familiar
-                          </h4>
-                          <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                            {selectedMember.gallery.map((g, i) => (
-                              <div key={i} className="rounded-xl overflow-hidden border border-[#E0D5C8]/50 shadow-sm bg-white">
-                                {g.photoURL ? (
-                                  <img src={g.photoURL} alt={g.caption} className="w-full h-40 object-cover" />
-                                ) : (
-                                  <div className="w-full h-40 bg-gradient-to-br from-[#7A9E7E]/20 to-[#B8943E]/20 flex items-center justify-center">
-                                    <Camera className="w-8 h-8 text-[#7A9E7E]/40" />
-                                  </div>
-                                )}
-                                {g.caption && <p className="text-[11px] text-[#5D4037]/70 p-2 text-center">{g.caption}</p>}
+                      {/* TAB: Galeria - shows ALL photos from entire family nucleus */}
+                      {modalTab === 'galeria' && (() => {
+                        // Collect all photos from the entire nucleus
+                        const allPhotos = []
+                        const addPhotos = (person, label) => {
+                          if (person.gallery && person.gallery.length > 0) {
+                            person.gallery.forEach(g => allPhotos.push({ ...g, owner: label || person.name?.split(' ')[0] }))
+                          }
+                        }
+                        addPhotos(selectedMember, selectedMember.name?.split(' ')[0])
+                        if (selectedMember.spouse && typeof selectedMember.spouse === 'object') {
+                          addPhotos(selectedMember.spouse, selectedMember.spouse.name?.split(' ')[0])
+                        }
+                        const walkPhotos = (children) => {
+                          (children || []).forEach(child => {
+                            addPhotos(child, child.name?.split(' ')[0])
+                            if (child.spouse && typeof child.spouse === 'object') addPhotos(child.spouse, child.spouse.name?.split(' ')[0])
+                            if (child.children) walkPhotos(child.children)
+                          })
+                        }
+                        walkPhotos(selectedMember.children)
+
+                        if (allPhotos.length === 0) return (
+                          <p className="text-sm text-[#5D4037]/40 text-center py-8">No hay fotos en la galeria.</p>
+                        )
+
+                        // Group by owner
+                        const grouped = {}
+                        allPhotos.forEach(p => {
+                          if (!grouped[p.owner]) grouped[p.owner] = []
+                          grouped[p.owner].push(p)
+                        })
+
+                        return (
+                          <div className="mb-8 space-y-6">
+                            {Object.entries(grouped).map(([owner, photos]) => (
+                              <div key={owner}>
+                                <h4 className="text-xs font-bold text-[#7A9E7E] uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                                  <Camera className="w-3.5 h-3.5" />
+                                  Fotos de {owner} ({photos.length})
+                                </h4>
+                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
+                                  {photos.map((g, i) => (
+                                    <div key={i} className="rounded-xl overflow-hidden border border-[#E0D5C8]/50 shadow-sm bg-white">
+                                      {g.photoURL ? (
+                                        <img src={g.photoURL} alt={g.caption} className="w-full h-40 object-cover" />
+                                      ) : (
+                                        <div className="w-full h-40 bg-gradient-to-br from-[#7A9E7E]/20 to-[#B8943E]/20 flex items-center justify-center">
+                                          <Camera className="w-8 h-8 text-[#7A9E7E]/40" />
+                                        </div>
+                                      )}
+                                      {g.caption && <p className="text-[11px] text-[#5D4037]/70 p-2 text-center">{g.caption}</p>}
+                                    </div>
+                                  ))}
+                                </div>
                               </div>
                             ))}
                           </div>
-                        </div>
-                      )}
-
-                      {modalTab === 'galeria' && (!selectedMember.gallery || selectedMember.gallery.length === 0) && (
-                        <p className="text-sm text-[#5D4037]/40 text-center py-8">No hay fotos en la galeria.</p>
-                      )}
+                        )
+                      })()}
 
                       {/* TAB: Mensajes */}
                       {modalTab === 'mensajes' && selectedMember.messages && selectedMember.messages.length > 0 && (
