@@ -376,7 +376,7 @@ export default function Reminders() {
                               <p className="text-lg font-bold leading-none" style={{ color }}>
                                 {reminder.daysUntil}
                               </p>
-                              <p className="text-[10px]" style={{ color, opacity: 0.8 }}>
+                              <p className="text-[11px]" style={{ color, opacity: 0.8 }}>
                                 {reminder.daysUntil === 1 ? 'dia' : 'dias'}
                               </p>
                             </>

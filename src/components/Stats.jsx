@@ -55,7 +55,7 @@ function StatCard({ icon: Icon, label, value, color, sub }) {
       </div>
       <p className="text-3xl font-bold font-serif" style={{ color }}>{value}</p>
       <p className="text-xs text-[#5D4037]/60 uppercase tracking-wider mt-1">{label}</p>
-      {sub && <p className="text-[10px] text-[#5D4037]/40 mt-0.5">{sub}</p>}
+      {sub && <p className="text-[11px] text-[#5D4037]/40 mt-0.5">{sub}</p>}
     </motion.div>
   )
 }

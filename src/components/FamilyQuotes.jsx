@@ -273,7 +273,7 @@ export default function FamilyQuotes() {
                     )}
 
                     {/* Hover action buttons */}
-                    <div className="absolute top-3 left-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+                    <div className="absolute top-3 left-3 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
                       <button
                         onClick={() => openEdit(q)}
                         className="p-1.5 rounded-full bg-white/80 hover:bg-white shadow-sm transition-colors"

@@ -43,8 +43,8 @@ function PersonNode({ data }) {
         )}
         <div className="flex-1 min-w-0 text-left">
           <p className="text-[11px] font-bold text-[#5D4037] leading-tight truncate">{name}</p>
-          {role && <p className="text-[9px] text-[#7A9E7E] font-medium">{role}</p>}
-          {isDeceased && <p className="text-[8px] text-[#B8943E] italic">En memoria</p>}
+          {role && <p className="text-[11px] text-[#7A9E7E] font-medium">{role}</p>}
+          {isDeceased && <p className="text-[11px] text-[#B8943E] italic">En memoria</p>}
         </div>
       </div>
       {spouse && (
@@ -57,7 +57,7 @@ function PersonNode({ data }) {
               <User className="w-3 h-3 text-[#C4704B]" />
             </div>
           )}
-          <p className="text-[9px] text-[#5D4037] truncate">{typeof spouse === 'object' ? spouse.name : spouse}</p>
+          <p className="text-[11px] text-[#5D4037] truncate">{typeof spouse === 'object' ? spouse.name : spouse}</p>
         </div>
       )}
       <Handle type="target" position={Position.Top} style={{ background: borderColor, width: 8, height: 8, border: '2px solid white' }} />

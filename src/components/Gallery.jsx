@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Camera, X, ZoomIn, Filter, Plus, Pencil, Trash2, Save, Loader2 } from 'lucide-react'
-import { galleryPhotos as defaultPhotos, galleryCategories } from '../data/familyData'
+import { galleryCategories } from '../data/familyData'
 import { getGalleryPhotos, saveGalleryPhoto, deleteGalleryPhoto, uploadPhoto, getUpcomingEvents } from '../firebase/familyService'
 import Modal from './Modal'
 
@@ -88,7 +88,7 @@ function PhotoForm({ isOpen, onClose, photoData, onSave, events }) {
             {preview ? (
               <div className="relative">
                 <img src={preview} alt="Preview" className="w-full max-w-xs h-48 object-cover rounded-xl border-2 border-[#7A9E7E]/30 group-hover:opacity-80 transition" />
-                <div className="absolute inset-0 rounded-xl flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition">
+                <div className="absolute inset-0 rounded-xl flex items-center justify-center bg-black/30 sm:opacity-0 sm:group-hover:opacity-100 transition">
                   <Camera className="w-8 h-8 text-white" />
                 </div>
               </div>
@@ -175,7 +175,7 @@ export default function Gallery() {
     setAllEvents(data)
   }
 
-  const displayPhotos = photos.length > 0 ? photos : defaultPhotos
+  const displayPhotos = photos
 
   const filteredPhotos =
     activeCategory === 'todos'
@@ -288,7 +288,7 @@ export default function Gallery() {
                   style={{ backgroundColor: '#fff' }}
                 >
                   {/* Edit/Delete buttons */}
-                  <div className="absolute top-2 left-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                  <div className="absolute top-2 left-2 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-20">
                     <button onClick={(e) => { e.stopPropagation(); setEditingPhoto(photo); }} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-[#B8943E]/10 shadow text-[#B8943E] transition">
                       <Pencil className="w-3.5 h-3.5" />
                     </button>
@@ -310,7 +310,7 @@ export default function Gallery() {
 
                     {/* Hover overlay */}
                     <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
-                      <ZoomIn className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <ZoomIn className="w-8 h-8 text-white sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300" />
                     </div>
 
                     {/* Year badge */}
@@ -341,22 +341,36 @@ export default function Gallery() {
             animate={{ opacity: 1 }}
             className="text-center py-16"
           >
-            <Camera className="w-12 h-12 mx-auto mb-4" style={{ color: '#C4704B' }} />
-            <p className="text-lg" style={{ color: '#6B5B5B' }}>
-              No hay fotos en esta categoria todavia.
+            <div className="w-16 h-16 rounded-full bg-[#C4704B]/10 flex items-center justify-center mx-auto mb-4">
+              <Camera className="w-8 h-8 text-[#C4704B]/50" />
+            </div>
+            <p className="text-lg font-serif font-bold text-[#5D4037]/60 mb-2">
+              {displayPhotos.length === 0 ? 'Sin fotos todavia' : 'Sin fotos en esta categoria'}
             </p>
+            <p className="text-sm text-[#5D4037]/40 mb-6">
+              {displayPhotos.length === 0 ? 'Sube la primera foto de tu familia' : 'Agrega fotos a esta categoria'}
+            </p>
+            <button
+              onClick={() => setShowCreateForm(true)}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#C4704B] text-white hover:bg-[#C4704B]/90 transition font-medium shadow-md"
+            >
+              <Plus className="w-5 h-5" />
+              {displayPhotos.length === 0 ? 'Subir primera foto' : 'Agregar foto'}
+            </button>
           </motion.div>
         )}
         {/* Add photo button */}
-        <div className="flex justify-center mt-12">
-          <button
-            onClick={() => setShowCreateForm(true)}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-[#7A9E7E]/40 text-[#7A9E7E] hover:bg-[#7A9E7E]/5 hover:border-[#7A9E7E] transition font-medium"
-          >
-            <Plus className="w-5 h-5" />
-            Agregar foto
-          </button>
-        </div>
+        {filteredPhotos.length > 0 && (
+          <div className="flex justify-center mt-12">
+            <button
+              onClick={() => setShowCreateForm(true)}
+              className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-[#7A9E7E]/40 text-[#7A9E7E] hover:bg-[#7A9E7E]/5 hover:border-[#7A9E7E] transition font-medium"
+            >
+              <Plus className="w-5 h-5" />
+              Agregar foto
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Photo form modals */}

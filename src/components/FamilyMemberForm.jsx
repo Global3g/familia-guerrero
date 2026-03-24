@@ -87,13 +87,13 @@ function SpouseBlock({ spouse, onChange, colors }) {
               {spouse.photoURL ? (
                 <div className="relative">
                   <img src={spouse.photoURL} alt={spouse.name} className="w-16 h-16 rounded-full object-cover border-2 group-hover:opacity-70 transition" style={{ borderColor: '#C4704B40' }} />
-                  <div className="absolute inset-0 rounded-full flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition">
+                  <div className="absolute inset-0 rounded-full flex items-center justify-center bg-black/30 sm:opacity-0 sm:group-hover:opacity-100 transition">
                     <Camera className="w-4 h-4 text-white" />
                   </div>
                 </div>
               ) : (
                 <div className="w-16 h-16 rounded-full border-2 border-dashed border-[#C4704B]/30 flex flex-col items-center justify-center text-[#C4704B] group-hover:opacity-70 transition">
-                  {uploading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Camera className="w-4 h-4 mb-0.5" /><span className="text-[8px]">Foto</span></>}
+                  {uploading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Camera className="w-4 h-4 mb-0.5" /><span className="text-[11px]">Foto</span></>}
                 </div>
               )}
             </label>
@@ -223,7 +223,7 @@ function PersonBlock({ person, index, depth, onChange, onRemove }) {
             <p className="text-sm font-bold text-[#5D4037] truncate">
               {person.name || 'Sin nombre'}
             </p>
-            <p className="text-[10px] text-[#5D4037]/50">
+            <p className="text-[11px] text-[#5D4037]/50">
               {person.spouse?.name ? `c/ ${person.spouse.name}` : typeof person.spouse === 'string' && person.spouse ? `c/ ${person.spouse}` : ''}
               {descendants > 0 ? ` · ${descendants} desc.` : ''}
             </p>
@@ -252,13 +252,13 @@ function PersonBlock({ person, index, depth, onChange, onRemove }) {
               {person.photoURL ? (
                 <div className="relative">
                   <img src={person.photoURL} alt={person.name} className="w-20 h-20 rounded-full object-cover border-2 group-hover:opacity-70 transition" style={{ borderColor: `${colors.border}40` }} />
-                  <div className="absolute inset-0 rounded-full flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition">
+                  <div className="absolute inset-0 rounded-full flex items-center justify-center bg-black/30 sm:opacity-0 sm:group-hover:opacity-100 transition">
                     <Camera className="w-5 h-5 text-white" />
                   </div>
                 </div>
               ) : (
                 <div className="w-20 h-20 rounded-full border-2 border-dashed flex flex-col items-center justify-center group-hover:opacity-70 transition" style={{ borderColor: `${colors.border}40`, color: colors.accent }}>
-                  {uploading ? <Loader2 className="w-6 h-6 animate-spin" /> : <><Camera className="w-5 h-5 mb-0.5" /><span className="text-[9px]">Subir foto</span></>}
+                  {uploading ? <Loader2 className="w-6 h-6 animate-spin" /> : <><Camera className="w-5 h-5 mb-0.5" /><span className="text-[11px]">Subir foto</span></>}
                 </div>
               )}
             </label>
@@ -384,7 +384,7 @@ function PersonBlock({ person, index, depth, onChange, onRemove }) {
                 </p>
                 {personChildren.length > 0 && (
                   <span
-                    className="text-[10px] font-medium px-2 py-0.5 rounded-full"
+                    className="text-[11px] font-medium px-2 py-0.5 rounded-full"
                     style={{ color: colors.accent, backgroundColor: `${colors.bg}15` }}
                   >
                     {personChildren.length}
@@ -833,7 +833,7 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
               Hijos de {form.name?.split(' ')[0] || 'este familiar'}
             </h3>
             {totalDescendants > 0 && (
-              <span className="text-[10px] font-medium text-[#7A9E7E] bg-[#7A9E7E]/10 px-2 py-0.5 rounded-full">
+              <span className="text-[11px] font-medium text-[#7A9E7E] bg-[#7A9E7E]/10 px-2 py-0.5 rounded-full">
                 {totalDescendants} descendientes
               </span>
             )}

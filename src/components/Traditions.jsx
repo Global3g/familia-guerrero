@@ -15,7 +15,8 @@ import {
   Loader2,
   X,
 } from "lucide-react";
-import { traditions as defaultTraditions, familyValues as defaultValues } from "../data/familyData";
+
+
 import { db } from "../firebase/config";
 import { collection, getDocs, doc, setDoc, deleteDoc } from "firebase/firestore";
 import Modal from "./Modal";
@@ -97,8 +98,8 @@ export default function Traditions() {
     if (v.length > 0) setValues(v)
   }
 
-  const displayTraditions = traditions.length > 0 ? traditions : defaultTraditions
-  const displayValues = values.length > 0 ? values : defaultValues.map((v, i) => ({ id: `default-${i}`, value: v }))
+  const displayTraditions = traditions
+  const displayValues = values
 
   const openTradForm = (trad = null) => {
     setTradForm(trad ? { title: trad.title, description: trad.description, icon: trad.icon || 'utensils' } : { title: '', description: '', icon: 'utensils' })
@@ -179,45 +180,64 @@ export default function Traditions() {
         </motion.div>
 
         {/* Traditions grid */}
-        <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-10">
-          {displayTraditions.map((tradition, index) => {
-            const IconComponent = iconMap[tradition.icon] || Sparkles;
-            return (
-              <motion.article
-                key={tradition.id || tradition.title}
-                variants={fadeIn}
-                initial="hidden"
-                whileInView="visible"
-                viewport={{ once: true, margin: "-50px" }}
-                custom={index * 0.15 + 0.2}
-                className="group relative bg-white/60 backdrop-blur-sm rounded-2xl border border-[#7A9E7E]/15 p-6 hover:shadow-lg hover:shadow-[#7A9E7E]/10 hover:border-[#7A9E7E]/25 transition-all duration-500"
-              >
-                {/* Edit/Delete */}
-                <div className="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-                  <button onClick={() => openTradForm(tradition)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-[#B8943E]/10 shadow text-[#B8943E] transition">
-                    <Pencil className="w-3.5 h-3.5" />
-                  </button>
-                  <button onClick={() => setDeletingTrad(tradition)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-red-50 shadow text-red-400 hover:text-red-600 transition">
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-                </div>
+        {displayTraditions.length > 0 ? (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-10">
+            {displayTraditions.map((tradition, index) => {
+              const IconComponent = iconMap[tradition.icon] || Sparkles;
+              return (
+                <motion.article
+                  key={tradition.id || tradition.title}
+                  variants={fadeIn}
+                  initial="hidden"
+                  whileInView="visible"
+                  viewport={{ once: true, margin: "-50px" }}
+                  custom={index * 0.15 + 0.2}
+                  className="group relative bg-white/60 backdrop-blur-sm rounded-2xl border border-[#7A9E7E]/15 p-6 hover:shadow-lg hover:shadow-[#7A9E7E]/10 hover:border-[#7A9E7E]/25 transition-all duration-500"
+                >
+                  {/* Edit/Delete */}
+                  <div className="absolute top-3 right-3 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10">
+                    <button onClick={() => openTradForm(tradition)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-[#B8943E]/10 shadow text-[#B8943E] transition">
+                      <Pencil className="w-3.5 h-3.5" />
+                    </button>
+                    <button onClick={() => setDeletingTrad(tradition)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-red-50 shadow text-red-400 hover:text-red-600 transition">
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
 
-                <div className="mb-4 w-12 h-12 rounded-xl bg-gradient-to-br from-[#7A9E7E]/15 to-[#B8943E]/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                  <IconComponent className="w-6 h-6 text-[#C4704B]" />
-                </div>
-                <h3 className="font-serif text-xl font-bold text-[#5D4037] mb-2">{tradition.title}</h3>
-                <p className="font-sans text-sm text-[#5D4037]/70 leading-relaxed">{tradition.description}</p>
-              </motion.article>
-            );
-          })}
-        </div>
+                  <div className="mb-4 w-12 h-12 rounded-xl bg-gradient-to-br from-[#7A9E7E]/15 to-[#B8943E]/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <IconComponent className="w-6 h-6 text-[#C4704B]" />
+                  </div>
+                  <h3 className="font-serif text-xl font-bold text-[#5D4037] mb-2">{tradition.title}</h3>
+                  <p className="font-sans text-sm text-[#5D4037]/70 leading-relaxed">{tradition.description}</p>
+                </motion.article>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="text-center py-16 mb-10">
+            <div className="w-16 h-16 rounded-full bg-[#C4704B]/10 flex items-center justify-center mx-auto mb-4">
+              <UtensilsCrossed className="w-8 h-8 text-[#C4704B]/50" />
+            </div>
+            <p className="text-lg font-serif font-bold text-[#5D4037]/60 mb-2">Sin tradiciones todavia</p>
+            <p className="text-sm text-[#5D4037]/40 mb-6">Registra las tradiciones que hacen unica a tu familia</p>
+            <button
+              onClick={() => openTradForm()}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#C4704B] text-white hover:bg-[#C4704B]/90 transition font-medium shadow-md"
+            >
+              <Plus className="w-5 h-5" />
+              Agregar primera tradicion
+            </button>
+          </div>
+        )}
 
         {/* Add tradition button */}
-        <div className="flex justify-center mb-20">
-          <button onClick={() => openTradForm()} className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-[#7A9E7E]/40 text-[#7A9E7E] hover:bg-[#7A9E7E]/5 hover:border-[#7A9E7E] transition font-medium">
-            <Plus className="w-5 h-5" /> Agregar tradicion
-          </button>
-        </div>
+        {displayTraditions.length > 0 && (
+          <div className="flex justify-center mb-20">
+            <button onClick={() => openTradForm()} className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-[#7A9E7E]/40 text-[#7A9E7E] hover:bg-[#7A9E7E]/5 hover:border-[#7A9E7E] transition font-medium">
+              <Plus className="w-5 h-5" /> Agregar tradicion
+            </button>
+          </div>
+        )}
 
         {/* Values section */}
         <motion.div
@@ -232,28 +252,34 @@ export default function Traditions() {
             Nuestros Valores
           </h3>
 
-          <div className="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto mb-6">
-            {displayValues.map((v, index) => {
-              const val = typeof v === 'string' ? v : v.value
-              return (
-                <motion.span
-                  key={v.id || val}
-                  variants={fadeIn}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-50px" }}
-                  custom={index * 0.1 + 0.1}
-                  className="group/val inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/70 border border-[#B8943E]/20 font-sans text-sm font-medium text-[#5D4037]/80 hover:bg-[#B8943E]/10 hover:border-[#B8943E]/30 transition-colors duration-300 backdrop-blur-sm shadow-sm"
-                >
-                  <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: index % 3 === 0 ? "#7A9E7E" : index % 3 === 1 ? "#C4704B" : "#B8943E" }} />
-                  {val}
-                  <button onClick={() => handleDeleteValue(v)} className="opacity-0 group-hover/val:opacity-100 transition ml-1 text-red-400 hover:text-red-600">
-                    <X className="w-3 h-3" />
-                  </button>
-                </motion.span>
-              )
-            })}
-          </div>
+          {displayValues.length > 0 ? (
+            <div className="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto mb-6">
+              {displayValues.map((v, index) => {
+                const val = typeof v === 'string' ? v : v.value
+                return (
+                  <motion.span
+                    key={v.id || val}
+                    variants={fadeIn}
+                    initial="hidden"
+                    whileInView="visible"
+                    viewport={{ once: true, margin: "-50px" }}
+                    custom={index * 0.1 + 0.1}
+                    className="group/val inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/70 border border-[#B8943E]/20 font-sans text-sm font-medium text-[#5D4037]/80 hover:bg-[#B8943E]/10 hover:border-[#B8943E]/30 transition-colors duration-300 backdrop-blur-sm shadow-sm"
+                  >
+                    <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: index % 3 === 0 ? "#7A9E7E" : index % 3 === 1 ? "#C4704B" : "#B8943E" }} />
+                    {val}
+                    <button onClick={() => handleDeleteValue(v)} className="opacity-0 group-hover/val:opacity-100 transition ml-1 text-red-400 hover:text-red-600">
+                      <X className="w-3 h-3" />
+                    </button>
+                  </motion.span>
+                )
+              })}
+            </div>
+          ) : (
+            <div className="mb-6">
+              <p className="text-sm text-[#5D4037]/40 mb-2">Agrega los valores que definen a tu familia</p>
+            </div>
+          )}
 
           {/* Add value */}
           <div className="flex items-center justify-center gap-2 max-w-sm mx-auto">

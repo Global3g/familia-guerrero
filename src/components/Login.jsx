@@ -135,7 +135,7 @@ export default function Login() {
           {/* TODO: Descomentar cuando se abra el registro al publico */}
           {false && <><div className="flex items-center gap-3 my-5">
             <div className="flex-1 h-px" style={{ backgroundColor: '#E0D5C8' }} />
-            <span className="text-[10px] uppercase tracking-wider" style={{ color: '#B0A090' }}>o</span>
+            <span className="text-[11px] uppercase tracking-wider" style={{ color: '#B0A090' }}>o</span>
             <div className="flex-1 h-px" style={{ backgroundColor: '#E0D5C8' }} />
           </div>
 
@@ -148,7 +148,7 @@ export default function Login() {
           </button></>}
         </div>
 
-        <p className="text-center text-[10px] mt-6" style={{ color: '#B0A090' }}>Solo para miembros de la familia Guerrero</p>
+        <p className="text-center text-[11px] mt-6" style={{ color: '#B0A090' }}>Solo para miembros de la familia Guerrero</p>
       </div>
 
       {/* Register Modal */}

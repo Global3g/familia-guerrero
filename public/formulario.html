@@ -132,6 +132,14 @@
         Llena los datos de tu nucleo familiar: los tuyos, los de tu esposo/a, tus hijos y nietos. Si no tienes algun dato exacto, pon lo que recuerdes.
       </p>
     </div>
+    <div id="draft-notice" style="display:none;background:#EBF5EC;border:2px solid #7A9E7E;border-radius:16px;padding:16px;margin-bottom:16px;text-align:center;">
+      <p style="font-size:14px;color:#5D4037;font-weight:bold;margin-bottom:4px;">Tienes un formulario guardado</p>
+      <p id="draft-name" style="font-size:13px;color:#7A9E7E;margin-bottom:12px;"></p>
+      <div style="display:flex;gap:10px;">
+        <button class="btn btn-primary" style="flex:1;background:#7A9E7E;" onclick="continueDraft()">Continuar donde me quede</button>
+        <button class="btn btn-secondary" style="flex:1;" onclick="clearDraft();document.getElementById('draft-notice').style.display='none'">Empezar de cero</button>
+      </div>
+    </div>
     <div class="btn-row">
       <button class="btn btn-primary" onclick="nextStep()">Empezar</button>
     </div>
@@ -301,9 +309,11 @@
     <div class="success">
       <div class="check">&#10003;</div>
       <h2>Enviado!</h2>
-      <p>Gracias por ser parte de nuestra historia. Tu informacion ya fue guardada.<br><br>No olvides enviar tus fotos por WhatsApp.</p>
-      <div style="margin-top:30px;">
-        <button class="btn btn-primary" onclick="location.reload()">Llenar otro formulario</button>
+      <p>Gracias por ser parte de nuestra historia. Tu informacion ya fue guardada.</p>
+      <p style="font-size:13px;color:#7A9E7E;margin-top:12px;">Si te falto algo, puedes regresar a editar y enviar de nuevo. Tus datos se actualizaran sin duplicarse.</p>
+      <div style="margin-top:20px;display:flex;flex-direction:column;gap:10px;">
+        <button class="btn btn-primary" onclick="goBackToEdit()">Editar mi informacion</button>
+        <button class="btn btn-secondary" onclick="startNew()">Llenar otro formulario</button>
       </div>
     </div>
   </div>
@@ -390,6 +400,96 @@ let currentStep = 0
 const totalSteps = 9
 let childCount = 0
 let specialPhotoCount = 0
+const DRAFT_KEY = 'familia-guerrero-draft'
+
+// === AUTO-SAVE DRAFT ===
+function saveDraft() {
+  try {
+    const fields = ['f-name','f-nickname','f-gender','f-birthDate','f-location','f-parentId','f-bio',
+      'f-hasSpouse','f-spouseName','f-spouseNickname','f-spouseGender','f-spouseBirth','f-spouseBio',
+      'f-weddingDate','f-weddingPlace','f-memory','f-message','f-tradition','f-moments']
+    const data = {}
+    fields.forEach(id => {
+      const el = document.getElementById(id)
+      if (el) data[id] = el.value
+    })
+    data._step = currentStep
+    data._timestamp = Date.now()
+    localStorage.setItem(DRAFT_KEY, JSON.stringify(data))
+  } catch(e) {}
+}
+
+function loadDraft() {
+  try {
+    const saved = localStorage.getItem(DRAFT_KEY)
+    if (!saved) return false
+    const data = JSON.parse(saved)
+    if (!data['f-name']) return false
+
+    // Check if draft is less than 30 days old
+    if (data._timestamp && (Date.now() - data._timestamp) > 30 * 24 * 60 * 60 * 1000) {
+      localStorage.removeItem(DRAFT_KEY)
+      return false
+    }
+    return data
+  } catch(e) { return false }
+}
+
+function restoreDraft(data) {
+  // Wait for parents dropdown to load, then restore
+  setTimeout(() => {
+    Object.entries(data).forEach(([id, value]) => {
+      if (id.startsWith('_')) return
+      const el = document.getElementById(id)
+      if (el) el.value = value
+    })
+    // Show spouse fields if needed
+    if (data['f-hasSpouse'] === 'si') {
+      const sf = document.getElementById('spouse-fields')
+      if (sf) sf.style.display = 'block'
+    }
+  }, 1500) // Wait for parents to load from Firestore
+}
+
+function clearDraft() {
+  localStorage.removeItem(DRAFT_KEY)
+}
+
+// Auto-save every time user changes a field
+document.addEventListener('input', saveDraft)
+document.addEventListener('change', saveDraft)
+
+// Check for existing draft on load
+window.continueDraft = function() {
+  const data = loadDraft()
+  if (data) {
+    restoreDraft(data)
+    showStep(1)
+  }
+}
+
+setTimeout(() => {
+  const draft = loadDraft()
+  if (draft && draft['f-name']) {
+    const notice = document.getElementById('draft-notice')
+    const nameEl = document.getElementById('draft-name')
+    if (notice && nameEl) {
+      nameEl.textContent = draft['f-name']
+      notice.style.display = 'block'
+    }
+  }
+}, 500)
+
+// Go back to edit after submit
+window.goBackToEdit = function() {
+  showStep(1)
+}
+
+// Start completely new
+window.startNew = function() {
+  clearDraft()
+  location.reload()
+}
 
 window.addSpecialPhoto = function() {
   specialPhotoCount++
@@ -452,6 +552,21 @@ function showStep(n) {
 }
 
 window.nextStep = function() {
+  // Validate step 1: parent required
+  if (currentStep === 1) {
+    const parentId = document.getElementById('f-parentId')?.value
+    const name = document.getElementById('f-name')?.value?.trim()
+    if (!name) {
+      alert('Por favor escribe tu nombre completo')
+      return
+    }
+    if (!parentId) {
+      alert('Por favor selecciona quien es tu papa o mama para ubicarte en el arbol familiar')
+      document.getElementById('f-parentId').style.borderColor = '#C4704B'
+      document.getElementById('f-parentId').focus()
+      return
+    }
+  }
   if (currentStep === 3) buildChildSpouses()
   if (currentStep === 4) buildGrandchildren()
   if (currentStep === 7) buildSummary()
@@ -812,11 +927,16 @@ window.submitForm = async function() {
       messages: [],
     }
 
-    // Smart matching function - case insensitive, partial match
+    // Remove accents for comparison
+    function removeAccents(str) {
+      return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+    }
+
+    // Smart matching function - case insensitive, accent insensitive, partial match
     function namesMatch(name1, name2) {
       if (!name1 || !name2) return false
-      const a = name1.toLowerCase().trim()
-      const b = name2.toLowerCase().trim()
+      const a = removeAccents(name1.toLowerCase().trim())
+      const b = removeAccents(name2.toLowerCase().trim())
       // Exact match
       if (a === b) return true
       // One contains the other

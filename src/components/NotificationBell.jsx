@@ -152,7 +152,7 @@ export default function NotificationBell() {
           <motion.span
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className="absolute -top-0.5 -right-0.5 w-5 h-5 rounded-full bg-[#C4704B] text-white text-[10px] font-bold flex items-center justify-center"
+            className="absolute -top-0.5 -right-0.5 w-5 h-5 rounded-full bg-[#C4704B] text-white text-[11px] font-bold flex items-center justify-center"
           >
             {unreadCount > 9 ? '9+' : unreadCount}
           </motion.span>
@@ -177,7 +177,7 @@ export default function NotificationBell() {
                 <h3 className="text-sm font-bold" style={{ color: '#5D4037' }}>Notificaciones</h3>
                 <div className="flex items-center gap-2">
                   {unreadCount > 0 && (
-                    <button onClick={markAllRead} className="text-[10px] font-medium px-2 py-1 rounded-full" style={{ color: '#7A9E7E', backgroundColor: '#7A9E7E15' }}>
+                    <button onClick={markAllRead} className="text-[11px] font-medium px-2 py-1 rounded-full" style={{ color: '#7A9E7E', backgroundColor: '#7A9E7E15' }}>
                       Marcar leidas
                     </button>
                   )}
@@ -220,7 +220,7 @@ export default function NotificationBell() {
                           {notif.subtitle && (
                             <p className="text-[11px] mt-0.5" style={{ color: '#8A7B6B' }}>{notif.subtitle}</p>
                           )}
-                          <p className="text-[10px] mt-1" style={{ color: '#B0A090' }}>{timeAgo(notif.date)}</p>
+                          <p className="text-[11px] mt-1" style={{ color: '#B0A090' }}>{timeAgo(notif.date)}</p>
                         </div>
                         {!notif.read && (
                           <div className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: config.color }} />

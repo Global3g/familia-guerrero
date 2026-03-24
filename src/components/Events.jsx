@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Calendar, MapPin, Gift, Heart, Users, PartyPopper, Star, Plus, Pencil, Trash2, Save, Loader2, Camera } from 'lucide-react'
-import { upcomingEvents as defaultEvents } from '../data/familyData'
 import { getUpcomingEvents, saveUpcomingEvent, deleteUpcomingEvent, getGalleryPhotos } from '../firebase/familyService'
 import Modal from './Modal'
 
@@ -185,7 +184,7 @@ export default function Events() {
 
   const getEventPhotos = (eventId) => galleryPhotos.filter((p) => p.eventId === eventId)
 
-  const allEvents = events.length > 0 ? events : defaultEvents
+  const allEvents = events
   const today = new Date().toISOString().split('T')[0]
   const upcoming = allEvents.filter((e) => e.date >= today).sort((a, b) => a.date.localeCompare(b.date))
   const past = allEvents.filter((e) => e.date < today).sort((a, b) => b.date.localeCompare(a.date))
@@ -273,9 +272,25 @@ export default function Events() {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {displayEvents.length === 0 && (
-            <div className="col-span-full text-center py-12">
-              <Calendar className="w-10 h-10 mx-auto mb-3 text-[#C4704B]/30" />
-              <p className="text-[#6B5B5B]">No hay eventos {tab === 'proximos' ? 'proximos' : 'pasados'} todavia</p>
+            <div className="col-span-full text-center py-16">
+              <div className="w-16 h-16 rounded-full bg-[#C4704B]/10 flex items-center justify-center mx-auto mb-4">
+                <Calendar className="w-8 h-8 text-[#C4704B]/50" />
+              </div>
+              <p className="text-lg font-serif font-bold text-[#5D4037]/60 mb-2">
+                {tab === 'proximos' ? 'Sin eventos proximos' : 'Sin eventos pasados'}
+              </p>
+              <p className="text-sm text-[#5D4037]/40 mb-6">
+                {tab === 'proximos' ? 'Agrega un evento familiar para que todos esten informados' : 'Los eventos pasados apareceran aqui automaticamente'}
+              </p>
+              {tab === 'proximos' && (
+                <button
+                  onClick={() => setShowCreateForm(true)}
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#C4704B] text-white hover:bg-[#C4704B]/90 transition font-medium shadow-md"
+                >
+                  <Plus className="w-5 h-5" />
+                  Agregar primer evento
+                </button>
+              )}
             </div>
           )}
           {displayEvents.map((event) => {
@@ -297,7 +312,7 @@ export default function Events() {
                 }}
               >
                 {/* Edit/Delete buttons */}
-                <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+                <div className="absolute top-2 right-2 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10">
                   <button onClick={() => setEditingEvent(event)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-[#B8943E]/10 shadow text-[#B8943E] transition">
                     <Pencil className="w-3.5 h-3.5" />
                   </button>
@@ -404,7 +419,7 @@ export default function Events() {
                       <div className="pt-2 border-t" style={{ borderColor: '#F0E8DE' }}>
                         <div className="flex items-center gap-1.5 mb-2">
                           <Camera className="w-3.5 h-3.5" style={{ color: style.accent }} />
-                          <span className="text-[10px] font-semibold uppercase tracking-wider" style={{ color: '#6B5B5B' }}>
+                          <span className="text-[11px] font-semibold uppercase tracking-wider" style={{ color: '#6B5B5B' }}>
                             {photos.length} foto{photos.length > 1 ? 's' : ''}
                           </span>
                         </div>

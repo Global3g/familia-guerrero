@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, Baby, Star, Users, Award, Calendar, Plus, Pencil, Trash2, Save, Loader2, X } from 'lucide-react';
-import { timelineEvents as defaultEvents } from '../data/familyData';
+
 import { getTimelineEvents, saveTimelineEvent, deleteTimelineEvent } from '../firebase/familyService';
 import Modal from './Modal';
 
@@ -153,7 +153,7 @@ function EventCard({ event, config, IconComponent, align, onEdit, onDelete }) {
       }}
     >
       {/* Edit/Delete buttons */}
-      <div className={`absolute top-2 ${align === 'right' ? 'left-2' : 'right-2'} flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10`}>
+      <div className={`absolute top-2 ${align === 'right' ? 'left-2' : 'right-2'} flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10`}>
         <button onClick={onEdit} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-[#B8943E]/10 shadow text-[#B8943E] transition">
           <Pencil className="w-3.5 h-3.5" />
         </button>
@@ -324,7 +324,7 @@ export default function Timeline() {
     }
   }
 
-  const displayEvents = events.length > 0 ? events : defaultEvents
+  const displayEvents = events
 
   const handleSave = async (formData) => {
     const id = editingEvent?.id || null
@@ -363,35 +363,54 @@ export default function Timeline() {
         </motion.div>
 
         {/* Timeline container */}
-        <div className="relative">
-          {/* Desktop center line */}
-          <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#C4704B]/30 via-[#7A9E7E]/30 to-[#5D4037]/10 -translate-x-1/2" />
+        {displayEvents.length > 0 ? (
+          <div className="relative">
+            {/* Desktop center line */}
+            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#C4704B]/30 via-[#7A9E7E]/30 to-[#5D4037]/10 -translate-x-1/2" />
 
-          {/* Mobile left line */}
-          <div className="md:hidden absolute left-[7px] top-0 bottom-0 w-px bg-gradient-to-b from-[#C4704B]/30 via-[#7A9E7E]/30 to-[#5D4037]/10" />
+            {/* Mobile left line */}
+            <div className="md:hidden absolute left-[7px] top-0 bottom-0 w-px bg-gradient-to-b from-[#C4704B]/30 via-[#7A9E7E]/30 to-[#5D4037]/10" />
 
-          {/* Events */}
-          {displayEvents.map((event, index) => (
-            <TimelineEvent
-              key={event.id || index}
-              event={event}
-              index={index}
-              onEdit={() => setEditingEvent(event)}
-              onDelete={() => setDeletingEvent(event)}
-            />
-          ))}
-        </div>
+            {/* Events */}
+            {displayEvents.map((event, index) => (
+              <TimelineEvent
+                key={event.id || index}
+                event={event}
+                index={index}
+                onEdit={() => setEditingEvent(event)}
+                onDelete={() => setDeletingEvent(event)}
+              />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16">
+            <div className="w-16 h-16 rounded-full bg-[#C4704B]/10 flex items-center justify-center mx-auto mb-4">
+              <Calendar className="w-8 h-8 text-[#C4704B]/50" />
+            </div>
+            <p className="text-lg font-serif font-bold text-[#5D4037]/60 mb-2">Sin eventos todavia</p>
+            <p className="text-sm text-[#5D4037]/40 mb-6">Agrega el primer evento de tu historia familiar</p>
+            <button
+              onClick={() => setShowCreateForm(true)}
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#C4704B] text-white hover:bg-[#C4704B]/90 transition font-medium shadow-md"
+            >
+              <Plus className="w-5 h-5" />
+              Agregar primer evento
+            </button>
+          </div>
+        )}
 
         {/* Add event button */}
-        <div className="flex justify-center mt-12">
-          <button
-            onClick={() => setShowCreateForm(true)}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-[#7A9E7E]/40 text-[#7A9E7E] hover:bg-[#7A9E7E]/5 hover:border-[#7A9E7E] transition font-medium"
-          >
-            <Plus className="w-5 h-5" />
-            Agregar evento
-          </button>
-        </div>
+        {displayEvents.length > 0 && (
+          <div className="flex justify-center mt-12">
+            <button
+              onClick={() => setShowCreateForm(true)}
+              className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-[#7A9E7E]/40 text-[#7A9E7E] hover:bg-[#7A9E7E]/5 hover:border-[#7A9E7E] transition font-medium"
+            >
+              <Plus className="w-5 h-5" />
+              Agregar evento
+            </button>
+          </div>
+        )}
       </div>
 
       {/* Event form modals */}

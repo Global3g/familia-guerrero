@@ -179,14 +179,14 @@ function MemorialForm({ isOpen, onClose, data, onSave }) {
             {photoPreview ? (
               <div className="relative">
                 <img src={photoPreview} alt="Preview" className="w-28 h-28 rounded-full object-cover border-4 border-white shadow-md group-hover:opacity-80 transition" />
-                <div className="absolute inset-0 rounded-full flex items-center justify-center bg-black/30 opacity-0 group-hover:opacity-100 transition">
+                <div className="absolute inset-0 rounded-full flex items-center justify-center bg-black/30 sm:opacity-0 sm:group-hover:opacity-100 transition">
                   <Camera className="w-6 h-6 text-white" />
                 </div>
               </div>
             ) : (
               <div className="w-28 h-28 rounded-full border-2 border-dashed border-[#B8943E]/40 flex flex-col items-center justify-center text-[#B8943E] group-hover:border-[#B8943E] transition">
                 <Camera className="w-8 h-8 mb-1" />
-                <span className="text-[10px]">Subir foto</span>
+                <span className="text-[11px]">Subir foto</span>
               </div>
             )}
           </label>
@@ -242,7 +242,7 @@ function MemorialForm({ isOpen, onClose, data, onSave }) {
                     type="text"
                     value={g.caption}
                     onChange={(e) => handleGalleryCaption(i, e.target.value)}
-                    className="w-full mt-1 text-[10px] px-2 py-1 rounded border border-[#D4B96A]/20 bg-white text-[#5D4037] focus:outline-none"
+                    className="w-full mt-1 text-[11px] px-2 py-1 rounded border border-[#D4B96A]/20 bg-white text-[#5D4037] focus:outline-none"
                     placeholder="Descripcion..."
                   />
                 </div>
@@ -359,7 +359,7 @@ export default function Memorial() {
               className="relative bg-white/70 backdrop-blur-sm rounded-3xl border border-[#D4B96A]/20 shadow-lg shadow-[#B8943E]/5 p-8 text-center group hover:shadow-xl hover:shadow-[#B8943E]/10 transition-shadow duration-500"
             >
               {/* Edit/Delete buttons */}
-              <div className="absolute top-3 right-3 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+              <div className="absolute top-3 right-3 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10">
                 <button onClick={() => setEditingMemorial(person)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-[#B8943E]/10 shadow text-[#B8943E] transition">
                   <Pencil className="w-3.5 h-3.5" />
                 </button>
@@ -429,7 +429,7 @@ export default function Memorial() {
               {/* Gallery */}
               {person.gallery && person.gallery.length > 0 && (
                 <div className="mt-6 pt-5 border-t border-[#D4B96A]/15">
-                  <p className="text-[10px] font-semibold text-[#B8943E] uppercase tracking-wider mb-3 flex items-center justify-center gap-1.5">
+                  <p className="text-[11px] font-semibold text-[#B8943E] uppercase tracking-wider mb-3 flex items-center justify-center gap-1.5">
                     <Camera className="w-3.5 h-3.5" />
                     Recuerdos en imagenes
                   </p>
@@ -438,7 +438,7 @@ export default function Memorial() {
                       <div key={gi} className="rounded-lg overflow-hidden border border-[#D4B96A]/15 shadow-sm">
                         <img src={g.photoURL} alt={g.caption || 'Recuerdo'} className="w-full h-20 object-cover" />
                         {g.caption && (
-                          <p className="text-[9px] text-[#5D4037]/60 p-1.5 text-center leading-tight">{g.caption}</p>
+                          <p className="text-[11px] text-[#5D4037]/60 p-1.5 text-center leading-tight">{g.caption}</p>
                         )}
                       </div>
                     ))}
