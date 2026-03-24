@@ -700,26 +700,33 @@ export default function FamilyTree() {
                       </div>
 
                       {/* Tab bar */}
-                      <div className="flex overflow-x-auto border-b border-[#E0D5C8] gap-1 px-6 mb-6">
-                        {[
-                          { key: 'familia', label: 'Familia' },
-                          { key: 'datos', label: 'Datos' },
-                          { key: 'momentos', label: 'Momentos' },
-                          { key: 'galeria', label: 'Galeria' },
-                          { key: 'mensajes', label: 'Mensajes' },
-                        ].map((tab) => (
-                          <button
-                            key={tab.key}
-                            onClick={() => setModalTab(tab.key)}
-                            className={`text-xs font-medium py-2 px-3 rounded-t-lg whitespace-nowrap transition ${
-                              modalTab === tab.key
-                                ? 'bg-white border-b-2 border-[#C4704B] text-[#5D4037]'
-                                : 'text-[#5D4037]/50 hover:text-[#5D4037]/80 hover:bg-white/50'
-                            }`}
-                          >
-                            {tab.label}
-                          </button>
-                        ))}
+                      <div className="sticky top-0 z-20 -mx-6 sm:-mx-8 px-4 sm:px-6 py-2 bg-[#FAF6EE] border-y border-[#E0D5C8] mb-6 shadow-sm">
+                        <div className="flex overflow-x-auto gap-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+                          <style>{`.modal-tabs::-webkit-scrollbar { display: none; }`}</style>
+                          {[
+                            { key: 'familia', label: 'Familia', icon: Users },
+                            { key: 'datos', label: 'Datos', icon: Heart },
+                            { key: 'momentos', label: 'Momentos', icon: Star },
+                            { key: 'galeria', label: 'Galeria', icon: Camera },
+                            { key: 'mensajes', label: 'Mensajes', icon: MessageCircle },
+                          ].map((tab) => {
+                            const TabIcon = tab.icon
+                            return (
+                            <button
+                              key={tab.key}
+                              onClick={() => setModalTab(tab.key)}
+                              className={`flex items-center gap-1.5 text-sm font-medium py-2.5 px-4 rounded-xl whitespace-nowrap transition-all ${
+                                modalTab === tab.key
+                                  ? 'bg-[#C4704B] text-white shadow-md'
+                                  : 'bg-white text-[#5D4037]/60 hover:text-[#5D4037] hover:bg-white/80 border border-[#E0D5C8]/50'
+                              }`}
+                            >
+                              <TabIcon className="w-4 h-4" />
+                              {tab.label}
+                            </button>
+                            )
+                          })}
+                        </div>
                       </div>
 
                       {/* TAB: Familia */}
