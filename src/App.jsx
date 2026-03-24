@@ -21,6 +21,7 @@ import ShareExport from './components/ShareExport'
 import PresentationMode, { PresentationButton } from './components/PresentationMode'
 import ExportTree from './components/ExportTree'
 import Gamification from './components/Gamification'
+import FamilyChat, { ChatButton } from './components/FamilyChat'
 
 // Lazy-loaded heavy components (ReactFlow, Recharts, Leaflet, etc.)
 const InteractiveTree = lazy(() => import('./components/InteractiveTree'))
@@ -47,6 +48,7 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('inicio')
   const [showPresentation, setShowPresentation] = useState(false)
+  const [showChat, setShowChat] = useState(false)
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (u) => {
@@ -236,6 +238,8 @@ function App() {
       )}
 
       <PresentationMode isOpen={showPresentation} onClose={() => setShowPresentation(false)} />
+      <ChatButton onClick={() => setShowChat(!showChat)} />
+      <FamilyChat isOpen={showChat} onClose={() => setShowChat(false)} />
       <Footer />
     </div>
   )
