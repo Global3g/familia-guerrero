@@ -138,7 +138,8 @@
     </div>
     <div id="draft-notice" style="display:none;background:#EBF5EC;border:2px solid #7A9E7E;border-radius:16px;padding:16px;margin-bottom:16px;text-align:center;">
       <p style="font-size:14px;color:#5D4037;font-weight:bold;margin-bottom:4px;">Tienes un formulario guardado</p>
-      <p id="draft-name" style="font-size:13px;color:#7A9E7E;margin-bottom:12px;"></p>
+      <p id="draft-name" style="font-size:13px;color:#7A9E7E;margin-bottom:4px;"></p>
+      <p style="font-size:11px;color:#C4704B;margin-bottom:12px;">Tus datos e hijos se restauran. Las fotos necesitan subirse de nuevo.</p>
       <div style="display:flex;gap:10px;">
         <button class="btn btn-primary" style="flex:1;background:#7A9E7E;" onclick="continueDraft()">Continuar donde me quede</button>
         <button class="btn btn-secondary" style="flex:1;" onclick="clearDraft();document.getElementById('draft-notice').style.display='none'">Empezar de cero</button>
@@ -419,6 +420,23 @@ function saveDraft() {
       const el = document.getElementById(id)
       if (el) data[id] = el.value
     })
+
+    // Save children data dynamically
+    const children = []
+    document.querySelectorAll('[id^="child-name-"]').forEach(el => {
+      const id = el.id.replace('child-name-', '')
+      children.push({
+        id,
+        name: el.value || '',
+        gender: document.getElementById(`child-gender-${id}`)?.value || '',
+        birthDate: document.getElementById(`child-birth-${id}`)?.value || '',
+        nickname: document.getElementById(`child-nick-${id}`)?.value || '',
+        location: document.getElementById(`child-loc-${id}`)?.value || '',
+        bio: document.getElementById(`child-bio-${id}`)?.value || '',
+      })
+    })
+    data._children = children
+
     data._step = currentStep
     data._timestamp = Date.now()
     localStorage.setItem(DRAFT_KEY, JSON.stringify(data))
@@ -453,6 +471,27 @@ function restoreDraft(data) {
     if (data['f-hasSpouse'] === 'si') {
       const sf = document.getElementById('spouse-fields')
       if (sf) sf.style.display = 'block'
+    }
+    // Restore children
+    if (data._children && data._children.length > 0) {
+      data._children.forEach(child => {
+        addChild()
+        const lastId = childCount
+        setTimeout(() => {
+          const nameEl = document.getElementById(`child-name-${lastId}`)
+          if (nameEl) nameEl.value = child.name || ''
+          const genderEl = document.getElementById(`child-gender-${lastId}`)
+          if (genderEl) genderEl.value = child.gender || ''
+          const birthEl = document.getElementById(`child-birth-${lastId}`)
+          if (birthEl) birthEl.value = child.birthDate || ''
+          const nickEl = document.getElementById(`child-nick-${lastId}`)
+          if (nickEl) nickEl.value = child.nickname || ''
+          const locEl = document.getElementById(`child-loc-${lastId}`)
+          if (locEl) locEl.value = child.location || ''
+          const bioEl = document.getElementById(`child-bio-${lastId}`)
+          if (bioEl) bioEl.value = child.bio || ''
+        }, 100)
+      })
     }
   }, 1500) // Wait for parents to load from Firestore
 }
@@ -563,7 +602,7 @@ function showStep(n) {
 }
 
 window.nextStep = function() {
-  // Validate step 1: name, parent, and photo required
+  // Validate step 1: name and parent required
   if (currentStep === 1) {
     const name = document.getElementById('f-name')?.value?.trim()
     const parentId = document.getElementById('f-parentId')?.value
@@ -577,12 +616,14 @@ window.nextStep = function() {
       document.getElementById('f-parentId').focus()
       return
     }
+    // Photo: warn but allow skip
     if (!window.photoFiles['preview-self']) {
-      alert('Tu foto de perfil es obligatoria. Toca el circulo de arriba para subir tu foto.')
-      return
+      if (!confirm('No has subido tu foto de perfil. La foto es muy importante para el arbol familiar.\n\n¿Quieres continuar sin foto? Podras agregarla despues.')) {
+        return
+      }
     }
   }
-  // Validate step 2: spouse photo if spouse selected
+  // Validate step 2: spouse name required if selected
   if (currentStep === 2) {
     const hasSpouse = document.getElementById('f-hasSpouse')?.value
     if (hasSpouse === 'si') {
@@ -591,24 +632,30 @@ window.nextStep = function() {
         alert('Por favor escribe el nombre de tu esposo(a)')
         return
       }
+      // Photo: warn but allow skip
       if (!window.photoFiles['preview-spouse']) {
-        alert('La foto de tu esposo(a) es obligatoria. Toca el circulo para subirla.')
-        return
+        if (!confirm('No has subido la foto de tu esposo(a).\n\n¿Quieres continuar sin foto?')) {
+          return
+        }
       }
     }
   }
-  // Validate step 3: each child must have a photo
+  // Validate step 3: warn about missing child photos
   if (currentStep === 3) {
-    const childCards = document.querySelectorAll('[id^="child-"]')
-    for (const card of childCards) {
-      const childId = card.id.replace('child-', '')
-      const childName = document.getElementById(`child-name-${childId}`)?.value?.trim()
-      if (childName && !window.photoFiles[`preview-child-${childId}`]) {
-        alert(`Falta la foto de ${childName}. Toca el circulo junto a su nombre para subirla.`)
+    const missing = []
+    document.querySelectorAll('[id^="child-name-"]').forEach(el => {
+      const id = el.id.replace('child-name-', '')
+      const name = el.value?.trim()
+      if (name && !window.photoFiles[`preview-child-${id}`]) missing.push(name)
+    })
+    if (missing.length > 0) {
+      if (!confirm(`Falta la foto de: ${missing.join(', ')}.\n\n¿Quieres continuar sin sus fotos?`)) {
         return
       }
     }
   }
+  // Save draft on every step change
+  saveDraft()
   if (currentStep === 3) buildChildSpouses()
   if (currentStep === 4) buildGrandchildren()
   if (currentStep === 7) buildSummary()
