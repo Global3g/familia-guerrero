@@ -354,6 +354,13 @@ export default function FamilyTree() {
 
   const loadMembers = async () => {
     const data = await getFamilyMembers()
+    // Sort by birthDate (oldest first)
+    data.sort((a, b) => {
+      if (!a.birthDate && !b.birthDate) return 0
+      if (!a.birthDate) return 1
+      if (!b.birthDate) return -1
+      return a.birthDate.localeCompare(b.birthDate)
+    })
     setMembers(data)
   }
 
