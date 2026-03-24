@@ -74,7 +74,7 @@ function SpouseBlock({ spouse, onChange, colors }) {
           </div>
           {expanded ? <ChevronDown className="w-3.5 h-3.5 text-[#5D4037]/40" /> : <ChevronRight className="w-3.5 h-3.5 text-[#5D4037]/40" />}
         </button>
-        <button type="button" onClick={() => onChange(null)} className="p-1 rounded text-red-300 hover:text-red-600 transition ml-1">
+        <button type="button" onClick={() => { if (confirm('¿Eliminar esposo(a)?')) onChange(null) }} className="p-1 rounded text-red-300 hover:text-red-600 transition ml-1">
           <Trash2 className="h-3.5 w-3.5" />
         </button>
       </div>
@@ -174,6 +174,8 @@ function PersonBlock({ person, index, depth, onChange, onRemove }) {
   }
 
   const handleRemoveChild = (ci) => {
+    const name = personChildren[ci]?.name || 'esta persona'
+    if (!confirm(`¿Eliminar a ${name}? Esta accion no se puede deshacer.`)) return
     onChange(index, { ...person, children: personChildren.filter((_, i) => i !== ci) })
   }
 
@@ -235,7 +237,7 @@ function PersonBlock({ person, index, depth, onChange, onRemove }) {
         </button>
         <button
           type="button"
-          onClick={() => onRemove(index)}
+          onClick={() => { if (confirm(`¿Eliminar a ${person.name || 'esta persona'}?`)) onRemove(index) }}
           className="p-1.5 rounded-lg text-red-300 hover:text-red-600 hover:bg-red-50 transition ml-2"
         >
           <Trash2 className="h-4 w-4" />
@@ -490,6 +492,8 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
   }
 
   const handleRemoveChild = (index) => {
+    const name = form.children[index]?.name || 'esta persona'
+    if (!confirm(`¿Eliminar a ${name}?`)) return
     setForm((prev) => ({
       ...prev,
       children: prev.children.filter((_, i) => i !== index),
@@ -511,6 +515,7 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
     }))
   }
   const handleRemoveMoment = (index) => {
+    if (!confirm('¿Eliminar este momento?')) return
     setForm((prev) => ({
       ...prev,
       moments: prev.moments.filter((_, i) => i !== index),
@@ -531,6 +536,7 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
     }))
   }
   const handleRemoveGalleryItem = (index) => {
+    if (!confirm('¿Eliminar esta foto?')) return
     setForm((prev) => ({
       ...prev,
       gallery: prev.gallery.filter((_, i) => i !== index),
@@ -561,6 +567,7 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
     }))
   }
   const handleRemoveMessage = (index) => {
+    if (!confirm('¿Eliminar este mensaje?')) return
     setForm((prev) => ({
       ...prev,
       messages: prev.messages.filter((_, i) => i !== index),

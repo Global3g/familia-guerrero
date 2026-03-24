@@ -137,6 +137,7 @@ export default function Traditions() {
   }
 
   const handleDeleteValue = async (v) => {
+    if (!confirm(`¿Eliminar "${v.value || 'este valor'}"?`)) return
     if (v.id && !v.id.startsWith('default')) {
       await deleteValue(v.id)
       await loadData()

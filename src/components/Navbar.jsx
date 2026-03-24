@@ -29,7 +29,7 @@ export default function Navbar({ user, onLogout }) {
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center justify-between h-16 sm:h-20">
+        <div className="flex items-center h-16 sm:h-20">
           {/* Logo / Title */}
           <a
             href="#"
@@ -37,7 +37,7 @@ export default function Navbar({ user, onLogout }) {
               e.preventDefault()
               window.scrollTo({ top: 0, behavior: 'smooth' })
             }}
-            className="flex items-center gap-2 group"
+            className="flex items-center gap-2 group flex-1"
           >
             <Heart
               className={`w-5 h-5 transition-colors duration-500 ${

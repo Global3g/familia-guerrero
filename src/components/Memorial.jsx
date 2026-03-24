@@ -130,6 +130,7 @@ function MemorialForm({ isOpen, onClose, data, onSave }) {
   }
 
   const handleRemoveGalleryPhoto = (index) => {
+    if (!confirm('¿Eliminar esta foto?')) return
     setForm(p => ({ ...p, gallery: p.gallery.filter((_, i) => i !== index) }))
   }
 

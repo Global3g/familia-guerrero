@@ -2,7 +2,7 @@ import { useState, useEffect, lazy, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { auth } from './firebase/config'
-import { Home, GitBranch, Clock, Users, Heart } from 'lucide-react'
+import { Home, GitBranch, Clock, Users, Heart, Star } from 'lucide-react'
 import Login from './components/Login'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -33,6 +33,7 @@ const tabs = [
   { id: 'arbol', label: 'Arbol', icon: GitBranch },
   { id: 'historia', label: 'Historia', icon: Clock },
   { id: 'familia', label: 'Familia', icon: Users },
+  { id: 'homenaje', label: 'Homenaje', icon: Star },
   { id: 'recuerdos', label: 'Recuerdos', icon: Heart },
 ]
 
@@ -99,7 +100,7 @@ function App() {
       </div>
 
       {/* Progress bar */}
-      <div className="max-w-4xl mx-auto px-4 pt-4">
+      <div className="max-w-4xl mx-auto px-4 pt-20">
         <FamilyProgress />
       </div>
 
@@ -166,6 +167,17 @@ function App() {
         </motion.div>
       )}
 
+      {activeTab === 'homenaje' && (
+        <motion.div
+          key="homenaje"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Memorial />
+        </motion.div>
+      )}
+
       {activeTab === 'recuerdos' && (
         <motion.div
           key="recuerdos"
@@ -173,7 +185,6 @@ function App() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <Memorial />
           <Suspense fallback={<div className="flex justify-center py-20"><div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#C4704B', borderTopColor: 'transparent' }} /></div>}>
             <FamilyQuotes />
           </Suspense>
