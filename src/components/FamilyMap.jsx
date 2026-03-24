@@ -37,6 +37,10 @@ const CITY_COORDS = {
   'wisconsin': [43.7844, -88.7879],
   'phoenix': [33.4484, -112.0740],
   'san diego': [32.7157, -117.1611],
+  'san francisco': [37.7749, -122.4194],
+  'san francisco california': [37.7749, -122.4194],
+  'san francisco california usa': [37.7749, -122.4194],
+  'queretaro': [20.5888, -100.3899],
   'denver': [39.7392, -104.9903],
   'madrid': [40.4168, -3.7038],
   'barcelona': [41.3874, 2.1686],
@@ -44,7 +48,7 @@ const CITY_COORDS = {
 
 function getCoords(locationName) {
   if (!locationName) return null;
-  const key = locationName.toLowerCase().trim();
+  const key = locationName.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim();
   if (CITY_COORDS[key]) return CITY_COORDS[key];
   // Try partial match
   for (const [k, v] of Object.entries(CITY_COORDS)) {
