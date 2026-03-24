@@ -79,6 +79,7 @@ function GrandparentsPair({ grandparentsData }) {
         <div className="flex flex-col items-center gap-1.5">
           <PersonCircle name={grandfather.fullName || grandfather.name} photo={grandfather.photoURL || grandfather.photo} size="lg" />
           <p className="text-lg font-serif font-bold text-[#5D4037] text-center leading-tight">{grandfather.fullName || grandfather.name}</p>
+          {grandfather.nickname && <p className="text-xs text-[#C4704B] font-medium italic">"{grandfather.nickname}"</p>}
           <p className="text-xs text-[#7A9E7E] font-medium">{grandfather.role}</p>
           <AgeBadge birthDate={grandfather.birthDate} deathDate={grandfather.deathDate} />
         </div>
@@ -89,6 +90,7 @@ function GrandparentsPair({ grandparentsData }) {
         <div className="flex flex-col items-center gap-1.5">
           <PersonCircle name={grandmother.fullName || grandmother.name} photo={grandmother.photoURL || grandmother.photo} size="lg" />
           <p className="text-lg font-serif font-bold text-[#5D4037] text-center leading-tight">{grandmother.fullName || grandmother.name}</p>
+          {grandmother.nickname && <p className="text-xs text-[#C4704B] font-medium italic">"{grandmother.nickname}"</p>}
           <p className="text-xs text-[#7A9E7E] font-medium">{grandmother.role}</p>
           <AgeBadge birthDate={grandmother.birthDate} deathDate={grandmother.deathDate} />
         </div>

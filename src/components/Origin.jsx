@@ -92,6 +92,12 @@ const ProfileCard = ({ person, index, onEdit }) => {
             })()}
           </h3>
 
+          {person.nickname && (
+            <p className="text-sm font-medium italic mb-1" style={{ color: isGrandfather ? '#C4704B' : '#7A9E7E' }}>
+              "{person.nickname}"
+            </p>
+          )}
+
           <span
             className="inline-block text-sm font-semibold tracking-wider uppercase mb-4 px-3 py-1 rounded-full"
             style={{
