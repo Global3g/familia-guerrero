@@ -3,8 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { MessageCircle, Send, X } from 'lucide-react'
 import { db, auth } from '../firebase/config'
 import { collection, addDoc, onSnapshot, query, orderBy, limit } from 'firebase/firestore'
+import sounds from '../utils/sounds'
 
-export function ChatButton({ onClick, unread }) {
+function ChatButton({ onClick, unread }) {
   return (
     <button
       onClick={onClick}
@@ -20,11 +21,18 @@ export function ChatButton({ onClick, unread }) {
   )
 }
 
-export default function FamilyChat({ isOpen, onClose }) {
+export default function FamilyChat() {
+  const [isOpen, setIsOpen] = useState(false)
   const [messages, setMessages] = useState([])
   const [newMessage, setNewMessage] = useState('')
+  const [lastReadCount, setLastReadCount] = useState(0)
+  const [unreadCount, setUnreadCount] = useState(0)
   const messagesEndRef = useRef(null)
   const inputRef = useRef(null)
+  const isOpenRef = useRef(false)
+  const prevCountRef = useRef(0)
+
+  useEffect(() => { isOpenRef.current = isOpen }, [isOpen])
 
   useEffect(() => {
     const q = query(
@@ -38,6 +46,11 @@ export default function FamilyChat({ isOpen, onClose }) {
         id: doc.id,
         ...doc.data(),
       }))
+      const newCount = msgs.length
+      if (!isOpenRef.current && newCount > prevCountRef.current && prevCountRef.current > 0) {
+        sounds.click()
+      }
+      prevCountRef.current = newCount
       setMessages(msgs)
     })
 
@@ -49,10 +62,23 @@ export default function FamilyChat({ isOpen, onClose }) {
   }, [messages])
 
   useEffect(() => {
+    if (!isOpen && messages.length > lastReadCount) {
+      setUnreadCount(messages.length - lastReadCount)
+    }
+    if (isOpen) {
+      setLastReadCount(messages.length)
+      setUnreadCount(0)
+    }
+  }, [messages.length, isOpen])
+
+  useEffect(() => {
     if (isOpen) {
       inputRef.current?.focus()
     }
   }, [isOpen])
+
+  const handleToggle = () => setIsOpen((prev) => !prev)
+  const handleClose = () => setIsOpen(false)
 
   const handleSend = async (e) => {
     e.preventDefault()
@@ -85,14 +111,16 @@ export default function FamilyChat({ isOpen, onClose }) {
   const currentEmail = auth.currentUser?.email
 
   return (
-    <AnimatePresence>
-      {isOpen && (
+    <>
+      {!isOpen && <ChatButton onClick={handleToggle} unread={unreadCount} />}
+      <AnimatePresence>
+        {isOpen && (
         <motion.div
           initial={{ y: 600, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 600, opacity: 0 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="fixed bottom-6 right-6 z-50 w-80 sm:w-96 h-[500px] bg-[#FFF8F0] rounded-t-2xl shadow-2xl flex flex-col overflow-hidden"
+          className="fixed bottom-6 right-6 z-50 w-80 sm:w-96 h-[500px] bg-[#FFF8F0] rounded-2xl shadow-2xl flex flex-col overflow-hidden"
         >
           {/* Header */}
           <div className="bg-[#5D4037] text-white px-4 py-3 flex items-center justify-between rounded-t-2xl shrink-0">
@@ -101,7 +129,7 @@ export default function FamilyChat({ isOpen, onClose }) {
               <span className="font-semibold text-lg">Chat Familiar</span>
             </div>
             <button
-              onClick={onClose}
+              onClick={handleClose}
               className="hover:bg-white/20 rounded-full p-1 transition"
             >
               <X className="w-5 h-5" />
@@ -175,5 +203,6 @@ export default function FamilyChat({ isOpen, onClose }) {
         </motion.div>
       )}
     </AnimatePresence>
+    </>
   )
 }

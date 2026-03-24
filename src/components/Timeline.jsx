@@ -424,7 +424,7 @@ export default function Timeline() {
           <div className="flex items-center justify-center gap-3 mb-4">
             <Calendar size={28} className="text-[#C4704B]" />
           </div>
-          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-[#5D4037] tracking-tight">
+          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[#5D4037] tracking-tight">
             Nuestra Historia
           </h2>
           <div className="mt-4 mx-auto w-24 h-1 rounded-full bg-gradient-to-r from-[#7A9E7E] to-[#C4704B]" />

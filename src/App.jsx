@@ -21,7 +21,7 @@ import ShareExport from './components/ShareExport'
 import PresentationMode, { PresentationButton } from './components/PresentationMode'
 import ExportTree from './components/ExportTree'
 import Gamification from './components/Gamification'
-import FamilyChat, { ChatButton } from './components/FamilyChat'
+import FamilyChat from './components/FamilyChat'
 
 // Lazy-loaded heavy components (ReactFlow, Recharts, Leaflet, etc.)
 const InteractiveTree = lazy(() => import('./components/InteractiveTree'))
@@ -48,7 +48,6 @@ function App() {
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('inicio')
   const [showPresentation, setShowPresentation] = useState(false)
-  const [showChat, setShowChat] = useState(false)
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (u) => {
@@ -73,11 +72,31 @@ function App() {
 
   if (loading) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-cream">
-        <div className="text-center">
-          <div className="inline-block w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#C4704B', borderTopColor: 'transparent' }} />
-          <p className="mt-3 text-sm" style={{ color: '#5D4037' }}>Cargando...</p>
-        </div>
+      <div className="min-h-screen flex flex-col items-center justify-center bg-cream">
+        <motion.div
+          initial={{ opacity: 0, scale: 0.8 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1] }}
+          className="text-center"
+        >
+          <img src="/logo.svg" alt="FG" className="w-20 h-20 mx-auto mb-4" />
+          <motion.h1
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3, duration: 0.6 }}
+            className="text-2xl font-serif font-bold"
+            style={{ color: '#5D4037' }}
+          >
+            Familia Guerrero
+          </motion.h1>
+          <motion.div
+            initial={{ width: 0 }}
+            animate={{ width: 120 }}
+            transition={{ delay: 0.6, duration: 1, ease: 'easeInOut' }}
+            className="h-0.5 rounded-full mx-auto mt-3"
+            style={{ backgroundColor: '#C4704B' }}
+          />
+        </motion.div>
       </div>
     )
   }
@@ -147,6 +166,9 @@ function App() {
           </div>
           <Origin />
           <ShareExport />
+          <div className="flex justify-center py-4">
+            <PresentationButton onClick={() => setShowPresentation(true)} />
+          </div>
         </motion.div>
       )}
 
@@ -238,8 +260,7 @@ function App() {
       )}
 
       <PresentationMode isOpen={showPresentation} onClose={() => setShowPresentation(false)} />
-      <ChatButton onClick={() => setShowChat(!showChat)} />
-      <FamilyChat isOpen={showChat} onClose={() => setShowChat(false)} />
+      <FamilyChat />
       <Footer />
     </div>
   )

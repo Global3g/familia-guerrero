@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" fill="none">
+  <circle cx="60" cy="60" r="56" fill="#C4704B" opacity="0.1"/>
+  <circle cx="60" cy="60" r="48" stroke="#C4704B" stroke-width="2" opacity="0.3"/>
+  <text x="28" y="72" font-family="Georgia, serif" font-size="42" font-weight="bold" fill="#5D4037">F</text>
+  <text x="62" y="72" font-family="Georgia, serif" font-size="42" font-weight="bold" fill="#C4704B">G</text>
+  <path d="M60 85 C60 85, 50 78, 50 73 C50 70, 53 68, 55 70 C57 72, 60 75, 60 75 C60 75, 63 72, 65 70 C67 68, 70 70, 70 73 C70 78, 60 85, 60 85Z" fill="#C4704B" opacity="0.6"/>
+</svg>

@@ -110,7 +110,7 @@ export default function Login() {
         {/* Header */}
         <div className="text-center mb-8">
           <div className="w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg" style={{ background: 'linear-gradient(135deg, #C4704B, #B8943E)' }}>
-            <Heart className="w-10 h-10 text-white fill-white" />
+            <img src="/logo.svg" alt="Familia Guerrero" className="w-14 h-14" />
           </div>
           <h1 className="text-3xl font-serif font-bold" style={{ color: '#5D4037' }}>Familia Guerrero</h1>
           <p className="text-sm mt-1" style={{ color: '#8A7B6B' }}>Preservando nuestro legado</p>

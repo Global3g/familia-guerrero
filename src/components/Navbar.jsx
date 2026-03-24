@@ -40,12 +40,7 @@ export default function Navbar({ user, isAdmin, onLogout }) {
             }}
             className="flex items-center gap-2 group flex-1"
           >
-            <Heart
-              className={`w-5 h-5 transition-colors duration-500 ${
-                scrolled ? 'text-[#C4704B]' : 'text-[#FDF8F0]'
-              } group-hover:text-[#B8943E]`}
-              fill="currentColor"
-            />
+            <img src="/logo.svg" alt="FG" className="w-7 h-7" />
             <span
               className={`font-serif text-xl sm:text-2xl font-bold tracking-wide transition-colors duration-500 ${
                 scrolled ? 'text-[#5D4037]' : 'text-[#FDF8F0]'

@@ -233,8 +233,8 @@ export default function Events() {
             Agenda Familiar
           </span>
           <h2
-            className="text-4xl md:text-5xl font-serif font-bold mb-4"
-            style={{ color: '#3D2C2C', fontFamily: "'Playfair Display', serif" }}
+            className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold mb-4"
+            style={{ color: '#5D4037', fontFamily: "'Playfair Display', serif" }}
           >
             Agenda Familiar
           </h2>
