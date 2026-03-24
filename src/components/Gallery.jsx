@@ -292,75 +292,89 @@ export default function Gallery() {
           <p className="text-sm text-[#5D4037]/50">Arrastra fotos aqui o haz clic para agregar</p>
         </div>
 
-        {/* Masonry grid */}
+        {/* Masonry grid grouped by year */}
         {loading ? (
           <SkeletonGallery count={6} />
         ) : (
-        <motion.div
-          layout
-          className="columns-1 sm:columns-2 lg:columns-3 gap-5 space-y-5"
-        >
-          <AnimatePresence mode="popLayout">
-            {filteredPhotos.map((photo, idx) => (
-              <motion.div
-                key={photo.id}
-                layout
-                initial={{ opacity: 0, scale: 0.9 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.9 }}
-                transition={{ duration: 0.4, delay: idx * 0.05 }}
-                className="break-inside-avoid mb-5"
-              >
-                <div
-                  className="group relative rounded-xl overflow-hidden shadow-md cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
-                  style={{ backgroundColor: '#fff' }}
-                >
-                  {/* Edit/Delete buttons */}
-                  <div className="absolute top-2 left-2 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-20">
-                    <button onClick={(e) => { e.stopPropagation(); setEditingPhoto(photo); }} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-[#B8943E]/10 shadow text-[#B8943E] transition">
-                      <Pencil className="w-3.5 h-3.5" />
-                    </button>
-                    <button onClick={(e) => { e.stopPropagation(); setDeletingPhoto(photo); }} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-red-50 shadow text-red-400 hover:text-red-600 transition">
-                      <Trash2 className="w-3.5 h-3.5" />
-                    </button>
-                  </div>
+        (() => {
+          const photosByYear = {}
+          filteredPhotos.forEach(p => {
+            const year = p.year || 'Sin año'
+            if (!photosByYear[year]) photosByYear[year] = []
+            photosByYear[year].push(p)
+          })
+          const sortedYears = Object.keys(photosByYear).sort((a, b) => b - a)
 
-                  {/* Photo area */}
-                  <div
-                    onClick={() => setSelectedPhoto(photo)}
-                    className={`${heights[idx % heights.length]} w-full relative flex items-center justify-center ${photo.photoURL ? '' : `bg-gradient-to-br ${gradients[idx % gradients.length]}`}`}
-                  >
-                    {photo.photoURL ? (
-                      <img src={photo.photoURL} alt={photo.caption} className="w-full h-full object-cover" />
-                    ) : (
-                      <Camera className="w-10 h-10 transition-transform duration-300 group-hover:scale-110" style={{ color: 'rgba(255,255,255,0.6)' }} />
-                    )}
+          return sortedYears.map(year => (
+            <div key={year} className="mb-8">
+              <h3 className="text-lg font-serif font-bold text-[#5D4037] mb-3 flex items-center gap-2">
+                <span className="text-sm px-2 py-0.5 rounded-full bg-[#C4704B] text-white">{year}</span>
+              </h3>
+              <div className="columns-1 sm:columns-2 lg:columns-3 gap-5 space-y-5">
+                <AnimatePresence mode="popLayout">
+                  {photosByYear[year].map((photo, idx) => (
+                    <motion.div
+                      key={photo.id}
+                      layout
+                      initial={{ opacity: 0, scale: 0.9 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.9 }}
+                      transition={{ duration: 0.4, delay: idx * 0.05 }}
+                      className="break-inside-avoid mb-5"
+                    >
+                      <div
+                        className="group relative rounded-xl overflow-hidden shadow-md cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1"
+                        style={{ backgroundColor: '#fff' }}
+                      >
+                        {/* Edit/Delete buttons */}
+                        <div className="absolute top-2 left-2 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-20">
+                          <button onClick={(e) => { e.stopPropagation(); setEditingPhoto(photo); }} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-[#B8943E]/10 shadow text-[#B8943E] transition">
+                            <Pencil className="w-3.5 h-3.5" />
+                          </button>
+                          <button onClick={(e) => { e.stopPropagation(); setDeletingPhoto(photo); }} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-red-50 shadow text-red-400 hover:text-red-600 transition">
+                            <Trash2 className="w-3.5 h-3.5" />
+                          </button>
+                        </div>
 
-                    {/* Hover overlay */}
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
-                      <ZoomIn className="w-8 h-8 text-white sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300" />
-                    </div>
+                        {/* Photo area */}
+                        <div
+                          onClick={() => setSelectedPhoto(photo)}
+                          className={`${heights[idx % heights.length]} w-full relative flex items-center justify-center ${photo.photoURL ? '' : `bg-gradient-to-br ${gradients[idx % gradients.length]}`}`}
+                        >
+                          {photo.photoURL ? (
+                            <img src={photo.photoURL} alt={photo.caption} className="w-full h-full object-cover" />
+                          ) : (
+                            <Camera className="w-10 h-10 transition-transform duration-300 group-hover:scale-110" style={{ color: 'rgba(255,255,255,0.6)' }} />
+                          )}
 
-                    {/* Year badge */}
-                    <span className="absolute top-3 right-3 text-xs font-bold px-2.5 py-1 rounded-full" style={{ backgroundColor: 'rgba(255,255,255,0.9)', color: '#C4704B' }}>
-                      {photo.year}
-                    </span>
-                  </div>
+                          {/* Hover overlay */}
+                          <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
+                            <ZoomIn className="w-8 h-8 text-white sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300" />
+                          </div>
 
-                  {/* Caption */}
-                  <div className="p-4" onClick={() => setSelectedPhoto(photo)}>
-                    <p className="text-sm font-medium leading-snug" style={{ color: '#3D2C2C' }}>
-                      {photo.caption}
-                    </p>
-                    <span className="inline-block mt-2 text-xs font-medium capitalize px-2 py-0.5 rounded-full" style={{ backgroundColor: '#F0E8DE', color: '#7A9E7E' }}>
-                      {photo.category}
-                    </span>
-                  </div>
-                </div>
-              </motion.div>
-            ))}
-          </AnimatePresence>
-        </motion.div>
+                          {/* Year badge */}
+                          <span className="absolute top-3 right-3 text-xs font-bold px-2.5 py-1 rounded-full" style={{ backgroundColor: 'rgba(255,255,255,0.9)', color: '#C4704B' }}>
+                            {photo.year}
+                          </span>
+                        </div>
+
+                        {/* Caption */}
+                        <div className="p-4" onClick={() => setSelectedPhoto(photo)}>
+                          <p className="text-sm font-medium leading-snug" style={{ color: '#3D2C2C' }}>
+                            {photo.caption}
+                          </p>
+                          <span className="inline-block mt-2 text-xs font-medium capitalize px-2 py-0.5 rounded-full" style={{ backgroundColor: '#F0E8DE', color: '#7A9E7E' }}>
+                            {photo.category}
+                          </span>
+                        </div>
+                      </div>
+                    </motion.div>
+                  ))}
+                </AnimatePresence>
+              </div>
+            </div>
+          ))
+        })()
         )}
 
         {/* Empty state */}

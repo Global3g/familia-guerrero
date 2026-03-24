@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Menu, X, Heart, LogOut } from 'lucide-react'
+import AdminBadge from './AdminBadge'
 import NotificationBell from './NotificationBell'
 import DarkModeToggle from './DarkModeToggle'
 import SearchBar from './SearchBar'
 
-export default function Navbar({ user, onLogout }) {
+export default function Navbar({ user, isAdmin, onLogout }) {
   const [scrolled, setScrolled] = useState(false)
   const [mobileOpen, setMobileOpen] = useState(false)
 
@@ -55,6 +56,7 @@ export default function Navbar({ user, onLogout }) {
             {user?.displayName && (
               <span className={`hidden sm:inline text-xs font-sans ml-2 transition-colors duration-500 ${scrolled ? 'text-[#5D4037]/50' : 'text-[#FDF8F0]/50'}`}>
                 Hola, {user.displayName.split(' ')[0]}
+                {isAdmin && <AdminBadge />}
               </span>
             )}
           </a>

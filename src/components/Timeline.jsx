@@ -341,6 +341,7 @@ export default function Timeline() {
   const [editingEvent, setEditingEvent] = useState(null)
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [deletingEvent, setDeletingEvent] = useState(null)
+  const [filterType, setFilterType] = useState('todos')
 
   useEffect(() => {
     loadEvents()
@@ -391,6 +392,7 @@ export default function Timeline() {
   }
 
   const displayEvents = events
+  const filteredEvents = filterType === 'todos' ? displayEvents : displayEvents.filter(e => e.type === filterType)
 
   const handleSave = async (formData) => {
     const id = editingEvent?.id || null
@@ -428,8 +430,26 @@ export default function Timeline() {
           <div className="mt-4 mx-auto w-24 h-1 rounded-full bg-gradient-to-r from-[#7A9E7E] to-[#C4704B]" />
         </motion.div>
 
+        {/* Filter buttons */}
+        <div className="flex flex-wrap justify-center gap-2 mb-8">
+          {['todos', 'nacimiento', 'boda', 'memorial', 'reunion', 'aniversario'].map(type => (
+            <button
+              key={type}
+              onClick={() => setFilterType(type)}
+              className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${
+                filterType === type
+                  ? 'text-white shadow-md'
+                  : 'bg-white text-[#5D4037]/60 border border-[#E0D5C8] hover:bg-[#FAF6EE]'
+              }`}
+              style={filterType === type ? { backgroundColor: type === 'todos' ? '#5D4037' : (typeConfig[type]?.color || '#5D4037') } : {}}
+            >
+              {type === 'todos' ? 'Todos' : (typeConfig[type]?.label || type)}
+            </button>
+          ))}
+        </div>
+
         {/* Timeline container */}
-        {displayEvents.length > 0 ? (
+        {filteredEvents.length > 0 ? (
           <div className="relative">
             {/* Desktop center line */}
             <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#C4704B]/30 via-[#7A9E7E]/30 to-[#5D4037]/10 -translate-x-1/2" />
@@ -438,7 +458,7 @@ export default function Timeline() {
             <div className="md:hidden absolute left-[7px] top-0 bottom-0 w-px bg-gradient-to-b from-[#C4704B]/30 via-[#7A9E7E]/30 to-[#5D4037]/10" />
 
             {/* Events */}
-            {displayEvents.map((event, index) => (
+            {filteredEvents.map((event, index) => (
               <TimelineEvent
                 key={event.id || index}
                 event={event}
@@ -466,7 +486,7 @@ export default function Timeline() {
         )}
 
         {/* Add event button */}
-        {displayEvents.length > 0 && (
+        {filteredEvents.length > 0 && (
           <div className="flex justify-center mt-12">
             <button
               onClick={() => setShowCreateForm(true)}

@@ -5,6 +5,7 @@ export default function Footer() {
     <footer
       className="relative py-20 overflow-hidden"
       style={{ backgroundColor: "#5D4037" }}
+      aria-label="Pie de pagina"
     >
       {/* Subtle warm glow */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[30rem] h-40 rounded-full bg-[#B8943E] opacity-[0.06] blur-[80px] pointer-events-none" />

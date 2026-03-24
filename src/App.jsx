@@ -20,6 +20,7 @@ import Onboarding from './components/Onboarding'
 import ShareExport from './components/ShareExport'
 import PresentationMode, { PresentationButton } from './components/PresentationMode'
 import ExportTree from './components/ExportTree'
+import Gamification from './components/Gamification'
 
 // Lazy-loaded heavy components (ReactFlow, Recharts, Leaflet, etc.)
 const InteractiveTree = lazy(() => import('./components/InteractiveTree'))
@@ -42,6 +43,7 @@ const tabs = [
 
 function App() {
   const [user, setUser] = useState(null)
+  const [isAdmin, setIsAdmin] = useState(false)
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('inicio')
   const [showPresentation, setShowPresentation] = useState(false)
@@ -49,6 +51,8 @@ function App() {
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (u) => {
       setUser(u)
+      // Admin check - the first registered user (gusguecas@gmail.com) is admin
+      setIsAdmin(u?.email === 'gusguecas@gmail.com')
       setLoading(false)
     })
     return unsubscribe
@@ -80,7 +84,7 @@ function App() {
 
   return (
     <div className="min-h-screen bg-cream">
-      <Navbar user={user} onLogout={() => signOut(auth)} />
+      <Navbar user={user} isAdmin={isAdmin} onLogout={() => signOut(auth)} />
 
       {/* Tab Bar */}
       <div className="sticky top-16 z-40 bg-white/90 backdrop-blur-md border-b border-gray-200">
@@ -198,6 +202,9 @@ function App() {
             <Reminders />
             <FamilyMap />
             <Bloodline />
+            <div className="max-w-6xl mx-auto px-4">
+              <Gamification />
+            </div>
           </Suspense>
         </motion.div>
       )}

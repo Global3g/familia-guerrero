@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useMemo } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Heart, Users, User, Plus, Pencil, Trash2, Eye, AlertTriangle, ArrowRightLeft, Calendar, Home, MapPin, Star, Camera, MessageCircle } from 'lucide-react'
 import { grandparents as defaultGrandparents } from '../data/familyData'
@@ -405,6 +405,32 @@ export default function FamilyTree() {
     }
   }
 
+  const familyStats = useMemo(() => {
+    const hasSpouse = (p) => p.spouse && (typeof p.spouse === 'object' ? p.spouse.name : p.spouse) ? 1 : 0
+
+    const hijos = members.length
+    const espososHijos = members.reduce((s, c) => s + hasSpouse(c), 0)
+
+    const nietos = members.reduce((s, c) => s + (c.children?.length || 0), 0)
+    const espososNietos = members.reduce((s, c) =>
+      s + (c.children || []).reduce((s2, gc) => s2 + hasSpouse(gc), 0), 0)
+
+    const bisnietos = members.reduce((s, c) =>
+      s + (c.children || []).reduce((s2, gc) => s2 + (gc.children?.length || 0), 0), 0)
+    const espososBisnietos = members.reduce((s, c) =>
+      s + (c.children || []).reduce((s2, gc) =>
+        s2 + (gc.children || []).reduce((s3, bgc) => s3 + hasSpouse(bgc), 0), 0), 0)
+
+    const totalPersonas = 2 + hijos + espososHijos + nietos + espososNietos + bisnietos + espososBisnietos
+
+    return [
+      { label: 'Hijos', value: `${hijos}`, sub: espososHijos > 0 ? `+ ${espososHijos} conyuges` : '' },
+      { label: 'Nietos', value: `${nietos}`, sub: espososNietos > 0 ? `+ ${espososNietos} conyuges` : '' },
+      ...(bisnietos > 0 ? [{ label: 'Bisnietos', value: `${bisnietos}`, sub: espososBisnietos > 0 ? `+ ${espososBisnietos} conyuges` : '' }] : []),
+      { label: 'Total familia', value: `${totalPersonas}`, sub: '' },
+    ]
+  }, [members])
+
   const handleMovePerson = async (target) => {
     if (!movingPerson) return
     const { person, parentId, childIndex, grandchildIndex } = movingPerson
@@ -547,31 +573,7 @@ export default function FamilyTree() {
             transition={{ duration: 0.6, delay: 0.5 }}
             className="mt-16 flex flex-wrap justify-center gap-6 sm:gap-10"
           >
-            {(() => {
-              const hasSpouse = (p) => p.spouse && (typeof p.spouse === 'object' ? p.spouse.name : p.spouse) ? 1 : 0
-
-              const hijos = members.length
-              const espososHijos = members.reduce((s, c) => s + hasSpouse(c), 0)
-
-              const nietos = members.reduce((s, c) => s + (c.children?.length || 0), 0)
-              const espososNietos = members.reduce((s, c) =>
-                s + (c.children || []).reduce((s2, gc) => s2 + hasSpouse(gc), 0), 0)
-
-              const bisnietos = members.reduce((s, c) =>
-                s + (c.children || []).reduce((s2, gc) => s2 + (gc.children?.length || 0), 0), 0)
-              const espososBisnietos = members.reduce((s, c) =>
-                s + (c.children || []).reduce((s2, gc) =>
-                  s2 + (gc.children || []).reduce((s3, bgc) => s3 + hasSpouse(bgc), 0), 0), 0)
-
-              const totalPersonas = 2 + hijos + espososHijos + nietos + espososNietos + bisnietos + espososBisnietos
-
-              return [
-                { label: 'Hijos', value: `${hijos}`, sub: espososHijos > 0 ? `+ ${espososHijos} conyuges` : '' },
-                { label: 'Nietos', value: `${nietos}`, sub: espososNietos > 0 ? `+ ${espososNietos} conyuges` : '' },
-                ...(bisnietos > 0 ? [{ label: 'Bisnietos', value: `${bisnietos}`, sub: espososBisnietos > 0 ? `+ ${espososBisnietos} conyuges` : '' }] : []),
-                { label: 'Total familia', value: `${totalPersonas}`, sub: '' },
-              ]
-            })().map((stat) => (
+            {familyStats.map((stat) => (
               <div key={stat.label} className="text-center">
                 <p className="text-2xl sm:text-3xl font-bold text-[#C4704B]">{stat.value}</p>
                 <p className="text-xs text-[#5D4037]/50 uppercase tracking-wider mt-1">{stat.label}</p>

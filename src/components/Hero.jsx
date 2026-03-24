@@ -95,10 +95,9 @@ export default function Hero() {
       <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
         {/* Title */}
         <motion.h1
-          variants={fadeIn}
-          initial="hidden"
-          animate="visible"
-          custom={0}
+          initial={{ opacity: 0, y: 30, scale: 0.95 }}
+          animate={{ opacity: 1, y: 0, scale: 1 }}
+          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
           className={`font-serif text-7xl sm:text-8xl md:text-9xl font-bold leading-[1.1] tracking-tight ${heroPhoto ? 'text-white' : 'text-[#5D4037]'}`}
         >
           Familia{" "}
