@@ -180,6 +180,7 @@ export default function InteractiveTree() {
   const [nodes, setNodes, onNodesChange] = useNodesState([])
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
   const [loading, setLoading] = useState(true)
+  const [isFullscreen, setIsFullscreen] = useState(false)
 
   useEffect(() => {
     loadTree()
@@ -230,7 +231,7 @@ export default function InteractiveTree() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className="rounded-2xl overflow-hidden shadow-lg border border-[#E0D5C8] h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px]"
+          className={`rounded-2xl overflow-hidden shadow-lg border border-[#E0D5C8] ${isFullscreen ? 'fixed inset-0 z-[60] rounded-none' : 'h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px]'}`}
           style={{ backgroundColor: '#FEFCF8', touchAction: 'none' }}
         >
           {loading ? (
@@ -241,6 +242,13 @@ export default function InteractiveTree() {
               </div>
             </div>
           ) : nodes.length > 0 ? (
+            <>
+            <button
+              onClick={() => setIsFullscreen(!isFullscreen)}
+              className="absolute top-3 right-3 z-20 px-3 py-1.5 rounded-lg bg-white/90 shadow-md text-xs font-medium text-[#5D4037] hover:bg-white transition"
+            >
+              {isFullscreen ? 'Salir' : 'Pantalla completa'}
+            </button>
             <ReactFlow
               nodes={nodes}
               edges={edges}
@@ -260,6 +268,7 @@ export default function InteractiveTree() {
               <Controls position="top-right" showInteractive={false} style={{ borderRadius: '12px', overflow: 'hidden' }} />
               <Background color="#E0D5C830" gap={20} />
             </ReactFlow>
+            </>
           ) : (
             <div className="h-full flex items-center justify-center">
               <div className="text-center">

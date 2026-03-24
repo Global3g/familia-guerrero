@@ -787,28 +787,48 @@ window.addGrandchild = function(parentId, parentName) {
 function buildSummary() {
   const name = document.getElementById('f-name').value || 'Sin nombre'
   const kids = getChildren()
-  let html = `<p style="font-size:16px;font-weight:bold;color:#5D4037;margin-bottom:8px;">${name}</p>`
-
   const spouse = document.getElementById('f-spouseName')?.value
-  if (spouse) html += `<p style="font-size:13px;color:#C4704B;">Esposo(a): ${spouse}</p>`
+  const location = document.getElementById('f-location')?.value
+  const weddingDate = document.getElementById('f-weddingDate')?.value
+  const photoCount = Object.keys(window.photoFiles).length
 
-  html += `<p style="font-size:13px;color:#7A9E7E;margin-top:4px;">${kids.length} hijos registrados</p>`
+  let html = '<div style="space-y:8px;">'
 
-  if (kids.length > 0) {
-    html += '<div style="margin-top:12px;border-top:1px solid #F0E8DE;padding-top:8px;">'
-    kids.forEach(k => {
-      html += `<p style="font-size:12px;color:#5D4037;padding:2px 0;">- ${k.name}</p>`
-    })
+  // Person with photo
+  const selfPreview = document.getElementById('preview-self')?.querySelector('img')?.src
+  html += '<div style="display:flex;align-items:center;gap:12px;margin-bottom:12px;">'
+  if (selfPreview) html += `<img src="${selfPreview}" style="width:50px;height:50px;border-radius:50%;object-fit:cover;">`
+  html += `<div><p style="font-size:16px;font-weight:bold;color:#5D4037;">${name}</p>`
+  if (location) html += `<p style="font-size:12px;color:#7A9E7E;">📍 ${location}</p>`
+  html += '</div></div>'
+
+  // Spouse
+  if (spouse) {
+    html += `<div style="display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid #F0E8DE;">`
+    html += `<span style="color:#C4704B;">❤</span>`
+    html += `<span style="font-size:13px;color:#5D4037;">Esposo(a): <strong>${spouse}</strong></span>`
     html += '</div>'
   }
 
-  document.getElementById('summary').innerHTML = html
-
-  // Count photos
-  const photoCount = Object.keys(window.photoFiles).length
-  if (photoCount > 0) {
-    html += `<p style="font-size:12px;color:#7A9E7E;margin-top:8px;padding-top:8px;border-top:1px solid #F0E8DE;">📷 ${photoCount} foto${photoCount > 1 ? 's' : ''} lista${photoCount > 1 ? 's' : ''} para subir</p>`
+  // Wedding
+  if (weddingDate) {
+    html += `<p style="font-size:12px;color:#B8943E;padding:4px 0;">💍 Casados: ${weddingDate}</p>`
   }
+
+  // Children
+  html += `<div style="padding:8px 0;border-top:1px solid #F0E8DE;">`
+  html += `<p style="font-size:13px;color:#7A9E7E;font-weight:bold;">${kids.length} hijo(s)</p>`
+  kids.forEach(k => {
+    html += `<p style="font-size:12px;color:#5D4037;padding:2px 0 2px 12px;">• ${k.name}</p>`
+  })
+  html += '</div>'
+
+  // Photos
+  if (photoCount > 0) {
+    html += `<p style="font-size:12px;color:#7A9E7E;padding:8px 0;border-top:1px solid #F0E8DE;">📷 ${photoCount} foto${photoCount > 1 ? 's' : ''} lista${photoCount > 1 ? 's' : ''} para subir</p>`
+  }
+
+  html += '</div>'
   document.getElementById('summary').innerHTML = html
 }
 

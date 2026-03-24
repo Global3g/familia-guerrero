@@ -52,6 +52,11 @@ export default function Navbar({ user, onLogout }) {
             >
               Familia Guerrero
             </span>
+            {user?.displayName && (
+              <span className={`hidden sm:inline text-xs font-sans ml-2 transition-colors duration-500 ${scrolled ? 'text-[#5D4037]/50' : 'text-[#FDF8F0]/50'}`}>
+                Hola, {user.displayName.split(' ')[0]}
+              </span>
+            )}
           </a>
 
           {/* Desktop Right Actions */}

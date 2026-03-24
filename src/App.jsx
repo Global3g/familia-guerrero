@@ -84,24 +84,27 @@ function App() {
                   setActiveTab(tab.id)
                   window.scrollTo({ top: 0, behavior: 'smooth' })
                 }}
-                className={`flex items-center gap-1.5 px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors flex-shrink-0 ${
+                className={`relative flex items-center gap-1.5 px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors flex-shrink-0 ${
                   isActive
-                    ? 'font-bold border-b-2'
+                    ? 'font-bold'
                     : 'text-gray-500 hover:text-gray-700'
                 }`}
-                style={isActive ? { borderBottomColor: '#C4704B', color: '#C4704B' } : {}}
+                style={isActive ? { color: '#C4704B' } : {}}
               >
                 <Icon size={16} />
                 {tab.label}
+                {isActive && (
+                  <motion.div
+                    layoutId="tab-indicator"
+                    className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full"
+                    style={{ backgroundColor: '#C4704B' }}
+                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                  />
+                )}
               </button>
             )
           })}
         </nav>
-      </div>
-
-      {/* Progress bar */}
-      <div className="max-w-4xl mx-auto px-4 pt-20">
-        <FamilyProgress />
       </div>
 
       {/* Onboarding */}
@@ -118,6 +121,9 @@ function App() {
           transition={{ duration: 0.3 }}
         >
           <Hero />
+          <div className="max-w-4xl mx-auto px-4 py-4">
+            <FamilyProgress />
+          </div>
           <Origin />
           <ShareExport />
         </motion.div>

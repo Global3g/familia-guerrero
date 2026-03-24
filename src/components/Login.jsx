@@ -132,6 +132,25 @@ export default function Login() {
             </button>
           </form>
 
+          <div className="text-center mt-3">
+            <button
+              type="button"
+              onClick={async () => {
+                if (!email) { setError('Escribe tu correo primero'); return }
+                try {
+                  const { sendPasswordResetEmail } = await import('firebase/auth')
+                  await sendPasswordResetEmail(auth, email)
+                  setError('')
+                  alert('Se envio un correo para restablecer tu contrasena')
+                } catch (e) { setError('Error al enviar correo de recuperacion') }
+              }}
+              className="text-xs font-medium transition"
+              style={{ color: '#B8943E' }}
+            >
+              Olvide mi contrasena
+            </button>
+          </div>
+
           {/* TODO: Descomentar cuando se abra el registro al publico */}
           {false && <><div className="flex items-center gap-3 my-5">
             <div className="flex-1 h-px" style={{ backgroundColor: '#E0D5C8' }} />

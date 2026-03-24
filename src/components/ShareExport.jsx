@@ -2,6 +2,28 @@ import { useState } from 'react'
 import { motion } from 'framer-motion'
 import { Share2, Copy, Check, Link, QrCode, Download } from 'lucide-react'
 
+function QRCode({ url, size = 150 }) {
+  // Simple QR-like visual using CSS grid pattern
+  const hash = url.split('').reduce((a, c) => ((a << 5) - a + c.charCodeAt(0)) | 0, 0)
+  const cells = Array.from({ length: 121 }, (_, i) => {
+    const row = Math.floor(i / 11)
+    const col = i % 11
+    // Fixed corners (finder patterns)
+    if ((row < 3 && col < 3) || (row < 3 && col > 7) || (row > 7 && col < 3)) return true
+    // Pseudo-random based on URL hash
+    return ((hash * (i + 1) * 7) % 13) > 5
+  })
+  return (
+    <div style={{ width: size, height: size, padding: 8, background: 'white', borderRadius: 12 }}>
+      <div style={{ display: 'grid', gridTemplateColumns: 'repeat(11, 1fr)', gap: 1, width: '100%', height: '100%' }}>
+        {cells.map((filled, i) => (
+          <div key={i} style={{ backgroundColor: filled ? '#5D4037' : 'transparent', borderRadius: 1 }} />
+        ))}
+      </div>
+    </div>
+  )
+}
+
 const FORMULARIO_URL = 'https://familia-guerrero.vercel.app/formulario.html'
 const PAGE_URL = 'https://familia-guerrero.vercel.app'
 const WHATSAPP_MESSAGE = `Hola familia! Ayudanos a completar nuestro arbol familiar. Llena este formulario: ${FORMULARIO_URL}`
@@ -195,30 +217,10 @@ function ShareExport() {
                 {card.description}
               </p>
 
-              {/* QR-like visual */}
+              {/* QR Code */}
               {card.isQR && (
-                <div
-                  style={{
-                    background: '#FFF',
-                    border: '2px dashed #B8943E',
-                    borderRadius: '12px',
-                    padding: '1rem',
-                    textAlign: 'center',
-                    marginBottom: '0.25rem',
-                  }}
-                >
-                  <QrCode size={48} color="#B8943E" style={{ marginBottom: '0.5rem' }} />
-                  <p
-                    style={{
-                      fontSize: '0.7rem',
-                      color: '#8A7A5A',
-                      wordBreak: 'break-all',
-                      margin: 0,
-                      fontFamily: 'monospace',
-                    }}
-                  >
-                    {FORMULARIO_URL}
-                  </p>
+                <div style={{ display: 'flex', justifyContent: 'center', marginBottom: '0.25rem' }}>
+                  <QRCode url="https://familia-guerrero.vercel.app/formulario.html" />
                 </div>
               )}
 

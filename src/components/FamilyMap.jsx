@@ -226,8 +226,8 @@ export default function FamilyMap() {
             >
               <MapContainer center={[centerLat, centerLng]} zoom={5} style={{ height: '100%', width: '100%' }} scrollWheelZoom={false}>
                 <TileLayer
-                  attribution='&copy; OpenStreetMap'
-                  url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+                  attribution='&copy; <a href="https://carto.com/">CARTO</a>'
+                  url="https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}{r}.png"
                 />
                 {markers.map((m) => (
                   <Marker key={m.name} position={m.coords} icon={createIcon(m.color, m.count)}>

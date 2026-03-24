@@ -144,3 +144,55 @@ body {
 /* Dark mode: scrollbar */
 .dark ::-webkit-scrollbar-track { background: #1a1512; }
 .dark ::-webkit-scrollbar-thumb { background: #4a4240; }
+
+/* Dark mode: more backgrounds */
+.dark [style*="background: linear-gradient"] { filter: brightness(0.7) !important; }
+.dark [style*="backgroundColor: #FFF8F0"] { background-color: #2a2320 !important; }
+.dark [style*="backgroundColor: '#FFF8F0'"] { background-color: #2a2320 !important; }
+.dark [style*="backgroundColor: '#FAF6EE'"] { background-color: #2a2320 !important; }
+.dark [style*="backgroundColor: '#FFFBF5'"] { background-color: #221e1a !important; }
+
+/* Dark mode: modals */
+.dark .fixed .bg-\[\#FFF8F0\] { background-color: #2a2320 !important; }
+.dark [class*="bg-[#FFF8F0]"] { background-color: #2a2320 !important; }
+.dark [class*="bg-[#FAF6EE]"] { background-color: #252120 !important; }
+.dark [class*="bg-[#FDF8F0]"] { background-color: #1a1512 !important; }
+.dark [class*="bg-[#FFFBF5]"] { background-color: #221e1a !important; }
+.dark [class*="bg-[#FAF7F2]"] { background-color: #1e1a17 !important; }
+.dark [class*="bg-[#FFFDF7]"] { background-color: #1e1a17 !important; }
+
+/* Dark mode: cards */
+.dark [class*="bg-white/60"] { background-color: rgba(42,35,32,0.6) !important; }
+.dark [class*="bg-white/70"] { background-color: rgba(42,35,32,0.7) !important; }
+.dark [class*="bg-white/80"] { background-color: rgba(42,35,32,0.8) !important; }
+.dark [class*="bg-white/90"] { background-color: rgba(42,35,32,0.9) !important; }
+
+/* Dark mode: tab bar */
+.dark .sticky.bg-white\/90 { background-color: rgba(26,21,18,0.95) !important; }
+.dark .backdrop-blur-md { backdrop-filter: blur(12px) !important; }
+
+/* Dark mode: text */
+.dark .text-\[\#5D4037\] { color: #E8DDD0 !important; }
+.dark .text-\[\#3D2C2C\] { color: #E8DDD0 !important; }
+.dark [class*="text-[#5D4037]"] { color: #E8DDD0 !important; }
+.dark [class*="text-[#3D2C2C]"] { color: #E8DDD0 !important; }
+.dark [class*="text-[#6B5B5B]"] { color: #A89888 !important; }
+.dark .text-gray-500 { color: #8A7B6B !important; }
+
+/* Dark mode: borders */
+.dark [class*="border-[#E0D5C8]"] { border-color: #3a3230 !important; }
+.dark [class*="border-[#E8D5C4]"] { border-color: #3a3230 !important; }
+.dark [class*="border-gray-200"] { border-color: #3a3230 !important; }
+
+/* Dark mode: login */
+.dark [style*="background: linear-gradient(135deg, #FDF8F0"] { background: linear-gradient(135deg, #1a1512, #221e1a, #2a2320) !important; }
+
+/* Dark mode: hero */
+.dark [style*="background: linear-gradient(135deg, #FFF8F0"] { background: linear-gradient(135deg, #1a1512, #1e1a17, #221e1a) !important; }
+
+/* Dark mode: buttons */
+.dark .bg-cream { background-color: #1a1512 !important; }
+
+/* Dark mode: placeholder colors */
+.dark .animate-pulse { opacity: 0.3 !important; }
+.dark [class*="bg-[#E0D5C8]"] { background-color: #3a3230 !important; }
