@@ -275,6 +275,20 @@ export default function Memorial() {
   const [editingMemorial, setEditingMemorial] = useState(null)
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [deletingMemorial, setDeletingMemorial] = useState(null)
+  const [playing, setPlaying] = useState(false)
+  const [audio] = useState(() => typeof Audio !== 'undefined' ? new Audio('https://cdn.pixabay.com/audio/2022/02/23/audio_ea70ad08e0.mp3') : null)
+
+  useEffect(() => {
+    if (!audio) return
+    audio.loop = true
+    audio.volume = 0.15
+    return () => { audio.pause() }
+  }, [audio])
+
+  useEffect(() => {
+    if (!audio) return
+    playing ? audio.play().catch(() => {}) : audio.pause()
+  }, [playing, audio])
 
   useEffect(() => {
     loadMemorials()
@@ -345,6 +359,12 @@ export default function Memorial() {
           <p className="font-sans mt-4 text-lg text-[#5D4037]/60 max-w-xl mx-auto">
             Su luz sigue brillando en cada uno de nosotros.
           </p>
+          <button
+            onClick={() => setPlaying(!playing)}
+            className="mx-auto mt-2 flex items-center gap-2 px-4 py-2 rounded-full bg-[#D4B96A]/10 border border-[#D4B96A]/20 text-[#B8943E] text-xs font-medium hover:bg-[#D4B96A]/20 transition"
+          >
+            {playing ? '⏸ Pausar musica' : '🎵 Musica ambiental'}
+          </button>
         </motion.div>
 
         {/* Memorial cards */}

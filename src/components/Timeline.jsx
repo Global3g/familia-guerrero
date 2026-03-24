@@ -211,6 +211,11 @@ function EventCard({ event, config, IconComponent, align, onEdit, onDelete }) {
           {event.description}
         </p>
       )}
+
+      {/* Photo */}
+      {event.photoURL && (
+        <img src={event.photoURL} alt="" className="mt-2 w-full h-24 rounded-lg object-cover" />
+      )}
     </div>
   );
 }
@@ -233,6 +238,8 @@ function EventForm({ isOpen, onClose, eventData, onSave }) {
     title: eventData?.title || '',
     description: eventData?.description || '',
     type: eventData?.type || 'nacimiento',
+    photoFile: null,
+    photoPreview: eventData?.photoURL || null,
   })
   const [loading, setLoading] = useState(false)
 
@@ -243,6 +250,8 @@ function EventForm({ isOpen, onClose, eventData, onSave }) {
       title: eventData?.title || '',
       description: eventData?.description || '',
       type: eventData?.type || 'nacimiento',
+      photoFile: null,
+      photoPreview: eventData?.photoURL || null,
     })
   }, [eventData, isOpen])
 
@@ -255,9 +264,15 @@ function EventForm({ isOpen, onClose, eventData, onSave }) {
     e.preventDefault()
     setLoading(true)
     try {
+      let photoURL = eventData?.photoURL || null
+      if (form.photoFile) {
+        const { uploadPhoto } = await import('../firebase/familyService')
+        photoURL = await uploadPhoto(form.photoFile, `timeline/${Date.now()}`)
+      }
       await onSave({
         ...form,
         year: parseInt(form.year) || new Date().getFullYear(),
+        photoURL,
       })
       onClose()
     } catch (err) {
@@ -295,6 +310,15 @@ function EventForm({ isOpen, onClose, eventData, onSave }) {
         <div>
           <label className={labelClass}>Descripcion</label>
           <textarea name="description" value={form.description} onChange={handleChange} rows={3} className={inputClass + ' resize-none'} placeholder="Que paso en este momento..." />
+        </div>
+        <div>
+          <label className={labelClass}>Foto del evento (opcional)</label>
+          <input type="file" accept="image/*" onChange={async (e) => {
+            const file = e.target.files[0]
+            if (!file) return
+            setForm(p => ({ ...p, photoFile: file, photoPreview: URL.createObjectURL(file) }))
+          }} className="text-sm text-[#5D4037]" />
+          {form.photoPreview && <img src={form.photoPreview} className="mt-2 h-20 rounded-lg object-cover" />}
         </div>
         <div className="flex justify-end pt-2">
           <button type="submit" disabled={loading} className="flex items-center gap-2 rounded-lg bg-[#7A9E7E] px-6 py-2.5 text-white hover:bg-[#7A9E7E]/90 transition disabled:opacity-60">

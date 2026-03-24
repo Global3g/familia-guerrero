@@ -122,6 +122,7 @@ const countdownVariants = {
 function BirthdayHighlight() {
   const [birthdayPeople, setBirthdayPeople] = useState([]);
   const [nextBirthday, setNextBirthday] = useState(null);
+  const [nextBirthdays, setNextBirthdays] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const now = new Date();
@@ -168,6 +169,7 @@ function BirthdayHighlight() {
 
         if (upcoming.length > 0) {
           setNextBirthday(upcoming[0]);
+          setNextBirthdays(upcoming.slice(0, 3));
         }
       } catch (err) {
         console.error('Error loading birthday data:', err);
@@ -415,6 +417,63 @@ function BirthdayHighlight() {
                   </span>
                 </motion.div>
               </div>
+            </div>
+          </motion.div>
+        )}
+
+        {/* Next 3 upcoming birthdays across all months */}
+        {nextBirthdays.length > 0 && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6, delay: 0.5 }}
+            className="max-w-lg mx-auto mt-8"
+          >
+            <h3 className="text-lg font-serif font-semibold text-center mb-4" style={{ color: '#B8943E' }}>
+              <Calendar size={18} className="inline mr-2" />
+              Proximos Cumpleanos
+            </h3>
+            <div className="space-y-3">
+              {nextBirthdays.map((person, i) => (
+                <motion.div
+                  key={`${person.name}-upcoming-${i}`}
+                  initial={{ opacity: 0, x: -20 }}
+                  whileInView={{ opacity: 1, x: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ delay: i * 0.1, duration: 0.4 }}
+                  className="flex items-center gap-3 rounded-xl px-4 py-3 shadow-sm"
+                  style={{
+                    background: '#FFFFFF',
+                    border: '1px solid rgba(184, 148, 62, 0.2)'
+                  }}
+                >
+                  <div
+                    className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                    style={{
+                      background: person.photo
+                        ? `url(${person.photo}) center/cover`
+                        : 'linear-gradient(135deg, #C4704B, #E8956D)',
+                      border: '2px solid #B8943E'
+                    }}
+                  >
+                    {!person.photo && <Cake size={18} color="white" />}
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="font-serif font-bold text-sm truncate" style={{ color: '#C4704B' }}>
+                      {person.name}
+                    </p>
+                    <p className="text-xs" style={{ color: '#8B7355' }}>
+                      {person.day} de {MONTH_NAMES[person.month - 1]}
+                      {person.ageTurning ? ` - Cumple ${person.ageTurning} anios` : ''}
+                    </p>
+                  </div>
+                  <div className="text-right flex-shrink-0">
+                    <p className="text-lg font-bold" style={{ color: '#B8943E' }}>{person.daysUntil}</p>
+                    <p className="text-[11px]" style={{ color: '#8B7355' }}>dias</p>
+                  </div>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
         )}

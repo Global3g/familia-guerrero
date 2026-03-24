@@ -275,121 +275,169 @@ export default function Reminders() {
         )}
 
         {/* Timeline list */}
-        {!loading && reminders.length > 0 && (
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true, margin: '-50px' }}
-            className="relative"
-          >
-            {/* Vertical timeline line */}
-            <div
-              className="absolute left-6 top-0 bottom-0 w-0.5"
-              style={{ backgroundColor: '#5D403720' }}
-            />
+        {!loading && reminders.length > 0 && (() => {
+          const TYPE_ORDER = ['birthday', 'anniversary', 'memorial', 'milestone', 'other']
+          const TYPE_LABELS = {
+            birthday: 'Cumpleanos',
+            anniversary: 'Aniversarios',
+            memorial: 'En Memoria',
+            milestone: 'Fechas Especiales',
+            other: 'Otros',
+          }
 
-            <div className="space-y-4">
-              {reminders.map((reminder, idx) => {
-                const color = COLORS[reminder.type]
-                const Icon = ICONS[reminder.type]
-                const isToday = reminder.daysUntil === 0
+          const grouped = {}
+          reminders.forEach(r => {
+            const type = r.type || 'other'
+            if (!grouped[type]) grouped[type] = []
+            grouped[type].push(r)
+          })
 
-                return (
-                  <motion.div
-                    key={`${reminder.type}-${reminder.person}-${idx}`}
-                    variants={itemVariants}
-                    className="relative pl-16"
-                  >
-                    {/* Icon circle on timeline */}
-                    <motion.div
-                      className="absolute left-2 w-8 h-8 rounded-full flex items-center justify-center shadow-sm z-10"
-                      style={{ backgroundColor: color }}
-                      animate={
-                        isToday
-                          ? {
-                              scale: [1, 1.2, 1],
-                              boxShadow: [
-                                `0 0 0 0px ${color}40`,
-                                `0 0 0 8px ${color}00`,
-                                `0 0 0 0px ${color}40`,
-                              ],
-                            }
-                          : {}
-                      }
-                      transition={
-                        isToday
-                          ? { duration: 2, repeat: Infinity, ease: 'easeInOut' }
-                          : {}
-                      }
-                    >
-                      <Icon className="w-4 h-4 text-white" />
-                    </motion.div>
+          const orderedTypes = TYPE_ORDER.filter(t => grouped[t]?.length > 0)
 
-                    {/* Reminder card */}
-                    <div
-                      className="rounded-xl shadow-sm p-4 border-l-4"
-                      style={{
-                        backgroundColor: isToday ? `${color}15` : '#FFFFFF',
-                        borderLeftColor: color,
-                      }}
-                    >
-                      <div className="flex items-start justify-between gap-3">
-                        <div className="flex-1 min-w-0">
-                          <p
-                            className="text-sm font-bold mb-0.5"
-                            style={{ color }}
-                          >
-                            {reminder.title}
-                          </p>
-                          <p
-                            className="text-xs mb-1"
-                            style={{ color: '#5D4037', opacity: 0.7 }}
-                          >
-                            {reminder.subtitle}
-                          </p>
-                          <p
-                            className="text-xs flex items-center gap-1"
-                            style={{ color: '#5D4037', opacity: 0.5 }}
-                          >
-                            <Calendar className="w-3 h-3" />
-                            {formatDateShort(reminder.date)}
-                          </p>
-                        </div>
+          return (
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              whileInView="visible"
+              viewport={{ once: true, margin: '-50px' }}
+              className="relative"
+            >
+              {/* Vertical timeline line */}
+              <div
+                className="absolute left-6 top-0 bottom-0 w-0.5"
+                style={{ backgroundColor: '#5D403720' }}
+              />
 
-                        {/* Countdown badge */}
+              <div className="space-y-4">
+                {orderedTypes.map((type) => {
+                  const groupColor = COLORS[type] || '#5D4037'
+                  const GroupIcon = ICONS[type] || Bell
+
+                  return (
+                    <div key={type}>
+                      {/* Group header */}
+                      <motion.div
+                        variants={itemVariants}
+                        className="relative pl-16 mb-3 mt-6 first:mt-0"
+                      >
                         <div
-                          className="flex-shrink-0 rounded-lg px-3 py-1.5 text-center"
-                          style={{ backgroundColor: `${color}15` }}
+                          className="absolute left-1 w-10 h-10 rounded-full flex items-center justify-center shadow-sm z-10"
+                          style={{ backgroundColor: groupColor }}
                         >
-                          {isToday ? (
-                            <motion.div
-                              animate={{ scale: [1, 1.05, 1] }}
-                              transition={{ duration: 1.5, repeat: Infinity }}
-                            >
-                              <p className="text-xs font-bold" style={{ color }}>
-                                HOY
-                              </p>
-                            </motion.div>
-                          ) : (
-                            <>
-                              <p className="text-lg font-bold leading-none" style={{ color }}>
-                                {reminder.daysUntil}
-                              </p>
-                              <p className="text-[11px]" style={{ color, opacity: 0.8 }}>
-                                {reminder.daysUntil === 1 ? 'dia' : 'dias'}
-                              </p>
-                            </>
-                          )}
+                          <GroupIcon className="w-5 h-5 text-white" />
                         </div>
-                      </div>
+                        <p
+                          className="text-sm font-bold uppercase tracking-wider pt-2"
+                          style={{ color: groupColor }}
+                        >
+                          {TYPE_LABELS[type]}
+                        </p>
+                      </motion.div>
+
+                      {grouped[type].map((reminder, idx) => {
+                        const color = COLORS[reminder.type]
+                        const Icon = ICONS[reminder.type]
+                        const isToday = reminder.daysUntil === 0
+
+                        return (
+                          <motion.div
+                            key={`${reminder.type}-${reminder.person}-${idx}`}
+                            variants={itemVariants}
+                            className="relative pl-16"
+                          >
+                            {/* Icon circle on timeline */}
+                            <motion.div
+                              className="absolute left-2 w-8 h-8 rounded-full flex items-center justify-center shadow-sm z-10"
+                              style={{ backgroundColor: color }}
+                              animate={
+                                isToday
+                                  ? {
+                                      scale: [1, 1.2, 1],
+                                      boxShadow: [
+                                        `0 0 0 0px ${color}40`,
+                                        `0 0 0 8px ${color}00`,
+                                        `0 0 0 0px ${color}40`,
+                                      ],
+                                    }
+                                  : {}
+                              }
+                              transition={
+                                isToday
+                                  ? { duration: 2, repeat: Infinity, ease: 'easeInOut' }
+                                  : {}
+                              }
+                            >
+                              <Icon className="w-4 h-4 text-white" />
+                            </motion.div>
+
+                            {/* Reminder card */}
+                            <div
+                              className="rounded-xl shadow-sm p-4 border-l-4"
+                              style={{
+                                backgroundColor: isToday ? `${color}15` : '#FFFFFF',
+                                borderLeftColor: color,
+                              }}
+                            >
+                              <div className="flex items-start justify-between gap-3">
+                                <div className="flex-1 min-w-0">
+                                  <p
+                                    className="text-sm font-bold mb-0.5"
+                                    style={{ color }}
+                                  >
+                                    {reminder.title}
+                                  </p>
+                                  <p
+                                    className="text-xs mb-1"
+                                    style={{ color: '#5D4037', opacity: 0.7 }}
+                                  >
+                                    {reminder.subtitle}
+                                  </p>
+                                  <p
+                                    className="text-xs flex items-center gap-1"
+                                    style={{ color: '#5D4037', opacity: 0.5 }}
+                                  >
+                                    <Calendar className="w-3 h-3" />
+                                    {formatDateShort(reminder.date)}
+                                  </p>
+                                </div>
+
+                                {/* Countdown badge */}
+                                <div
+                                  className="flex-shrink-0 rounded-lg px-3 py-1.5 text-center"
+                                  style={{ backgroundColor: `${color}15` }}
+                                >
+                                  {isToday ? (
+                                    <motion.div
+                                      animate={{ scale: [1, 1.05, 1] }}
+                                      transition={{ duration: 1.5, repeat: Infinity }}
+                                    >
+                                      <p className="text-xs font-bold" style={{ color }}>
+                                        HOY
+                                      </p>
+                                    </motion.div>
+                                  ) : (
+                                    <>
+                                      <p className="text-lg font-bold leading-none" style={{ color }}>
+                                        {reminder.daysUntil}
+                                      </p>
+                                      <p className="text-[11px]" style={{ color, opacity: 0.8 }}>
+                                        {reminder.daysUntil === 1 ? 'dia' : 'dias'}
+                                      </p>
+                                    </>
+                                  )}
+                                </div>
+                              </div>
+                            </div>
+                          </motion.div>
+                        )
+                      })}
                     </div>
-                  </motion.div>
-                )
-              })}
-            </div>
-          </motion.div>
-        )}
+                  )
+                })}
+              </div>
+            </motion.div>
+          )
+        })()}
       </div>
     </section>
   )

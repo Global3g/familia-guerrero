@@ -7,6 +7,7 @@
     <title>Familia Guerrero | Legado y Memoria</title>
     <!-- PWA -->
     <link rel="manifest" href="/manifest.json">
+    <meta name="description" content="Familia Guerrero - Preservando nuestro legado familiar. Arbol genealogico, fotos, historia y recuerdos.">
     <meta name="theme-color" content="#C4704B">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -27,5 +28,12 @@
   <body>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
+    <script>
+      if ('serviceWorker' in navigator) {
+        window.addEventListener('load', () => {
+          navigator.serviceWorker.register('/sw.js').catch(() => {})
+        })
+      }
+    </script>
   </body>
 </html>

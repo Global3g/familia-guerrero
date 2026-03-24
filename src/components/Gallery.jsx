@@ -271,6 +271,27 @@ export default function Gallery() {
           ))}
         </motion.div>
 
+        {/* Drag and drop zone */}
+        <div
+          onDragOver={(e) => { e.preventDefault(); e.currentTarget.classList.add('border-[#7A9E7E]', 'bg-[#7A9E7E]/5') }}
+          onDragLeave={(e) => { e.currentTarget.classList.remove('border-[#7A9E7E]', 'bg-[#7A9E7E]/5') }}
+          onDrop={async (e) => {
+            e.preventDefault()
+            e.currentTarget.classList.remove('border-[#7A9E7E]', 'bg-[#7A9E7E]/5')
+            const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'))
+            for (const file of files) {
+              const url = await uploadPhoto(file, `gallery/drop-${Date.now()}`)
+              if (url) await saveGalleryPhoto(null, { photoURL: url, caption: file.name, category: 'recuerdos', year: new Date().getFullYear() })
+            }
+            await loadPhotos()
+          }}
+          className="mb-6 border-2 border-dashed border-[#E0D5C8] rounded-2xl p-8 text-center transition-colors cursor-pointer"
+          onClick={() => setShowCreateForm(true)}
+        >
+          <Camera className="w-8 h-8 mx-auto mb-2 text-[#C4704B]/40" />
+          <p className="text-sm text-[#5D4037]/50">Arrastra fotos aqui o haz clic para agregar</p>
+        </div>
+
         {/* Masonry grid */}
         {loading ? (
           <SkeletonGallery count={6} />

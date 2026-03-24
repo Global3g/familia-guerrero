@@ -18,6 +18,8 @@ import Footer from './components/Footer'
 import FamilyProgress from './components/FamilyProgress'
 import Onboarding from './components/Onboarding'
 import ShareExport from './components/ShareExport'
+import PresentationMode, { PresentationButton } from './components/PresentationMode'
+import ExportTree from './components/ExportTree'
 
 // Lazy-loaded heavy components (ReactFlow, Recharts, Leaflet, etc.)
 const InteractiveTree = lazy(() => import('./components/InteractiveTree'))
@@ -41,6 +43,7 @@ function App() {
   const [user, setUser] = useState(null)
   const [loading, setLoading] = useState(true)
   const [activeTab, setActiveTab] = useState('inicio')
+  const [showPresentation, setShowPresentation] = useState(false)
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (u) => {
@@ -137,6 +140,10 @@ function App() {
           transition={{ duration: 0.3 }}
         >
           <FamilyTree />
+          <div className="flex justify-center gap-3 py-4">
+            <PresentationButton onClick={() => setShowPresentation(true)} />
+            <ExportTree />
+          </div>
           <Suspense fallback={<div className="flex justify-center py-20"><div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#C4704B', borderTopColor: 'transparent' }} /></div>}>
             <InteractiveTree />
           </Suspense>
@@ -199,6 +206,7 @@ function App() {
         </motion.div>
       )}
 
+      <PresentationMode isOpen={showPresentation} onClose={() => setShowPresentation(false)} />
       <Footer />
     </div>
   )
