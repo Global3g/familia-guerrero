@@ -131,6 +131,10 @@
       <p style="font-size:13px;color:#8A7B6B;line-height:1.5;">
         Llena los datos de tu nucleo familiar: los tuyos, los de tu esposo/a, tus hijos y nietos. Si no tienes algun dato exacto, pon lo que recuerdes.
       </p>
+      <div style="margin-top:12px;padding:10px;background:#FEF3E2;border-radius:10px;border:1px solid #F5C07A;">
+        <p style="font-size:13px;color:#C4704B;font-weight:bold;margin-bottom:4px;">Importante: Sube tu foto de perfil</p>
+        <p style="font-size:12px;color:#8A7B6B;line-height:1.4;">Toca el circulo de la foto en cada paso para subir una foto de cada persona. Puedes tomarla con tu camara o elegir una de tu galeria. Es la foto que aparecera en el arbol familiar.</p>
+      </div>
     </div>
     <div id="draft-notice" style="display:none;background:#EBF5EC;border:2px solid #7A9E7E;border-radius:16px;padding:16px;margin-bottom:16px;text-align:center;">
       <p style="font-size:14px;color:#5D4037;font-weight:bold;margin-bottom:4px;">Tienes un formulario guardado</p>
@@ -155,11 +159,12 @@
     <div class="photo-upload">
       <label for="photo-self">
         <div class="photo-circle" id="preview-self">
-          <div class="placeholder">Toca para<br>subir foto</div>
+          <div class="placeholder">Toca aqui<br>para subir<br>tu foto</div>
         </div>
       </label>
       <input type="file" id="photo-self" accept="image/*" onchange="previewPhoto(this,'preview-self')">
-      <div class="photo-label">Tu mejor foto</div>
+      <div class="photo-label" style="color:#C4704B;font-weight:bold;">Toca el circulo para subir tu foto</div>
+      <p style="font-size:11px;color:#8A7B6B;margin-top:4px;text-align:center;max-width:250px;">Puedes tomar una foto con tu camara o elegir una de tu galeria. Despues podras ajustarla.</p>
     </div>
     <div class="form-group"><label>Nombre completo</label><input type="text" id="f-name" placeholder="Tu nombre completo"></div>
     <div class="form-group"><label>Apodo</label><input type="text" id="f-nickname" placeholder="Como te dicen"><div class="hint">Opcional</div></div>
@@ -188,8 +193,9 @@
       <div class="spouse-card">
         <h3>Datos del esposo(a)</h3>
         <div class="photo-upload">
-          <label for="photo-spouse"><div class="photo-circle" id="preview-spouse"><div class="placeholder">Foto<br>esposo(a)</div></div></label>
+          <label for="photo-spouse"><div class="photo-circle" id="preview-spouse"><div class="placeholder">Toca para<br>subir foto</div></div></label>
           <input type="file" id="photo-spouse" accept="image/*" onchange="previewPhoto(this,'preview-spouse')">
+          <p style="font-size:11px;color:#C4704B;font-weight:bold;text-align:center;">Sube la foto de tu esposo(a)</p>
         </div>
         <div class="form-group"><label>Nombre completo</label><input type="text" id="f-spouseName"></div>
         <div class="form-group"><label>Apodo</label><input type="text" id="f-spouseNickname"></div>
@@ -557,10 +563,10 @@ function showStep(n) {
 }
 
 window.nextStep = function() {
-  // Validate step 1: parent required
+  // Validate step 1: name, parent, and photo required
   if (currentStep === 1) {
-    const parentId = document.getElementById('f-parentId')?.value
     const name = document.getElementById('f-name')?.value?.trim()
+    const parentId = document.getElementById('f-parentId')?.value
     if (!name) {
       alert('Por favor escribe tu nombre completo')
       return
@@ -570,6 +576,37 @@ window.nextStep = function() {
       document.getElementById('f-parentId').style.borderColor = '#C4704B'
       document.getElementById('f-parentId').focus()
       return
+    }
+    if (!window.photoFiles['preview-self']) {
+      alert('Tu foto de perfil es obligatoria. Toca el circulo de arriba para subir tu foto.')
+      return
+    }
+  }
+  // Validate step 2: spouse photo if spouse selected
+  if (currentStep === 2) {
+    const hasSpouse = document.getElementById('f-hasSpouse')?.value
+    if (hasSpouse === 'si') {
+      const spouseName = document.getElementById('f-spouseName')?.value?.trim()
+      if (!spouseName) {
+        alert('Por favor escribe el nombre de tu esposo(a)')
+        return
+      }
+      if (!window.photoFiles['preview-spouse']) {
+        alert('La foto de tu esposo(a) es obligatoria. Toca el circulo para subirla.')
+        return
+      }
+    }
+  }
+  // Validate step 3: each child must have a photo
+  if (currentStep === 3) {
+    const childCards = document.querySelectorAll('[id^="child-"]')
+    for (const card of childCards) {
+      const childId = card.id.replace('child-', '')
+      const childName = document.getElementById(`child-name-${childId}`)?.value?.trim()
+      if (childName && !window.photoFiles[`preview-child-${childId}`]) {
+        alert(`Falta la foto de ${childName}. Toca el circulo junto a su nombre para subirla.`)
+        return
+      }
     }
   }
   if (currentStep === 3) buildChildSpouses()
@@ -675,8 +712,9 @@ window.addChild = function() {
   card.innerHTML = `
     <h3>Hijo(a) #${childCount} <button class="remove-btn" onclick="removeChild(${childCount})">x</button></h3>
     <div class="photo-upload">
-      <label for="photo-child-${childCount}"><div class="photo-circle" id="preview-child-${childCount}" style="width:70px;height:70px;"><div class="placeholder" style="font-size:10px;">Foto</div></div></label>
+      <label for="photo-child-${childCount}"><div class="photo-circle" id="preview-child-${childCount}" style="width:80px;height:80px;"><div class="placeholder" style="font-size:10px;">Toca para<br>subir foto</div></div></label>
       <input type="file" id="photo-child-${childCount}" accept="image/*" onchange="previewPhoto(this,'preview-child-${childCount}')">
+      <p style="font-size:10px;color:#C4704B;text-align:center;">Sube su foto</p>
     </div>
     <div class="form-group"><label>Nombre completo</label><input type="text" id="child-name-${childCount}"></div>
     <div class="row">
