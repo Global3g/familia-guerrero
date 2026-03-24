@@ -86,7 +86,7 @@ export default function Hero() {
           custom={1}
           className="mt-6 font-serif text-lg sm:text-xl md:text-2xl text-[#5D4037]/75 italic leading-relaxed max-w-xl mx-auto"
         >
-          Tres generaciones unidas por el amor, la fe y la memoria
+          {stats?.generations > 0 ? `${stats.generations} generaciones` : 'Generaciones'} unidas por el amor, la fe y la memoria
         </motion.p>
 
         {/* Stats counter */}
