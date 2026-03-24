@@ -2,15 +2,18 @@ import { useState, useEffect, useCallback, useMemo } from 'react'
 import ReactFlow, {
   Controls,
   Background,
+  MiniMap,
   useNodesState,
   useEdgesState,
+  useReactFlow,
+  ReactFlowProvider,
   Handle,
   Position,
   MarkerType,
 } from 'reactflow'
 import 'reactflow/dist/style.css'
 import { motion } from 'framer-motion'
-import { GitBranch, Users, Heart, User, ZoomIn } from 'lucide-react'
+import { GitBranch, Users, Heart, User, ZoomIn, Grid3X3, Maximize2, RotateCcw, Map, MousePointer2, Move } from 'lucide-react'
 import { getFamilyMembers, getGrandparents } from '../firebase/familyService'
 
 const NODE_W = 180
@@ -181,6 +184,9 @@ export default function InteractiveTree() {
   const [edges, setEdges, onEdgesChange] = useEdgesState([])
   const [loading, setLoading] = useState(true)
   const [isFullscreen, setIsFullscreen] = useState(false)
+  const [snapToGrid, setSnapToGrid] = useState(false)
+  const [showMiniMap, setShowMiniMap] = useState(true)
+  const [showGrid, setShowGrid] = useState(true)
 
   useEffect(() => {
     loadTree()
@@ -256,12 +262,57 @@ export default function InteractiveTree() {
             </div>
           ) : nodes.length > 0 ? (
             <>
-            <button
-              onClick={() => setIsFullscreen(!isFullscreen)}
-              className="absolute top-3 right-3 z-20 px-3 py-1.5 rounded-lg bg-white/90 shadow-md text-xs font-medium text-[#5D4037] hover:bg-white transition"
-            >
-              {isFullscreen ? 'Salir' : 'Pantalla completa'}
-            </button>
+            {/* Toolbar */}
+            <div className="absolute top-3 left-3 z-20 flex flex-wrap gap-1.5">
+              <button
+                onClick={() => setIsFullscreen(!isFullscreen)}
+                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg shadow-md text-[11px] font-medium transition ${isFullscreen ? 'bg-[#C4704B] text-white' : 'bg-white/90 text-[#5D4037] hover:bg-white'}`}
+                title="Pantalla completa"
+              >
+                <Maximize2 className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">{isFullscreen ? 'Salir' : 'Completa'}</span>
+              </button>
+              <button
+                onClick={() => setSnapToGrid(!snapToGrid)}
+                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg shadow-md text-[11px] font-medium transition ${snapToGrid ? 'bg-[#7A9E7E] text-white' : 'bg-white/90 text-[#5D4037] hover:bg-white'}`}
+                title="Alinear a cuadricula"
+              >
+                <Grid3X3 className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Cuadricula</span>
+              </button>
+              <button
+                onClick={() => setShowMiniMap(!showMiniMap)}
+                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg shadow-md text-[11px] font-medium transition ${showMiniMap ? 'bg-[#B8943E] text-white' : 'bg-white/90 text-[#5D4037] hover:bg-white'}`}
+                title="Mostrar minimapa"
+              >
+                <Map className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Mapa</span>
+              </button>
+              <button
+                onClick={() => setShowGrid(!showGrid)}
+                className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg shadow-md text-[11px] font-medium transition ${showGrid ? 'bg-[#5D4037]/70 text-white' : 'bg-white/90 text-[#5D4037] hover:bg-white'}`}
+                title="Mostrar/ocultar fondo"
+              >
+                <Move className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Fondo</span>
+              </button>
+              <button
+                onClick={() => {
+                  loadTree()
+                }}
+                className="flex items-center gap-1 px-2.5 py-1.5 rounded-lg bg-white/90 shadow-md text-[11px] font-medium text-[#5D4037] hover:bg-white transition"
+                title="Restablecer posiciones"
+              >
+                <RotateCcw className="w-3.5 h-3.5" />
+                <span className="hidden sm:inline">Restablecer</span>
+              </button>
+            </div>
+
+            {/* Node count */}
+            <div className="absolute bottom-3 left-3 z-20 px-2.5 py-1 rounded-lg bg-white/80 shadow text-[11px] text-[#5D4037]/60">
+              {nodes.length} nodos · {edges.length} conexiones
+            </div>
+
             <ReactFlow
               nodes={nodes}
               edges={edges}
@@ -277,9 +328,25 @@ export default function InteractiveTree() {
               zoomOnPinch={true}
               panOnDrag={true}
               preventScrolling={true}
+              snapToGrid={snapToGrid}
+              snapGrid={[20, 20]}
+              selectionOnDrag={true}
+              selectNodesOnDrag={true}
             >
               <Controls position="top-right" style={{ borderRadius: '12px', overflow: 'hidden' }} />
-              <Background color="#E0D5C830" gap={20} />
+              {showGrid && <Background color="#E0D5C830" gap={20} variant="dots" />}
+              {showMiniMap && (
+                <MiniMap
+                  position="bottom-right"
+                  style={{ borderRadius: '12px', overflow: 'hidden', border: '2px solid #E0D5C8' }}
+                  nodeColor={(n) => {
+                    if (n.data?.isGrandparent) return '#B8943E'
+                    if (n.data?.gender === 'F') return '#C4704B'
+                    return '#7A9E7E'
+                  }}
+                  maskColor="rgba(253, 248, 240, 0.7)"
+                />
+              )}
             </ReactFlow>
             </>
           ) : (
