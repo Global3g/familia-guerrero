@@ -13,7 +13,7 @@ import { motion } from 'framer-motion'
 import { GitBranch, Users, Heart, User, ZoomIn } from 'lucide-react'
 import { getFamilyMembers, getGrandparents } from '../firebase/familyService'
 
-const NODE_W = 170
+const NODE_W = 180
 const V_GAP = 130
 const H_GAP = 25
 
@@ -35,14 +35,14 @@ function PersonNode({ data }) {
     >
       <div className="flex items-center gap-2">
         {photoURL ? (
-          <img src={photoURL} alt={name} className="w-10 h-10 rounded-full object-cover flex-shrink-0" style={{ border: `2px solid ${borderColor}` }} />
+          <img src={photoURL} alt={name} className="w-12 h-12 rounded-full object-cover flex-shrink-0" style={{ border: `2px solid ${borderColor}` }} />
         ) : (
-          <div className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${borderColor}20` }}>
+          <div className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0" style={{ backgroundColor: `${borderColor}20` }}>
             <User className="w-5 h-5" style={{ color: borderColor }} />
           </div>
         )}
         <div className="flex-1 min-w-0 text-left">
-          <p className="text-[11px] font-bold text-[#5D4037] leading-tight truncate">{name}</p>
+          <p className="text-xs font-bold text-[#5D4037] leading-tight truncate">{name}</p>
           {role && <p className="text-[11px] text-[#7A9E7E] font-medium">{role}</p>}
           {isDeceased && <p className="text-[11px] text-[#B8943E] italic">En memoria</p>}
         </div>

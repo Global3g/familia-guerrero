@@ -357,6 +357,21 @@ export default function FamilyTree() {
     loadGrandparents()
   }, [])
 
+  useEffect(() => {
+    const handler = (e) => {
+      const { memberId } = e.detail
+      if (memberId) {
+        const member = members.find(m => m.id === memberId)
+        if (member) {
+          setModalTab('familia')
+          setSelectedMember(member)
+        }
+      }
+    }
+    window.addEventListener('open-family-modal', handler)
+    return () => window.removeEventListener('open-family-modal', handler)
+  }, [members])
+
   const loadGrandparents = async () => {
     const data = await getGrandparents()
     if (data) setGrandparentsData(data)

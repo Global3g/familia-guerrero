@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Star, Heart, Sun, Camera, Plus, Pencil, Trash2, Save, Loader2 } from "lucide-react";
+import { Star, Heart, Sun, Camera, Plus, Pencil, Trash2, Save, Loader2, MessageCircle } from "lucide-react";
 import { memorials as defaultMemorials } from "../data/familyData";
 import { getMemorials, saveMemorial, deleteMemorial, uploadPhoto, getFamilyMembers, getGrandparents } from "../firebase/familyService";
 import Modal from './Modal';
@@ -533,6 +533,42 @@ export default function Memorial() {
                   <span style={{fontSize:'20px'}}>🕯️</span>
                   Encender una vela
                 </button>
+              </div>
+
+              {/* Leave a memory */}
+              <div className="mt-3 pt-3 border-t border-[#D4B96A]/15">
+                <details className="group">
+                  <summary className="text-[11px] text-[#B8943E] font-medium cursor-pointer flex items-center gap-1 justify-center">
+                    <MessageCircle className="w-3 h-3" />
+                    Dejar un recuerdo ({(person.memories || []).length})
+                  </summary>
+                  <div className="mt-2 space-y-2">
+                    {(person.memories || []).map((mem, mi) => (
+                      <p key={mi} className="text-[11px] text-[#5D4037]/70 italic bg-[#D4B96A]/5 rounded-lg p-2">
+                        "{mem.text}" — <span className="font-semibold not-italic">{mem.author}</span>
+                      </p>
+                    ))}
+                    <div className="flex gap-2">
+                      <input type="text" id={`mem-text-${person.id || index}`} placeholder="Tu recuerdo..." className="flex-1 text-[11px] px-2 py-1.5 rounded-lg border border-[#D4B96A]/20 bg-white text-[#5D4037] focus:outline-none" />
+                      <button
+                        onClick={async () => {
+                          const input = document.getElementById(`mem-text-${person.id || index}`)
+                          if (!input?.value.trim()) return
+                          const newMemory = { text: input.value.trim(), author: 'Anonimo', date: new Date().toISOString() }
+                          if (person.id) {
+                            const updatedMemories = [...(person.memories || []), newMemory]
+                            await saveMemorial(person.id, { memories: updatedMemories })
+                            await loadMemorials()
+                          }
+                          input.value = ''
+                        }}
+                        className="px-3 py-1.5 rounded-lg bg-[#B8943E] text-white text-[11px] font-medium hover:bg-[#B8943E]/90 transition"
+                      >
+                        Enviar
+                      </button>
+                    </div>
+                  </div>
+                </details>
               </div>
             </motion.article>
           ))}

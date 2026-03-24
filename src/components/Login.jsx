@@ -104,7 +104,8 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4" style={{ background: 'linear-gradient(135deg, #FDF8F0 0%, #FEF3E2 50%, #FDEBD3 100%)' }}>
+    <div className="min-h-screen flex items-center justify-center px-4 relative" style={{ background: 'linear-gradient(135deg, #FDF8F0 0%, #FEF3E2 50%, #FDEBD3 100%)' }}>
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 25% 25%, #C4704B 1px, transparent 1px), radial-gradient(circle at 75% 75%, #B8943E 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
       <div className="w-full max-w-sm">
         {/* Header */}
         <div className="text-center mb-8">

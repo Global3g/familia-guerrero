@@ -56,11 +56,10 @@ function App() {
 
   useEffect(() => {
     const handler = (e) => {
-      const { parentName } = e.detail
       setActiveTab('arbol')
-      // The FamilyTree component will handle showing the member
-      // For now, just scroll to the tree section
-      setTimeout(() => window.scrollTo({ top: 200, behavior: 'smooth' }), 300)
+      setTimeout(() => {
+        window.dispatchEvent(new CustomEvent('open-family-modal', { detail: e.detail }))
+      }, 500)
     }
     window.addEventListener('navigate-to-person', handler)
     return () => window.removeEventListener('navigate-to-person', handler)

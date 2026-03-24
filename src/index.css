@@ -196,3 +196,20 @@ body {
 /* Dark mode: placeholder colors */
 .dark .animate-pulse { opacity: 0.3 !important; }
 .dark [class*="bg-[#E0D5C8]"] { background-color: #3a3230 !important; }
+
+/* Dark mode: modal overlays */
+.dark .rounded-2xl[style*="backgroundColor: '#FFF8F0'"] { background-color: #2a2320 !important; }
+.dark .shadow-2xl { box-shadow: 0 25px 50px rgba(0,0,0,0.6) !important; }
+
+/* Dark mode: modal banner gradient */
+.dark [style*="background: linear-gradient(135deg, #5D4037"] { filter: brightness(0.8) !important; }
+
+/* Dark mode: form inputs inside modals */
+.dark .rounded-xl input, .dark .rounded-xl textarea, .dark .rounded-xl select {
+  background-color: #2a2320 !important;
+  color: #E8DDD0 !important;
+  border-color: #4a4240 !important;
+}
+
+/* Dark mode: tab pills in modal */
+.dark button[class*="bg-white text-[#5D4037]"] { background-color: #3a3230 !important; color: #E8DDD0 !important; }
