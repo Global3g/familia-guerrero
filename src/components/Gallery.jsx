@@ -4,6 +4,7 @@ import { Camera, X, ZoomIn, Filter, Plus, Pencil, Trash2, Save, Loader2 } from '
 import { galleryCategories } from '../data/familyData'
 import { getGalleryPhotos, saveGalleryPhoto, deleteGalleryPhoto, uploadPhoto, getUpcomingEvents } from '../firebase/familyService'
 import Modal from './Modal'
+import { SkeletonGallery } from './Skeleton'
 
 // Gradient palettes for photo placeholders
 const gradients = [
@@ -155,6 +156,7 @@ export default function Gallery() {
   const [activeCategory, setActiveCategory] = useState('todos')
   const [selectedPhoto, setSelectedPhoto] = useState(null)
   const [photos, setPhotos] = useState([])
+  const [loading, setLoading] = useState(true)
   const [allEvents, setAllEvents] = useState([])
   const [editingPhoto, setEditingPhoto] = useState(null)
   const [showCreateForm, setShowCreateForm] = useState(false)
@@ -166,8 +168,10 @@ export default function Gallery() {
   }, [])
 
   const loadPhotos = async () => {
+    setLoading(true)
     const data = await getGalleryPhotos()
     if (data.length > 0) setPhotos(data)
+    setLoading(false)
   }
 
   const loadEvents = async () => {
@@ -268,6 +272,9 @@ export default function Gallery() {
         </motion.div>
 
         {/* Masonry grid */}
+        {loading ? (
+          <SkeletonGallery count={6} />
+        ) : (
         <motion.div
           layout
           className="columns-1 sm:columns-2 lg:columns-3 gap-5 space-y-5"
@@ -333,9 +340,10 @@ export default function Gallery() {
             ))}
           </AnimatePresence>
         </motion.div>
+        )}
 
         {/* Empty state */}
-        {filteredPhotos.length === 0 && (
+        {!loading && filteredPhotos.length === 0 && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}

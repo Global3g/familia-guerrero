@@ -1,7 +1,9 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Menu, X, Heart, LogOut, Search } from 'lucide-react'
+import { Menu, X, Heart, LogOut } from 'lucide-react'
 import NotificationBell from './NotificationBell'
+import DarkModeToggle from './DarkModeToggle'
+import SearchBar from './SearchBar'
 
 export default function Navbar({ user, onLogout }) {
   const [scrolled, setScrolled] = useState(false)
@@ -55,12 +57,11 @@ export default function Navbar({ user, onLogout }) {
           {/* Desktop Right Actions */}
           {user && (
             <div className="hidden md:flex items-center gap-2">
-              {/* Search Button (placeholder) */}
-              <button className="p-2 rounded-full hover:bg-[#5D4037]/10 transition">
-                <Search className="w-5 h-5" style={{ color: '#5D4037' }} />
-              </button>
+              <SearchBar />
 
               <NotificationBell />
+
+              <DarkModeToggle />
 
               <button
                 onClick={onLogout}
@@ -103,14 +104,7 @@ export default function Navbar({ user, onLogout }) {
           className="md:hidden bg-[#FDF8F0]/98 backdrop-blur-lg border-t border-[#5D4037]/10 shadow-lg"
         >
           <div className="flex flex-col px-4 py-4 gap-2">
-            {/* Search Button (placeholder) */}
-            <button
-              onClick={() => setMobileOpen(false)}
-              className="flex items-center gap-3 font-sans text-base font-medium text-[#5D4037] hover:text-[#C4704B] hover:bg-[#5D4037]/5 px-4 py-3 rounded-lg transition-colors duration-200"
-            >
-              <Search className="w-5 h-5" />
-              Buscar
-            </button>
+            <SearchBar />
 
             {/* Notification Bell */}
             <div className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[#5D4037]/5 transition-colors duration-200">

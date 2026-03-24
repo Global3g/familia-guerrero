@@ -42,6 +42,30 @@ function collectAllPeople(members, grandparentsData) {
   return people
 }
 
+function AnimatedNumber({ value }) {
+  const [count, setCount] = useState(0)
+  const numValue = parseInt(value) || 0
+
+  useEffect(() => {
+    if (numValue === 0) return
+    let start = 0
+    const duration = 1500
+    const step = Math.ceil(numValue / (duration / 16))
+    const timer = setInterval(() => {
+      start += step
+      if (start >= numValue) {
+        setCount(numValue)
+        clearInterval(timer)
+      } else {
+        setCount(start)
+      }
+    }, 16)
+    return () => clearInterval(timer)
+  }, [numValue])
+
+  return <>{count}</>
+}
+
 function StatCard({ icon: Icon, label, value, color, sub }) {
   return (
     <motion.div
@@ -53,7 +77,7 @@ function StatCard({ icon: Icon, label, value, color, sub }) {
       <div className="w-12 h-12 rounded-full mx-auto mb-3 flex items-center justify-center" style={{ backgroundColor: `${color}15` }}>
         <Icon className="w-6 h-6" style={{ color }} />
       </div>
-      <p className="text-3xl font-bold font-serif" style={{ color }}>{value}</p>
+      <p className="text-3xl font-bold font-serif" style={{ color }}><AnimatedNumber value={value} /></p>
       <p className="text-xs text-[#5D4037]/60 uppercase tracking-wider mt-1">{label}</p>
       {sub && <p className="text-[11px] text-[#5D4037]/40 mt-0.5">{sub}</p>}
     </motion.div>

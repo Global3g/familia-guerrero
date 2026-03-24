@@ -1,0 +1,12 @@
+{
+  "name": "Familia Guerrero",
+  "short_name": "Guerrero",
+  "description": "Preservando nuestro legado familiar",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#FDF8F0",
+  "theme_color": "#C4704B",
+  "icons": [
+    { "src": "/favicon.svg", "sizes": "any", "type": "image/svg+xml" }
+  ]
+}

@@ -87,3 +87,20 @@ body {
   align-items: center;
   justify-content: center;
 }
+
+/* Dark mode */
+.dark body, .dark #root {
+  background-color: #1a1512;
+  color: #E8DDD0;
+}
+
+.dark .bg-cream { background-color: #1a1512; }
+.dark .bg-white { background-color: #2a2320; }
+.dark [style*="background-color: #FDF8F0"] { background-color: #1a1512 !important; }
+.dark [style*="background-color: #FFF8F0"] { background-color: #2a2320 !important; }
+.dark [style*="background-color: #FAF7F2"] { background-color: #1e1a17 !important; }
+.dark [style*="background-color: #FFFDF7"] { background-color: #1e1a17 !important; }
+.dark [style*="background-color: #FFFBF5"] { background-color: #221e1a !important; }
+.dark [style*="background-color: #FAF6EE"] { background-color: #2a2320 !important; }
+.dark [style*="color: #5D4037"] { color: #E8DDD0 !important; }
+.dark [style*="color: #3D2C2C"] { color: #E8DDD0 !important; }

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Calendar, MapPin, Gift, Heart, Users, PartyPopper, Star, Plus, Pencil, Trash2, Save, Loader2, Camera } from 'lucide-react'
 import { getUpcomingEvents, saveUpcomingEvent, deleteUpcomingEvent, getGalleryPhotos } from '../firebase/familyService'
 import Modal from './Modal'
+import { SkeletonGrid } from './Skeleton'
 
 // Color mapping by event type
 const typeStyles = {
@@ -161,6 +162,7 @@ function EventForm({ isOpen, onClose, eventData, onSave }) {
 
 export default function Events() {
   const [events, setEvents] = useState([])
+  const [loading, setLoading] = useState(true)
   const [galleryPhotos, setGalleryPhotos] = useState([])
   const [editingEvent, setEditingEvent] = useState(null)
   const [showCreateForm, setShowCreateForm] = useState(false)
@@ -173,8 +175,10 @@ export default function Events() {
   }, [])
 
   const loadEvents = async () => {
+    setLoading(true)
     const data = await getUpcomingEvents()
     if (data.length > 0) setEvents(data)
+    setLoading(false)
   }
 
   const loadPhotos = async () => {
@@ -264,6 +268,9 @@ export default function Events() {
         </div>
 
         {/* Event cards */}
+        {loading ? (
+          <SkeletonGrid count={6} />
+        ) : (
         <motion.div
           key={tab}
           variants={containerVariants}
@@ -449,6 +456,7 @@ export default function Events() {
             )
           })}
         </motion.div>
+        )}
 
         {/* Add event button */}
         <div className="flex justify-center mt-12">

@@ -1,4 +1,5 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { auth } from './firebase/config'
 import { Home, GitBranch, Clock, Users, Heart } from 'lucide-react'
@@ -109,49 +110,76 @@ function App() {
 
       {/* Tab Content */}
       {activeTab === 'inicio' && (
-        <>
+        <motion.div
+          key="inicio"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
           <Hero />
           <Origin />
           <ShareExport />
-        </>
+        </motion.div>
       )}
 
       {activeTab === 'arbol' && (
-        <>
+        <motion.div
+          key="arbol"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
           <FamilyTree />
           <Suspense fallback={<div className="flex justify-center py-20"><div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#C4704B', borderTopColor: 'transparent' }} /></div>}>
             <InteractiveTree />
           </Suspense>
-        </>
+        </motion.div>
       )}
 
       {activeTab === 'historia' && (
-        <>
+        <motion.div
+          key="historia"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
           <Timeline />
           <Gallery />
           <Events />
-        </>
+        </motion.div>
       )}
 
       {activeTab === 'familia' && (
-        <Suspense fallback={<div className="flex justify-center py-20"><div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#C4704B', borderTopColor: 'transparent' }} /></div>}>
-          <Stats />
-          <BirthdayHighlight />
-          <Reminders />
-          <FamilyMap />
-          <Bloodline />
-        </Suspense>
+        <motion.div
+          key="familia"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Suspense fallback={<div className="flex justify-center py-20"><div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#C4704B', borderTopColor: 'transparent' }} /></div>}>
+            <Stats />
+            <BirthdayHighlight />
+            <Reminders />
+            <FamilyMap />
+            <Bloodline />
+          </Suspense>
+        </motion.div>
       )}
 
       {activeTab === 'recuerdos' && (
-        <>
+        <motion.div
+          key="recuerdos"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
           <Memorial />
           <Suspense fallback={<div className="flex justify-center py-20"><div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#C4704B', borderTopColor: 'transparent' }} /></div>}>
             <FamilyQuotes />
           </Suspense>
           <Traditions />
           <Messages />
-        </>
+        </motion.div>
       )}
 
       <Footer />

@@ -445,6 +445,21 @@ export default function Memorial() {
                   </div>
                 </div>
               )}
+
+              {/* Virtual candle */}
+              <div className="mt-4 pt-4 border-t border-[#D4B96A]/15 text-center">
+                <button
+                  onClick={(e) => {
+                    const btn = e.currentTarget
+                    btn.innerHTML = '<span style="font-size:24px;filter:drop-shadow(0 0 8px #D4B96A);">🕯️</span><p style="font-size:11px;color:#B8943E;margin-top:4px;">Vela encendida</p>'
+                    btn.disabled = true
+                  }}
+                  className="inline-flex flex-col items-center gap-1 px-4 py-2 rounded-xl hover:bg-[#D4B96A]/10 transition text-[#B8943E] text-xs font-medium"
+                >
+                  <span style={{fontSize:'20px'}}>🕯️</span>
+                  Encender una vela
+                </button>
+              </div>
             </motion.article>
           ))}
         </div>
