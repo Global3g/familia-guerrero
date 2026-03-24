@@ -186,8 +186,21 @@ export default function InteractiveTree() {
     loadTree()
   }, [])
 
+  const sortByBirth = (arr) => {
+    if (!arr) return arr
+    arr.sort((a, b) => {
+      if (!a.birthDate && !b.birthDate) return 0
+      if (!a.birthDate) return 1
+      if (!b.birthDate) return -1
+      return a.birthDate.localeCompare(b.birthDate)
+    })
+    arr.forEach(p => { if (p.children) sortByBirth(p.children) })
+    return arr
+  }
+
   const loadTree = async () => {
     const [members, gp] = await Promise.all([getFamilyMembers(), getGrandparents()])
+    sortByBirth(members)
     if (members.length > 0 || gp) {
       const { nodes: n, edges: e } = buildTree(members, gp)
       setNodes(n)
