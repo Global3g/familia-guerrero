@@ -19,12 +19,14 @@ self.addEventListener('activate', (e) => {
 
 self.addEventListener('fetch', (e) => {
   if (e.request.method !== 'GET') return
+  const url = e.request.url
+  if (!url.startsWith('http')) return
   e.respondWith(
     caches.match(e.request).then((cached) => {
       const fetched = fetch(e.request).then((response) => {
-        if (response.ok) {
+        if (response.ok && url.startsWith(self.location.origin)) {
           const clone = response.clone()
-          caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone))
+          caches.open(CACHE_NAME).then((cache) => cache.put(e.request, clone).catch(() => {}))
         }
         return response
       }).catch(() => cached)
