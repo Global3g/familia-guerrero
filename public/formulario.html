@@ -492,6 +492,11 @@ window.startNew = function() {
 }
 
 window.addSpecialPhoto = function() {
+  const currentCards = document.querySelectorAll('[id^="sp-card-"]').length
+  if (currentCards >= 10) {
+    alert('Maximo 10 fotos por persona')
+    return
+  }
   specialPhotoCount++
   const list = document.getElementById('special-photos-list')
   const card = document.createElement('div')

@@ -350,6 +350,7 @@ export default function FamilyTree() {
   const [selectedMember, setSelectedMember] = useState(null)
   const [movingPerson, setMovingPerson] = useState(null) // { person, parentId, childIndex }
   const [modalTab, setModalTab] = useState('familia')
+  const [lightboxPhoto, setLightboxPhoto] = useState(null)
 
   useEffect(() => {
     loadMembers()
@@ -1106,7 +1107,7 @@ export default function FamilyTree() {
                                 </h4>
                                 <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
                                   {photos.map((g, i) => (
-                                    <div key={i} className="rounded-xl overflow-hidden border border-[#E0D5C8]/50 shadow-sm bg-white">
+                                    <div key={i} className="rounded-xl overflow-hidden border border-[#E0D5C8]/50 shadow-sm bg-white cursor-pointer hover:shadow-lg hover:-translate-y-0.5 transition-all" onClick={() => g.photoURL && setLightboxPhoto(g)}>
                                       {g.photoURL ? (
                                         <img src={g.photoURL} alt={g.caption} className="w-full h-40 object-cover" />
                                       ) : (
@@ -1178,6 +1179,42 @@ export default function FamilyTree() {
                   )
                 })()}
               </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Photo lightbox */}
+      <AnimatePresence>
+        {lightboxPhoto && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-[80] flex items-center justify-center p-4"
+            style={{ backgroundColor: 'rgba(0,0,0,0.85)' }}
+            onClick={() => setLightboxPhoto(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="relative max-w-4xl w-full max-h-[90vh] rounded-2xl overflow-hidden shadow-2xl"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setLightboxPhoto(null)}
+                className="absolute top-3 right-3 z-10 w-10 h-10 rounded-full bg-black/50 text-white flex items-center justify-center hover:bg-black/70 transition text-lg"
+              >
+                &times;
+              </button>
+              <img src={lightboxPhoto.photoURL} alt={lightboxPhoto.caption} className="w-full max-h-[80vh] object-contain bg-black" />
+              {(lightboxPhoto.caption || lightboxPhoto.owner) && (
+                <div className="bg-white p-4">
+                  {lightboxPhoto.caption && <p className="text-base font-serif font-bold text-[#5D4037]">{lightboxPhoto.caption}</p>}
+                  {lightboxPhoto.owner && <p className="text-xs text-[#7A9E7E] mt-1">Subida por {lightboxPhoto.owner}</p>}
+                </div>
+              )}
             </motion.div>
           </motion.div>
         )}
