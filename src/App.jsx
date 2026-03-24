@@ -2,7 +2,7 @@ import { useState, useEffect, lazy, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { auth } from './firebase/config'
-import { Home, GitBranch, Clock, Users, Heart, Star } from 'lucide-react'
+import { Home, GitBranch, Clock, Users, Heart, Star, Image } from 'lucide-react'
 import Login from './components/Login'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -34,6 +34,7 @@ const tabs = [
   { id: 'inicio', label: 'Inicio', icon: Home },
   { id: 'arbol', label: 'Arbol', icon: GitBranch },
   { id: 'historia', label: 'Historia', icon: Clock },
+  { id: 'galeria', label: 'Galeria', icon: Image },
   { id: 'familia', label: 'Familia', icon: Users },
   { id: 'homenaje', label: 'Homenaje', icon: Star },
   { id: 'recuerdos', label: 'Recuerdos', icon: Heart },
@@ -170,8 +171,18 @@ function App() {
           transition={{ duration: 0.3 }}
         >
           <Timeline />
-          <Gallery />
           <Events />
+        </motion.div>
+      )}
+
+      {activeTab === 'galeria' && (
+        <motion.div
+          key="galeria"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Gallery />
         </motion.div>
       )}
 
