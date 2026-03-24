@@ -38,7 +38,17 @@ function collectCount(members, grandparents) {
     members.forEach((m) => walk(m, 2));
   }
 
-  return { total, generations: maxGen };
+  // Find oldest birth year
+  let oldestYear = 9999
+  const checkYear = (date) => {
+    if (!date) return
+    const y = parseInt(date.split('-')[0])
+    if (y > 1800 && y < oldestYear) oldestYear = y
+  }
+  if (gf?.birthDate) checkYear(gf.birthDate)
+  if (gm?.birthDate) checkYear(gm.birthDate)
+
+  return { total, generations: maxGen, since: oldestYear < 9999 ? oldestYear : null };
 }
 
 export default function Hero() {
@@ -69,7 +79,7 @@ export default function Hero() {
           initial="hidden"
           animate="visible"
           custom={0}
-          className="font-serif text-6xl sm:text-7xl md:text-8xl font-bold text-[#5D4037] leading-[1.1] tracking-tight"
+          className="font-serif text-7xl sm:text-8xl md:text-9xl font-bold text-[#5D4037] leading-[1.1] tracking-tight"
         >
           Familia{" "}
           <span className="relative inline-block">
@@ -105,7 +115,7 @@ export default function Hero() {
               <span className="font-semibold text-[#5D4037]/70">{stats.generations}</span>
               <span>generaciones</span>
               <span className="text-[#C4704B]/40">·</span>
-              <span>Desde 1948</span>
+              <span>Desde {stats.since || '...'}</span>
             </>
           ) : (
             <span className="text-[#5D4037]/30">Cargando...</span>

@@ -187,7 +187,10 @@ function ChildCard({ child, onEdit, onDelete, onView }) {
 
       {child.children && child.children.length > 0 && (() => {
         const hijos = child.children.length
+        const hasSpouseCount = (arr) => arr.reduce((s, c) => s + (c.spouse && (typeof c.spouse === 'object' ? c.spouse.name : c.spouse) ? 1 : 0), 0)
+        const yernos = hasSpouseCount(child.children)
         const nietos = child.children.reduce((s, c) => s + (c.children?.length || 0), 0)
+        const yernosNietos = child.children.reduce((s, c) => s + hasSpouseCount(c.children || []), 0)
         const bisnietos = child.children.reduce((s, c) =>
           s + (c.children || []).reduce((s2, gc) => s2 + (gc.children?.length || 0), 0), 0)
         return (
@@ -196,8 +199,14 @@ function ChildCard({ child, onEdit, onDelete, onView }) {
               <Users className="w-3.5 h-3.5 text-[#B8943E]" />
               {hijos} hijos
             </span>
+            {yernos > 0 && (
+              <span className="text-xs text-[#E8956D] font-medium">{yernos} yernos/nueras</span>
+            )}
             {nietos > 0 && (
               <span className="text-xs text-[#7A9E7E] font-medium">{nietos} nietos</span>
+            )}
+            {yernosNietos > 0 && (
+              <span className="text-xs text-[#B8943E] font-medium">{yernosNietos} parejas</span>
             )}
             {bisnietos > 0 && (
               <span className="text-xs text-[#C4704B] font-medium">{bisnietos} bisnietos</span>
