@@ -4,6 +4,7 @@ import { Heart, Users, User, Plus, Pencil, Trash2, Eye, AlertTriangle, ArrowRigh
 import { grandparents as defaultGrandparents } from '../data/familyData'
 import { getFamilyMembers, saveFamilyMember, deleteFamilyMember, getGrandparents } from '../firebase/familyService'
 import FamilyMemberForm from './FamilyMemberForm'
+import sounds from '../utils/sounds'
 
 const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
 
@@ -401,6 +402,7 @@ export default function FamilyTree() {
   const handleSaveMember = async (formData) => {
     const id = editingMember?.id || null
     await saveFamilyMember(id, formData)
+    sounds.save()
     setEditingMember(null)
     setShowCreateForm(false)
     await loadMembers()
@@ -409,6 +411,7 @@ export default function FamilyTree() {
   const handleDeleteMember = async () => {
     if (deletingMember?.id) {
       await deleteFamilyMember(deletingMember.id)
+      sounds.delete()
       setDeletingMember(null)
       await loadMembers()
     }
@@ -652,9 +655,13 @@ export default function FamilyTree() {
                   // Count total grandchildren
                   const totalGrandchildren = selectedMember.children ? selectedMember.children.reduce((acc, child) => acc + (child.children ? child.children.length : 0), 0) : 0
 
+                  const memberIndex = members.findIndex(m => m.id === selectedMember?.id)
+                  const hijoColors = ['#7A9E7E', '#C4704B', '#B8943E', '#5D4037', '#E8956D', '#2C3E50', '#8D6E63', '#D4B96A']
+                  const memberColor = hijoColors[memberIndex % hijoColors.length] || '#5D4037'
+
                   return (
                     <>
-                      <div className="relative -mx-6 sm:-mx-8 -mt-6 sm:-mt-8 mb-6 rounded-t-2xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #5D4037, #C4704B, #B8943E)' }}>
+                      <div className="relative -mx-6 sm:-mx-8 -mt-6 sm:-mt-8 mb-6 rounded-t-2xl overflow-hidden" style={{ background: `linear-gradient(135deg, ${memberColor}, ${memberColor}CC, ${memberColor}80)` }}>
                         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 50%, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
                         <div className="relative px-6 sm:px-8 pt-10 pb-8 text-center">
                           <button onClick={() => setSelectedMember(null)} className="absolute top-4 right-4 w-8 h-8 rounded-full bg-white/20 hover:bg-white/30 flex items-center justify-center text-white transition">

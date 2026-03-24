@@ -3,7 +3,9 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, Baby, Star, Users, Award, Calendar, Plus, Pencil, Trash2, Save, Loader2, X } from 'lucide-react';
 
 import { getTimelineEvents, saveTimelineEvent, deleteTimelineEvent, getFamilyMembers, getGrandparents } from '../firebase/familyService';
+import { SkeletonTimeline } from './Skeleton';
 import Modal from './Modal';
+import sounds from '../utils/sounds';
 
 const typeConfig = {
   nacimiento: {
@@ -338,6 +340,7 @@ function EventForm({ isOpen, onClose, eventData, onSave }) {
 
 export default function Timeline() {
   const [events, setEvents] = useState([])
+  const [loading, setLoading] = useState(true)
   const [editingEvent, setEditingEvent] = useState(null)
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [deletingEvent, setDeletingEvent] = useState(null)
@@ -348,6 +351,7 @@ export default function Timeline() {
   }, [])
 
   const loadEvents = async () => {
+    setLoading(true)
     const [manual, members, gp] = await Promise.all([getTimelineEvents(), getFamilyMembers(), getGrandparents()])
 
     const auto = []
@@ -389,6 +393,7 @@ export default function Timeline() {
 
     const all = [...manual, ...uniqueAuto].sort((a, b) => (a.year || 0) - (b.year || 0))
     setEvents(all)
+    setLoading(false)
   }
 
   const displayEvents = events
@@ -397,6 +402,7 @@ export default function Timeline() {
   const handleSave = async (formData) => {
     const id = editingEvent?.id || null
     await saveTimelineEvent(id, formData)
+    sounds.save()
     setEditingEvent(null)
     setShowCreateForm(false)
     await loadEvents()
@@ -405,6 +411,7 @@ export default function Timeline() {
   const handleDelete = async () => {
     if (deletingEvent?.id) {
       await deleteTimelineEvent(deletingEvent.id)
+      sounds.delete()
       setDeletingEvent(null)
       await loadEvents()
     }
@@ -448,8 +455,11 @@ export default function Timeline() {
           ))}
         </div>
 
+        {/* Skeleton while loading */}
+        {loading && <SkeletonTimeline count={4} />}
+
         {/* Timeline container */}
-        {filteredEvents.length > 0 ? (
+        {!loading && filteredEvents.length > 0 ? (
           <div className="relative">
             {/* Desktop center line */}
             <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#C4704B]/30 via-[#7A9E7E]/30 to-[#5D4037]/10 -translate-x-1/2" />
@@ -468,7 +478,7 @@ export default function Timeline() {
               />
             ))}
           </div>
-        ) : (
+        ) : !loading ? (
           <div className="text-center py-16">
             <div className="w-16 h-16 rounded-full bg-[#C4704B]/10 flex items-center justify-center mx-auto mb-4">
               <Calendar className="w-8 h-8 text-[#C4704B]/50" />
@@ -483,7 +493,7 @@ export default function Timeline() {
               Agregar primer evento
             </button>
           </div>
-        )}
+        ) : null}
 
         {/* Add event button */}
         {filteredEvents.length > 0 && (

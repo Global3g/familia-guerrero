@@ -22,6 +22,8 @@ import PresentationMode, { PresentationButton } from './components/PresentationM
 import ExportTree from './components/ExportTree'
 import Gamification from './components/Gamification'
 import FamilyChat from './components/FamilyChat'
+import FamilyCalendar from './components/FamilyCalendar'
+import WeeklyBanner from './components/WeeklyBanner'
 
 // Lazy-loaded heavy components (ReactFlow, Recharts, Leaflet, etc.)
 const InteractiveTree = lazy(() => import('./components/InteractiveTree'))
@@ -161,7 +163,8 @@ function App() {
           transition={{ duration: 0.3 }}
         >
           <Hero />
-          <div className="max-w-4xl mx-auto px-4 py-4">
+          <div className="max-w-4xl mx-auto px-4 py-4 space-y-3">
+            <WeeklyBanner />
             <FamilyProgress />
           </div>
           <Origin />
@@ -228,6 +231,9 @@ function App() {
             <Bloodline />
             <div className="max-w-6xl mx-auto px-4">
               <Gamification />
+            </div>
+            <div className="max-w-6xl mx-auto px-4 py-8">
+              <FamilyCalendar />
             </div>
           </Suspense>
         </motion.div>

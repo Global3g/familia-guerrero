@@ -3,7 +3,9 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Star, Heart, Sun, Camera, Plus, Pencil, Trash2, Save, Loader2, MessageCircle } from "lucide-react";
 import { memorials as defaultMemorials } from "../data/familyData";
 import { getMemorials, saveMemorial, deleteMemorial, uploadPhoto, getFamilyMembers, getGrandparents } from "../firebase/familyService";
+import { SkeletonGrid } from './Skeleton';
 import Modal from './Modal';
+import sounds from '../utils/sounds';
 import ImageCropper from './ImageCropper';
 
 const fadeIn = {
@@ -272,6 +274,7 @@ function MemorialForm({ isOpen, onClose, data, onSave }) {
 
 export default function Memorial() {
   const [memorials, setMemorials] = useState([])
+  const [loading, setLoading] = useState(true)
   const [editingMemorial, setEditingMemorial] = useState(null)
   const [showCreateForm, setShowCreateForm] = useState(false)
   const [deletingMemorial, setDeletingMemorial] = useState(null)
@@ -295,6 +298,7 @@ export default function Memorial() {
   }, [])
 
   const loadMemorials = async () => {
+    setLoading(true)
     const [manualData, members, gp] = await Promise.all([getMemorials(), getFamilyMembers(), getGrandparents()])
 
     // Collect deceased from the family tree
@@ -350,6 +354,7 @@ export default function Memorial() {
     })
 
     setMemorials(all)
+    setLoading(false)
   }
 
   const displayMemorials = memorials
@@ -357,6 +362,7 @@ export default function Memorial() {
   const handleSave = async (formData) => {
     const id = editingMemorial?.id || null
     await saveMemorial(id, formData)
+    sounds.save()
     setEditingMemorial(null)
     setShowCreateForm(false)
     await loadMemorials()
@@ -365,6 +371,7 @@ export default function Memorial() {
   const handleDelete = async () => {
     if (deletingMemorial?.id) {
       await deleteMemorial(deletingMemorial.id)
+      sounds.delete()
       setDeletingMemorial(null)
       await loadMemorials()
     }
@@ -388,6 +395,25 @@ export default function Memorial() {
       <Star className="absolute top-16 right-20 w-4 h-4 text-[#D4B96A] opacity-20 pointer-events-none" />
       <Star className="absolute top-32 left-16 w-3 h-3 text-[#B8943E] opacity-15 pointer-events-none" />
       <Star className="absolute bottom-24 right-1/3 w-3 h-3 text-[#D4B96A] opacity-15 pointer-events-none" />
+
+      {/* Floating particles */}
+      {Array.from({ length: 8 }).map((_, i) => (
+        <motion.div
+          key={i}
+          className="absolute w-1 h-1 rounded-full bg-[#D4B96A] pointer-events-none"
+          style={{ left: `${10 + i * 12}%`, top: `${20 + (i % 3) * 25}%` }}
+          animate={{
+            y: [0, -30, 0],
+            opacity: [0.1, 0.4, 0.1],
+          }}
+          transition={{
+            duration: 4 + i * 0.5,
+            repeat: Infinity,
+            delay: i * 0.7,
+            ease: 'easeInOut',
+          }}
+        />
+      ))}
 
       <div className="relative z-10 max-w-5xl mx-auto px-6">
         {/* Section header */}
@@ -420,8 +446,11 @@ export default function Memorial() {
           </button>
         </motion.div>
 
+        {/* Skeleton while loading */}
+        {loading && <SkeletonGrid count={4} />}
+
         {/* Memorial cards */}
-        <div className="grid gap-10 md:grid-cols-2">
+        {!loading && <div className="grid gap-10 md:grid-cols-2">
           {displayMemorials.map((person, index) => (
             <motion.article
               key={person.id || index}
@@ -524,6 +553,7 @@ export default function Memorial() {
               <div className="mt-4 pt-4 border-t border-[#D4B96A]/15 text-center">
                 <button
                   onClick={(e) => {
+                    sounds.candle()
                     const btn = e.currentTarget
                     btn.innerHTML = '<span style="font-size:24px;filter:drop-shadow(0 0 8px #D4B96A);">🕯️</span><p style="font-size:11px;color:#B8943E;margin-top:4px;">Vela encendida</p>'
                     btn.disabled = true
@@ -572,7 +602,7 @@ export default function Memorial() {
               </div>
             </motion.article>
           ))}
-        </div>
+        </div>}
 
         {/* Add memorial button */}
         <div className="flex justify-center mt-12">

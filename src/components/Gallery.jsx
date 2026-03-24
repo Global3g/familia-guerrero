@@ -4,6 +4,7 @@ import { Camera, X, ZoomIn, Filter, Plus, Pencil, Trash2, Save, Loader2 } from '
 import { galleryCategories } from '../data/familyData'
 import { getGalleryPhotos, saveGalleryPhoto, deleteGalleryPhoto, uploadPhoto, getUpcomingEvents } from '../firebase/familyService'
 import Modal from './Modal'
+import sounds from '../utils/sounds'
 import { SkeletonGallery } from './Skeleton'
 
 // Gradient palettes for photo placeholders
@@ -189,6 +190,7 @@ export default function Gallery() {
   const handleSave = async (formData) => {
     const id = editingPhoto?.id || null
     await saveGalleryPhoto(id, formData)
+    sounds.save()
     setEditingPhoto(null)
     setShowCreateForm(false)
     await loadPhotos()
@@ -197,6 +199,7 @@ export default function Gallery() {
   const handleDelete = async () => {
     if (deletingPhoto?.id) {
       await deleteGalleryPhoto(deletingPhoto.id)
+      sounds.delete()
       setDeletingPhoto(null)
       await loadPhotos()
     }
