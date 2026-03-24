@@ -340,6 +340,7 @@ export default function FamilyTree() {
   const [deletingMember, setDeletingMember] = useState(null)
   const [selectedMember, setSelectedMember] = useState(null)
   const [movingPerson, setMovingPerson] = useState(null) // { person, parentId, childIndex }
+  const [modalTab, setModalTab] = useState('familia')
 
   useEffect(() => {
     loadMembers()
@@ -481,7 +482,7 @@ export default function FamilyTree() {
                     child={child}
                     onEdit={() => setEditingMember(child)}
                     onDelete={() => setDeletingMember(child)}
-                    onView={() => setSelectedMember(child)}
+                    onView={() => { setModalTab('familia'); setSelectedMember(child); }}
                   />
                 </motion.div>
               ))}
@@ -682,66 +683,105 @@ export default function FamilyTree() {
                         )}
                       </div>
 
-                      {selectedMember.bio && (
-                        <p className="text-sm text-[#5D4037]/70 leading-relaxed mb-4 italic text-center">{selectedMember.bio}</p>
-                      )}
-
-                      {/* Datos de la pareja - inline */}
-                      {(selectedMember.weddingDate || selectedMember.location) && (
-                        <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mb-6 py-3 px-4 rounded-xl bg-white/60 border border-[#E0D5C8]/50">
-                          {selectedMember.weddingDate && (
-                            <div className="flex items-center gap-1.5 text-sm text-[#5D4037]">
-                              <Calendar className="w-3.5 h-3.5" />
-                              <span className="font-medium">{formatDate(selectedMember.weddingDate)}</span>
-                            </div>
-                          )}
-                          {selectedMember.weddingPlace && (
-                            <div className="flex items-center gap-1.5 text-sm text-[#5D4037]">
-                              <Home className="w-3.5 h-3.5" />
-                              <span className="font-medium">{selectedMember.weddingPlace}</span>
-                            </div>
-                          )}
-                          {selectedMember.location && (
-                            <div className="flex items-center gap-1.5 text-sm text-[#7A9E7E]">
-                              <MapPin className="w-3.5 h-3.5" />
-                              <span className="font-medium">{selectedMember.location}</span>
-                            </div>
-                          )}
-                          {(() => {
-                            if (!selectedMember.weddingDate) return null
-                            const wd = new Date(selectedMember.weddingDate)
-                            const now = new Date()
-                            let y = now.getFullYear() - wd.getFullYear()
-                            if (now.getMonth() < wd.getMonth() || (now.getMonth() === wd.getMonth() && now.getDate() < wd.getDate())) y--
-                            return y > 0 ? (
-                              <div className="flex items-center gap-1.5 text-sm font-bold text-[#C4704B]">
-                                <Heart className="w-3.5 h-3.5" />
-                                <span>{y} años de casados</span>
-                              </div>
-                            ) : null
-                          })()}
-                        </div>
-                      )}
-
-                      {/* Quick stats pills */}
-                      <div className="flex flex-wrap justify-center gap-2 mb-8">
-                        {selectedMember.children?.length > 0 && (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#7A9E7E]/10 text-[#7A9E7E] text-xs font-semibold">
-                            <Users className="w-3.5 h-3.5" /> {selectedMember.children.length} hijos
-                          </span>
-                        )}
-                        {totalGrandchildren > 0 && (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#E8956D]/10 text-[#E8956D] text-xs font-semibold">
-                            <Users className="w-3.5 h-3.5" /> {totalGrandchildren} nietos
-                          </span>
-                        )}
-                        {selectedMember.location && (
-                          <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#C4704B]/10 text-[#C4704B] text-xs font-semibold">
-                            <MapPin className="w-3.5 h-3.5" /> {selectedMember.location}
-                          </span>
-                        )}
+                      {/* Tab bar */}
+                      <div className="flex overflow-x-auto border-b border-[#E0D5C8] gap-1 px-6 mb-6">
+                        {[
+                          { key: 'familia', label: 'Familia' },
+                          { key: 'datos', label: 'Datos' },
+                          { key: 'momentos', label: 'Momentos' },
+                          { key: 'galeria', label: 'Galeria' },
+                          { key: 'mensajes', label: 'Mensajes' },
+                        ].map((tab) => (
+                          <button
+                            key={tab.key}
+                            onClick={() => setModalTab(tab.key)}
+                            className={`text-xs font-medium py-2 px-3 rounded-t-lg whitespace-nowrap transition ${
+                              modalTab === tab.key
+                                ? 'bg-white border-b-2 border-[#C4704B] text-[#5D4037]'
+                                : 'text-[#5D4037]/50 hover:text-[#5D4037]/80 hover:bg-white/50'
+                            }`}
+                          >
+                            {tab.label}
+                          </button>
+                        ))}
                       </div>
 
+                      {/* TAB: Familia */}
+                      {modalTab === 'familia' && (
+                        <>
+                          {/* Quick stats pills */}
+                          <div className="flex flex-wrap justify-center gap-2 mb-8">
+                            {selectedMember.children?.length > 0 && (
+                              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#7A9E7E]/10 text-[#7A9E7E] text-xs font-semibold">
+                                <Users className="w-3.5 h-3.5" /> {selectedMember.children.length} hijos
+                              </span>
+                            )}
+                            {totalGrandchildren > 0 && (
+                              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#E8956D]/10 text-[#E8956D] text-xs font-semibold">
+                                <Users className="w-3.5 h-3.5" /> {totalGrandchildren} nietos
+                              </span>
+                            )}
+                            {selectedMember.location && (
+                              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#C4704B]/10 text-[#C4704B] text-xs font-semibold">
+                                <MapPin className="w-3.5 h-3.5" /> {selectedMember.location}
+                              </span>
+                            )}
+                          </div>
+                        </>
+                      )}
+
+                      {/* TAB: Datos */}
+                      {modalTab === 'datos' && (
+                        <>
+                          {(selectedMember.weddingDate || selectedMember.location) && (
+                            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mb-6 py-3 px-4 rounded-xl bg-white/60 border border-[#E0D5C8]/50">
+                              {selectedMember.weddingDate && (
+                                <div className="flex items-center gap-1.5 text-sm text-[#5D4037]">
+                                  <Calendar className="w-3.5 h-3.5" />
+                                  <span className="font-medium">{formatDate(selectedMember.weddingDate)}</span>
+                                </div>
+                              )}
+                              {selectedMember.weddingPlace && (
+                                <div className="flex items-center gap-1.5 text-sm text-[#5D4037]">
+                                  <Home className="w-3.5 h-3.5" />
+                                  <span className="font-medium">{selectedMember.weddingPlace}</span>
+                                </div>
+                              )}
+                              {selectedMember.location && (
+                                <div className="flex items-center gap-1.5 text-sm text-[#7A9E7E]">
+                                  <MapPin className="w-3.5 h-3.5" />
+                                  <span className="font-medium">{selectedMember.location}</span>
+                                </div>
+                              )}
+                              {(() => {
+                                if (!selectedMember.weddingDate) return null
+                                const wd = new Date(selectedMember.weddingDate)
+                                const now = new Date()
+                                let y = now.getFullYear() - wd.getFullYear()
+                                if (now.getMonth() < wd.getMonth() || (now.getMonth() === wd.getMonth() && now.getDate() < wd.getDate())) y--
+                                return y > 0 ? (
+                                  <div className="flex items-center gap-1.5 text-sm font-bold text-[#C4704B]">
+                                    <Heart className="w-3.5 h-3.5" />
+                                    <span>{y} años de casados</span>
+                                  </div>
+                                ) : null
+                              })()}
+                            </div>
+                          )}
+
+                          {selectedMember.bio && (
+                            <p className="text-sm text-[#5D4037]/70 leading-relaxed mb-4 italic text-center">{selectedMember.bio}</p>
+                          )}
+
+                          {!selectedMember.weddingDate && !selectedMember.location && !selectedMember.bio && (
+                            <p className="text-sm text-[#5D4037]/40 text-center py-8">No hay datos adicionales registrados.</p>
+                          )}
+                        </>
+                      )}
+
+                      {/* TAB: Familia - Children */}
+                      {modalTab === 'familia' && (
+                        <>
                       {/* Children - each one with their complete family */}
                       {selectedMember.children && selectedMember.children.length > 0 && (
                         <div className="mb-8">
@@ -968,8 +1008,11 @@ export default function FamilyTree() {
                         </div>
                       )}
 
-                      {/* Momentos Importantes - with gradient left border */}
-                      {selectedMember.moments && selectedMember.moments.length > 0 && (
+                        </>
+                      )}
+
+                      {/* TAB: Momentos */}
+                      {modalTab === 'momentos' && selectedMember.moments && selectedMember.moments.length > 0 && (
                         <div className="mb-8">
                           <h4 className="text-sm font-serif font-semibold text-[#5D4037] uppercase tracking-wider mb-4 flex items-center gap-2">
                             <Star className="w-4 h-4 text-[#B8943E]" />
@@ -993,8 +1036,12 @@ export default function FamilyTree() {
                         </div>
                       )}
 
-                      {/* Galeria Familiar - bigger photos */}
-                      {selectedMember.gallery && selectedMember.gallery.length > 0 && (
+                      {modalTab === 'momentos' && (!selectedMember.moments || selectedMember.moments.length === 0) && (
+                        <p className="text-sm text-[#5D4037]/40 text-center py-8">No hay momentos registrados.</p>
+                      )}
+
+                      {/* TAB: Galeria */}
+                      {modalTab === 'galeria' && selectedMember.gallery && selectedMember.gallery.length > 0 && (
                         <div className="mb-8">
                           <h4 className="text-sm font-serif font-semibold text-[#5D4037] uppercase tracking-wider mb-4 flex items-center gap-2">
                             <Camera className="w-4 h-4 text-[#7A9E7E]" />
@@ -1017,8 +1064,12 @@ export default function FamilyTree() {
                         </div>
                       )}
 
-                      {/* Mensajes y Recuerdos - decorative quotes */}
-                      {selectedMember.messages && selectedMember.messages.length > 0 && (
+                      {modalTab === 'galeria' && (!selectedMember.gallery || selectedMember.gallery.length === 0) && (
+                        <p className="text-sm text-[#5D4037]/40 text-center py-8">No hay fotos en la galeria.</p>
+                      )}
+
+                      {/* TAB: Mensajes */}
+                      {modalTab === 'mensajes' && selectedMember.messages && selectedMember.messages.length > 0 && (
                         <div className="mb-8">
                           <h4 className="text-sm font-serif font-semibold text-[#5D4037] uppercase tracking-wider mb-4 flex items-center gap-2">
                             <MessageCircle className="w-4 h-4 text-[#C4704B]" />
@@ -1043,6 +1094,10 @@ export default function FamilyTree() {
                             ))}
                           </div>
                         </div>
+                      )}
+
+                      {modalTab === 'mensajes' && (!selectedMember.messages || selectedMember.messages.length === 0) && (
+                        <p className="text-sm text-[#5D4037]/40 text-center py-8">No hay mensajes registrados.</p>
                       )}
 
                       {/* Actions footer - sticky frosted glass */}

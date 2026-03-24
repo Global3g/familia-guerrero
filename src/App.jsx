@@ -15,6 +15,8 @@ import Traditions from './components/Traditions'
 import Messages from './components/Messages'
 import Footer from './components/Footer'
 import FamilyProgress from './components/FamilyProgress'
+import Onboarding from './components/Onboarding'
+import ShareExport from './components/ShareExport'
 
 // Lazy-loaded heavy components (ReactFlow, Recharts, Leaflet, etc.)
 const InteractiveTree = lazy(() => import('./components/InteractiveTree'))
@@ -100,11 +102,17 @@ function App() {
         <FamilyProgress />
       </div>
 
+      {/* Onboarding */}
+      <div className="max-w-4xl mx-auto px-4 pt-2">
+        <Onboarding />
+      </div>
+
       {/* Tab Content */}
       {activeTab === 'inicio' && (
         <>
           <Hero />
           <Origin />
+          <ShareExport />
         </>
       )}
 

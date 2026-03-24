@@ -45,12 +45,12 @@ const ProfileCard = ({ person, index, onEdit }) => {
         </button>
 
         {/* Photo */}
-        <div className="flex justify-center pt-8 pb-4">
+        <div className="flex justify-center pt-6 pb-3">
           {(person.photo || person.photoURL) ? (
             <img
               src={person.photoURL || person.photo}
               alt={person.name}
-              className="w-40 h-40 rounded-full object-cover shadow-md"
+              className={`w-40 h-40 rounded-full object-cover shadow-md ring-4 ${isGrandfather ? 'ring-[#C4704B]/20' : 'ring-[#7A9E7E]/20'}`}
               style={{ border: `4px solid ${isGrandfather ? '#C4704B' : '#7A9E7E'}` }}
             />
           ) : (
@@ -69,7 +69,7 @@ const ProfileCard = ({ person, index, onEdit }) => {
         </div>
 
         {/* Info */}
-        <div className="px-6 pb-8 text-center">
+        <div className="px-5 pb-6 text-center">
           <h3
             className="text-2xl font-serif font-bold mb-1"
             style={{ color: '#5D4037' }}
@@ -232,7 +232,7 @@ export default function Origin() {
             style={{ backgroundColor: '#B8943E' }}
           />
           <p className="text-lg max-w-2xl mx-auto" style={{ color: '#5D4037AA' }}>
-            La historia de amor que dio origen a nuestra familia
+            El amor que nos dio vida a todos
           </p>
         </motion.div>
 
@@ -287,11 +287,16 @@ export default function Origin() {
             </div>
 
             <h3
-              className="text-2xl font-serif font-bold mb-2"
+              className="text-3xl md:text-4xl font-serif font-bold mb-2"
               style={{ color: '#5D4037', fontFamily: "'Playfair Display', serif" }}
             >
               Su Historia de Amor
             </h3>
+            {weddingDate && (
+              <p className="text-sm font-medium tracking-wide mb-3" style={{ color: '#B8943E' }}>
+                Juntos desde {new Date(weddingDate).getFullYear()}
+              </p>
+            )}
 
             {/* Wedding details */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
@@ -308,7 +313,7 @@ export default function Origin() {
 
             {/* Story */}
             <p
-              className="text-base md:text-lg leading-relaxed font-serif italic"
+              className="text-lg md:text-xl leading-relaxed font-serif italic"
               style={{ color: '#5D4037' }}
             >
               {story}
