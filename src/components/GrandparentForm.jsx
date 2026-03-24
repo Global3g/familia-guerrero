@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Modal from './Modal';
 import { saveGrandparents, uploadPhoto } from '../firebase/familyService';
 import { Camera, Save, Loader2 } from 'lucide-react';
@@ -7,6 +7,7 @@ export default function GrandparentForm({ isOpen, onClose, grandparentData, type
   const [form, setForm] = useState({
     name: grandparentData?.name || '',
     fullName: grandparentData?.fullName || '',
+    nickname: grandparentData?.nickname || '',
     gender: grandparentData?.gender || '',
     birthDate: grandparentData?.birthDate || '',
     deathDate: grandparentData?.deathDate || '',
@@ -22,6 +23,28 @@ export default function GrandparentForm({ isOpen, onClose, grandparentData, type
   const [photoFile, setPhotoFile] = useState(null);
   const [photoPreview, setPhotoPreview] = useState(grandparentData?.photoURL || null);
   const [loading, setLoading] = useState(false);
+
+  // Reset form when grandparentData changes (e.g. Firestore loads)
+  useEffect(() => {
+    setForm({
+      name: grandparentData?.name || '',
+      fullName: grandparentData?.fullName || '',
+      nickname: grandparentData?.nickname || '',
+      gender: grandparentData?.gender || '',
+      birthDate: grandparentData?.birthDate || '',
+      deathDate: grandparentData?.deathDate || '',
+      birthPlace: grandparentData?.birthPlace || '',
+      role: grandparentData?.role || '',
+      bio: grandparentData?.bio || '',
+      quote: grandparentData?.quote || '',
+      values: grandparentData?.values ? grandparentData.values.join(', ') : '',
+      weddingDate: grandparentData?.weddingDate || '',
+      weddingPlace: grandparentData?.weddingPlace || '',
+      story: grandparentData?.story || '',
+    });
+    setPhotoFile(null);
+    setPhotoPreview(grandparentData?.photoURL || null);
+  }, [grandparentData, isOpen]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -122,6 +145,19 @@ export default function GrandparentForm({ isOpen, onClose, grandparentData, type
             onChange={handleChange}
             className={inputClass}
             placeholder="Nombre completo"
+          />
+        </div>
+
+        {/* Nickname */}
+        <div>
+          <label className={labelClass}>Apodo / Como le decian</label>
+          <input
+            type="text"
+            name="nickname"
+            value={form.nickname}
+            onChange={handleChange}
+            className={inputClass}
+            placeholder="Apodo o como le decian"
           />
         </div>
 
