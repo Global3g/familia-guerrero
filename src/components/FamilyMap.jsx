@@ -100,8 +100,8 @@ export default function FamilyMap() {
           if (!loc) return null;
           const t = loc.trim();
           if (!t) return null;
-          // Capitalize first letter of each word
-          return t.toLowerCase().replace(/\b\w/g, c => c.toUpperCase());
+          // Use the location as-is since Firestore already has normalized values
+          return t;
         };
 
         const addPerson = (person) => {
