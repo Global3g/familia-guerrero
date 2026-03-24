@@ -276,8 +276,8 @@
   <div class="step" id="step-7">
     <div class="step-info">
       <div class="step-num">Paso 7 de 8</div>
-      <h2>Fotos especiales</h2>
-      <p>Sube fotos de momentos importantes de tu familia</p>
+      <h2>Fotos de tu familia</h2>
+      <p>Sube fotos de tu nucleo familiar: boda, reuniones, momentos especiales</p>
     </div>
     <div style="background:white;border-radius:16px;padding:16px;border:2px solid #E0D5C8;margin-bottom:16px;">
       <p style="font-size:13px;color:#5D4037;line-height:1.5;margin-bottom:12px;">Sube las fotos que quieras compartir. Cada una se guardara en la galeria de tu familia.</p>
@@ -1059,7 +1059,8 @@ window.submitForm = async function() {
       await window.addDoc(window.collection(window.fireDb, 'familyMembers'), personData)
     }
 
-    // Save special photos to galleryPhotos collection
+    // Collect special photos and attach to the member's gallery field
+    const specialPhotos = []
     const spCards = document.querySelectorAll('[id^="sp-card-"]')
     for (const card of spCards) {
       const spId = card.id.replace('sp-card-', '')
@@ -1067,13 +1068,28 @@ window.submitForm = async function() {
       if (!photoURL) continue
       const spType = document.getElementById(`sp-type-${spId}`)?.value || 'otro'
       const spDesc = document.getElementById(`sp-desc-${spId}`)?.value || ''
-      await window.addDoc(window.collection(window.fireDb, 'galleryPhotos'), {
-        photoURL,
-        caption: spDesc || spType,
-        category: spType === 'boda' ? 'bodas' : spType === 'reunion' ? 'reuniones' : spType === 'cumpleanos' ? 'cumpleanos' : spType === 'abuelos' ? 'abuelos' : 'recuerdos',
-        year: new Date().getFullYear(),
-        uploadedBy: personName,
-      })
+      specialPhotos.push({ photoURL, caption: spDesc || spType })
+    }
+
+    // Attach special photos to the member's gallery in Firestore
+    if (specialPhotos.length > 0 && saved && parentId) {
+      try {
+        const snapUpdate = await window.getDocs(window.collection(window.fireDb, 'familyMembers'))
+        const parentDocUpdate = snapUpdate.docs.find(d => d.id === parentId)
+        if (parentDocUpdate) {
+          const memberData = parentDocUpdate.data()
+          const children = memberData.children || []
+          const normalize = (n) => n?.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim()
+          const idx = children.findIndex(c => normalize(c.name) === normalize(personName))
+          if (idx >= 0) {
+            const existingGallery = children[idx].gallery || []
+            children[idx].gallery = [...existingGallery, ...specialPhotos]
+            await window.setDoc(window.doc(window.fireDb, 'familyMembers', parentDocUpdate.id), { ...memberData, children }, { merge: true })
+          }
+        }
+      } catch (e) {
+        console.error('Error attaching photos to member:', e)
+      }
     }
 
     // Also save memories to formResponses for reference
