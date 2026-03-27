@@ -199,14 +199,14 @@ export default function Stats() {
     return month === currentMonth
   })
 
-  // Marriage years
-  const marriageYears = members
-    .filter(m => m.weddingDate)
-    .map(m => {
-      const wd = new Date(m.weddingDate)
-      const now = new Date()
-      let y = now.getFullYear() - wd.getFullYear()
-      if (now.getMonth() < wd.getMonth()) y--
+  // Marriage years - uses deathDate as end for deceased members
+  const marriageYears = people
+    .filter(p => p.weddingDate)
+    .map(p => {
+      const wd = new Date(p.weddingDate)
+      const end = p.deathDate ? new Date(p.deathDate) : new Date()
+      let y = end.getFullYear() - wd.getFullYear()
+      if (end.getMonth() < wd.getMonth() || (end.getMonth() === wd.getMonth() && end.getDate() < wd.getDate())) y--
       return y
     })
     .filter(y => y > 0)
