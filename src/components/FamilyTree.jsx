@@ -631,8 +631,8 @@ export default function FamilyTree() {
                     if (parts.length >= 2) return parts.length >= 3 ? parts[parts.length - 2] : parts[parts.length - 1]
                     return parts[0]
                   }
-                  const memberLastName = getLastName(selectedMember.name)
-                  const spouseLastName = spouseName ? getLastName(spouseName) : null
+                  const memberLastName = selectedMember.lastName || getLastName(selectedMember.name)
+                  const spouseLastName = sp && typeof sp === 'object' && sp.lastName ? sp.lastName : (spouseName ? getLastName(spouseName) : null)
 
                   let familyTitle
                   if (!spouseLastName) {
