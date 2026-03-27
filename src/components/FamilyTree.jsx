@@ -625,14 +625,19 @@ export default function FamilyTree() {
                   const sp = selectedMember.spouse
                   const spouseName = sp ? (typeof sp === 'object' ? sp.name : sp) : null
                   const spouseGender = sp && typeof sp === 'object' ? sp.gender : null
-                  const getLastName = (fullName) => {
+                  const getPaterno = (fullName) => {
                     if (!fullName) return ''
                     const parts = fullName.trim().split(' ')
-                    if (parts.length >= 2) return parts.length >= 3 ? parts[parts.length - 2] : parts[parts.length - 1]
-                    return parts[0]
+                    if (parts.length <= 2) return parts[parts.length - 1]
+                    return parts[1]
                   }
-                  const memberLastName = getLastName(selectedMember.name)
-                  const spouseLastName = spouseName ? getLastName(spouseName) : null
+                  const getLastToken = (fullName) => {
+                    if (!fullName) return ''
+                    const parts = fullName.trim().split(' ')
+                    return parts[parts.length - 1]
+                  }
+                  const memberLastName = getPaterno(selectedMember.name)
+                  const spouseLastName = spouseName ? getLastToken(spouseName) : null
 
                   let familyTitle
                   if (!spouseLastName) {
