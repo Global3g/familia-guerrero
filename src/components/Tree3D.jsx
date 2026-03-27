@@ -172,8 +172,8 @@ export default function Tree3D() {
     if (!dragging) return
     const dx = e.clientX - dragStart.x
     const dy = e.clientY - dragStart.y
-    setTiltY(Math.max(-20, Math.min(20, dragStart.tiltY + dx * 0.12)))
-    setTiltX(Math.max(-20, Math.min(20, dragStart.tiltX - dy * 0.12)))
+    setTiltY(Math.max(-20, Math.min(20, dragStart.tiltY + dx * 0.05)))
+    setTiltX(Math.max(-20, Math.min(20, dragStart.tiltX - dy * 0.05)))
   }
   const handleMouseUp = () => setDragging(false)
   const handleTouchStart = (e) => {
@@ -186,14 +186,14 @@ export default function Tree3D() {
     const t = e.touches[0]
     const dx = t.clientX - dragStart.x
     const dy = t.clientY - dragStart.y
-    setTiltY(Math.max(-20, Math.min(20, dragStart.tiltY + dx * 0.12)))
-    setTiltX(Math.max(-20, Math.min(20, dragStart.tiltX - dy * 0.12)))
+    setTiltY(Math.max(-20, Math.min(20, dragStart.tiltY + dx * 0.05)))
+    setTiltX(Math.max(-20, Math.min(20, dragStart.tiltX - dy * 0.05)))
   }
 
   // Zoom with mouse wheel or pinch
   const handleWheel = (e) => {
     e.preventDefault()
-    setZoom(z => Math.max(0.3, Math.min(2.5, z + (e.deltaY > 0 ? -0.08 : 0.08))))
+    setZoom(z => Math.max(0.3, Math.min(2.5, z + (e.deltaY > 0 ? -0.03 : 0.03))))
   }
 
   // ── Build data ────────────────────────────────────────────
