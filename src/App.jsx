@@ -27,6 +27,7 @@ import WeeklyBanner from './components/WeeklyBanner'
 import CoachMarks from './components/CoachMarks'
 import YourBranch from './components/YourBranch'
 import DigitalInvitation from './components/DigitalInvitation'
+import ProgressReport from './components/ProgressReport'
 
 // Lazy-loaded heavy components (ReactFlow, Recharts, Leaflet, etc.)
 const HorizontalTimeline = lazy(() => import('./components/HorizontalTimeline'))
@@ -168,8 +169,8 @@ function App() {
           transition={{ duration: 0.3 }}
         >
           <Hero />
-          <div className="max-w-4xl mx-auto px-4 py-4 space-y-3">
-            <WeeklyBanner />
+          <WeeklyBanner />
+          <div className="max-w-4xl mx-auto px-4 py-4">
             <FamilyProgress />
           </div>
           <Origin />
@@ -177,8 +178,9 @@ function App() {
             <YourBranch />
           </div>
           <ShareExport />
-          <div className="flex justify-center py-4">
+          <div className="flex justify-center gap-3 py-4">
             <PresentationButton onClick={() => setShowPresentation(true)} />
+            <ProgressReport />
           </div>
         </motion.div>
       )}

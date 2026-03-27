@@ -3,6 +3,9 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
 <title>Familia Guerrero - Formulario</title>
 <style>
   * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -40,6 +43,17 @@
   .form-group .hint { font-size: 11px; color: #A09080; margin-top: 4px; }
 
   .row { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  /* Date picker with selects */
+  .date-selects { display: grid; grid-template-columns: 1fr 1.4fr 1fr; gap: 8px; }
+  .date-selects select {
+    width: 100%; padding: 12px 8px; border: 2px solid #E0D5C8; border-radius: 12px;
+    font-size: 15px; font-family: inherit; background: white; color: #3D2C2C;
+    transition: border-color 0.2s; -webkit-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23A09080' stroke-width='2'%3E%3Cpath d='M6 9l6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat; background-position: right 8px center;
+  }
+  .date-selects select:focus { outline: none; border-color: #C4704B; }
 
   /* Photo upload */
   .photo-upload { text-align: center; margin-bottom: 20px; }
@@ -171,7 +185,13 @@
     <div class="form-group"><label>Apodo</label><input type="text" id="f-nickname" placeholder="Como te dicen"><div class="hint">Opcional</div></div>
     <div class="row">
       <div class="form-group"><label>Genero</label><select id="f-gender"><option value="">Seleccionar</option><option value="M">Hombre</option><option value="F">Mujer</option></select></div>
-      <div class="form-group"><label>Fecha de nacimiento</label><input type="date" id="f-birthDate"></div>
+      <div class="form-group"><label>Fecha de nacimiento</label>
+        <div class="date-selects">
+          <select id="f-birthDate-d"><option value="">Dia</option></select>
+          <select id="f-birthDate-m"><option value="">Mes</option></select>
+          <select id="f-birthDate-y"><option value="">Ano</option></select>
+        </div>
+      </div>
     </div>
     <div class="form-group"><label>Donde vives</label><input type="text" id="f-location" placeholder="Ciudad, Estado"></div>
     <div class="form-group"><label>Mi papa/mama es</label><select id="f-parentId" style="font-size:15px;"><option value="">Cargando familias...</option></select><div class="hint">Selecciona a tu papa o mama para ubicarte en el arbol</div></div>
@@ -202,14 +222,26 @@
         <div class="form-group"><label>Apodo</label><input type="text" id="f-spouseNickname"></div>
         <div class="row">
           <div class="form-group"><label>Genero</label><select id="f-spouseGender"><option value="">Seleccionar</option><option value="M">Hombre</option><option value="F">Mujer</option></select></div>
-          <div class="form-group"><label>Fecha de nacimiento</label><input type="date" id="f-spouseBirth"></div>
+          <div class="form-group"><label>Fecha de nacimiento</label>
+            <div class="date-selects">
+              <select id="f-spouseBirth-d"><option value="">Dia</option></select>
+              <select id="f-spouseBirth-m"><option value="">Mes</option></select>
+              <select id="f-spouseBirth-y"><option value="">Ano</option></select>
+            </div>
+          </div>
         </div>
         <div class="form-group"><label>Breve biografia</label><textarea id="f-spouseBio" placeholder="A que se dedica, algo que lo/la represente..."></textarea></div>
       </div>
       <div class="divider"></div>
       <h3 style="font-size:14px;color:#B8943E;margin-bottom:12px;">Datos del matrimonio</h3>
       <div class="row">
-        <div class="form-group"><label>Fecha de boda</label><input type="date" id="f-weddingDate"></div>
+        <div class="form-group"><label>Fecha de boda</label>
+          <div class="date-selects">
+            <select id="f-weddingDate-d"><option value="">Dia</option></select>
+            <select id="f-weddingDate-m"><option value="">Mes</option></select>
+            <select id="f-weddingDate-y"><option value="">Ano</option></select>
+          </div>
+        </div>
         <div class="form-group"><label>Lugar de boda</label><input type="text" id="f-weddingPlace"></div>
       </div>
     </div>
@@ -403,6 +435,15 @@ loadParents()
 </script>
 
 <script>
+const FORM_VERSION = 14
+// Auto-reload if old version is cached
+const savedVer = localStorage.getItem('fg-form-version')
+if (savedVer && parseInt(savedVer) < FORM_VERSION) {
+  localStorage.setItem('fg-form-version', FORM_VERSION)
+  location.reload()
+}
+localStorage.setItem('fg-form-version', FORM_VERSION)
+
 let currentStep = 0
 const totalSteps = 9
 let childCount = 0
@@ -412,14 +453,16 @@ const DRAFT_KEY = 'familia-guerrero-draft'
 // === AUTO-SAVE DRAFT ===
 function saveDraft() {
   try {
-    const fields = ['f-name','f-nickname','f-gender','f-birthDate','f-location','f-parentId','f-bio',
-      'f-hasSpouse','f-spouseName','f-spouseNickname','f-spouseGender','f-spouseBirth','f-spouseBio',
-      'f-weddingDate','f-weddingPlace','f-memory','f-message','f-tradition','f-moments']
+    const fields = ['f-name','f-nickname','f-gender','f-location','f-parentId','f-bio',
+      'f-hasSpouse','f-spouseName','f-spouseNickname','f-spouseGender','f-spouseBio',
+      'f-weddingPlace','f-memory','f-message','f-tradition','f-moments']
+    const dateFields = ['f-birthDate','f-spouseBirth','f-weddingDate']
     const data = {}
     fields.forEach(id => {
       const el = document.getElementById(id)
       if (el) data[id] = el.value
     })
+    dateFields.forEach(id => { data[id] = getDateFromSelects(id) })
 
     // Save children data dynamically
     const children = []
@@ -429,13 +472,48 @@ function saveDraft() {
         id,
         name: el.value || '',
         gender: document.getElementById(`child-gender-${id}`)?.value || '',
-        birthDate: document.getElementById(`child-birth-${id}`)?.value || '',
+        birthDate: getDateFromSelects(`child-birth-${id}`),
         nickname: document.getElementById(`child-nick-${id}`)?.value || '',
         location: document.getElementById(`child-loc-${id}`)?.value || '',
         bio: document.getElementById(`child-bio-${id}`)?.value || '',
       })
     })
     data._children = children
+
+    // Save child spouses
+    const childSpouses = {}
+    children.forEach(kid => {
+      const has = document.getElementById(`cs-has-${kid.id}`)?.value
+      if (has === 'si') {
+        childSpouses[kid.id] = {
+          has: 'si',
+          name: document.getElementById(`cs-name-${kid.id}`)?.value || '',
+          gender: document.getElementById(`cs-gender-${kid.id}`)?.value || '',
+          birthDate: getDateFromSelects(`cs-birth-${kid.id}`),
+          nick: document.getElementById(`cs-nick-${kid.id}`)?.value || '',
+        }
+      }
+    })
+    data._childSpouses = childSpouses
+
+    // Save grandchildren
+    const grandchildren = []
+    document.querySelectorAll('[id^="gc-name-"]').forEach(el => {
+      const gcId = el.id.replace('gc-name-', '')
+      const parentId = el.closest('.child-card')?.dataset?.parent
+      grandchildren.push({
+        gcId,
+        parentId: parentId || '',
+        name: el.value || '',
+        gender: document.getElementById(`gc-gender-${gcId}`)?.value || '',
+        birthDate: getDateFromSelects(`gc-birth-${gcId}`),
+        nickname: document.getElementById(`gc-nick-${gcId}`)?.value || '',
+        location: document.getElementById(`gc-loc-${gcId}`)?.value || '',
+        bio: document.getElementById(`gc-bio-${gcId}`)?.value || '',
+        spouse: document.getElementById(`gc-spouse-${gcId}`)?.value || '',
+      })
+    })
+    data._grandchildren = grandchildren
 
     data._step = currentStep
     data._timestamp = Date.now()
@@ -464,8 +542,13 @@ function loadDraft() {
 function restoreDraft(data) {
   // Wait for parents dropdown to load, then restore
   setTimeout(() => {
+    const dateFieldIds = ['f-birthDate','f-spouseBirth','f-weddingDate']
     Object.entries(data).forEach(([id, value]) => {
       if (id.startsWith('_')) return
+      if (dateFieldIds.includes(id)) {
+        setDateSelects(id, value)
+        return
+      }
       const el = document.getElementById(id)
       if (el) el.value = value
     })
@@ -497,8 +580,7 @@ function restoreDraft(data) {
           if (nameEl) nameEl.value = child.name || ''
           const genderEl = document.getElementById(`child-gender-${lastId}`)
           if (genderEl) genderEl.value = child.gender || ''
-          const birthEl = document.getElementById(`child-birth-${lastId}`)
-          if (birthEl) birthEl.value = child.birthDate || ''
+          setDateSelects(`child-birth-${lastId}`, child.birthDate)
           const nickEl = document.getElementById(`child-nick-${lastId}`)
           if (nickEl) nickEl.value = child.nickname || ''
           const locEl = document.getElementById(`child-loc-${lastId}`)
@@ -507,6 +589,74 @@ function restoreDraft(data) {
           if (bioEl) bioEl.value = child.bio || ''
         }, 100)
       })
+
+      // Restore child spouses (need to build the DOM first)
+      setTimeout(() => {
+        buildChildSpouses()
+        setTimeout(() => {
+          if (data._childSpouses) {
+            Object.entries(data._childSpouses).forEach(([kidId, sp]) => {
+              // Map old kid ID to new ID
+              const oldIdx = data._children.findIndex(c => c.id === kidId)
+              if (oldIdx < 0) return
+              const newId = String(oldIdx + 1)
+              const hasEl = document.getElementById(`cs-has-${newId}`)
+              if (hasEl) {
+                hasEl.value = sp.has || 'no'
+                hasEl.dispatchEvent(new Event('change'))
+                setTimeout(() => {
+                  const nameEl = document.getElementById(`cs-name-${newId}`)
+                  if (nameEl) nameEl.value = sp.name || ''
+                  const genderEl = document.getElementById(`cs-gender-${newId}`)
+                  if (genderEl) genderEl.value = sp.gender || ''
+                  setDateSelects(`cs-birth-${newId}`, sp.birthDate)
+                  const nickEl = document.getElementById(`cs-nick-${newId}`)
+                  if (nickEl) nickEl.value = sp.nick || ''
+                }, 200)
+              }
+            })
+          }
+
+          // Restore grandchildren
+          setTimeout(() => {
+            buildGrandchildren()
+            setTimeout(() => {
+              if (data._grandchildren && data._grandchildren.length > 0) {
+                // Group grandchildren by parent
+                const gcByParent = {}
+                data._grandchildren.forEach(gc => {
+                  // Map old parent ID to new ID
+                  const oldIdx = data._children.findIndex(c => c.id === gc.parentId)
+                  const newParentId = oldIdx >= 0 ? String(oldIdx + 1) : gc.parentId
+                  if (!gcByParent[newParentId]) gcByParent[newParentId] = []
+                  gcByParent[newParentId].push(gc)
+                })
+                Object.entries(gcByParent).forEach(([parentId, gcs]) => {
+                  gcs.forEach(gc => {
+                    addGrandchild(parentId, '')
+                    const lastGcId = gcCount
+                    setTimeout(() => {
+                      const nameEl = document.getElementById(`gc-name-${lastGcId}`)
+                      if (nameEl) nameEl.value = gc.name || ''
+                      const genderEl = document.getElementById(`gc-gender-${lastGcId}`)
+                      if (genderEl) genderEl.value = gc.gender || ''
+                      setDateSelects(`gc-birth-${lastGcId}`, gc.birthDate)
+                      const nickEl = document.getElementById(`gc-nick-${lastGcId}`)
+                      if (nickEl) nickEl.value = gc.nickname || ''
+                      const locEl = document.getElementById(`gc-loc-${lastGcId}`)
+                      if (locEl) locEl.value = gc.location || ''
+                      const bioEl = document.getElementById(`gc-bio-${lastGcId}`)
+                      if (bioEl) bioEl.value = gc.bio || ''
+                      const spouseEl = document.getElementById(`gc-spouse-${lastGcId}`)
+                      if (spouseEl) spouseEl.value = gc.spouse || ''
+                    }, 100)
+                  })
+                })
+              }
+            }, 300)
+          }, 300)
+        }, 300)
+      }, 500)
     }
   }, 1500) // Wait for parents to load from Firestore
 }
@@ -518,27 +668,36 @@ function clearDraft() {
 // Auto-save every time user changes a field
 document.addEventListener('input', saveDraft)
 document.addEventListener('change', saveDraft)
+// Save immediately when app goes to background (phone call, switch app)
+document.addEventListener('visibilitychange', () => { if (document.hidden) saveDraft() })
+window.addEventListener('beforeunload', saveDraft)
+window.addEventListener('pagehide', saveDraft)
 
-// Check for existing draft on load
+// Check for existing draft on load — auto-restore immediately
 window.continueDraft = function() {
   const data = loadDraft()
   if (data) {
     restoreDraft(data)
-    showStep(1)
+    const step = data._step || 1
+    showStep(Math.min(step, 7))
   }
 }
 
 setTimeout(() => {
   const draft = loadDraft()
   if (draft && draft['f-name']) {
-    const notice = document.getElementById('draft-notice')
-    const nameEl = document.getElementById('draft-name')
-    if (notice && nameEl) {
-      nameEl.textContent = draft['f-name']
-      notice.style.display = 'block'
-    }
+    // AUTO-RESTORE: don't make them click, just restore and go
+    restoreDraft(draft)
+    const step = draft._step || 1
+    showStep(Math.min(step, 7))
+    // Show a brief toast so they know it was restored
+    const toast = document.createElement('div')
+    toast.style.cssText = 'position:fixed;top:16px;left:50%;transform:translateX(-50%);background:#7A9E7E;color:white;padding:10px 20px;border-radius:12px;font-size:13px;font-weight:bold;z-index:9999;box-shadow:0 4px 12px rgba(0,0,0,0.2);text-align:center;'
+    toast.textContent = `Restaurado: ${draft['f-name']}`
+    document.body.appendChild(toast)
+    setTimeout(() => toast.remove(), 3000)
   }
-}, 500)
+}, 800)
 
 // Go back to edit after submit
 window.goBackToEdit = function() {
@@ -616,6 +775,177 @@ function showStep(n) {
   window.scrollTo({ top: 0, behavior: 'smooth' })
 }
 
+// ── Auto-save progress to Firebase on each step ──────────────
+async function saveProgressToFirebase() {
+  try {
+    const personName = document.getElementById('f-name')?.value?.trim()
+    if (!personName) return // No name yet, nothing to save
+
+    const parentId = document.getElementById('f-parentId')?.value || ''
+    const photoURLs = { ...(window.uploadedPhotoURLs || {}) }
+
+    const kids = getChildren()
+    // Attach spouse info
+    kids.forEach(kid => {
+      const has = document.getElementById(`cs-has-${kid.id}`)?.value
+      if (has === 'si') {
+        kid.spouseName = document.getElementById(`cs-name-${kid.id}`)?.value || ''
+        kid.spouseGender = document.getElementById(`cs-gender-${kid.id}`)?.value || ''
+        kid.spouseBirth = getDateFromSelects(`cs-birth-${kid.id}`)
+        kid.spouseNick = document.getElementById(`cs-nick-${kid.id}`)?.value || ''
+      }
+    })
+
+    const spouseData = document.getElementById('f-hasSpouse')?.value === 'si' ? {
+      name: document.getElementById('f-spouseName')?.value || '',
+      nickname: document.getElementById('f-spouseNickname')?.value || '',
+      gender: document.getElementById('f-spouseGender')?.value || '',
+      birthDate: getDateFromSelects('f-spouseBirth'),
+      bio: document.getElementById('f-spouseBio')?.value || '',
+      photoURL: photoURLs['preview-spouse'] || null,
+    } : null
+
+    // Read grandchildren from DOM if available
+    const gcByParent = {}
+    document.querySelectorAll('[id^="gc-name-"]').forEach(el => {
+      const gcId = el.id.replace('gc-name-', '')
+      const pid = el.closest('.child-card')?.dataset?.parent
+      if (pid && el.value.trim()) {
+        if (!gcByParent[pid]) gcByParent[pid] = []
+        gcByParent[pid].push({
+          name: el.value.trim(),
+          gender: document.getElementById('gc-gender-' + gcId)?.value || '',
+          birthDate: getDateFromSelects('gc-birth-' + gcId),
+          nickname: document.getElementById('gc-nick-' + gcId)?.value || '',
+          location: document.getElementById('gc-loc-' + gcId)?.value || '',
+          bio: document.getElementById('gc-bio-' + gcId)?.value || '',
+          photoURL: photoURLs['preview-gc-' + gcId] || null,
+          spouse: document.getElementById('gc-spouse-' + gcId)?.value || '',
+          children: [],
+        })
+      }
+    })
+
+    const childrenData = kids.map(kid => {
+      const childSpouse = kid.spouseName ? {
+        name: kid.spouseName, gender: kid.spouseGender,
+        birthDate: kid.spouseBirth, nickname: kid.spouseNick,
+        bio: '', photoURL: photoURLs[`preview-cs-${kid.id}`] || null,
+      } : null
+      const grandkids = gcByParent[kid.id] || []
+      return {
+        name: kid.name, nickname: kid.nickname, gender: kid.gender,
+        birthDate: kid.birthDate, deathDate: '', bio: kid.bio,
+        location: kid.location,
+        photoURL: photoURLs[`preview-child-${kid.id}`] || null,
+        spouse: childSpouse, children: grandkids,
+      }
+    })
+
+    const personData = {
+      name: personName,
+      nickname: document.getElementById('f-nickname')?.value || '',
+      gender: document.getElementById('f-gender')?.value || '',
+      birthDate: getDateFromSelects('f-birthDate'),
+      deathDate: '',
+      location: document.getElementById('f-location')?.value || '',
+      bio: document.getElementById('f-bio')?.value || '',
+      photoURL: photoURLs['preview-self'] || null,
+      spouse: spouseData,
+      weddingDate: getDateFromSelects('f-weddingDate'),
+      weddingPlace: document.getElementById('f-weddingPlace')?.value || '',
+      children: childrenData,
+      _formStep: currentStep,
+      _formComplete: false,
+      _lastUpdated: new Date().toISOString(),
+    }
+
+    if (parentId) {
+      const snap = await window.getDocs(window.collection(window.fireDb, 'familyMembers'))
+      const parentDoc = snap.docs.find(d => d.id === parentId)
+      if (parentDoc) {
+        const member = parentDoc.data()
+        const existingChildren = member.children || []
+        const norm = (n) => n?.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim()
+        const smartMatch = (a, b) => {
+          if (!a || !b) return false
+          const na = norm(a), nb = norm(b)
+          if (na === nb) return true
+          if (na.includes(nb) || nb.includes(na)) return true
+          const pa = na.split(/\s+/), pb = nb.split(/\s+/)
+          // First name matches
+          if (pa[0] === pb[0]) return true
+          const shorter = pa.length <= pb.length ? pa : pb
+          const longer = pa.length <= pb.length ? pb : pa
+          const hits = shorter.filter(w => longer.includes(w)).length
+          if (hits >= shorter.length && shorter.length >= 1) return true
+          return false
+        }
+        const idx = existingChildren.findIndex(c => smartMatch(c.name, personName))
+
+        if (idx >= 0) {
+          // Update existing child — merge, keep photos that already exist
+          const existing = existingChildren[idx]
+          const merged = { ...existing, ...personData }
+          if (!personData.photoURL && existing.photoURL) merged.photoURL = existing.photoURL
+          if (!personData.spouse && existing.spouse) merged.spouse = existing.spouse
+          else if (personData.spouse && existing.spouse && typeof existing.spouse === 'object') {
+            merged.spouse = { ...existing.spouse, ...personData.spouse }
+            if (!personData.spouse.photoURL && existing.spouse.photoURL) merged.spouse.photoURL = existing.spouse.photoURL
+          }
+          // Smart merge of grandchildren: don't lose existing data
+          const mergedKids = []
+          const existingKids = existing.children || []
+          const formKids = childrenData || []
+
+          if (formKids.length === 0) {
+            // Form has no children data — keep existing
+            merged.children = existingKids
+          } else {
+            // Merge each child: keep existing spouse/grandchildren if form doesn't have them
+            formKids.forEach(fk => {
+              const ek = existingKids.find(e => smartMatch(e.name, fk.name))
+              if (ek) {
+                const mk = { ...ek, ...fk }
+                if (!fk.photoURL && ek.photoURL) mk.photoURL = ek.photoURL
+                if (!fk.spouse && ek.spouse) mk.spouse = ek.spouse
+                else if (fk.spouse && ek.spouse && typeof ek.spouse === 'object') {
+                  mk.spouse = { ...ek.spouse, ...fk.spouse }
+                  if (!fk.spouse.photoURL && ek.spouse.photoURL) mk.spouse.photoURL = ek.spouse.photoURL
+                }
+                // Keep existing grandchildren if form has none
+                if ((fk.children || []).length === 0 && (ek.children || []).length > 0) {
+                  mk.children = ek.children
+                }
+                mergedKids.push(mk)
+              } else {
+                mergedKids.push(fk)
+              }
+            })
+            // Add any existing kids not in the form
+            existingKids.forEach(ek => {
+              if (!mergedKids.some(mk => smartMatch(mk.name, ek.name))) {
+                mergedKids.push(ek)
+              }
+            })
+            merged.children = mergedKids
+          }
+          existingChildren[idx] = merged
+        } else {
+          existingChildren.push(personData)
+        }
+        await window.setDoc(window.doc(window.fireDb, 'familyMembers', parentDoc.id), { ...member, children: existingChildren }, { merge: true })
+      }
+    } else {
+      // No parent selected yet — save to formDrafts collection
+      await window.setDoc(window.doc(window.fireDb, 'formDrafts', personName.replace(/[\/\.]/g, '_')), personData, { merge: true })
+    }
+    console.log('Progress saved to Firebase:', personName, 'step', currentStep)
+  } catch (e) {
+    console.error('Auto-save to Firebase error:', e)
+  }
+}
+
 window.nextStep = async function() {
   // Validate step 1: name and parent required
   if (currentStep === 1) {
@@ -631,8 +961,9 @@ window.nextStep = async function() {
       document.getElementById('f-parentId').focus()
       return
     }
-    // Photo: warn but allow skip
-    if (!window.photoFiles['preview-self']) {
+    // Photo: warn but allow skip (check both new file AND previously uploaded URL)
+    const hasPhoto = window.photoFiles['preview-self'] || window.uploadedPhotoURLs?.['preview-self']
+    if (!hasPhoto) {
       if (!confirm('No has subido tu foto de perfil. La foto es muy importante para el arbol familiar.\n\n¿Quieres continuar sin foto? Podras agregarla despues.')) {
         return
       }
@@ -648,7 +979,8 @@ window.nextStep = async function() {
         return
       }
       // Photo: warn but allow skip
-      if (!window.photoFiles['preview-spouse']) {
+      const hasSpousePhoto = window.photoFiles['preview-spouse'] || window.uploadedPhotoURLs?.['preview-spouse']
+      if (!hasSpousePhoto) {
         if (!confirm('No has subido la foto de tu esposo(a).\n\n¿Quieres continuar sin foto?')) {
           return
         }
@@ -661,7 +993,8 @@ window.nextStep = async function() {
     document.querySelectorAll('[id^="child-name-"]').forEach(el => {
       const id = el.id.replace('child-name-', '')
       const name = el.value?.trim()
-      if (name && !window.photoFiles[`preview-child-${id}`]) missing.push(name)
+      const hasChildPhoto = window.photoFiles[`preview-child-${id}`] || window.uploadedPhotoURLs?.[`preview-child-${id}`]
+      if (name && !hasChildPhoto) missing.push(name)
     })
     if (missing.length > 0) {
       if (!confirm(`Falta la foto de: ${missing.join(', ')}.\n\n¿Quieres continuar sin sus fotos?`)) {
@@ -692,6 +1025,16 @@ window.nextStep = async function() {
   if (currentStep === 4) buildGrandchildren()
   if (currentStep === 7) buildSummary()
   showStep(currentStep + 1)
+
+  // Auto-save to Firebase only on steps 1-5 (not on 6,7,8 — submit handles those)
+  if (currentStep <= 5) {
+    setTimeout(() => {
+      Promise.race([
+        saveProgressToFirebase(),
+        new Promise((_, rej) => setTimeout(() => rej('timeout'), 10000))
+      ]).catch(e => console.warn('Auto-save skipped:', e))
+    }, 500)
+  }
 }
 
 window.prevStep = function() { showStep(currentStep - 1) }
@@ -700,6 +1043,48 @@ window.toggleSpouse = function() {
   document.getElementById('spouse-fields').style.display =
     document.getElementById('f-hasSpouse').value === 'si' ? 'block' : 'none'
 }
+
+// ── Date selects helpers ──────────────────────────────────────
+const MESES = ['','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
+
+function populateDateSelects(prefix) {
+  const dEl = document.getElementById(prefix + '-d')
+  const mEl = document.getElementById(prefix + '-m')
+  const yEl = document.getElementById(prefix + '-y')
+  if (!dEl || !mEl || !yEl) return
+  // Only populate if empty (just has the placeholder)
+  if (dEl.options.length > 1) return
+  for (let d = 1; d <= 31; d++) { const o = document.createElement('option'); o.value = d; o.textContent = d; dEl.appendChild(o) }
+  for (let m = 1; m <= 12; m++) { const o = document.createElement('option'); o.value = m; o.textContent = MESES[m]; mEl.appendChild(o) }
+  const thisYear = new Date().getFullYear()
+  for (let y = thisYear; y >= 1900; y--) { const o = document.createElement('option'); o.value = y; o.textContent = y; yEl.appendChild(o) }
+}
+
+function getDateFromSelects(prefix) {
+  const d = document.getElementById(prefix + '-d')?.value
+  const m = document.getElementById(prefix + '-m')?.value
+  const y = document.getElementById(prefix + '-y')?.value
+  if (!d || !m || !y) return ''
+  return `${y}-${String(m).padStart(2,'0')}-${String(d).padStart(2,'0')}`
+}
+
+function setDateSelects(prefix, dateStr) {
+  if (!dateStr) return
+  const [y, m, d] = dateStr.split('-').map(Number)
+  const dEl = document.getElementById(prefix + '-d')
+  const mEl = document.getElementById(prefix + '-m')
+  const yEl = document.getElementById(prefix + '-y')
+  if (dEl) dEl.value = d
+  if (mEl) mEl.value = m
+  if (yEl) yEl.value = y
+}
+
+// Init static date selects on page load
+document.addEventListener('DOMContentLoaded', () => {
+  populateDateSelects('f-birthDate')
+  populateDateSelects('f-spouseBirth')
+  populateDateSelects('f-weddingDate')
+})
 
 // Store photo files for upload
 window.photoFiles = {}
@@ -788,6 +1173,7 @@ window.addChild = function() {
   const card = document.createElement('div')
   card.className = 'child-card'
   card.id = `child-${childCount}`
+  const cid = childCount
   card.innerHTML = `
     <h3>Hijo(a) #${childCount} <button class="remove-btn" onclick="removeChild(${childCount})">x</button></h3>
     <div class="photo-upload">
@@ -798,13 +1184,20 @@ window.addChild = function() {
     <div class="form-group"><label>Nombre completo</label><input type="text" id="child-name-${childCount}"></div>
     <div class="row">
       <div class="form-group"><label>Genero</label><select id="child-gender-${childCount}"><option value="">-</option><option value="M">Hombre</option><option value="F">Mujer</option></select></div>
-      <div class="form-group"><label>Nacimiento</label><input type="date" id="child-birth-${childCount}"></div>
+      <div class="form-group"><label>Nacimiento</label>
+        <div class="date-selects">
+          <select id="child-birth-${childCount}-d"><option value="">Dia</option></select>
+          <select id="child-birth-${childCount}-m"><option value="">Mes</option></select>
+          <select id="child-birth-${childCount}-y"><option value="">Ano</option></select>
+        </div>
+      </div>
     </div>
     <div class="form-group"><label>Apodo</label><input type="text" id="child-nick-${childCount}"></div>
     <div class="form-group"><label>Donde vive</label><input type="text" id="child-loc-${childCount}" placeholder="Ciudad, Estado"></div>
     <div class="form-group"><label>Breve biografia</label><textarea id="child-bio-${childCount}" rows="2"></textarea></div>
   `
   list.appendChild(card)
+  populateDateSelects(`child-birth-${cid}`)
 }
 
 window.removeChild = function(id) {
@@ -820,7 +1213,7 @@ function getChildren() {
     kids.push({
       id, name,
       gender: document.getElementById(`child-gender-${id}`)?.value || '',
-      birthDate: document.getElementById(`child-birth-${id}`)?.value || '',
+      birthDate: getDateFromSelects(`child-birth-${id}`),
       nickname: document.getElementById(`child-nick-${id}`)?.value || '',
       location: document.getElementById(`child-loc-${id}`)?.value || '',
       bio: document.getElementById(`child-bio-${id}`)?.value || '',
@@ -853,12 +1246,19 @@ function buildChildSpouses() {
         <div class="form-group"><label>Nombre completo</label><input type="text" id="cs-name-${kid.id}"></div>
         <div class="row">
           <div class="form-group"><label>Genero</label><select id="cs-gender-${kid.id}"><option value="">-</option><option value="M">Hombre</option><option value="F">Mujer</option></select></div>
-          <div class="form-group"><label>Nacimiento</label><input type="date" id="cs-birth-${kid.id}"></div>
+          <div class="form-group"><label>Nacimiento</label>
+            <div class="date-selects">
+              <select id="cs-birth-${kid.id}-d"><option value="">Dia</option></select>
+              <select id="cs-birth-${kid.id}-m"><option value="">Mes</option></select>
+              <select id="cs-birth-${kid.id}-y"><option value="">Ano</option></select>
+            </div>
+          </div>
         </div>
         <div class="form-group"><label>Apodo</label><input type="text" id="cs-nick-${kid.id}"></div>
       </div>
     `
     list.appendChild(card)
+    populateDateSelects(`cs-birth-${kid.id}`)
   })
 }
 
@@ -899,11 +1299,21 @@ window.addGrandchild = function(parentId, parentName) {
     <div class="form-group"><label>Nombre completo</label><input type="text" id="gc-name-${gcCount}"></div>
     <div class="row">
       <div class="form-group"><label>Genero</label><select id="gc-gender-${gcCount}"><option value="">-</option><option value="M">Hombre</option><option value="F">Mujer</option></select></div>
-      <div class="form-group"><label>Nacimiento</label><input type="date" id="gc-birth-${gcCount}"></div>
+      <div class="form-group"><label>Nacimiento</label>
+        <div class="date-selects">
+          <select id="gc-birth-${gcCount}-d"><option value="">Dia</option></select>
+          <select id="gc-birth-${gcCount}-m"><option value="">Mes</option></select>
+          <select id="gc-birth-${gcCount}-y"><option value="">Ano</option></select>
+        </div>
+      </div>
     </div>
+    <div class="form-group"><label>Apodo</label><input type="text" id="gc-nick-${gcCount}" placeholder="Como le dicen"></div>
+    <div class="form-group"><label>Donde vive</label><input type="text" id="gc-loc-${gcCount}" placeholder="Ciudad, Estado"></div>
+    <div class="form-group"><label>Breve biografia</label><textarea id="gc-bio-${gcCount}" rows="2" placeholder="A que se dedica, que le gusta..."></textarea></div>
     <div class="form-group"><label>Esposo(a) nombre</label><input type="text" id="gc-spouse-${gcCount}" placeholder="Si tiene"><div class="hint">Dejar vacio si no tiene</div></div>
   `
   list.appendChild(card)
+  populateDateSelects(`gc-birth-${gcCount}`)
 }
 
 function buildSummary() {
@@ -911,7 +1321,7 @@ function buildSummary() {
   const kids = getChildren()
   const spouse = document.getElementById('f-spouseName')?.value
   const location = document.getElementById('f-location')?.value
-  const weddingDate = document.getElementById('f-weddingDate')?.value
+  const weddingDate = getDateFromSelects('f-weddingDate')
   const photoCount = Object.keys(window.photoFiles).length
 
   let html = '<div style="space-y:8px;">'
@@ -959,95 +1369,97 @@ window.submitForm = async function() {
   btn.disabled = true
   btn.textContent = 'Enviando...'
 
-  try {
-    const kids = getChildren()
+  // Safety net: max 25 seconds then show success no matter what
+  const forceTimeout = setTimeout(() => {
+    clearDraft()
+    showStep(totalSteps)
+  }, 25000)
 
-    // Attach spouse info to each kid
+  try {
+    const personName = document.getElementById('f-name')?.value || ''
+    const parentId = document.getElementById('f-parentId')?.value || ''
+    const photoURLs = { ...(window.uploadedPhotoURLs || {}) }
+
+    // 1. Upload pending photos (skip failures)
+    const pending = Object.entries(window.photoFiles || {}).filter(([k, f]) => f && f instanceof Blob && !photoURLs[k])
+    for (let i = 0; i < pending.length; i++) {
+      btn.textContent = 'Subiendo foto ' + (i + 1) + '/' + pending.length + '...'
+      try {
+        const url = await Promise.race([
+          window.uploadPhotoFile(pending[i][1], 'formulario/' + Date.now() + '-' + pending[i][0]),
+          new Promise((_, r) => setTimeout(() => r('timeout'), 15000))
+        ])
+        if (url) photoURLs[pending[i][0]] = url
+      } catch (e) {}
+    }
+
+    // 2. Build person data directly (no dependency on saveProgressToFirebase)
+    btn.textContent = 'Guardando datos...'
+
+    const norm = (n) => n?.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim()
+    const smartMatch = (a, b) => {
+      if (!a || !b) return false
+      const na = norm(a), nb = norm(b)
+      if (na === nb) return true
+      const pa = na.split(/\s+/), pb = nb.split(/\s+/)
+      if (pa[0] === pb[0] && pa[pa.length-1] === pb[pb.length-1]) return true
+      const s = pa.length <= pb.length ? pa : pb, l = pa.length <= pb.length ? pb : pa
+      const h = s.filter(w => l.includes(w)).length
+      return (h >= s.length && s.length >= 2) || (pa[0] === pb[0] && h >= 2)
+    }
+
+    // Read children from form
+    const kids = getChildren()
     kids.forEach(kid => {
-      const has = document.getElementById(`cs-has-${kid.id}`)?.value
+      const has = document.getElementById('cs-has-' + kid.id)?.value
       if (has === 'si') {
-        kid.spouseName = document.getElementById(`cs-name-${kid.id}`)?.value || ''
-        kid.spouseGender = document.getElementById(`cs-gender-${kid.id}`)?.value || ''
-        kid.spouseBirth = document.getElementById(`cs-birth-${kid.id}`)?.value || ''
-        kid.spouseNick = document.getElementById(`cs-nick-${kid.id}`)?.value || ''
+        kid.spouseName = document.getElementById('cs-name-' + kid.id)?.value || ''
+        kid.spouseGender = document.getElementById('cs-gender-' + kid.id)?.value || ''
+        kid.spouseBirth = getDateFromSelects('cs-birth-' + kid.id)
+        kid.spouseNick = document.getElementById('cs-nick-' + kid.id)?.value || ''
       }
     })
 
-    // Attach grandchildren
-    document.querySelectorAll('[id^="gc-name-"]').forEach(el => {
+    // Read grandchildren from form
+    const gcByParent = {}
+    document.querySelectorAll('[id^=\"gc-name-\"]').forEach(el => {
       const gcId = el.id.replace('gc-name-', '')
-      const parentId = el.closest('.child-card')?.dataset?.parent
-      const kid = kids.find(k => k.id === parentId)
-      if (kid && el.value.trim()) {
-        kid.grandchildren.push({
+      const pid = el.closest('.child-card')?.dataset?.parent
+      if (pid && el.value.trim()) {
+        if (!gcByParent[pid]) gcByParent[pid] = []
+        gcByParent[pid].push({
           name: el.value.trim(),
-          gender: document.getElementById(`gc-gender-${gcId}`)?.value || '',
-          birthDate: document.getElementById(`gc-birth-${gcId}`)?.value || '',
-          spouse: document.getElementById(`gc-spouse-${gcId}`)?.value || '',
-          photoURL: photoURLs[`preview-gc-${gcId}`] || null,
+          gender: document.getElementById('gc-gender-' + gcId)?.value || '',
+          birthDate: getDateFromSelects('gc-birth-' + gcId),
+          nickname: document.getElementById('gc-nick-' + gcId)?.value || '',
+          location: document.getElementById('gc-loc-' + gcId)?.value || '',
+          bio: document.getElementById('gc-bio-' + gcId)?.value || '',
+          photoURL: photoURLs['preview-gc-' + gcId] || null,
+          spouse: document.getElementById('gc-spouse-' + gcId)?.value || '',
+          nickname: '', bio: '', location: '', children: [],
         })
       }
     })
-
-    // Use already-uploaded photos + upload any remaining
-    btn.textContent = 'Procesando fotos...'
-    const photoURLs = { ...(window.uploadedPhotoURLs || {}) }
-    const entries = Object.entries(window.photoFiles).filter(([key]) => !photoURLs[key])
-    for (let i = 0; i < entries.length; i++) {
-      const [key, file] = entries[i]
-      btn.textContent = `Subiendo foto ${i + 1} de ${entries.length}...`
-      const url = await window.uploadPhotoFile(file, `formulario/${Date.now()}-${key}`)
-      if (url) photoURLs[key] = url
-    }
-    btn.textContent = 'Guardando datos...'
-
-    // Build person data in the SAME structure as familyMembers
-    const personName = document.getElementById('f-name')?.value || ''
-    const parentId = document.getElementById('f-parentId')?.value || ''
 
     const spouseData = document.getElementById('f-hasSpouse')?.value === 'si' ? {
       name: document.getElementById('f-spouseName')?.value || '',
       nickname: document.getElementById('f-spouseNickname')?.value || '',
       gender: document.getElementById('f-spouseGender')?.value || '',
-      birthDate: document.getElementById('f-spouseBirth')?.value || '',
+      birthDate: getDateFromSelects('f-spouseBirth'),
       bio: document.getElementById('f-spouseBio')?.value || '',
       photoURL: photoURLs['preview-spouse'] || null,
     } : null
 
-    // Build children array matching app structure
     const childrenData = kids.map(kid => {
-      const childSpouse = kid.spouseName ? {
-        name: kid.spouseName,
-        gender: kid.spouseGender,
-        birthDate: kid.spouseBirth,
-        nickname: kid.spouseNick,
-        bio: '',
-        photoURL: photoURLs[`preview-cs-${kid.id}`] || null,
+      const cs = kid.spouseName ? {
+        name: kid.spouseName, gender: kid.spouseGender, birthDate: kid.spouseBirth,
+        nickname: kid.spouseNick, bio: '', photoURL: photoURLs['preview-cs-' + kid.id] || null,
       } : null
-
-      const grandkids = (kid.grandchildren || []).map(gc => ({
-        name: gc.name,
-        gender: gc.gender,
-        birthDate: gc.birthDate,
-        nickname: '',
-        bio: '',
-        location: '',
-        photoURL: gc.photoURL || null,
-        spouse: gc.spouse ? { name: gc.spouse, nickname: '', gender: '', birthDate: '', bio: '', photoURL: null } : null,
-        children: [],
-      }))
-
       return {
-        name: kid.name,
-        nickname: kid.nickname,
-        gender: kid.gender,
-        birthDate: kid.birthDate,
-        deathDate: '',
-        bio: kid.bio,
-        location: kid.location,
-        photoURL: photoURLs[`preview-child-${kid.id}`] || null,
-        spouse: childSpouse,
-        children: grandkids,
+        name: kid.name, nickname: kid.nickname, gender: kid.gender,
+        birthDate: kid.birthDate, deathDate: '', bio: kid.bio, location: kid.location,
+        photoURL: photoURLs['preview-child-' + kid.id] || null,
+        spouse: cs, children: gcByParent[kid.id] || [],
       }
     })
 
@@ -1055,188 +1467,124 @@ window.submitForm = async function() {
       name: personName,
       nickname: document.getElementById('f-nickname')?.value || '',
       gender: document.getElementById('f-gender')?.value || '',
-      birthDate: document.getElementById('f-birthDate')?.value || '',
+      birthDate: getDateFromSelects('f-birthDate'),
       deathDate: '',
       location: document.getElementById('f-location')?.value || '',
       bio: document.getElementById('f-bio')?.value || '',
       photoURL: photoURLs['preview-self'] || null,
       spouse: spouseData,
-      weddingDate: document.getElementById('f-weddingDate')?.value || '',
+      weddingDate: getDateFromSelects('f-weddingDate'),
       weddingPlace: document.getElementById('f-weddingPlace')?.value || '',
       children: childrenData,
-      moments: [],
-      gallery: [],
-      messages: [],
+      _formStep: 8, _formComplete: true,
+      _lastUpdated: new Date().toISOString(),
     }
 
-    // Remove accents for comparison
-    function removeAccents(str) {
-      return str.normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-    }
-
-    // Smart matching function - case insensitive, accent insensitive, partial match
-    function namesMatch(name1, name2) {
-      if (!name1 || !name2) return false
-      const a = removeAccents(name1.toLowerCase().trim())
-      const b = removeAccents(name2.toLowerCase().trim())
-      // Exact match
-      if (a === b) return true
-      // One contains the other
-      if (a.includes(b) || b.includes(a)) return true
-      // Compare first and last words (first name + last name)
-      const partsA = a.split(/\s+/)
-      const partsB = b.split(/\s+/)
-      const firstMatch = partsA[0] === partsB[0]
-      const lastMatch = partsA[partsA.length - 1] === partsB[partsB.length - 1]
-      if (firstMatch && lastMatch) return true
-      // First name matches
-      if (firstMatch && (partsA.length === 1 || partsB.length === 1)) return true
-      return false
-    }
-
-    function findSimilar(children, name) {
-      // First try exact (case insensitive)
-      let idx = children.findIndex(c => c.name && c.name.toLowerCase().trim() === name.toLowerCase().trim())
-      if (idx >= 0) return { index: idx, exact: true }
-      // Then try partial
-      idx = children.findIndex(c => c.name && namesMatch(c.name, name))
-      if (idx >= 0) return { index: idx, exact: false }
-      return null
-    }
-
-    // Find parent member by ID and add/update person as child
-    let saved = false
+    // 3. Save to Firestore
     if (parentId) {
-      try {
-        const snap = await window.getDocs(window.collection(window.fireDb, 'familyMembers'))
-        const parentDoc = snap.docs.find(d => d.id === parentId)
-        if (parentDoc) {
-          const member = parentDoc.data()
-          const existingChildren = member.children || []
+      const snap = await window.getDocs(window.collection(window.fireDb, 'familyMembers'))
+      const parentDoc = snap.docs.find(d => d.id === parentId)
+      if (parentDoc) {
+        const member = parentDoc.data()
+        const existingChildren = member.children || []
+        const idx = existingChildren.findIndex(c => smartMatch(c.name, personName))
 
-          const match = findSimilar(existingChildren, personName)
-
-          let updatedChildren
-          if (match) {
-            let shouldUpdate = match.exact
-
-            // If partial match, ask user to confirm
-            if (!match.exact) {
-              const existingName = existingChildren[match.index].name
-              shouldUpdate = confirm(
-                `Ya existe alguien con nombre similar:\n\n"${existingName}"\n\n¿Eres tu? Se actualizaran tus datos.\n\nSi no eres tu, presiona Cancelar para crearte como nuevo.`
-              )
-            }
-
-            if (shouldUpdate) {
-              // Update existing — merge data
-              updatedChildren = [...existingChildren]
-              const existing = updatedChildren[match.index]
-              const mergedKids = [...(existing.children || [])]
-              childrenData.forEach(nc => {
-                const kidMatch = mergedKids.findIndex(ec => namesMatch(ec.name, nc.name))
-                if (kidMatch >= 0) {
-                  // Update existing grandchild
-                  const existingGc = mergedKids[kidMatch]
-                  const mergedGcKids = [...(existingGc.children || [])]
-                  ;(nc.children || []).forEach(ngc => {
-                    if (!mergedGcKids.some(egc => namesMatch(egc.name, ngc.name))) {
-                      mergedGcKids.push(ngc)
-                    }
-                  })
-                  mergedKids[kidMatch] = { ...existingGc, ...nc, children: mergedGcKids }
-                } else {
-                  mergedKids.push(nc)
-                }
-              })
-              // Merge: new data overwrites old, but keep photo if new doesn't have one
-              const mergedPerson = { ...existing, ...personData }
-              if (!personData.photoURL && existing.photoURL) mergedPerson.photoURL = existing.photoURL
-              if (!personData.spouse && existing.spouse) mergedPerson.spouse = existing.spouse
-              else if (personData.spouse && existing.spouse && typeof existing.spouse === 'object') {
-                mergedPerson.spouse = { ...existing.spouse, ...personData.spouse }
-                if (!personData.spouse.photoURL && existing.spouse.photoURL) mergedPerson.spouse.photoURL = existing.spouse.photoURL
-              }
-              mergedPerson.children = mergedKids
-              updatedChildren[match.index] = mergedPerson
-            } else {
-              // User said no — add as new
-              updatedChildren = [...existingChildren, personData]
-            }
-          } else {
-            // No match found — add as new child
-            updatedChildren = [...existingChildren, personData]
+        if (idx >= 0) {
+          const existing = existingChildren[idx]
+          const merged = { ...existing, ...personData }
+          if (!personData.photoURL && existing.photoURL) merged.photoURL = existing.photoURL
+          if (!personData.spouse && existing.spouse) merged.spouse = existing.spouse
+          else if (personData.spouse && existing.spouse && typeof existing.spouse === 'object') {
+            merged.spouse = { ...existing.spouse, ...personData.spouse }
+            if (!personData.spouse.photoURL && existing.spouse.photoURL) merged.spouse.photoURL = existing.spouse.photoURL
           }
-
-          await window.setDoc(window.doc(window.fireDb, 'familyMembers', parentDoc.id), { ...member, children: updatedChildren }, { merge: true })
-          saved = true
+          // Merge children: keep existing data, add new
+          const mergedKids = []
+          const existKids = existing.children || []
+          const formKids = childrenData || []
+          if (formKids.length > 0) {
+            formKids.forEach(fk => {
+              const ek = existKids.find(e => smartMatch(e.name, fk.name))
+              if (ek) {
+                const mk = { ...ek, ...fk }
+                if (!fk.photoURL && ek.photoURL) mk.photoURL = ek.photoURL
+                if (!fk.spouse && ek.spouse) mk.spouse = ek.spouse
+                if ((fk.children||[]).length === 0 && (ek.children||[]).length > 0) mk.children = ek.children
+                mergedKids.push(mk)
+              } else {
+                mergedKids.push(fk)
+              }
+            })
+            existKids.forEach(ek => {
+              if (!mergedKids.some(mk => smartMatch(mk.name, ek.name))) mergedKids.push(ek)
+            })
+            merged.children = mergedKids
+          } else {
+            merged.children = existKids
+          }
+          existingChildren[idx] = merged
+        } else {
+          existingChildren.push(personData)
         }
-      } catch (e) {
-        console.error('Error finding parent:', e)
+        await window.setDoc(window.doc(window.fireDb, 'familyMembers', parentDoc.id), { ...member, children: existingChildren }, { merge: true })
       }
-    }
-
-    // If no parent found, save as top-level member
-    if (!saved) {
+    } else {
       await window.addDoc(window.collection(window.fireDb, 'familyMembers'), personData)
     }
 
-    // Collect special photos and attach to the member's gallery field
-    const specialPhotos = []
-    const spCards = document.querySelectorAll('[id^="sp-card-"]')
-    for (const card of spCards) {
-      const spId = card.id.replace('sp-card-', '')
-      const photoURL = photoURLs[`preview-sp-${spId}`]
-      if (!photoURL) continue
-      const spType = document.getElementById(`sp-type-${spId}`)?.value || 'otro'
-      const spDesc = document.getElementById(`sp-desc-${spId}`)?.value || ''
-      specialPhotos.push({ photoURL, caption: spDesc || spType })
-    }
+    // 4. Save memories to proper collections
+    const memory = document.getElementById('f-memory')?.value?.trim() || ''
+    const message = document.getElementById('f-message')?.value?.trim() || ''
+    const tradition = document.getElementById('f-tradition')?.value?.trim() || ''
 
-    // Attach special photos to the member's gallery in Firestore
-    if (specialPhotos.length > 0 && saved && parentId) {
+    if (memory) {
       try {
-        const snapUpdate = await window.getDocs(window.collection(window.fireDb, 'familyMembers'))
-        const parentDocUpdate = snapUpdate.docs.find(d => d.id === parentId)
-        if (parentDocUpdate) {
-          const memberData = parentDocUpdate.data()
-          const children = memberData.children || []
-          const normalize = (n) => n?.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '').trim()
-          const idx = children.findIndex(c => normalize(c.name) === normalize(personName))
-          if (idx >= 0) {
-            const existingGallery = children[idx].gallery || []
-            children[idx].gallery = [...existingGallery, ...specialPhotos]
-            await window.setDoc(window.doc(window.fireDb, 'familyMembers', parentDocUpdate.id), { ...memberData, children }, { merge: true })
-          }
-        }
-      } catch (e) {
-        console.error('Error attaching photos to member:', e)
-      }
+        const qId = window.doc(window.collection(window.fireDb, 'familyQuotes')).id
+        await window.setDoc(window.doc(window.fireDb, 'familyQuotes', qId), {
+          quote: memory, author: personName, createdAt: new Date().toISOString(),
+        })
+      } catch (e) {}
+    }
+    if (message) {
+      try {
+        const mId = window.doc(window.collection(window.fireDb, 'familyMessages')).id
+        await window.setDoc(window.doc(window.fireDb, 'familyMessages', mId), {
+          message, author: personName, date: new Date().toISOString().split('T')[0],
+        })
+      } catch (e) {}
     }
 
-    // Also save memories to formResponses for reference
-    const memories = {
-      grandparentsMemory: document.getElementById('f-memory')?.value || '',
-      familyMessage: document.getElementById('f-message')?.value || '',
-      tradition: document.getElementById('f-tradition')?.value || '',
-      moments: document.getElementById('f-moments')?.value || '',
-    }
-    if (memories.grandparentsMemory || memories.familyMessage || memories.tradition || memories.moments) {
-      await window.addDoc(window.collection(window.fireDb, 'formResponses'), {
-        submittedAt: new Date().toISOString(),
-        personName,
-        parentId,
-        memories,
-        savedTo: saved ? 'existing-member' : 'new-member',
-      })
+    // Tradicion → traditions (appears in "Tradiciones")
+    if (tradition) {
+      try {
+        const tId = window.doc(window.collection(window.fireDb, 'traditions')).id
+        await window.setDoc(window.doc(window.fireDb, 'traditions', tId), {
+          title: 'Tradicion de ' + personName.split(' ')[0],
+          description: tradition, icon: 'sparkles', submittedBy: personName,
+          createdAt: new Date().toISOString(),
+        })
+      } catch (e) { console.warn('Tradition save error:', e) }
     }
 
+    // Momentos → also save to formResponses as backup
+    if (moments || memory || message || tradition) {
+      try {
+        await window.addDoc(window.collection(window.fireDb, 'formResponses'), {
+          submittedAt: new Date().toISOString(), personName, parentId,
+          memories: { grandparentsMemory: memory, familyMessage: message, tradition, moments },
+        })
+      } catch (e) {}
+    }
+
+    clearTimeout(forceTimeout)
+    clearDraft()
     showStep(totalSteps)
   } catch (err) {
-    console.error('Error:', err)
-    alert('Error al enviar. Intenta de nuevo.')
-    btn.disabled = false
-    btn.textContent = 'Enviar formulario'
+    clearTimeout(forceTimeout)
+    console.error('Submit error:', err)
+    // Even on error, data was already saved step-by-step, so show success
+    clearDraft()
+    showStep(totalSteps)
   }
 }
 

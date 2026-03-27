@@ -42,7 +42,7 @@ function AgeBadge({ birthDate, deathDate }) {
   )
 }
 
-function PersonCircle({ name, photo, size = 'md' }) {
+function PersonCircle({ name, photo, size = 'md', onClick }) {
   const sizes = {
     xs: 'w-12 h-12',
     sm: 'w-16 h-16',
@@ -57,7 +57,8 @@ function PersonCircle({ name, photo, size = 'md' }) {
     <div
       className={`${sizes[size]} rounded-full flex items-center justify-center shadow-md ${
         photo ? '' : 'bg-gradient-to-br from-[#C4704B] to-[#B8943E]'
-      }`}
+      } ${photo && onClick ? 'cursor-pointer ring-2 ring-transparent hover:ring-[#C4704B]/40 transition-all' : ''}`}
+      onClick={photo && onClick ? onClick : undefined}
     >
       {photo ? (
         <img src={photo} alt={name} className={`${sizes[size]} rounded-full object-cover`} />
@@ -362,13 +363,18 @@ export default function FamilyTree() {
 
   useEffect(() => {
     const handler = (e) => {
-      const { memberId } = e.detail
+      const { memberId, name } = e.detail || {}
+      let member = null
       if (memberId) {
-        const member = members.find(m => m.id === memberId)
-        if (member) {
-          setModalTab('familia')
-          setSelectedMember(member)
-        }
+        member = members.find(m => m.id === memberId)
+      } else if (name) {
+        const norm = (s) => (s || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase().trim()
+        const target = norm(name)
+        member = members.find(m => norm(m.fullName) === target || norm(m.name) === target)
+      }
+      if (member) {
+        setModalTab('familia')
+        setSelectedMember(member)
       }
     }
     window.addEventListener('open-family-modal', handler)
@@ -607,7 +613,8 @@ export default function FamilyTree() {
           >
             <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setSelectedMember(null)} />
             <motion.div
-              className="relative bg-[#FFF8F0] rounded-2xl shadow-2xl max-w-7xl w-full max-h-[96vh] overflow-y-auto mx-2"
+              className="relative bg-[#FFF8F0] rounded-2xl shadow-2xl w-full max-h-[96vh] overflow-y-auto mx-2"
+              style={{ maxWidth: '1600px' }}
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
@@ -682,7 +689,7 @@ export default function FamilyTree() {
                         {/* Main person card */}
                         <div className="flex-1 max-w-[220px] bg-white rounded-2xl shadow-xl p-4 text-center border border-[#E0D5C8]/50">
                           <div className="mb-3">
-                            <PersonCircle name={selectedMember.name} photo={selectedMember.photoURL} size="xxl" />
+                            <PersonCircle name={selectedMember.name} photo={selectedMember.photoURL} size="xxl" onClick={() => setLightboxPhoto({ photoURL: selectedMember.photoURL, caption: selectedMember.name })} />
                           </div>
                           <h3 className="text-base font-serif font-bold text-[#5D4037]">{selectedMember.name}</h3>
                           {selectedMember.nickname && (
@@ -709,7 +716,7 @@ export default function FamilyTree() {
                             <div className="flex-1 max-w-[220px] bg-white rounded-2xl shadow-xl p-4 text-center border border-[#E0D5C8]/50">
                               <div className="mb-3">
                                 {typeof selectedMember.spouse === 'object' ? (
-                                  <PersonCircle name={selectedMember.spouse.name} photo={selectedMember.spouse.photoURL} size="xxl" />
+                                  <PersonCircle name={selectedMember.spouse.name} photo={selectedMember.spouse.photoURL} size="xxl" onClick={() => setLightboxPhoto({ photoURL: selectedMember.spouse.photoURL, caption: selectedMember.spouse.name })} />
                                 ) : (
                                   <PersonCircle name={selectedMember.spouse} photo={null} size="xxl" />
                                 )}
@@ -871,7 +878,7 @@ export default function FamilyTree() {
                                 <div className="p-5 flex items-center gap-4">
                                   {/* Hijo */}
                                   <div className="flex items-center gap-3 flex-1 min-w-0">
-                                    <PersonCircle name={child.name} photo={child.photoURL} size="md" />
+                                    <PersonCircle name={child.name} photo={child.photoURL} size="md" onClick={() => setLightboxPhoto({ photoURL: child.photoURL, caption: child.name })} />
                                     <div className="min-w-0">
                                       <p className="text-base font-bold text-[#5D4037] truncate">{child.name}</p>
                                       {child.nickname && <p className="text-xs text-[#C4704B] italic">"{child.nickname}"</p>}
@@ -887,7 +894,7 @@ export default function FamilyTree() {
                                       <div className="flex items-center gap-3 flex-1 min-w-0">
                                         {typeof child.spouse === 'object' ? (
                                           <>
-                                            <PersonCircle name={child.spouse.name} photo={child.spouse.photoURL} size="md" />
+                                            <PersonCircle name={child.spouse.name} photo={child.spouse.photoURL} size="md" onClick={() => setLightboxPhoto({ photoURL: child.spouse.photoURL, caption: child.spouse.name })} />
                                             <div className="min-w-0">
                                               <p className="text-base font-bold text-[#5D4037] truncate">{child.spouse.name}</p>
                                               {child.spouse.nickname && <p className="text-xs text-[#C4704B] italic">"{child.spouse.nickname}"</p>}
@@ -971,7 +978,7 @@ export default function FamilyTree() {
                                           {/* Couple: nieto + esposo/a side by side */}
                                           <div className="p-4">
                                             <div className="flex items-center gap-3">
-                                              <PersonCircle name={ggc.name} photo={ggc.photoURL} size="md" />
+                                              <PersonCircle name={ggc.name} photo={ggc.photoURL} size="md" onClick={() => setLightboxPhoto({ photoURL: ggc.photoURL, caption: ggc.name })} />
                                               <div className="flex-1 min-w-0">
                                                 <p className="text-base font-serif font-bold text-[#5D4037] truncate">{ggc.name}</p>
                                                 {ggc.nickname && <p className="text-xs text-[#C4704B] italic">"{ggc.nickname}"</p>}
@@ -989,7 +996,7 @@ export default function FamilyTree() {
                                                   <Heart className="w-4 h-4 flex-shrink-0" style={{ color: cardColor, fill: cardColor }} />
                                                   {typeof ggc.spouse === 'object' ? (
                                                     <>
-                                                      <PersonCircle name={ggc.spouse.name} photo={ggc.spouse.photoURL} size="md" />
+                                                      <PersonCircle name={ggc.spouse.name} photo={ggc.spouse.photoURL} size="md" onClick={() => setLightboxPhoto({ photoURL: ggc.spouse.photoURL, caption: ggc.spouse.name })} />
                                                       <div className="flex-1 min-w-0">
                                                         <p className="text-base font-serif font-bold text-[#5D4037] truncate">{ggc.spouse.name}</p>
                                                         {ggc.spouse.nickname && <p className="text-xs text-[#C4704B] italic">"{ggc.spouse.nickname}"</p>}
@@ -1036,7 +1043,7 @@ export default function FamilyTree() {
                                               <div className="space-y-2">
                                                 {ggc.children.map((bn, bi) => (
                                                   <div key={bi} className="flex items-center gap-2 p-2.5 rounded-lg border" style={{ backgroundColor: `${cardColor}12`, borderColor: `${cardColor}25` }}>
-                                                    <PersonCircle name={bn.name} photo={bn.photoURL} size="sm" />
+                                                    <PersonCircle name={bn.name} photo={bn.photoURL} size="sm" onClick={() => setLightboxPhoto({ photoURL: bn.photoURL, caption: bn.name })} />
                                                     <div className="flex-1 min-w-0">
                                                       <p className="text-sm font-bold text-[#5D4037] truncate">{bn.name}</p>
                                                       <AgeBadge birthDate={bn.birthDate} deathDate={bn.deathDate} />
