@@ -134,14 +134,14 @@ export default function Stats() {
   const females = people.filter(p => p.gender === 'F')
   const unknown = people.filter(p => !p.gender || (p.gender !== 'M' && p.gender !== 'F'))
 
-  const ages = alive.map(p => calcAge(p.birthDate)).filter(a => a !== null)
+  const ages = alive.map(p => calcAge(p.birthDate)).filter(a => a !== null && a >= 0)
   const avgAge = ages.length > 0 ? Math.round(ages.reduce((a, b) => a + b, 0) / ages.length) : 0
   const youngest = ages.length > 0 ? Math.min(...ages) : 0
   const oldest = ages.length > 0 ? Math.max(...ages) : 0
 
   const youngestPerson = alive.reduce((min, p) => {
     const a = calcAge(p.birthDate)
-    return a !== null && (min === null || a < calcAge(min.birthDate)) ? p : min
+    return a !== null && a >= 0 && (min === null || a < calcAge(min.birthDate)) ? p : min
   }, null)
 
   const oldestPerson = alive.reduce((max, p) => {
