@@ -36,12 +36,7 @@ const cardVariant = {
 
 /* ── Card tint palette ── */
 const cardTints = [
-  { bg: '#FFF5EE', border: '#E8C9B8', accent: '#C4704B' },
-  { bg: '#F2F7F2', border: '#B8D4B8', accent: '#7A9E7E' },
-  { bg: '#FBF7EE', border: '#DDD0A8', accent: '#B8943E' },
-  { bg: '#F5F0ED', border: '#C9B8A8', accent: '#5D4037' },
-  { bg: '#FFF0F0', border: '#E8C0C0', accent: '#C4704B' },
-  { bg: '#F0F5F8', border: '#B0C8D8', accent: '#5D7A8C' },
+  { bg: '#FFFFFF', border: '#E2E8F0', accent: '#0F172A' },
 ]
 
 const emptyForm = { phrase: '', author: '', authorPhoto: '', context: '' }
@@ -122,12 +117,11 @@ export default function FamilyQuotes() {
     <section
       id="frases"
       className="relative py-24 overflow-hidden"
-      style={{ backgroundColor: '#FFFDF7' }}
+      style={{ backgroundColor: '#0F172A' }}
     >
       {/* Background blurs */}
-      <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-[#C4704B] opacity-[0.04] blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full bg-[#7A9E7E] opacity-[0.04] blur-[100px] pointer-events-none" />
-      <div className="absolute top-1/2 left-1/3 w-[28rem] h-[28rem] rounded-full bg-[#B8943E] opacity-[0.03] blur-[120px] pointer-events-none" />
+      <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-white opacity-[0.02] blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full bg-white opacity-[0.02] blur-[100px] pointer-events-none" />
 
       <div className="relative z-10 max-w-6xl mx-auto px-6">
         {/* ── Section Header ── */}
@@ -139,20 +133,12 @@ export default function FamilyQuotes() {
           custom={0}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-3 mb-6">
-            <MessageSquareQuote className="w-5 h-5 text-[#B8943E]" />
-            <span className="font-sans text-sm tracking-widest uppercase text-[#7A9E7E]">
-              Sabiduria familiar
-            </span>
-            <MessageSquareQuote className="w-5 h-5 text-[#B8943E]" />
-          </div>
-          <h2
-            className="text-4xl sm:text-5xl md:text-6xl font-bold leading-tight mb-4"
-            style={{ color: '#5D4037', fontFamily: "'Playfair Display', serif" }}
-          >
+          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Frases que nos definen</p>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
             Frases de la Familia
           </h2>
-          <p className="text-lg text-[#8B7355] max-w-2xl mx-auto">
+          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
+          <p className="text-base text-white/50 max-w-md mx-auto leading-relaxed">
             Las palabras que nos han marcado, las frases que se repiten de generacion en generacion
           </p>
         </motion.div>
@@ -169,7 +155,7 @@ export default function FamilyQuotes() {
           <button
             onClick={openAdd}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105"
-            style={{ backgroundColor: '#C4704B' }}
+            style={{ backgroundColor: '#B8654A' }}
           >
             <Plus size={20} />
             Agregar frase
@@ -179,7 +165,7 @@ export default function FamilyQuotes() {
         {/* ── Loading ── */}
         {loading && (
           <div className="flex justify-center py-20">
-            <Loader2 className="w-8 h-8 animate-spin text-[#C4704B]" />
+            <Loader2 className="w-8 h-8 animate-spin text-[#B8654A]" />
           </div>
         )}
 
@@ -190,8 +176,8 @@ export default function FamilyQuotes() {
             animate={{ opacity: 1 }}
             className="text-center py-20"
           >
-            <Quote className="w-16 h-16 mx-auto mb-4 text-[#D4C4A8] opacity-50" />
-            <p className="text-lg text-[#8B7355]">
+            <Quote className="w-16 h-16 mx-auto mb-4 text-white/20" />
+            <p className="text-lg text-white/40">
               Aun no hay frases registradas. Agrega la primera.
             </p>
           </motion.div>
@@ -216,23 +202,22 @@ export default function FamilyQuotes() {
                     animate="visible"
                     exit="exit"
                     layout
-                    className="group relative rounded-2xl p-6 border transition-shadow duration-300 hover:shadow-xl cursor-default"
+                    className="group relative rounded-2xl p-6 border-4 border-white/80 bg-white/5 transition-shadow duration-300 hover:shadow-xl cursor-default"
                     style={{
-                      backgroundColor: tint.bg,
-                      borderColor: tint.border,
+                      borderLeft: '4px solid rgba(255,255,255,0.2)',
                     }}
                   >
                     {/* Big decorative quote mark */}
                     <Quote
-                      className="absolute top-4 right-4 w-10 h-10 opacity-10"
-                      style={{ color: tint.accent }}
+                      className="absolute top-4 right-4 w-10 h-10"
+                      style={{ color: 'rgba(255,255,255,0.1)' }}
                     />
 
                     {/* Phrase */}
                     <p
                       className="text-lg sm:text-xl leading-relaxed mb-5 relative z-10"
                       style={{
-                        color: '#5D4037',
+                        color: 'rgba(255,255,255,0.7)',
                         fontFamily: "'Playfair Display', serif",
                         fontStyle: 'italic',
                       }}
@@ -247,19 +232,17 @@ export default function FamilyQuotes() {
                           src={q.authorPhoto}
                           alt={q.author}
                           className="w-10 h-10 rounded-full object-cover border-2"
-                          style={{ borderColor: tint.accent }}
+                          style={{ borderColor: 'rgba(255,255,255,0.2)' }}
                         />
                       ) : (
                         <div
-                          className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm"
-                          style={{ backgroundColor: tint.accent }}
+                          className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm bg-white/10"
                         >
                           {q.author?.charAt(0)?.toUpperCase()}
                         </div>
                       )}
                       <span
-                        className="font-semibold text-sm"
-                        style={{ color: tint.accent }}
+                        className="font-semibold text-sm text-white"
                       >
                         {q.author}
                       </span>
@@ -267,7 +250,7 @@ export default function FamilyQuotes() {
 
                     {/* Context */}
                     {q.context && (
-                      <p className="text-xs text-[#8B7355] italic mt-1 pl-[3.25rem]">
+                      <p className="text-xs text-white/40 italic mt-1 pl-[3.25rem]">
                         {q.context}
                       </p>
                     )}
@@ -276,16 +259,16 @@ export default function FamilyQuotes() {
                     <div className="absolute top-3 left-3 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
                       <button
                         onClick={() => openEdit(q)}
-                        className="p-1.5 rounded-full bg-white/80 hover:bg-white shadow-sm transition-colors"
-                        style={{ color: '#B8943E' }}
+                        className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 shadow-sm transition-colors"
+                        style={{ color: '#B8976A' }}
                         title="Editar"
                       >
                         <Pencil size={14} />
                       </button>
                       <button
                         onClick={() => setDeleteTarget(q)}
-                        className="p-1.5 rounded-full bg-white/80 hover:bg-white shadow-sm transition-colors"
-                        style={{ color: '#C4704B' }}
+                        className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 shadow-sm transition-colors"
+                        style={{ color: '#B8654A' }}
                         title="Eliminar"
                       >
                         <Trash2 size={14} />
@@ -308,14 +291,14 @@ export default function FamilyQuotes() {
         <div className="space-y-5">
           {/* Phrase */}
           <div>
-            <label className="block text-sm font-semibold text-[#5D4037] mb-1">
+            <label className="block text-sm font-semibold text-white mb-1">
               Frase *
             </label>
             <textarea
               value={form.phrase}
               onChange={(e) => onFieldChange('phrase', e.target.value)}
               rows={3}
-              className="w-full rounded-xl border border-[#E8D5C4] bg-white px-4 py-3 text-[#5D4037] placeholder-[#C4A882] focus:outline-none focus:ring-2 focus:ring-[#C4704B]/30 focus:border-[#C4704B] transition-all resize-none"
+              className="w-full rounded-xl border-4 border-white/80 bg-white px-4 py-3 text-white placeholder-[#C4A882] focus:outline-none focus:ring-2 focus:ring-[#B8654A]/30 focus:border-[#B8654A] transition-all resize-none"
               placeholder="Escribe la frase familiar..."
               style={{ fontFamily: "'Playfair Display', serif", fontStyle: 'italic' }}
             />
@@ -323,42 +306,42 @@ export default function FamilyQuotes() {
 
           {/* Author */}
           <div>
-            <label className="block text-sm font-semibold text-[#5D4037] mb-1">
+            <label className="block text-sm font-semibold text-white mb-1">
               Autor *
             </label>
             <input
               type="text"
               value={form.author}
               onChange={(e) => onFieldChange('author', e.target.value)}
-              className="w-full rounded-xl border border-[#E8D5C4] bg-white px-4 py-3 text-[#5D4037] placeholder-[#C4A882] focus:outline-none focus:ring-2 focus:ring-[#C4704B]/30 focus:border-[#C4704B] transition-all"
+              className="w-full rounded-xl border-4 border-white/80 bg-white px-4 py-3 text-white placeholder-[#C4A882] focus:outline-none focus:ring-2 focus:ring-[#B8654A]/30 focus:border-[#B8654A] transition-all"
               placeholder="Quien decia esta frase?"
             />
           </div>
 
           {/* Author Photo (optional) */}
           <div>
-            <label className="block text-sm font-semibold text-[#5D4037] mb-1">
+            <label className="block text-sm font-semibold text-white mb-1">
               Foto del autor <span className="text-xs text-[#8B7355] font-normal">(URL, opcional)</span>
             </label>
             <input
               type="text"
               value={form.authorPhoto}
               onChange={(e) => onFieldChange('authorPhoto', e.target.value)}
-              className="w-full rounded-xl border border-[#E8D5C4] bg-white px-4 py-3 text-[#5D4037] placeholder-[#C4A882] focus:outline-none focus:ring-2 focus:ring-[#C4704B]/30 focus:border-[#C4704B] transition-all"
+              className="w-full rounded-xl border-4 border-white/80 bg-white px-4 py-3 text-white placeholder-[#C4A882] focus:outline-none focus:ring-2 focus:ring-[#B8654A]/30 focus:border-[#B8654A] transition-all"
               placeholder="https://..."
             />
           </div>
 
           {/* Context */}
           <div>
-            <label className="block text-sm font-semibold text-[#5D4037] mb-1">
+            <label className="block text-sm font-semibold text-white mb-1">
               Contexto <span className="text-xs text-[#8B7355] font-normal">(opcional)</span>
             </label>
             <input
               type="text"
               value={form.context}
               onChange={(e) => onFieldChange('context', e.target.value)}
-              className="w-full rounded-xl border border-[#E8D5C4] bg-white px-4 py-3 text-[#5D4037] placeholder-[#C4A882] focus:outline-none focus:ring-2 focus:ring-[#C4704B]/30 focus:border-[#C4704B] transition-all"
+              className="w-full rounded-xl border-4 border-white/80 bg-white px-4 py-3 text-white placeholder-[#C4A882] focus:outline-none focus:ring-2 focus:ring-[#B8654A]/30 focus:border-[#B8654A] transition-all"
               placeholder="Siempre lo decia en la cena..."
             />
           </div>
@@ -368,7 +351,7 @@ export default function FamilyQuotes() {
             onClick={handleSave}
             disabled={saving || !form.phrase.trim() || !form.author.trim()}
             className="w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-white transition-all duration-300 disabled:opacity-50 disabled:cursor-not-allowed hover:shadow-lg"
-            style={{ backgroundColor: '#7A9E7E' }}
+            style={{ backgroundColor: '#6B9080' }}
           >
             {saving ? (
               <>
@@ -392,21 +375,21 @@ export default function FamilyQuotes() {
         title="Eliminar Frase"
       >
         <div className="space-y-5">
-          <p className="text-[#5D4037]">
+          <p className="text-white">
             Estas seguro de eliminar esta frase?
           </p>
           {deleteTarget && (
             <div
-              className="rounded-xl p-4 border border-[#E8D5C4]"
-              style={{ backgroundColor: '#FFF5EE' }}
+              className="rounded-xl p-4 border-4 border-white/80"
+              style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
             >
               <p
                 className="text-base italic"
-                style={{ color: '#5D4037', fontFamily: "'Playfair Display', serif" }}
+                style={{ color: '#FFFFFF', fontFamily: "'Playfair Display', serif" }}
               >
                 &ldquo;{deleteTarget.phrase}&rdquo;
               </p>
-              <p className="text-sm text-[#C4704B] mt-2 font-semibold">
+              <p className="text-sm text-[#B8654A] mt-2 font-semibold">
                 &mdash; {deleteTarget.author}
               </p>
             </div>
@@ -414,7 +397,7 @@ export default function FamilyQuotes() {
           <div className="flex gap-3">
             <button
               onClick={() => setDeleteTarget(null)}
-              className="flex-1 py-3 rounded-xl font-semibold border border-[#E8D5C4] text-[#5D4037] hover:bg-[#F5EDE4] transition-colors"
+              className="flex-1 py-3 rounded-xl font-semibold border-4 border-white/80 text-white hover:bg-white/5 transition-colors"
             >
               Cancelar
             </button>
@@ -422,7 +405,7 @@ export default function FamilyQuotes() {
               onClick={handleDelete}
               disabled={deleting}
               className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-white transition-all duration-300 disabled:opacity-50 hover:shadow-lg"
-              style={{ backgroundColor: '#C4704B' }}
+              style={{ backgroundColor: '#B8654A' }}
             >
               {deleting ? (
                 <>

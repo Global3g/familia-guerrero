@@ -45,28 +45,28 @@ export default function CoachMarks() {
           exit={{ opacity: 0, scale: 0.9 }}
           className="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full mx-4 p-6 text-center"
         >
-          <button onClick={finish} className="absolute top-3 right-3 text-[#5D4037]/30 hover:text-[#5D4037]/60">
+          <button onClick={finish} className="absolute top-3 right-3 text-white/30 hover:text-white/60">
             <X className="w-5 h-5" />
           </button>
 
-          <div className="w-14 h-14 rounded-full bg-[#C4704B]/10 flex items-center justify-center mx-auto mb-4">
-            <span className="text-2xl font-bold text-[#C4704B]">{step + 1}</span>
+          <div className="w-14 h-14 rounded-full bg-[#B8654A]/10 flex items-center justify-center mx-auto mb-4">
+            <span className="text-2xl font-bold text-[#B8654A]">{step + 1}</span>
           </div>
 
-          <h3 className="text-lg font-serif font-bold text-[#5D4037] mb-2">{current.title}</h3>
-          <p className="text-sm text-[#5D4037]/70 leading-relaxed mb-6">{current.text}</p>
+          <h3 className="text-lg font-serif font-bold text-white mb-2">{current.title}</h3>
+          <p className="text-sm text-white/70 leading-relaxed mb-6">{current.text}</p>
 
           <div className="flex items-center justify-between">
             <button
               onClick={() => step > 0 ? setStep(step - 1) : finish()}
-              className="flex items-center gap-1 text-sm text-[#5D4037]/50 hover:text-[#5D4037]"
+              className="flex items-center gap-1 text-sm text-white/50 hover:text-white"
             >
               {step > 0 ? <><ChevronLeft className="w-4 h-4" /> Anterior</> : 'Saltar'}
             </button>
-            <span className="text-xs text-[#5D4037]/30">{step + 1} / {steps.length}</span>
+            <span className="text-xs text-white/30">{step + 1} / {steps.length}</span>
             <button
               onClick={() => step < steps.length - 1 ? setStep(step + 1) : finish()}
-              className="flex items-center gap-1 px-4 py-2 rounded-lg bg-[#C4704B] text-white text-sm font-medium hover:bg-[#C4704B]/90 transition"
+              className="flex items-center gap-1 px-4 py-2 rounded-lg bg-[#B8654A] text-white text-sm font-medium hover:bg-[#B8654A]/90 transition"
             >
               {step < steps.length - 1 ? <>Siguiente <ChevronRight className="w-4 h-4" /></> : 'Comenzar!'}
             </button>

@@ -34,10 +34,13 @@ export default function Gamification() {
 
   return (
     <div className="py-8">
-      <h3 className="text-sm font-serif font-bold text-[#5D4037] uppercase tracking-wider mb-4 flex items-center gap-2">
-        <Trophy className="w-4 h-4 text-[#B8943E]" />
-        Logros Familiares
-      </h3>
+      <div className="text-center mb-6">
+        <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Logros</p>
+        <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
+          Logros Familiares
+        </h2>
+        <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
+      </div>
       <div className="flex flex-wrap gap-3">
         {badges.map(badge => {
           const Icon = badge.icon
@@ -46,12 +49,12 @@ export default function Gamification() {
             <motion.div
               key={badge.id}
               whileHover={{ scale: 1.05 }}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl border ${isEarned ? 'bg-[#B8943E]/10 border-[#B8943E]/30' : 'bg-white/50 border-[#E0D5C8] opacity-40'}`}
+              className={`flex items-center gap-2 px-4 py-2 rounded-xl border ${isEarned ? 'bg-[#B8976A]/10 border-[#B8976A]/30' : 'bg-white/5 border-white/80 opacity-40'}`}
             >
-              <Icon className={`w-5 h-5 ${isEarned ? 'text-[#B8943E]' : 'text-[#5D4037]/30'}`} />
+              <Icon className={`w-5 h-5 ${isEarned ? 'text-[#B8976A]' : 'text-white/30'}`} />
               <div>
-                <p className={`text-xs font-bold ${isEarned ? 'text-[#5D4037]' : 'text-[#5D4037]/40'}`}>{badge.label}</p>
-                <p className="text-[10px] text-[#5D4037]/50">{badge.desc}</p>
+                <p className={`text-xs font-bold ${isEarned ? 'text-white' : 'text-white/40'}`}>{badge.label}</p>
+                <p className="text-[10px] text-white/50">{badge.desc}</p>
               </div>
             </motion.div>
           )

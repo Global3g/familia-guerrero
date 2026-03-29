@@ -4,8 +4,8 @@ import { uploadPhoto } from '../firebase/familyService'
 import { Camera, Save, Loader2, Plus, Trash2, ChevronDown, ChevronRight, Heart, Users, User, MapPin, Calendar, Star, Image, MessageCircle } from 'lucide-react'
 import ImageCropper from './ImageCropper'
 
-const inputClass = 'w-full rounded-lg border border-[#7A9E7E]/20 bg-white px-3 py-2 text-sm text-[#5D4037] focus:outline-none focus:ring-2 focus:ring-[#7A9E7E]/30'
-const labelClass = 'block text-xs font-medium text-[#5D4037] mb-1'
+const inputClass = 'w-full rounded-lg border-4 border-white/80 bg-white/5 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#6B9080]/30'
+const labelClass = 'block text-xs font-medium text-white mb-1'
 
 const emptySpouse = () => ({
   name: '', nickname: '', birthDate: '', deathDate: '', bio: '', photoURL: null, gender: '',
@@ -18,9 +18,9 @@ const emptyPerson = () => ({
 
 // Colores por nivel de profundidad
 const levelColors = [
-  { border: '#7A9E7E', bg: '#7A9E7E', light: '#7A9E7E10', accent: '#7A9E7E' },
-  { border: '#B8943E', bg: '#B8943E', light: '#B8943E10', accent: '#B8943E' },
-  { border: '#C4704B', bg: '#C4704B', light: '#C4704B10', accent: '#C4704B' },
+  { border: '#6B9080', bg: '#6B9080', light: '#6B908010', accent: '#6B9080' },
+  { border: '#B8976A', bg: '#B8976A', light: '#B8976A10', accent: '#B8976A' },
+  { border: '#B8654A', bg: '#B8654A', light: '#B8654A10', accent: '#B8654A' },
 ]
 
 function SpouseBlock({ spouse, onChange, colors }) {
@@ -53,26 +53,26 @@ function SpouseBlock({ spouse, onChange, colors }) {
   }
 
   return (
-    <div className="rounded-lg border p-2.5 space-y-2" style={{ borderColor: '#C4704B25', backgroundColor: '#C4704B08' }}>
+    <div className="rounded-lg border p-2.5 space-y-2" style={{ borderColor: '#B8654A25', backgroundColor: '#B8654A08' }}>
       <div className="flex items-center justify-between">
         <button type="button" onClick={() => setExpanded(!expanded)} className="flex items-center gap-2 text-left flex-1">
           <label className="relative cursor-pointer flex-shrink-0 group" onClick={(e) => e.stopPropagation()}>
             <input type="file" accept="image/*" onChange={handlePhotoSelect} className="hidden" />
             {spouse.photoURL ? (
-              <img src={spouse.photoURL} alt={spouse.name} className="w-8 h-8 rounded-full object-cover border group-hover:opacity-70 transition" style={{ borderColor: '#C4704B40' }} />
+              <img src={spouse.photoURL} alt={spouse.name} className="w-8 h-8 rounded-full object-cover border group-hover:opacity-70 transition" style={{ borderColor: '#B8654A40' }} />
             ) : (
-              <div className="w-8 h-8 rounded-full flex items-center justify-center group-hover:opacity-70 transition" style={{ backgroundColor: '#C4704B15' }}>
-                {uploading ? <Loader2 className="w-3.5 h-3.5 animate-spin text-[#C4704B]" /> : <Camera className="w-3.5 h-3.5 text-[#C4704B]" />}
+              <div className="w-8 h-8 rounded-full flex items-center justify-center group-hover:opacity-70 transition" style={{ backgroundColor: '#B8654A15' }}>
+                {uploading ? <Loader2 className="w-3.5 h-3.5 animate-spin text-[#B8654A]" /> : <Camera className="w-3.5 h-3.5 text-[#B8654A]" />}
               </div>
             )}
           </label>
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-bold text-[#C4704B] flex items-center gap-1">
+            <p className="text-xs font-bold text-[#B8654A] flex items-center gap-1">
               <Heart className="w-3 h-3" /> Esposo(a)
             </p>
-            <p className="text-xs text-[#5D4037] truncate">{spouse.name || 'Sin nombre'}</p>
+            <p className="text-xs text-white truncate">{spouse.name || 'Sin nombre'}</p>
           </div>
-          {expanded ? <ChevronDown className="w-3.5 h-3.5 text-[#5D4037]/40" /> : <ChevronRight className="w-3.5 h-3.5 text-[#5D4037]/40" />}
+          {expanded ? <ChevronDown className="w-3.5 h-3.5 text-white/40" /> : <ChevronRight className="w-3.5 h-3.5 text-white/40" />}
         </button>
         <button type="button" onClick={() => { if (confirm('¿Eliminar esposo(a)?')) onChange(null) }} className="p-1 rounded text-red-300 hover:text-red-600 transition ml-1">
           <Trash2 className="h-3.5 w-3.5" />
@@ -86,13 +86,13 @@ function SpouseBlock({ spouse, onChange, colors }) {
               <input type="file" accept="image/*" onChange={handlePhotoSelect} className="hidden" />
               {spouse.photoURL ? (
                 <div className="relative">
-                  <img src={spouse.photoURL} alt={spouse.name} className="w-16 h-16 rounded-full object-cover border-2 group-hover:opacity-70 transition" style={{ borderColor: '#C4704B40' }} />
+                  <img src={spouse.photoURL} alt={spouse.name} className="w-16 h-16 rounded-full object-cover border-2 group-hover:opacity-70 transition" style={{ borderColor: '#B8654A40' }} />
                   <div className="absolute inset-0 rounded-full flex items-center justify-center bg-black/30 sm:opacity-0 sm:group-hover:opacity-100 transition">
                     <Camera className="w-4 h-4 text-white" />
                   </div>
                 </div>
               ) : (
-                <div className="w-16 h-16 rounded-full border-2 border-dashed border-[#C4704B]/30 flex flex-col items-center justify-center text-[#C4704B] group-hover:opacity-70 transition">
+                <div className="w-16 h-16 rounded-full border-2 border-dashed border-[#B8654A]/30 flex flex-col items-center justify-center text-[#B8654A] group-hover:opacity-70 transition">
                   {uploading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Camera className="w-4 h-4 mb-0.5" /><span className="text-[11px]">Foto</span></>}
                 </div>
               )}
@@ -222,17 +222,17 @@ function PersonBlock({ person, index, depth, onChange, onRemove }) {
             )}
           </label>
           <div className="flex-1 min-w-0">
-            <p className="text-sm font-bold text-[#5D4037] truncate">
+            <p className="text-sm font-bold text-white truncate">
               {person.name || 'Sin nombre'}
             </p>
-            <p className="text-[11px] text-[#5D4037]/50">
+            <p className="text-[11px] text-white/50">
               {person.spouse?.name ? `c/ ${person.spouse.name}` : typeof person.spouse === 'string' && person.spouse ? `c/ ${person.spouse}` : ''}
               {descendants > 0 ? ` · ${descendants} desc.` : ''}
             </p>
           </div>
           {expanded
-            ? <ChevronDown className="w-4 h-4 text-[#5D4037]/40 flex-shrink-0" />
-            : <ChevronRight className="w-4 h-4 text-[#5D4037]/40 flex-shrink-0" />
+            ? <ChevronDown className="w-4 h-4 text-white/40 flex-shrink-0" />
+            : <ChevronRight className="w-4 h-4 text-white/40 flex-shrink-0" />
           }
         </button>
         <button
@@ -323,7 +323,7 @@ function PersonBlock({ person, index, depth, onChange, onRemove }) {
             </div>
             <div className="col-span-2">
               <label className={labelClass}>
-                <MapPin className="w-3 h-3 inline mr-1 text-[#C4704B]" />
+                <MapPin className="w-3 h-3 inline mr-1 text-[#B8654A]" />
                 Donde vive
               </label>
               <input
@@ -336,7 +336,7 @@ function PersonBlock({ person, index, depth, onChange, onRemove }) {
             </div>
             <div>
               <label className={labelClass}>
-                <Calendar className="w-3 h-3 inline mr-1 text-[#B8943E]" />
+                <Calendar className="w-3 h-3 inline mr-1 text-[#B8976A]" />
                 Fecha de boda
               </label>
               <input
@@ -369,7 +369,7 @@ function PersonBlock({ person, index, depth, onChange, onRemove }) {
             <button
               type="button"
               onClick={() => handleFieldChange('spouse', emptySpouse())}
-              className="flex w-full items-center justify-center gap-1.5 rounded-lg border-dashed border border-[#C4704B]/30 py-2 text-xs text-[#C4704B] hover:bg-[#C4704B]/5 transition"
+              className="flex w-full items-center justify-center gap-1.5 rounded-lg border-dashed border border-[#B8654A]/30 py-2 text-xs text-[#B8654A] hover:bg-[#B8654A]/5 transition"
             >
               <Heart className="h-3.5 w-3.5" />
               Agregar esposo(a)
@@ -617,14 +617,14 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
 
         {/* Photo upload */}
         <div className="flex flex-col items-center gap-2">
-          <div className="relative h-24 w-24 rounded-full border-2 border-[#7A9E7E]/30 bg-[#FAF6EE] overflow-hidden flex items-center justify-center">
+          <div className="relative h-24 w-24 rounded-full border-2 border-[#6B9080]/30 bg-white/5 overflow-hidden flex items-center justify-center">
             {photoPreview ? (
               <img src={photoPreview} alt="Preview" className="h-full w-full object-cover" />
             ) : (
-              <Camera className="h-7 w-7 text-[#7A9E7E]/50" />
+              <Camera className="h-7 w-7 text-[#6B9080]/50" />
             )}
           </div>
-          <label className="cursor-pointer rounded-lg border border-[#7A9E7E]/30 px-3 py-1 text-xs text-[#7A9E7E] hover:bg-[#7A9E7E]/10 transition">
+          <label className="cursor-pointer rounded-lg border border-[#6B9080]/30 px-3 py-1 text-xs text-[#6B9080] hover:bg-[#6B9080]/10 transition">
             <Camera className="inline-block h-3.5 w-3.5 mr-1 -mt-0.5" />
             Subir foto
             <input type="file" accept="image/*" onChange={handlePhotoChange} className="hidden" />
@@ -678,7 +678,7 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
           <button
             type="button"
             onClick={() => setForm((prev) => ({ ...prev, spouse: emptySpouse() }))}
-            className="flex w-full items-center justify-center gap-2 rounded-lg border-dashed border-2 border-[#C4704B]/30 py-2.5 text-sm text-[#C4704B] hover:bg-[#C4704B]/5 transition"
+            className="flex w-full items-center justify-center gap-2 rounded-lg border-dashed border-2 border-[#B8654A]/30 py-2.5 text-sm text-[#B8654A] hover:bg-[#B8654A]/5 transition"
           >
             <Heart className="h-4 w-4" />
             Agregar esposo(a)
@@ -686,9 +686,9 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
         )}
 
         {/* SECTION 1: Datos de la pareja */}
-        <div className="rounded-xl border border-[#B8943E]/20 bg-[#FAF6EE] p-4 space-y-3">
-          <h3 className="text-sm font-bold text-[#5D4037] flex items-center gap-1.5">
-            <Calendar className="w-4 h-4 text-[#B8943E]" />
+        <div className="rounded-xl border border-[#B8976A]/20 bg-white/5 p-4 space-y-3">
+          <h3 className="text-sm font-bold text-white flex items-center gap-1.5">
+            <Calendar className="w-4 h-4 text-[#B8976A]" />
             Datos de la pareja
           </h3>
           <div className="grid grid-cols-2 gap-3">
@@ -703,7 +703,7 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
             <div className="col-span-2">
               <label className={labelClass}>Donde viven</label>
               <div className="relative">
-                <MapPin className="absolute left-2.5 top-2.5 w-3.5 h-3.5 text-[#5D4037]/40" />
+                <MapPin className="absolute left-2.5 top-2.5 w-3.5 h-3.5 text-white/40" />
                 <input type="text" name="location" value={form.location} onChange={handleChange} className={inputClass + ' pl-8'} placeholder="Ciudad, Estado, Pais" />
               </div>
             </div>
@@ -711,15 +711,15 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
         </div>
 
         {/* SECTION 2: Momentos importantes */}
-        <div className="rounded-xl border border-[#C4704B]/20 bg-[#C4704B08] p-4 space-y-3">
-          <h3 className="text-sm font-bold text-[#5D4037] flex items-center gap-1.5">
-            <Star className="w-4 h-4 text-[#C4704B]" />
+        <div className="rounded-xl border border-[#B8654A]/20 bg-[#B8654A08] p-4 space-y-3">
+          <h3 className="text-sm font-bold text-white flex items-center gap-1.5">
+            <Star className="w-4 h-4 text-[#B8654A]" />
             Momentos importantes
           </h3>
           {form.moments.map((moment, index) => (
-            <div key={index} className="rounded-lg border border-[#C4704B]/15 bg-white p-3 space-y-2">
+            <div key={index} className="rounded-lg border border-[#B8654A]/15 bg-white p-3 space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium text-[#C4704B]">Momento {index + 1}</span>
+                <span className="text-xs font-medium text-[#B8654A]">Momento {index + 1}</span>
                 <button type="button" onClick={() => handleRemoveMoment(index)} className="p-1 rounded text-red-300 hover:text-red-600 transition">
                   <Trash2 className="h-3.5 w-3.5" />
                 </button>
@@ -743,7 +743,7 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
           <button
             type="button"
             onClick={handleAddMoment}
-            className="flex w-full items-center justify-center gap-2 rounded-lg border-dashed border-2 border-[#C4704B]/30 py-2.5 text-sm text-[#C4704B] hover:bg-[#C4704B]/5 transition"
+            className="flex w-full items-center justify-center gap-2 rounded-lg border-dashed border-2 border-[#B8654A]/30 py-2.5 text-sm text-[#B8654A] hover:bg-[#B8654A]/5 transition"
           >
             <Star className="h-4 w-4" />
             Agregar momento
@@ -751,29 +751,29 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
         </div>
 
         {/* SECTION 3: Galeria familiar */}
-        <div className="rounded-xl border border-[#7A9E7E]/20 bg-[#7A9E7E08] p-4 space-y-3">
-          <h3 className="text-sm font-bold text-[#5D4037] flex items-center gap-1.5">
-            <Image className="w-4 h-4 text-[#7A9E7E]" />
+        <div className="rounded-xl border border-[#6B9080]/20 bg-[#6B908008] p-4 space-y-3">
+          <h3 className="text-sm font-bold text-white flex items-center gap-1.5">
+            <Image className="w-4 h-4 text-[#6B9080]" />
             Galeria familiar
           </h3>
           {form.gallery.map((item, index) => (
-            <div key={index} className="rounded-lg border border-[#7A9E7E]/15 bg-white p-3 space-y-2">
+            <div key={index} className="rounded-lg border border-[#6B9080]/15 bg-white p-3 space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium text-[#7A9E7E]">Foto {index + 1}</span>
+                <span className="text-xs font-medium text-[#6B9080]">Foto {index + 1}</span>
                 <button type="button" onClick={() => handleRemoveGalleryItem(index)} className="p-1 rounded text-red-300 hover:text-red-600 transition">
                   <Trash2 className="h-3.5 w-3.5" />
                 </button>
               </div>
               <div className="flex items-center gap-3">
                 {item.photoURL && (
-                  <img src={item.photoURL} alt={item.caption || 'Foto'} className="w-14 h-14 rounded-lg object-cover border border-[#7A9E7E]/20" />
+                  <img src={item.photoURL} alt={item.caption || 'Foto'} className="w-14 h-14 rounded-lg object-cover border border-[#6B9080]/20" />
                 )}
                 <div className="flex-1 space-y-2">
                   <div>
                     <label className={labelClass}>Descripcion</label>
                     <input type="text" value={item.caption} onChange={(e) => handleGalleryChange(index, 'caption', e.target.value)} className={inputClass} placeholder="Descripcion de la foto" />
                   </div>
-                  <label className="cursor-pointer inline-flex items-center gap-1.5 rounded-lg border border-[#7A9E7E]/30 px-3 py-1 text-xs text-[#7A9E7E] hover:bg-[#7A9E7E]/10 transition">
+                  <label className="cursor-pointer inline-flex items-center gap-1.5 rounded-lg border border-[#6B9080]/30 px-3 py-1 text-xs text-[#6B9080] hover:bg-[#6B9080]/10 transition">
                     <Camera className="h-3.5 w-3.5" />
                     Subir foto
                     <input type="file" accept="image/*" onChange={(e) => handleGalleryPhoto(index, e)} className="hidden" />
@@ -785,7 +785,7 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
           <button
             type="button"
             onClick={handleAddGalleryItem}
-            className="flex w-full items-center justify-center gap-2 rounded-lg border-dashed border-2 border-[#7A9E7E]/30 py-2.5 text-sm text-[#7A9E7E] hover:bg-[#7A9E7E]/5 transition"
+            className="flex w-full items-center justify-center gap-2 rounded-lg border-dashed border-2 border-[#6B9080]/30 py-2.5 text-sm text-[#6B9080] hover:bg-[#6B9080]/5 transition"
           >
             <Image className="h-4 w-4" />
             Agregar foto
@@ -793,15 +793,15 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
         </div>
 
         {/* SECTION 4: Mensajes y recuerdos */}
-        <div className="rounded-xl border border-[#B8943E]/20 bg-[#B8943E08] p-4 space-y-3">
-          <h3 className="text-sm font-bold text-[#5D4037] flex items-center gap-1.5">
-            <MessageCircle className="w-4 h-4 text-[#B8943E]" />
+        <div className="rounded-xl border border-[#B8976A]/20 bg-[#B8976A08] p-4 space-y-3">
+          <h3 className="text-sm font-bold text-white flex items-center gap-1.5">
+            <MessageCircle className="w-4 h-4 text-[#B8976A]" />
             Mensajes y recuerdos
           </h3>
           {form.messages.map((msg, index) => (
-            <div key={index} className="rounded-lg border border-[#B8943E]/15 bg-white p-3 space-y-2">
+            <div key={index} className="rounded-lg border border-[#B8976A]/15 bg-white p-3 space-y-2">
               <div className="flex items-center justify-between">
-                <span className="text-xs font-medium text-[#B8943E]">Mensaje {index + 1}</span>
+                <span className="text-xs font-medium text-[#B8976A]">Mensaje {index + 1}</span>
                 <button type="button" onClick={() => handleRemoveMessage(index)} className="p-1 rounded text-red-300 hover:text-red-600 transition">
                   <Trash2 className="h-3.5 w-3.5" />
                 </button>
@@ -825,7 +825,7 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
           <button
             type="button"
             onClick={handleAddMessage}
-            className="flex w-full items-center justify-center gap-2 rounded-lg border-dashed border-2 border-[#B8943E]/30 py-2.5 text-sm text-[#B8943E] hover:bg-[#B8943E]/5 transition"
+            className="flex w-full items-center justify-center gap-2 rounded-lg border-dashed border-2 border-[#B8976A]/30 py-2.5 text-sm text-[#B8976A] hover:bg-[#B8976A]/5 transition"
           >
             <MessageCircle className="h-4 w-4" />
             Agregar mensaje
@@ -833,14 +833,14 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
         </div>
 
         {/* Children section - recursive */}
-        <div className="rounded-xl border border-[#7A9E7E]/20 bg-[#FAF6EE] p-4 space-y-3">
+        <div className="rounded-xl border border-[#6B9080]/20 bg-white/5 p-4 space-y-3">
           <div className="flex items-center justify-between">
-            <h3 className="text-sm font-bold text-[#5D4037] flex items-center gap-1.5">
-              <Users className="w-4 h-4 text-[#7A9E7E]" />
+            <h3 className="text-sm font-bold text-white flex items-center gap-1.5">
+              <Users className="w-4 h-4 text-[#6B9080]" />
               Hijos de {form.name?.split(' ')[0] || 'este familiar'}
             </h3>
             {totalDescendants > 0 && (
-              <span className="text-[11px] font-medium text-[#7A9E7E] bg-[#7A9E7E]/10 px-2 py-0.5 rounded-full">
+              <span className="text-[11px] font-medium text-[#6B9080] bg-[#6B9080]/10 px-2 py-0.5 rounded-full">
                 {totalDescendants} descendientes
               </span>
             )}
@@ -860,7 +860,7 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
           <button
             type="button"
             onClick={handleAddChild}
-            className="flex w-full items-center justify-center gap-2 rounded-lg border-dashed border-2 border-[#7A9E7E]/30 py-2.5 text-sm text-[#7A9E7E] hover:bg-[#7A9E7E]/5 transition"
+            className="flex w-full items-center justify-center gap-2 rounded-lg border-dashed border-2 border-[#6B9080]/30 py-2.5 text-sm text-[#6B9080] hover:bg-[#6B9080]/5 transition"
           >
             <Plus className="h-4 w-4" />
             Agregar hijo
@@ -872,7 +872,7 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
           <button
             type="submit"
             disabled={loading}
-            className="flex items-center gap-2 rounded-lg bg-[#7A9E7E] px-6 py-2.5 text-white hover:bg-[#7A9E7E]/90 transition disabled:opacity-60"
+            className="flex items-center gap-2 rounded-lg bg-[#6B9080] px-6 py-2.5 text-white hover:bg-[#6B9080]/90 transition disabled:opacity-60"
           >
             {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Save className="h-5 w-5" />}
             {loading ? 'Guardando...' : 'Guardar'}

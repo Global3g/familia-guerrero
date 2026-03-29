@@ -3,23 +3,23 @@
 @theme {
   --font-serif: 'Playfair Display', Georgia, serif;
   --font-sans: 'Inter', system-ui, sans-serif;
-  --color-cream: #FDF8F0;
-  --color-ivory: #FAF6EE;
-  --color-warm-50: #FFFBF5;
-  --color-warm-100: #FEF3E2;
-  --color-warm-200: #FCDCB0;
-  --color-warm-300: #F5C07A;
-  --color-terracotta: #C4704B;
-  --color-terracotta-light: #E8956D;
-  --color-sage: #7A9E7E;
-  --color-sage-light: #A8C5AB;
-  --color-sage-dark: #5B7F5F;
-  --color-gold: #B8943E;
-  --color-gold-light: #D4B96A;
-  --color-navy: #2C3E50;
-  --color-navy-light: #34495E;
-  --color-brown: #5D4037;
-  --color-brown-light: #8D6E63;
+  --color-cream: #0F172A;
+  --color-ivory: #0F172A;
+  --color-warm-50: #FFFFFF;
+  --color-warm-100: #F8FAFC;
+  --color-warm-200: #F1F5F9;
+  --color-warm-300: #CBD5E1;
+  --color-terracotta: #B8654A;
+  --color-terracotta-light: #C8846A;
+  --color-sage: #6B9080;
+  --color-sage-light: #9BBAA8;
+  --color-sage-dark: #5A8A78;
+  --color-gold: #B8976A;
+  --color-gold-light: #C8A87A;
+  --color-navy: #0F172A;
+  --color-navy-light: #334155;
+  --color-brown: #0F172A;
+  --color-brown-light: #64748B;
 }
 
 html {
@@ -30,7 +30,7 @@ body {
   margin: 0;
   font-family: var(--font-sans);
   background-color: var(--color-cream);
-  color: #3D3229;
+  color: #FFFFFF;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }

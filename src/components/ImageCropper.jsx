@@ -112,7 +112,7 @@ export default function ImageCropper({ isOpen, imageSrc, onComplete, onCancel, c
               Cancelar
             </button>
             <p className="text-white/70 text-sm font-medium">Ajusta la foto</p>
-            <button type="button" onClick={handleConfirm} className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-[#7A9E7E] text-white hover:bg-[#7A9E7E]/90 transition text-sm font-medium">
+            <button type="button" onClick={handleConfirm} className="flex items-center gap-1.5 px-4 py-1.5 rounded-lg bg-[#6B9080] text-white hover:bg-[#6B9080]/90 transition text-sm font-medium">
               <Check className="w-4 h-4" />
               Listo
             </button>
@@ -149,7 +149,7 @@ export default function ImageCropper({ isOpen, imageSrc, onComplete, onCancel, c
                 step={0.05}
                 value={zoom}
                 onChange={(e) => setZoom(Number(e.target.value))}
-                className="flex-1 h-1 rounded-full appearance-none bg-white/20 accent-[#7A9E7E]"
+                className="flex-1 h-1 rounded-full appearance-none bg-white/20 accent-[#6B9080]"
               />
               <ZoomIn className="w-4 h-4 text-white/50" />
             </div>

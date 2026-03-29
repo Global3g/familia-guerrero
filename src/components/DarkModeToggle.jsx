@@ -12,11 +12,11 @@ export default function DarkModeToggle() {
   return (
     <button
       onClick={() => setDark(!dark)}
-      className="p-2 rounded-full hover:bg-[#5D4037]/10 transition"
+      className="p-2 rounded-full hover:bg-[#0F172A]/10 transition"
       aria-label={dark ? 'Cambiar a modo claro' : 'Cambiar a modo oscuro'}
       title={dark ? 'Modo claro' : 'Modo oscuro'}
     >
-      {dark ? <Sun className="w-5 h-5 text-[#B8943E]" /> : <Moon className="w-5 h-5 text-[#5D4037]" />}
+      {dark ? <Sun className="w-5 h-5 text-[#B8976A]" /> : <Moon className="w-5 h-5 text-white" />}
     </button>
   )
 }

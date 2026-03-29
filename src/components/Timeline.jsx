@@ -9,44 +9,44 @@ import sounds from '../utils/sounds';
 
 const typeConfig = {
   nacimiento: {
-    color: '#7A9E7E',
-    bgLight: 'rgba(122, 158, 126, 0.12)',
-    border: 'rgba(122, 158, 126, 0.4)',
+    color: '#60D394',
+    bgLight: 'rgba(96, 211, 148, 0.12)',
+    border: 'rgba(96, 211, 148, 0.4)',
     icon: Baby,
     label: 'Nacimiento',
   },
   boda: {
-    color: '#C4704B',
-    bgLight: 'rgba(196, 112, 75, 0.12)',
-    border: 'rgba(196, 112, 75, 0.4)',
+    color: '#FF6B9D',
+    bgLight: 'rgba(255, 107, 157, 0.12)',
+    border: 'rgba(255, 107, 157, 0.4)',
     icon: Heart,
     label: 'Boda',
   },
   memorial: {
-    color: '#B8943E',
-    bgLight: 'rgba(184, 148, 62, 0.12)',
-    border: 'rgba(184, 148, 62, 0.4)',
+    color: '#A78BFA',
+    bgLight: 'rgba(167, 139, 250, 0.12)',
+    border: 'rgba(167, 139, 250, 0.4)',
     icon: Star,
     label: 'Memorial',
   },
   reunion: {
-    color: '#2C3E50',
-    bgLight: 'rgba(44, 62, 80, 0.10)',
-    border: 'rgba(44, 62, 80, 0.35)',
+    color: '#FFD93D',
+    bgLight: 'rgba(255, 217, 61, 0.10)',
+    border: 'rgba(255, 217, 61, 0.35)',
     icon: Users,
     label: 'Reunion',
   },
   aniversario: {
-    color: '#E8956D',
-    bgLight: 'rgba(232, 149, 109, 0.12)',
-    border: 'rgba(232, 149, 109, 0.4)',
+    color: '#FF8A5B',
+    bgLight: 'rgba(255, 138, 91, 0.12)',
+    border: 'rgba(255, 138, 91, 0.4)',
     icon: Award,
     label: 'Aniversario',
   },
 };
 
 const defaultConfig = {
-  color: '#5D4037',
+  color: '#FFFFFF',
   bgLight: 'rgba(93, 64, 55, 0.08)',
   border: 'rgba(93, 64, 55, 0.3)',
   icon: Calendar,
@@ -86,10 +86,11 @@ function TimelineEvent({ event, index, onEdit, onDelete }) {
           whileInView={{ scale: 1 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.3, delay: 0.05 }}
-          className="w-5 h-5 rounded-full border-[3px] shadow-md"
+          className="w-5 h-5 rounded-full border-4 shadow-md"
           style={{
             borderColor: config.color,
-            backgroundColor: config.bgLight,
+            backgroundColor: config.color,
+            boxShadow: `0 0 20px ${config.color}80`
           }}
         />
       </div>
@@ -121,10 +122,11 @@ function TimelineEvent({ event, index, onEdit, onDelete }) {
             whileInView={{ scale: 1 }}
             viewport={{ once: true, margin: '-40px' }}
             transition={{ duration: 0.3 }}
-            className="w-4 h-4 rounded-full border-[3px] shadow-md"
+            className="w-4 h-4 rounded-full border-4 shadow-md"
             style={{
               borderColor: config.color,
-              backgroundColor: config.bgLight,
+              backgroundColor: config.color,
+              boxShadow: `0 0 15px ${config.color}80`
             }}
           />
         </div>
@@ -146,21 +148,30 @@ function TimelineEvent({ event, index, onEdit, onDelete }) {
 function EventCard({ event, config, IconComponent, align, onEdit, onDelete }) {
   return (
     <div
-      className={`rounded-2xl shadow-lg p-5 border transition-shadow hover:shadow-xl relative group ${
+      className={`rounded-2xl shadow-lg p-5 border-2 transition-all hover:scale-[1.02] relative group ${
         align === 'right' ? 'text-right' : 'text-left'
       }`}
       style={{
         backgroundColor: config.bgLight,
         borderColor: config.border,
+        boxShadow: `0 4px 20px ${config.color}30`
+      }}
+      onMouseEnter={(e) => {
+        e.currentTarget.style.boxShadow = `0 8px 30px ${config.color}60`;
+        e.currentTarget.style.borderColor = config.color;
+      }}
+      onMouseLeave={(e) => {
+        e.currentTarget.style.boxShadow = `0 4px 20px ${config.color}30`;
+        e.currentTarget.style.borderColor = config.border;
       }}
     >
       {/* Edit/Delete buttons (hidden for auto-generated events) */}
       {!event._auto && (
         <div className={`absolute top-2 ${align === 'right' ? 'left-2' : 'right-2'} flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10`}>
-          <button onClick={onEdit} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-[#B8943E]/10 shadow text-[#B8943E] transition">
+          <button onClick={onEdit} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 shadow text-white/60 transition">
             <Pencil className="w-3.5 h-3.5" />
           </button>
-          <button onClick={onDelete} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-red-50 shadow text-red-400 hover:text-red-600 transition">
+          <button onClick={onDelete} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-red-500/20 shadow text-red-400 hover:text-red-300 transition">
             <Trash2 className="w-3.5 h-3.5" />
           </button>
         </div>
@@ -181,8 +192,12 @@ function EventCard({ event, config, IconComponent, align, onEdit, onDelete }) {
           </span>
         )}
         <span
-          className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold text-white"
-          style={{ backgroundColor: config.color }}
+          className="inline-flex items-center gap-1 px-2.5 py-0.5 rounded-full text-xs font-semibold"
+          style={{
+            backgroundColor: `${config.color}30`,
+            color: config.color,
+            border: `1px solid ${config.color}50`
+          }}
         >
           <IconComponent size={12} />
           {config.label}
@@ -196,25 +211,25 @@ function EventCard({ event, config, IconComponent, align, onEdit, onDelete }) {
           </span>
         )}
         {event._auto && (
-          <span className="text-[11px] px-2 py-0.5 rounded-full bg-[#7A9E7E]/10 text-[#7A9E7E] font-medium">Auto</span>
+          <span className="text-[11px] px-2 py-0.5 rounded-full bg-white/10 text-white/40 font-medium">Auto</span>
         )}
       </div>
 
       {/* Date */}
       {event.date && (
-        <p className="text-xs text-[#5D4037]/50 mb-1 tracking-wide uppercase">
+        <p className="text-xs text-white/50 mb-1 tracking-wide uppercase">
           {event.date}
         </p>
       )}
 
       {/* Title */}
-      <h3 className="font-serif text-lg font-bold text-[#5D4037] leading-snug mb-1">
+      <h3 className="font-serif text-lg font-bold text-white leading-snug mb-1">
         {event.title}
       </h3>
 
       {/* Description */}
       {event.description && (
-        <p className="text-sm text-[#5D4037]/75 leading-relaxed">
+        <p className="text-sm text-white/50 leading-relaxed">
           {event.description}
         </p>
       )}
@@ -227,8 +242,8 @@ function EventCard({ event, config, IconComponent, align, onEdit, onDelete }) {
   );
 }
 
-const inputClass = 'w-full rounded-lg border border-[#7A9E7E]/20 bg-white px-3 py-2 text-sm text-[#5D4037] focus:outline-none focus:ring-2 focus:ring-[#7A9E7E]/30'
-const labelClass = 'block text-xs font-medium text-[#5D4037] mb-1'
+const inputClass = 'w-full rounded-lg border-4 border-white/80 bg-white/5 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#6B9080]/30'
+const labelClass = 'block text-xs font-medium text-white mb-1'
 
 const eventTypes = [
   { value: 'nacimiento', label: 'Nacimiento' },
@@ -324,11 +339,11 @@ function EventForm({ isOpen, onClose, eventData, onSave }) {
             const file = e.target.files[0]
             if (!file) return
             setForm(p => ({ ...p, photoFile: file, photoPreview: URL.createObjectURL(file) }))
-          }} className="text-sm text-[#5D4037]" />
+          }} className="text-sm text-white" />
           {form.photoPreview && <img src={form.photoPreview} className="mt-2 h-20 rounded-lg object-cover" />}
         </div>
         <div className="flex justify-end pt-2">
-          <button type="submit" disabled={loading} className="flex items-center gap-2 rounded-lg bg-[#7A9E7E] px-6 py-2.5 text-white hover:bg-[#7A9E7E]/90 transition disabled:opacity-60">
+          <button type="submit" disabled={loading} className="flex items-center gap-2 rounded-lg bg-[#6B9080] px-6 py-2.5 text-white hover:bg-[#6B9080]/90 transition disabled:opacity-60">
             {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Save className="h-5 w-5" />}
             {loading ? 'Guardando...' : 'Guardar'}
           </button>
@@ -418,7 +433,7 @@ export default function Timeline() {
   }
 
   return (
-    <section id="timeline" className="py-20 px-4 sm:px-6 lg:px-8 bg-[#FFFDF7]">
+    <section id="timeline" className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#0F172A' }}>
       <div className="max-w-5xl mx-auto">
         {/* Section title */}
         <motion.div
@@ -428,13 +443,14 @@ export default function Timeline() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Calendar size={28} className="text-[#C4704B]" />
-          </div>
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[#5D4037] tracking-tight">
+          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Nuestra historia</p>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
             Nuestra Historia
           </h2>
-          <div className="mt-4 mx-auto w-24 h-1 rounded-full bg-gradient-to-r from-[#7A9E7E] to-[#C4704B]" />
+          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
+          <p className="text-base text-white/50 max-w-md mx-auto leading-relaxed">
+            Los momentos que han marcado nuestra familia a traves del tiempo.
+          </p>
         </motion.div>
 
         {/* Filter buttons */}
@@ -446,9 +462,9 @@ export default function Timeline() {
               className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${
                 filterType === type
                   ? 'text-white shadow-md'
-                  : 'bg-white text-[#5D4037]/60 border border-[#E0D5C8] hover:bg-[#FAF6EE]'
+                  : 'bg-white/5 text-white/60 border-4 border-white/80 hover:bg-white/10'
               }`}
-              style={filterType === type ? { backgroundColor: type === 'todos' ? '#5D4037' : (typeConfig[type]?.color || '#5D4037') } : {}}
+              style={filterType === type ? { backgroundColor: type === 'todos' ? '#0F172A' : (typeConfig[type]?.color || '#0F172A') } : {}}
             >
               {type === 'todos' ? 'Todos' : (typeConfig[type]?.label || type)}
             </button>
@@ -462,10 +478,10 @@ export default function Timeline() {
         {!loading && filteredEvents.length > 0 ? (
           <div className="relative">
             {/* Desktop center line */}
-            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-[#C4704B]/30 via-[#7A9E7E]/30 to-[#5D4037]/10 -translate-x-1/2" />
+            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-white/20 via-white/10 to-transparent -translate-x-1/2" />
 
             {/* Mobile left line */}
-            <div className="md:hidden absolute left-[7px] top-0 bottom-0 w-px bg-gradient-to-b from-[#C4704B]/30 via-[#7A9E7E]/30 to-[#5D4037]/10" />
+            <div className="md:hidden absolute left-[7px] top-0 bottom-0 w-px bg-gradient-to-b from-white/20 via-white/10 to-transparent" />
 
             {/* Events */}
             {filteredEvents.map((event, index) => (
@@ -480,14 +496,14 @@ export default function Timeline() {
           </div>
         ) : !loading ? (
           <div className="text-center py-16">
-            <div className="w-16 h-16 rounded-full bg-[#C4704B]/10 flex items-center justify-center mx-auto mb-4">
-              <Calendar className="w-8 h-8 text-[#C4704B]/50" />
+            <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-4">
+              <Calendar className="w-8 h-8 text-white/30" />
             </div>
-            <p className="text-lg font-serif font-bold text-[#5D4037]/60 mb-2">Sin eventos todavia</p>
-            <p className="text-sm text-[#5D4037]/40 mb-6">Agrega el primer evento de tu historia familiar</p>
+            <p className="text-lg font-serif font-bold text-white/60 mb-2">Sin eventos todavia</p>
+            <p className="text-sm text-white/40 mb-6">Agrega el primer evento de tu historia familiar</p>
             <button
               onClick={() => setShowCreateForm(true)}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#C4704B] text-white hover:bg-[#C4704B]/90 transition font-medium shadow-md"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#B8654A] text-white hover:bg-[#B8654A]/90 transition font-medium shadow-md"
             >
               <Plus className="w-5 h-5" />
               Agregar primer evento
@@ -500,7 +516,7 @@ export default function Timeline() {
           <div className="flex justify-center mt-12">
             <button
               onClick={() => setShowCreateForm(true)}
-              className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-[#7A9E7E]/40 text-[#7A9E7E] hover:bg-[#7A9E7E]/5 hover:border-[#7A9E7E] transition font-medium"
+              className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-white/20 text-white/50 hover:bg-white/5 hover:border-white/40 transition font-medium"
             >
               <Plus className="w-5 h-5" />
               Agregar evento
@@ -534,17 +550,17 @@ export default function Timeline() {
           >
             <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setDeletingEvent(null)} />
             <motion.div
-              className="relative bg-[#FFF8F0] rounded-2xl shadow-2xl p-6 max-w-sm w-full text-center"
+              className="relative bg-[#1E293B] rounded-2xl shadow-2xl p-6 max-w-sm w-full text-center"
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
             >
-              <h3 className="text-lg font-serif font-bold text-[#5D4037] mb-2">Eliminar evento</h3>
-              <p className="text-sm text-[#5D4037]/70 mb-6">
+              <h3 className="text-lg font-serif font-bold text-white mb-2">Eliminar evento</h3>
+              <p className="text-sm text-white/70 mb-6">
                 ¿Eliminar <strong>"{deletingEvent.title}"</strong>?
               </p>
               <div className="flex gap-3 justify-center">
-                <button onClick={() => setDeletingEvent(null)} className="px-5 py-2 rounded-lg border border-[#C4704B]/20 text-[#5D4037] hover:bg-[#FAF6EE] transition text-sm font-medium">
+                <button onClick={() => setDeletingEvent(null)} className="px-5 py-2 rounded-lg border-4 border-white/80 text-white hover:bg-white/10 transition text-sm font-medium">
                   Cancelar
                 </button>
                 <button onClick={handleDelete} className="px-5 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition text-sm font-medium">

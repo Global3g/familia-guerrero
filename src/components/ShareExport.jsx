@@ -14,10 +14,10 @@ function QRCode({ url, size = 150 }) {
     return ((hash * (i + 1) * 7) % 13) > 5
   })
   return (
-    <div style={{ width: size, height: size, padding: 8, background: 'white', borderRadius: 12 }}>
+    <div style={{ width: size, height: size, padding: 8, background: 'rgba(255,255,255,0.05)', borderRadius: 12 }}>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(11, 1fr)', gap: 1, width: '100%', height: '100%' }}>
         {cells.map((filled, i) => (
-          <div key={i} style={{ backgroundColor: filled ? '#5D4037' : 'transparent', borderRadius: 1 }} />
+          <div key={i} style={{ backgroundColor: filled ? '#0F172A' : 'transparent', borderRadius: 1 }} />
         ))}
       </div>
     </div>
@@ -61,7 +61,7 @@ function ShareExport() {
       description: 'Comparte el formulario para que la familia agregue sus datos al arbol.',
       action: () => copyToClipboard(FORMULARIO_URL, 'formulario'),
       buttonLabel: 'Copiar Link',
-      color: '#C4704B',
+      color: '#B8654A',
     },
     {
       id: 'pagina',
@@ -70,7 +70,7 @@ function ShareExport() {
       description: 'Comparte la pagina principal del arbol familiar Guerrero.',
       action: () => copyToClipboard(PAGE_URL, 'pagina'),
       buttonLabel: 'Copiar Link',
-      color: '#7A9E7E',
+      color: '#6B9080',
     },
     {
       id: 'whatsapp',
@@ -88,7 +88,7 @@ function ShareExport() {
       description: 'Muestra el link del formulario para compartirlo visualmente.',
       action: () => copyToClipboard(FORMULARIO_URL, 'qr'),
       buttonLabel: 'Copiar Link',
-      color: '#B8943E',
+      color: '#B8976A',
       isQR: true,
     },
   ]
@@ -124,7 +124,7 @@ function ShareExport() {
           textAlign: 'center',
           fontSize: '2rem',
           fontWeight: '700',
-          color: '#3B2716',
+          color: '#FFFFFF',
           marginBottom: '0.5rem',
         }}
       >
@@ -137,7 +137,7 @@ function ShareExport() {
         transition={{ duration: 0.5, delay: 0.15 }}
         style={{
           textAlign: 'center',
-          color: '#6B5B4F',
+          color: 'rgba(255,255,255,0.5)',
           marginBottom: '2.5rem',
           fontSize: '1.05rem',
         }}
@@ -167,11 +167,11 @@ function ShareExport() {
               variants={cardVariants}
               whileHover={{ y: -6, boxShadow: '0 12px 32px rgba(0,0,0,0.12)' }}
               style={{
-                background: '#FFFDF9',
+                background: 'rgba(255,255,255,0.05)',
                 borderRadius: '16px',
                 padding: '1.75rem',
                 boxShadow: '0 4px 16px rgba(0,0,0,0.06)',
-                border: '1px solid #EDE6DA',
+                border: '4px solid rgba(255,255,255,0.8)',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '0.75rem',
@@ -199,7 +199,7 @@ function ShareExport() {
                 style={{
                   fontSize: '1.1rem',
                   fontWeight: '600',
-                  color: '#3B2716',
+                  color: '#FFFFFF',
                   margin: 0,
                 }}
               >
@@ -208,7 +208,7 @@ function ShareExport() {
               <p
                 style={{
                   fontSize: '0.9rem',
-                  color: '#7A6E63',
+                  color: 'rgba(255,255,255,0.5)',
                   lineHeight: '1.5',
                   margin: 0,
                   flex: 1,
@@ -236,7 +236,7 @@ function ShareExport() {
                   padding: '0.65rem 1rem',
                   borderRadius: '10px',
                   border: 'none',
-                  background: isCopied ? '#7A9E7E' : card.color,
+                  background: isCopied ? '#6B9080' : card.color,
                   color: '#FFF',
                   fontWeight: '600',
                   fontSize: '0.9rem',
@@ -269,7 +269,7 @@ function ShareExport() {
             bottom: '2rem',
             left: '50%',
             transform: 'translateX(-50%)',
-            background: '#3B2716',
+            background: '#0F172A',
             color: '#FFF',
             padding: '0.75rem 1.5rem',
             borderRadius: '12px',

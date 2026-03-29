@@ -24,10 +24,10 @@ function ProfileCard({ member }) {
   return (
     <motion.div
       variants={cardVariants}
-      className="rounded-2xl shadow-lg overflow-hidden bg-[#FFFDF7] border border-[#E8D5C4]"
+      className="rounded-2xl shadow-lg overflow-hidden bg-white/5 border-4 border-white/80"
     >
       {/* Photo placeholder */}
-      <div className="relative h-56 bg-gradient-to-br from-[#C4704B]/20 via-[#7A9E7E]/15 to-[#5D4037]/10 flex items-center justify-center">
+      <div className="relative h-56 bg-gradient-to-br from-[#B8654A]/20 via-[#6B9080]/15 to-[#0F172A]/10 flex items-center justify-center">
         {member.photo ? (
           <img
             src={member.photo}
@@ -35,13 +35,13 @@ function ProfileCard({ member }) {
             className="w-full h-full object-cover"
           />
         ) : (
-          <div className="flex flex-col items-center gap-2 text-[#5D4037]/40">
+          <div className="flex flex-col items-center gap-2 text-white/40">
             <Camera size={48} strokeWidth={1.2} />
             <span className="text-sm font-medium tracking-wide uppercase">Foto</span>
           </div>
         )}
         {/* Overlay name badge */}
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#5D4037]/70 to-transparent pt-10 pb-4 px-5">
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#0F172A]/70 to-transparent pt-10 pb-4 px-5">
           <h3 className="text-xl font-serif font-bold text-white leading-tight">
             {member.fullName}
           </h3>
@@ -57,16 +57,16 @@ function ProfileCard({ member }) {
       <div className="p-5 space-y-3">
         {/* Role */}
         {member.role && (
-          <div className="flex items-center gap-2 text-[#5D4037]">
-            <User size={16} className="text-[#C4704B] flex-shrink-0" />
+          <div className="flex items-center gap-2 text-white">
+            <User size={16} className="text-[#B8654A] flex-shrink-0" />
             <span className="text-sm font-medium">{member.role}</span>
           </div>
         )}
 
         {/* Spouse */}
         {member.spouse && (
-          <div className="flex items-center gap-2 text-[#5D4037]">
-            <Heart size={16} className="text-[#C4704B] flex-shrink-0" />
+          <div className="flex items-center gap-2 text-white">
+            <Heart size={16} className="text-[#B8654A] flex-shrink-0" />
             <span className="text-sm">
               Casado(a) con <span className="font-semibold">{member.spouse}</span>
             </span>
@@ -75,8 +75,8 @@ function ProfileCard({ member }) {
 
         {/* Children count */}
         {member.childrenCount !== undefined && member.childrenCount > 0 && (
-          <div className="flex items-center gap-2 text-[#5D4037]">
-            <Baby size={16} className="text-[#7A9E7E] flex-shrink-0" />
+          <div className="flex items-center gap-2 text-white">
+            <Baby size={16} className="text-[#6B9080] flex-shrink-0" />
             <span className="text-sm">
               {member.childrenCount} {member.childrenCount === 1 ? 'hijo(a)' : 'hijos(as)'}
             </span>
@@ -85,7 +85,7 @@ function ProfileCard({ member }) {
 
         {/* Bio */}
         {member.bio && (
-          <p className="text-sm text-[#5D4037]/80 leading-relaxed pt-2 border-t border-[#E8D5C4]/60">
+          <p className="text-sm text-white/80 leading-relaxed pt-2 border-t border-white/80/60">
             {member.bio}
           </p>
         )}
@@ -98,7 +98,7 @@ export default function FamilyProfiles() {
   return (
     <section
       id="perfiles"
-      className="py-20 px-4 sm:px-6 lg:px-8 bg-[#FFF8F0]"
+      className="py-20 px-4 sm:px-6 lg:px-8 bg-transparent"
     >
       <div className="max-w-5xl mx-auto">
         {/* Section title */}
@@ -110,12 +110,12 @@ export default function FamilyProfiles() {
           className="text-center mb-14"
         >
           <div className="flex items-center justify-center gap-3 mb-4">
-            <Users size={28} className="text-[#7A9E7E]" />
+            <Users size={28} className="text-[#6B9080]" />
           </div>
-          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-[#5D4037] tracking-tight">
+          <h2 className="font-serif text-4xl sm:text-5xl font-bold text-white tracking-tight">
             Nuestra Familia
           </h2>
-          <div className="mt-4 mx-auto w-24 h-1 rounded-full bg-gradient-to-r from-[#C4704B] to-[#7A9E7E]" />
+          <div className="mt-4 mx-auto w-24 h-1 rounded-full bg-gradient-to-r from-[#B8654A] to-[#6B9080]" />
         </motion.div>
 
         {/* Profiles grid */}

@@ -2,7 +2,7 @@ import { useState, useEffect, lazy, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
 import { auth } from './firebase/config'
-import { Home, GitBranch, Clock, Users, Heart, Star, Image } from 'lucide-react'
+import { Home, GitBranch, Clock, Users, Heart, Star, Image, Calendar } from 'lucide-react'
 import Login from './components/Login'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
@@ -30,7 +30,6 @@ import DigitalInvitation from './components/DigitalInvitation'
 import ProgressReport from './components/ProgressReport'
 
 // Lazy-loaded heavy components (ReactFlow, Recharts, Leaflet, etc.)
-const HorizontalTimeline = lazy(() => import('./components/HorizontalTimeline'))
 const Tree3D = lazy(() => import('./components/Tree3D'))
 const InteractiveTree = lazy(() => import('./components/InteractiveTree'))
 const Stats = lazy(() => import('./components/Stats'))
@@ -44,6 +43,7 @@ const tabs = [
   { id: 'inicio', label: 'Inicio', icon: Home },
   { id: 'arbol', label: 'Arbol', icon: GitBranch },
   { id: 'historia', label: 'Historia', icon: Clock },
+  { id: 'eventos', label: 'Eventos', icon: Calendar },
   { id: 'galeria', label: 'Galeria', icon: Image },
   { id: 'familia', label: 'Familia', icon: Users },
   { id: 'homenaje', label: 'Homenaje', icon: Star },
@@ -93,7 +93,7 @@ function App() {
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
             className="text-2xl font-serif font-bold"
-            style={{ color: '#5D4037' }}
+            style={{ color: '#FFFFFF' }}
           >
             Familia Guerrero
           </motion.h1>
@@ -102,7 +102,7 @@ function App() {
             animate={{ width: 120 }}
             transition={{ delay: 0.6, duration: 1, ease: 'easeInOut' }}
             className="h-0.5 rounded-full mx-auto mt-3"
-            style={{ backgroundColor: '#C4704B' }}
+            style={{ backgroundColor: '#B8654A' }}
           />
         </motion.div>
       </div>
@@ -115,11 +115,11 @@ function App() {
     <div className="min-h-screen bg-cream">
       <Navbar user={user} isAdmin={isAdmin} onLogout={() => signOut(auth)} />
 
-      {/* Tab Bar */}
-      <div className="sticky top-16 z-40 bg-white/90 backdrop-blur-md border-b border-gray-200">
+      {/* Tab Bar - Floating pill */}
+      <div className="sticky top-14 sm:top-16 z-40 flex justify-center py-4" style={{ background: 'linear-gradient(to bottom, #0F172A 60%, transparent)' }}>
         <nav
-          className="flex overflow-x-auto scrollbar-hide"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
+          className="inline-flex overflow-x-auto rounded-full shadow-lg border-4 border-white/80 px-2.5 py-2.5"
+          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', backgroundColor: 'rgba(255,255,255,0.08)' }}
         >
           <style>{`nav::-webkit-scrollbar { display: none; }`}</style>
           {tabs.map((tab) => {
@@ -132,23 +132,27 @@ function App() {
                   setActiveTab(tab.id)
                   window.scrollTo({ top: 0, behavior: 'smooth' })
                 }}
-                className={`relative flex items-center gap-1.5 px-4 py-3 text-sm font-medium whitespace-nowrap transition-colors flex-shrink-0 ${
+                className={`relative flex items-center gap-2 px-6 py-3 text-[17px] font-semibold whitespace-nowrap transition-all duration-200 flex-shrink-0 rounded-full ${
                   isActive
-                    ? 'font-bold'
-                    : 'text-gray-500 hover:text-gray-700'
+                    ? 'text-[#FFD700]'
+                    : 'text-[#D4AF37]/70 hover:text-[#FFD700] hover:bg-white/10'
                 }`}
-                style={isActive ? { color: '#C4704B' } : {}}
+                style={isActive ? {
+                  textShadow: '0 0 20px #FFD700, 0 0 30px #FFD700, 0 0 40px #FFD700'
+                } : {}}
               >
-                <Icon size={16} />
-                {tab.label}
                 {isActive && (
                   <motion.div
-                    layoutId="tab-indicator"
-                    className="absolute bottom-0 left-0 right-0 h-0.5 rounded-full"
-                    style={{ backgroundColor: '#C4704B' }}
-                    transition={{ type: 'spring', stiffness: 300, damping: 30 }}
+                    layoutId="tab-pill"
+                    className="absolute inset-0 rounded-full"
+                    style={{ backgroundColor: '#B8654A' }}
+                    transition={{ type: 'spring', stiffness: 400, damping: 35 }}
                   />
                 )}
+                <span className="relative z-10 flex items-center gap-2">
+                  <Icon size={20} />
+                  {tab.label}
+                </span>
               </button>
             )
           })}
@@ -170,15 +174,15 @@ function App() {
         >
           <Hero />
           <WeeklyBanner />
-          <div className="max-w-4xl mx-auto px-4 py-4">
+          <div className="max-w-4xl mx-auto px-4 py-8">
             <FamilyProgress />
           </div>
           <Origin />
-          <div className="max-w-4xl mx-auto px-4 py-4">
-            <YourBranch />
+          <YourBranch />
+          <div className="py-16 bg-white/5">
+            <ShareExport />
           </div>
-          <ShareExport />
-          <div className="flex justify-center gap-3 py-4">
+          <div className="flex justify-center gap-3 py-8">
             <PresentationButton onClick={() => setShowPresentation(true)} />
             <ProgressReport />
           </div>
@@ -197,10 +201,10 @@ function App() {
             <PresentationButton onClick={() => setShowPresentation(true)} />
             <ExportTree />
           </div>
-          <Suspense fallback={<div className="flex justify-center py-20"><div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#C4704B', borderTopColor: 'transparent' }} /></div>}>
+          <Suspense fallback={<div className="flex justify-center py-20"><div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#B8654A', borderTopColor: 'transparent' }} /></div>}>
             <InteractiveTree />
           </Suspense>
-          <Suspense fallback={<div className="flex justify-center py-10"><div className="w-8 h-8 border-4 rounded-full animate-spin" style={{ borderColor: '#C4704B', borderTopColor: 'transparent' }} /></div>}>
+          <Suspense fallback={<div className="flex justify-center py-10"><div className="w-8 h-8 border-4 rounded-full animate-spin" style={{ borderColor: '#B8654A', borderTopColor: 'transparent' }} /></div>}>
             <Tree3D />
           </Suspense>
         </motion.div>
@@ -213,12 +217,7 @@ function App() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <Suspense fallback={<div className="flex justify-center py-10"><div className="w-8 h-8 border-4 rounded-full animate-spin" style={{ borderColor: '#C4704B', borderTopColor: 'transparent' }} /></div>}>
-            <HorizontalTimeline />
-          </Suspense>
           <Timeline />
-          <Events />
-          <DigitalInvitation />
         </motion.div>
       )}
 
@@ -233,6 +232,21 @@ function App() {
         </motion.div>
       )}
 
+      {activeTab === 'eventos' && (
+        <motion.div
+          key="eventos"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          <Events />
+          <div className="max-w-6xl mx-auto px-4 py-8">
+            <FamilyCalendar />
+          </div>
+          <DigitalInvitation />
+        </motion.div>
+      )}
+
       {activeTab === 'familia' && (
         <motion.div
           key="familia"
@@ -240,7 +254,7 @@ function App() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <Suspense fallback={<div className="flex justify-center py-20"><div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#C4704B', borderTopColor: 'transparent' }} /></div>}>
+          <Suspense fallback={<div className="flex justify-center py-20"><div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#B8654A', borderTopColor: 'transparent' }} /></div>}>
             <Stats />
             <BirthdayHighlight />
             <Reminders />
@@ -248,9 +262,6 @@ function App() {
             <Bloodline />
             <div className="max-w-6xl mx-auto px-4">
               <Gamification />
-            </div>
-            <div className="max-w-6xl mx-auto px-4 py-8">
-              <FamilyCalendar />
             </div>
           </Suspense>
         </motion.div>
@@ -274,7 +285,7 @@ function App() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <Suspense fallback={<div className="flex justify-center py-20"><div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#C4704B', borderTopColor: 'transparent' }} /></div>}>
+          <Suspense fallback={<div className="flex justify-center py-20"><div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#B8654A', borderTopColor: 'transparent' }} /></div>}>
             <FamilyQuotes />
           </Suspense>
           <Traditions />

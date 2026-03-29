@@ -2,13 +2,13 @@ import React from 'react'
 
 // Base shimmer animation
 export function SkeletonPulse({ className = '' }) {
-  return <div className={`animate-pulse bg-[#E0D5C8]/40 rounded ${className}`} />
+  return <div className={`animate-pulse bg-[#E2E8F0]/40 rounded ${className}`} />
 }
 
 // Card skeleton
 export function SkeletonCard() {
   return (
-    <div className="bg-white rounded-2xl p-5 border border-[#E0D5C8]/30 space-y-3">
+    <div className="bg-white rounded-2xl p-5 border-4 border-white/80/30 space-y-3">
       <div className="flex items-center gap-3">
         <SkeletonPulse className="w-14 h-14 rounded-full" />
         <div className="flex-1 space-y-2">
@@ -74,7 +74,7 @@ export function SkeletonStats() {
       {Array.from({ length: 4 }).map((_, i) => (
         <div
           key={i}
-          className="bg-white rounded-2xl p-4 border border-[#E0D5C8]/30 space-y-3 flex flex-col items-center"
+          className="bg-white rounded-2xl p-4 border-4 border-white/80/30 space-y-3 flex flex-col items-center"
         >
           <SkeletonPulse className="w-10 h-10 rounded-full" />
           <SkeletonPulse className="h-6 w-16 rounded-lg" />

@@ -183,11 +183,11 @@ function BirthdayHighlight() {
 
   if (loading) {
     return (
-      <section id="cumpleanos" className="py-16" style={{ background: 'linear-gradient(to bottom, #FDF8F0, #FEF3E2)' }}>
+      <section id="cumpleanos" className="py-16" style={{ backgroundColor: '#0F172A' }}>
         <div className="max-w-6xl mx-auto px-4 text-center">
           <div className="animate-pulse flex flex-col items-center gap-4">
-            <div className="h-10 w-64 bg-orange-200 rounded-lg" />
-            <div className="h-48 w-full max-w-md bg-orange-100 rounded-2xl" />
+            <div className="h-10 w-64 bg-white/10 rounded-lg" />
+            <div className="h-48 w-full max-w-md bg-white/5 rounded-2xl" />
           </div>
         </div>
       </section>
@@ -195,7 +195,7 @@ function BirthdayHighlight() {
   }
 
   return (
-    <section id="cumpleanos" className="py-16" style={{ background: 'linear-gradient(to bottom, #FDF8F0, #FEF3E2)' }}>
+    <section id="cumpleanos" className="py-16" style={{ backgroundColor: '#0F172A' }}>
       <div className="max-w-6xl mx-auto px-4">
         {/* Title */}
         <motion.div
@@ -205,14 +205,12 @@ function BirthdayHighlight() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <div className="flex items-center justify-center gap-3 mb-3">
-            <PartyPopper size={32} style={{ color: '#C4704B' }} />
-            <h2 className="text-4xl md:text-5xl font-serif font-bold" style={{ color: '#C4704B' }}>
-              Cumpleaneros del Mes
-            </h2>
-            <PartyPopper size={32} style={{ color: '#C4704B' }} />
-          </div>
-          <p className="text-xl font-serif" style={{ color: '#B8943E' }}>
+          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Celebraciones</p>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
+            Cumpleaneros del Mes
+          </h2>
+          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
+          <p className="text-xl font-serif" style={{ color: '#B8976A' }}>
             {currentMonthName} {now.getFullYear()}
           </p>
         </motion.div>
@@ -235,7 +233,7 @@ function BirthdayHighlight() {
                 }}
               >
                 {/* Card top accent */}
-                <div className="h-2" style={{ background: 'linear-gradient(to right, #C4704B, #B8943E, #E8956D)' }} />
+                <div className="h-2" style={{ background: 'linear-gradient(to right, #B8654A, #B8976A, #C8846A)' }} />
 
                 <div className="p-6 text-center">
                   {/* Confetti decorations */}
@@ -243,12 +241,12 @@ function BirthdayHighlight() {
                     <PartyPopper
                       size={20}
                       className="absolute -top-1 left-4"
-                      style={{ color: '#B8943E', transform: 'rotate(-30deg)' }}
+                      style={{ color: '#B8976A', transform: 'rotate(-30deg)' }}
                     />
                     <PartyPopper
                       size={20}
                       className="absolute -top-1 right-4"
-                      style={{ color: '#E8956D', transform: 'rotate(30deg)' }}
+                      style={{ color: '#C8846A', transform: 'rotate(30deg)' }}
                     />
 
                     {/* Photo placeholder */}
@@ -257,8 +255,8 @@ function BirthdayHighlight() {
                       style={{
                         background: person.photo
                           ? `url(${person.photo}) center/cover`
-                          : 'linear-gradient(135deg, #C4704B, #E8956D)',
-                        border: '3px solid #B8943E'
+                          : 'linear-gradient(135deg, #B8654A, #C8846A)',
+                        border: '3px solid #B8976A'
                       }}
                     >
                       {!person.photo && (
@@ -268,24 +266,24 @@ function BirthdayHighlight() {
                   </div>
 
                   {/* Name */}
-                  <h3 className="text-xl font-serif font-bold mb-2" style={{ color: '#C4704B' }}>
+                  <h3 className="text-xl font-serif font-bold mb-2" style={{ color: '#B8654A' }}>
                     {person.name}
                   </h3>
 
                   {/* Date - Big day number */}
                   <div className="flex items-center justify-center gap-2 mb-2">
-                    <Calendar size={18} style={{ color: '#B8943E' }} />
-                    <span className="text-3xl font-bold font-serif" style={{ color: '#B8943E' }}>
+                    <Calendar size={18} style={{ color: '#B8976A' }} />
+                    <span className="text-3xl font-bold font-serif" style={{ color: '#B8976A' }}>
                       {person.day}
                     </span>
-                    <span className="text-sm" style={{ color: '#8B7355' }}>
+                    <span className="text-sm" style={{ color: 'rgba(255,255,255,0.5)' }}>
                       de {currentMonthName}
                     </span>
                   </div>
 
                   {/* Age turning */}
                   {person.ageTurning && (
-                    <p className="text-sm mb-3" style={{ color: '#7A9E7E' }}>
+                    <p className="text-sm mb-3" style={{ color: '#6B9080' }}>
                       <Gift size={14} className="inline mr-1" />
                       Cumple <span className="font-bold text-lg">{person.ageTurning}</span> anios
                     </p>
@@ -301,8 +299,8 @@ function BirthdayHighlight() {
                       className="inline-flex items-center gap-2 px-4 py-2 rounded-full"
                       style={{ background: 'rgba(196, 112, 75, 0.15)' }}
                     >
-                      <Clock size={16} style={{ color: '#C4704B' }} />
-                      <span className="text-sm" style={{ color: '#C4704B' }}>
+                      <Clock size={16} style={{ color: '#B8654A' }} />
+                      <span className="text-sm" style={{ color: '#B8654A' }}>
                         Faltan{' '}
                         <motion.span
                           className="font-bold text-lg"
@@ -321,7 +319,7 @@ function BirthdayHighlight() {
                       animate={{ scale: [1, 1.05, 1] }}
                       transition={{ repeat: Infinity, duration: 1.5 }}
                       className="inline-flex items-center gap-2 px-4 py-2 rounded-full"
-                      style={{ background: 'linear-gradient(135deg, #C4704B, #E8956D)', color: 'white' }}
+                      style={{ background: 'linear-gradient(135deg, #B8654A, #C8846A)', color: 'white' }}
                     >
                       <Cake size={16} />
                       <span className="font-bold">Hoy es su cumpleanos!</span>
@@ -339,8 +337,8 @@ function BirthdayHighlight() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12 py-8"
           >
-            <Cake size={48} className="mx-auto mb-4" style={{ color: '#C4704B', opacity: 0.5 }} />
-            <p className="text-xl font-serif" style={{ color: '#8B7355' }}>
+            <Cake size={48} className="mx-auto mb-4" style={{ color: '#B8654A', opacity: 0.5 }} />
+            <p className="text-xl font-serif" style={{ color: 'rgba(255,255,255,0.5)' }}>
               No hay cumpleanos este mes
             </p>
           </motion.div>
@@ -362,10 +360,10 @@ function BirthdayHighlight() {
                 border: '2px solid rgba(122, 158, 126, 0.3)'
               }}
             >
-              <div className="h-2" style={{ background: 'linear-gradient(to right, #7A9E7E, #B8943E)' }} />
+              <div className="h-2" style={{ background: 'linear-gradient(to right, #6B9080, #B8976A)' }} />
 
               <div className="p-6 text-center">
-                <h3 className="text-lg font-serif font-semibold mb-4" style={{ color: '#7A9E7E' }}>
+                <h3 className="text-lg font-serif font-semibold mb-4" style={{ color: '#6B9080' }}>
                   <Gift size={20} className="inline mr-2" />
                   Proximo Cumpleanos
                 </h3>
@@ -376,8 +374,8 @@ function BirthdayHighlight() {
                   style={{
                     background: nextBirthday.photo
                       ? `url(${nextBirthday.photo}) center/cover`
-                      : 'linear-gradient(135deg, #7A9E7E, #B8943E)',
-                    border: '2px solid #7A9E7E'
+                      : 'linear-gradient(135deg, #6B9080, #B8976A)',
+                    border: '2px solid #6B9080'
                   }}
                 >
                   {!nextBirthday.photo && (
@@ -385,11 +383,11 @@ function BirthdayHighlight() {
                   )}
                 </div>
 
-                <p className="text-xl font-serif font-bold mb-1" style={{ color: '#C4704B' }}>
+                <p className="text-xl font-serif font-bold mb-1" style={{ color: '#B8654A' }}>
                   {nextBirthday.name}
                 </p>
 
-                <p className="text-sm mb-3" style={{ color: '#8B7355' }}>
+                <p className="text-sm mb-3" style={{ color: 'rgba(255,255,255,0.5)' }}>
                   {nextBirthday.day} de {MONTH_NAMES[nextBirthday.month - 1]}
                   {nextBirthday.ageTurning && ` - Cumplira ${nextBirthday.ageTurning} anios`}
                 </p>
@@ -402,12 +400,12 @@ function BirthdayHighlight() {
                   className="inline-flex items-center gap-2 px-5 py-2 rounded-full"
                   style={{ background: 'rgba(122, 158, 126, 0.2)' }}
                 >
-                  <Clock size={18} style={{ color: '#7A9E7E' }} />
-                  <span style={{ color: '#7A9E7E' }}>
+                  <Clock size={18} style={{ color: '#6B9080' }} />
+                  <span style={{ color: '#6B9080' }}>
                     Faltan{' '}
                     <motion.span
                       className="font-bold text-2xl"
-                      style={{ color: '#C4704B' }}
+                      style={{ color: '#B8654A' }}
                       animate={{ scale: [1, 1.15, 1] }}
                       transition={{ repeat: Infinity, duration: 2 }}
                     >
@@ -430,7 +428,7 @@ function BirthdayHighlight() {
             transition={{ duration: 0.6, delay: 0.5 }}
             className="max-w-lg mx-auto mt-8"
           >
-            <h3 className="text-lg font-serif font-semibold text-center mb-4" style={{ color: '#B8943E' }}>
+            <h3 className="text-lg font-serif font-semibold text-center mb-4" style={{ color: '#B8976A' }}>
               <Calendar size={18} className="inline mr-2" />
               Proximos Cumpleanos
             </h3>
@@ -444,8 +442,8 @@ function BirthdayHighlight() {
                   transition={{ delay: i * 0.1, duration: 0.4 }}
                   className="flex items-center gap-3 rounded-xl px-4 py-3 shadow-sm"
                   style={{
-                    background: '#FFFFFF',
-                    border: '1px solid rgba(184, 148, 62, 0.2)'
+                    background: 'rgba(255,255,255,0.05)',
+                    border: '4px solid rgba(255,255,255,0.8)'
                   }}
                 >
                   <div
@@ -453,24 +451,24 @@ function BirthdayHighlight() {
                     style={{
                       background: person.photo
                         ? `url(${person.photo}) center/cover`
-                        : 'linear-gradient(135deg, #C4704B, #E8956D)',
-                      border: '2px solid #B8943E'
+                        : 'linear-gradient(135deg, #B8654A, #C8846A)',
+                      border: '2px solid #B8976A'
                     }}
                   >
                     {!person.photo && <Cake size={18} color="white" />}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-serif font-bold text-sm truncate" style={{ color: '#C4704B' }}>
+                    <p className="font-serif font-bold text-sm truncate" style={{ color: '#B8654A' }}>
                       {person.name}
                     </p>
-                    <p className="text-xs" style={{ color: '#8B7355' }}>
+                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
                       {person.day} de {MONTH_NAMES[person.month - 1]}
                       {person.ageTurning ? ` - Cumple ${person.ageTurning} anios` : ''}
                     </p>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <p className="text-lg font-bold" style={{ color: '#B8943E' }}>{person.daysUntil}</p>
-                    <p className="text-[11px]" style={{ color: '#8B7355' }}>dias</p>
+                    <p className="text-lg font-bold" style={{ color: '#B8976A' }}>{person.daysUntil}</p>
+                    <p className="text-[11px]" style={{ color: 'rgba(255,255,255,0.5)' }}>dias</p>
                   </div>
                 </motion.div>
               ))}

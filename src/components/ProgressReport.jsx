@@ -87,7 +87,7 @@ export default function ProgressReport() {
       }
 
       // ── Header ────────────────────────────────────
-      doc.setFillColor(93, 64, 55) // #5D4037
+      doc.setFillColor(93, 64, 55) // #0F172A
       doc.rect(0, 0, pageW, 32, 'F')
       doc.setTextColor(255, 255, 255)
       doc.setFontSize(18)
@@ -100,7 +100,7 @@ export default function ProgressReport() {
       y = 40
 
       // ── Grandparents summary ──────────────────────
-      doc.setTextColor(184, 148, 62) // #B8943E
+      doc.setTextColor(184, 148, 62) // #B8976A
       doc.setFontSize(13)
       doc.setFont('helvetica', 'bold')
       doc.text('Abuelos', marginL, y)
@@ -126,7 +126,7 @@ export default function ProgressReport() {
 
       // ── Summary box ───────────────────────────────
       checkPage(30)
-      doc.setFillColor(250, 246, 238) // #FAF6EE
+      doc.setFillColor(250, 246, 238) // #F1F5F9
       doc.roundedRect(marginL, y, contentW, 22, 3, 3, 'F')
       doc.setTextColor(93, 64, 55)
       doc.setFontSize(11)
@@ -246,8 +246,8 @@ export default function ProgressReport() {
       disabled={loading}
       className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-xl transition-colors"
       style={{
-        backgroundColor: loading ? '#5D403730' : '#5D403715',
-        color: '#5D4037',
+        backgroundColor: loading ? '#0F172A30' : '#0F172A15',
+        color: '#FFFFFF',
       }}
     >
       {loading ? (

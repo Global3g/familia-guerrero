@@ -275,7 +275,7 @@ function PresentationMode({ isOpen, onClose }) {
         className="absolute bottom-0 left-0 right-0 flex items-center justify-center gap-4 py-4 px-6 transition-opacity duration-500"
         style={{ opacity: controlsVisible ? 1 : 0, pointerEvents: controlsVisible ? 'auto' : 'none' }}
       >
-        <div className="flex items-center gap-3 bg-white/10 backdrop-blur-xl rounded-2xl px-6 py-3 border border-white/10">
+        <div className="flex items-center gap-3 bg-white/10 backdrop-blur-xl rounded-2xl px-6 py-3 border-4 border-white/80">
           {/* Prev */}
           <button
             onClick={goPrev}
@@ -331,7 +331,7 @@ export function PresentationButton({ onClick }) {
   return (
     <button
       onClick={onClick}
-      className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#5D4037] text-white text-sm font-medium hover:bg-[#5D4037]/90 transition shadow-lg"
+      className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#0F172A] text-white text-sm font-medium hover:bg-[#0F172A]/90 transition shadow-lg"
     >
       <Maximize className="w-4 h-4" />
       Modo Presentacion

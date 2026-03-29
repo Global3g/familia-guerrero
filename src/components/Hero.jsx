@@ -1,16 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
-import { Camera } from "lucide-react";
+import { Camera, ChevronDown } from "lucide-react";
 import { getFamilyMembers, getGrandparents, saveGrandparents, uploadPhoto } from "../firebase/familyService";
-
-const fadeIn = {
-  hidden: { opacity: 0, y: 20 },
-  visible: (i = 0) => ({
-    opacity: 1,
-    y: 0,
-    transition: { delay: i * 0.25, duration: 0.7, ease: "easeOut" },
-  }),
-};
 
 function collectCount(members, grandparents) {
   let total = 0;
@@ -39,7 +30,6 @@ function collectCount(members, grandparents) {
     members.forEach((m) => walk(m, 2));
   }
 
-  // Find oldest birth year
   let oldestYear = 9999
   const checkYear = (date) => {
     if (!date) return
@@ -63,8 +53,8 @@ export default function Hero() {
           getFamilyMembers(),
           getGrandparents(),
         ]);
-        const { total, generations } = collectCount(members, grandparents);
-        setStats({ total, generations });
+        const { total, generations, since } = collectCount(members, grandparents);
+        setStats({ total, generations, since });
         if (grandparents?.heroPhoto) setHeroPhoto(grandparents.heroPhoto);
       } catch (err) {
         console.error("Hero: could not load family stats", err);
@@ -83,86 +73,116 @@ export default function Hero() {
     }
   };
 
+  const hasPhoto = !!heroPhoto;
+
   return (
-    <section
-      className={`relative flex items-center justify-center overflow-hidden max-h-[80vh] min-h-[60vh] py-20 ${!heroPhoto ? 'bg-gradient-to-b from-[#FDF8F0] via-[#FEF3E2] to-[#FDEBD3]' : ''}`}
-      style={heroPhoto ? {
-        backgroundImage: `linear-gradient(rgba(93,64,55,0.6), rgba(93,64,55,0.7)), url(${heroPhoto})`,
-        backgroundSize: 'cover',
-        backgroundPosition: 'center',
-      } : undefined}
-    >
-      <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
-        {/* Title */}
+    <section className="relative min-h-[100vh] flex flex-col items-center justify-center overflow-hidden">
+      {/* === Background === */}
+      {hasPhoto ? (
+        <div className="absolute inset-0">
+          <motion.img
+            src={heroPhoto}
+            alt=""
+            className="w-full h-full object-cover"
+            initial={{ scale: 1.1 }}
+            animate={{ scale: 1 }}
+            transition={{ duration: 8, ease: 'easeOut' }}
+          />
+          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(28,25,23,0.3) 0%, rgba(28,25,23,0.15) 40%, rgba(28,25,23,0.7) 100%)' }} />
+        </div>
+      ) : (
+        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%)' }}>
+          {/* Cool ambient glows */}
+          <div className="absolute top-0 right-0 w-[50%] h-[50%] rounded-full opacity-[0.08] blur-[120px]" style={{ background: '#3B82F6' }} />
+          <div className="absolute bottom-0 left-0 w-[40%] h-[40%] rounded-full opacity-[0.06] blur-[100px]" style={{ background: '#6366F1' }} />
+        </div>
+      )}
+
+      {/* === Content === */}
+      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center flex flex-col items-center">
+
+        {/* Overline */}
+        <motion.div
+          initial={{ opacity: 0, width: 0 }}
+          animate={{ opacity: 1, width: 48 }}
+          transition={{ duration: 1, delay: 0.2 }}
+          className="h-[1px] mb-6 bg-white/30"
+        />
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8, delay: 0.4 }}
+          className="text-[16px] font-sans font-semibold uppercase tracking-[5px] mb-10 text-white"
+        >
+          Legado &amp; Memoria
+        </motion.p>
+
+        {/* Title - SAME TYPOGRAPHY */}
         <motion.h1
           initial={{ opacity: 0, y: 30, scale: 0.95 }}
           animate={{ opacity: 1, y: 0, scale: 1 }}
           transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-          className={`font-serif font-bold leading-[1.1] tracking-tight ${heroPhoto ? 'text-white' : 'text-[#5D4037]'}`}
+          className="font-serif font-bold leading-[1.1] tracking-tight text-white"
           style={{ fontSize: 'clamp(5rem, 12vw, 11rem)' }}
         >
           Familia{" "}
           <span className="relative inline-block">
             Guerrero
-            <span className={`absolute -bottom-1 left-0 w-full h-[3px] rounded-full ${heroPhoto ? 'bg-gradient-to-r from-white/80 to-white/30' : 'bg-gradient-to-r from-[#C4704B] to-[#C4704B]/40'}`} />
+            <span className="absolute -bottom-1 left-0 w-full h-[3px] rounded-full bg-gradient-to-r from-[#B8654A] to-[#B8654A]/20" />
           </span>
         </motion.h1>
 
         {/* Subtitle */}
         <motion.p
-          variants={fadeIn}
-          initial="hidden"
-          animate="visible"
-          custom={1}
-          className={`mt-6 font-serif text-lg sm:text-xl md:text-2xl italic leading-relaxed max-w-xl mx-auto ${heroPhoto ? 'text-white/80' : 'text-[#5D4037]/75'}`}
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.6, duration: 0.8 }}
+          className="mt-8 font-serif text-2xl sm:text-3xl md:text-4xl italic leading-relaxed max-w-2xl text-white font-medium"
         >
           {stats?.generations > 0 ? `${stats.generations} generaciones` : 'Generaciones'} unidas por el amor, la fe y la memoria
         </motion.p>
 
-        {/* Stats counter */}
-        <motion.div
-          variants={fadeIn}
-          initial="hidden"
-          animate="visible"
-          custom={2}
-          className={`mt-8 flex items-center justify-center gap-3 text-sm sm:text-base tracking-wide ${heroPhoto ? 'text-white/60' : 'text-[#5D4037]/55'}`}
-        >
-          {stats ? (
-            <>
-              <span className={`font-semibold ${heroPhoto ? 'text-white/80' : 'text-[#5D4037]/70'}`}>{stats.total}</span>
-              <span>integrantes</span>
-              <span className={heroPhoto ? 'text-white/30' : 'text-[#C4704B]/40'}>·</span>
-              <span className={`font-semibold ${heroPhoto ? 'text-white/80' : 'text-[#5D4037]/70'}`}>{stats.generations}</span>
-              <span>generaciones</span>
-              <span className={heroPhoto ? 'text-white/30' : 'text-[#C4704B]/40'}>·</span>
-              <span>Desde {stats.since || '...'}</span>
-            </>
-          ) : (
-            <span className={heroPhoto ? 'text-white/30' : 'text-[#5D4037]/30'}>Cargando...</span>
-          )}
-        </motion.div>
-
-        {/* CTA */}
-        <motion.div
-          variants={fadeIn}
-          initial="hidden"
-          animate="visible"
-          custom={3}
-          className="mt-10"
-        >
-          <a
-            href="#arbol"
-            className="inline-flex items-center gap-2 px-8 py-3.5 rounded-full bg-[#C4704B] text-white font-sans font-semibold text-base shadow-md shadow-[#C4704B]/20 hover:shadow-lg hover:shadow-[#C4704B]/30 hover:bg-[#b5613e] transition-all duration-300"
+        {/* Stats */}
+        {stats && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 1, duration: 0.8 }}
+            className="mt-14 flex items-center gap-12"
           >
-            Explorar nuestra historia
-          </a>
-        </motion.div>
+            {[
+              { value: stats.total, label: 'Integrantes' },
+              { value: stats.generations, label: 'Generaciones' },
+              ...(stats.since ? [{ value: stats.since, label: 'Desde' }] : []),
+            ].map((item, i) => (
+              <div key={i} className="text-center">
+                <p className="text-3xl sm:text-4xl font-serif font-bold text-white">{item.value}</p>
+                <p className="text-[10px] uppercase tracking-[3px] mt-1 text-white/30">{item.label}</p>
+              </div>
+            ))}
+          </motion.div>
+        )}
       </div>
 
-      {/* Photo upload button */}
-      <label className="absolute bottom-4 right-4 cursor-pointer flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-white/20 hover:bg-white/30 text-white/70 text-xs transition backdrop-blur-sm">
+      {/* Scroll indicator */}
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 2, duration: 1 }}
+        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
+      >
+        <motion.div
+          animate={{ y: [0, 6, 0] }}
+          transition={{ repeat: Infinity, duration: 2.5, ease: 'easeInOut' }}
+        >
+          <ChevronDown className="w-5 h-5 text-white/20" />
+        </motion.div>
+      </motion.div>
+
+      {/* Photo upload */}
+      <label className="absolute bottom-6 right-6 z-10 cursor-pointer flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all bg-white/10 hover:bg-white/20 text-white/40 hover:text-white/70 backdrop-blur-md border-4 border-white/80">
         <Camera className="w-3.5 h-3.5" />
-        Cambiar foto
+        <span className="hidden sm:inline">Cambiar foto</span>
         <input type="file" accept="image/*" onChange={handleHeroPhoto} className="hidden" />
       </label>
     </section>

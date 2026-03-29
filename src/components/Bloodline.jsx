@@ -4,14 +4,14 @@ import { GitBranch, Users, ArrowDown, Shield } from 'lucide-react'
 import { getFamilyMembers, getGrandparents } from '../firebase/familyService'
 
 const PALETTE = {
-  primary: '#5D4037',
-  copper: '#C4704B',
-  gold: '#B8943E',
-  green: '#7A9E7E',
-  bg: '#FFFBF5',
+  primary: '#0F172A',
+  copper: '#B8654A',
+  gold: '#B8976A',
+  green: '#6B9080',
+  bg: '#0F172A',
 }
 
-const GENERATION_COLORS = ['#5D4037', '#C4704B', '#B8943E', '#7A9E7E', '#E8956D', '#D4B96A']
+const GENERATION_COLORS = ['#0F172A', '#B8654A', '#B8976A', '#6B9080', '#C8846A', '#C8A87A']
 
 function collectAllPeople(members, grandparentsData) {
   const people = []
@@ -62,7 +62,7 @@ function StatCard({ icon: Icon, label, value, color, delay = 0 }) {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
       transition={{ delay, duration: 0.5 }}
-      className="bg-white rounded-2xl shadow-md p-6 text-center border border-gray-100"
+      className="bg-white/5 rounded-2xl shadow-md p-6 text-center border-4 border-white/80"
     >
       <div
         className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3"
@@ -70,10 +70,10 @@ function StatCard({ icon: Icon, label, value, color, delay = 0 }) {
       >
         <Icon size={28} style={{ color }} />
       </div>
-      <p className="text-3xl font-bold" style={{ color: PALETTE.primary }}>
+      <p className="text-3xl font-bold text-white">
         {value}
       </p>
-      <p className="text-sm text-gray-500 mt-1">{label}</p>
+      <p className="text-sm text-white/50 mt-1">{label}</p>
     </motion.div>
   )
 }
@@ -90,14 +90,14 @@ function GenerationBar({ label, guerreroCount, totalCount, color, delay = 0 }) {
       className="mb-4"
     >
       <div className="flex justify-between items-center mb-1">
-        <span className="font-semibold text-sm" style={{ color: PALETTE.primary }}>
+        <span className="font-semibold text-sm text-white">
           {label}
         </span>
-        <span className="text-sm text-gray-500">
+        <span className="text-sm text-white/50">
           {guerreroCount} de {totalCount} llevan el apellido ({pct}%)
         </span>
       </div>
-      <div className="w-full bg-gray-200 rounded-full h-5 overflow-hidden">
+      <div className="w-full bg-white/10 rounded-full h-5 overflow-hidden">
         <motion.div
           initial={{ width: 0 }}
           whileInView={{ width: `${pct}%` }}
@@ -180,9 +180,9 @@ export default function Bloodline() {
       <section id="linea-de-sangre" className="py-20" style={{ backgroundColor: PALETTE.bg }}>
         <div className="max-w-6xl mx-auto px-4 text-center">
           <div className="animate-pulse space-y-4">
-            <div className="h-8 bg-gray-200 rounded w-64 mx-auto" />
-            <div className="h-4 bg-gray-200 rounded w-96 mx-auto" />
-            <div className="h-48 bg-gray-200 rounded mt-8" />
+            <div className="h-8 bg-white/10 rounded w-64 mx-auto" />
+            <div className="h-4 bg-white/10 rounded w-96 mx-auto" />
+            <div className="h-48 bg-white/10 rounded mt-8" />
           </div>
         </div>
       </section>
@@ -200,16 +200,12 @@ export default function Bloodline() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <div
-            className="w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-4 shadow-lg"
-            style={{ backgroundColor: PALETTE.primary }}
-          >
-            <Shield size={40} className="text-white" />
-          </div>
-          <h2 className="text-4xl md:text-5xl font-serif font-bold" style={{ color: PALETTE.primary }}>
+          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Linaje</p>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
             Linea de Sangre Guerrero
           </h2>
-          <p className="text-gray-500 mt-3 text-lg max-w-xl mx-auto">
+          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
+          <p className="text-white/50 text-lg max-w-xl mx-auto">
             Como se propaga nuestro apellido a traves de las generaciones
           </p>
         </motion.div>
@@ -245,11 +241,10 @@ export default function Bloodline() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-white rounded-2xl shadow-md p-6 md:p-10 mb-14 border border-gray-100"
+          className="bg-white/5 rounded-2xl shadow-md p-6 md:p-10 mb-14 border-4 border-white/80"
         >
           <h3
-            className="text-xl font-serif font-bold mb-6 flex items-center gap-2"
-            style={{ color: PALETTE.primary }}
+            className="text-xl font-serif font-bold mb-6 flex items-center gap-2 text-white"
           >
             <GitBranch size={22} />
             Propagacion del Apellido por Generacion
@@ -272,8 +267,7 @@ export default function Bloodline() {
               whileInView={{ opacity: 1 }}
               viewport={{ once: true }}
               transition={{ delay: 0.4 }}
-              className="text-sm font-bold mt-2"
-              style={{ color: PALETTE.primary }}
+              className="text-sm font-bold mt-2 text-white"
             >
               Apellido Guerrero
             </motion.p>
@@ -320,11 +314,10 @@ export default function Bloodline() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
-          className="bg-white rounded-2xl shadow-md p-6 md:p-10 border border-gray-100"
+          className="bg-white/5 rounded-2xl shadow-md p-6 md:p-10 border-4 border-white/80"
         >
           <h3
-            className="text-xl font-serif font-bold mb-6 flex items-center gap-2"
-            style={{ color: PALETTE.primary }}
+            className="text-xl font-serif font-bold mb-6 flex items-center gap-2 text-white"
           >
             <Users size={22} />
             Quienes Llevan el Apellido Guerrero
@@ -351,7 +344,7 @@ export default function Bloodline() {
           })}
 
           {totalGuerreros === 0 && (
-            <p className="text-gray-400 text-center py-8">
+            <p className="text-white/40 text-center py-8">
               No se encontraron miembros con el apellido Guerrero.
             </p>
           )}
@@ -366,7 +359,7 @@ export default function Bloodline() {
             transition={{ delay: 0.3, duration: 0.5 }}
             className="mt-8 text-center"
           >
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-white/40">
               Otras ramas: {totalPeople - totalGuerreros} miembros de la familia llevan otros apellidos
               por matrimonio u otras uniones.
             </p>

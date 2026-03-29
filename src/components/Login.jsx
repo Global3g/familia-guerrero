@@ -8,18 +8,18 @@ import { Heart, Lock, Mail, Loader2, UserPlus, LogIn, User, Phone, MapPin, X, Us
 const inputStyle = "w-full pl-10 pr-4 py-2.5 rounded-xl border-2 text-sm focus:outline-none transition"
 const labelStyle = "block text-xs font-bold uppercase tracking-wide mb-1.5"
 
-function InputField({ icon: Icon, label, color = '#C4704B', ...props }) {
+function InputField({ icon: Icon, label, color = '#B8654A', ...props }) {
   return (
     <div>
       <label className={labelStyle} style={{ color }}>{label}</label>
       <div className="relative">
-        <Icon className="absolute left-3 top-3 w-4 h-4" style={{ color: '#B8943E' }} />
+        <Icon className="absolute left-3 top-3 w-4 h-4" style={{ color: '#B8976A' }} />
         <input
           {...props}
           className={inputStyle}
-          style={{ borderColor: '#E0D5C8', color: '#5D4037', backgroundColor: 'white' }}
+          style={{ borderColor: 'rgba(255,255,255,0.8)', color: '#FFFFFF', backgroundColor: 'rgba(255,255,255,0.05)' }}
           onFocus={(e) => e.target.style.borderColor = color}
-          onBlur={(e) => e.target.style.borderColor = '#E0D5C8'}
+          onBlur={(e) => e.target.style.borderColor = '#E2E8F0'}
         />
       </div>
     </div>
@@ -104,21 +104,21 @@ export default function Login() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 relative" style={{ background: 'linear-gradient(135deg, #FDF8F0 0%, #FEF3E2 50%, #FDEBD3 100%)' }}>
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 25% 25%, #C4704B 1px, transparent 1px), radial-gradient(circle at 75% 75%, #B8943E 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+    <div className="min-h-screen flex items-center justify-center px-4 relative" style={{ background: 'linear-gradient(135deg, #F8FAFC 0%, #F8FAFC 50%, #F1F5F9 100%)' }}>
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 25% 25%, #B8654A 1px, transparent 1px), radial-gradient(circle at 75% 75%, #B8976A 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
       <div className="w-full max-w-sm">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg" style={{ background: 'linear-gradient(135deg, #C4704B, #B8943E)' }}>
+          <div className="w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg" style={{ background: 'linear-gradient(135deg, #B8654A, #B8976A)' }}>
             <img src="/logo.svg" alt="Familia Guerrero" className="w-14 h-14" />
           </div>
-          <h1 className="text-3xl font-serif font-bold" style={{ color: '#5D4037' }}>Familia Guerrero</h1>
-          <p className="text-sm mt-1" style={{ color: '#8A7B6B' }}>Preservando nuestro legado</p>
+          <h1 className="text-3xl font-serif font-bold" style={{ color: '#FFFFFF' }}>Familia Guerrero</h1>
+          <p className="text-sm mt-1" style={{ color: '#64748B' }}>Preservando nuestro legado</p>
         </div>
 
         {/* Login Form */}
-        <div className="rounded-2xl shadow-xl p-6" style={{ backgroundColor: '#FFF8F0', border: '1px solid #E8D5C4' }}>
-          <h2 className="text-lg font-bold text-center mb-5" style={{ color: '#5D4037' }}>Iniciar sesion</h2>
+        <div className="rounded-2xl shadow-xl p-6" style={{ backgroundColor: '#0F172A', border: '1px solid #E2E8F0' }}>
+          <h2 className="text-lg font-bold text-center mb-5" style={{ color: '#FFFFFF' }}>Iniciar sesion</h2>
 
           <form onSubmit={handleLogin} className="space-y-4">
             <InputField icon={Mail} label="Correo" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="tucorreo@gmail.com" />
@@ -128,7 +128,7 @@ export default function Login() {
               <p className="text-xs text-center py-2 px-3 rounded-lg" style={{ backgroundColor: '#FEE2E2', color: '#DC2626' }}>{error}</p>
             )}
 
-            <button type="submit" disabled={loading} className="w-full py-3 rounded-xl font-bold text-white text-sm flex items-center justify-center gap-2 transition hover:opacity-90" style={{ backgroundColor: '#C4704B' }}>
+            <button type="submit" disabled={loading} className="w-full py-3 rounded-xl font-bold text-white text-sm flex items-center justify-center gap-2 transition hover:opacity-90" style={{ backgroundColor: '#B8654A' }}>
               {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><LogIn className="w-4 h-4" /> Entrar</>}
             </button>
           </form>
@@ -146,7 +146,7 @@ export default function Login() {
                 } catch (e) { setError('Error al enviar correo de recuperacion') }
               }}
               className="text-xs font-medium transition"
-              style={{ color: '#B8943E' }}
+              style={{ color: '#B8976A' }}
             >
               Olvide mi contrasena
             </button>
@@ -154,21 +154,21 @@ export default function Login() {
 
           {/* TODO: Descomentar cuando se abra el registro al publico */}
           {false && <><div className="flex items-center gap-3 my-5">
-            <div className="flex-1 h-px" style={{ backgroundColor: '#E0D5C8' }} />
-            <span className="text-[11px] uppercase tracking-wider" style={{ color: '#B0A090' }}>o</span>
-            <div className="flex-1 h-px" style={{ backgroundColor: '#E0D5C8' }} />
+            <div className="flex-1 h-px" style={{ backgroundColor: '#E2E8F0' }} />
+            <span className="text-[11px] uppercase tracking-wider" style={{ color: '#64748B' }}>o</span>
+            <div className="flex-1 h-px" style={{ backgroundColor: '#E2E8F0' }} />
           </div>
 
           <button
             onClick={() => { setShowRegister(true); setRegStep(1); setRegError(''); setReg({ name: '', nickname: '', phone: '', location: '', email: '', password: '', confirmPassword: '', relationship: '' }) }}
             className="w-full py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition hover:opacity-90"
-            style={{ backgroundColor: '#7A9E7E', color: 'white' }}
+            style={{ backgroundColor: '#6B9080', color: 'white' }}
           >
             <UserPlus className="w-4 h-4" /> Soy nuevo, registrarme
           </button></>}
         </div>
 
-        <p className="text-center text-[11px] mt-6" style={{ color: '#B0A090' }}>Solo para miembros de la familia Guerrero</p>
+        <p className="text-center text-[11px] mt-6" style={{ color: '#64748B' }}>Solo para miembros de la familia Guerrero</p>
       </div>
 
       {/* Register Modal */}
@@ -186,23 +186,23 @@ export default function Login() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               className="w-full max-w-md rounded-2xl shadow-2xl overflow-hidden"
-              style={{ backgroundColor: '#FFF8F0' }}
+              style={{ backgroundColor: '#0F172A' }}
             >
               {/* Modal Header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b" style={{ borderColor: '#E8D5C4', background: 'linear-gradient(135deg, #C4704B15, #B8943E10)' }}>
+              <div className="flex items-center justify-between px-6 py-4 border-b" style={{ borderColor: 'rgba(255,255,255,0.8)', background: 'linear-gradient(135deg, #B8654A15, #B8976A10)' }}>
                 <div>
-                  <h2 className="text-lg font-serif font-bold" style={{ color: '#5D4037' }}>Crear cuenta</h2>
-                  <p className="text-[11px]" style={{ color: '#8A7B6B' }}>Paso {regStep} de 2</p>
+                  <h2 className="text-lg font-serif font-bold" style={{ color: '#FFFFFF' }}>Crear cuenta</h2>
+                  <p className="text-[11px]" style={{ color: '#64748B' }}>Paso {regStep} de 2</p>
                 </div>
-                <button onClick={() => setShowRegister(false)} className="p-1.5 rounded-full hover:bg-[#5D4037]/10 transition">
-                  <X className="w-5 h-5" style={{ color: '#5D4037' }} />
+                <button onClick={() => setShowRegister(false)} className="p-1.5 rounded-full hover:bg-[#0F172A]/10 transition">
+                  <X className="w-5 h-5" style={{ color: '#FFFFFF' }} />
                 </button>
               </div>
 
               {/* Progress */}
               <div className="flex gap-2 px-6 pt-4">
-                <div className="flex-1 h-1 rounded-full" style={{ backgroundColor: '#C4704B' }} />
-                <div className="flex-1 h-1 rounded-full" style={{ backgroundColor: regStep >= 2 ? '#C4704B' : '#E0D5C8' }} />
+                <div className="flex-1 h-1 rounded-full" style={{ backgroundColor: '#B8654A' }} />
+                <div className="flex-1 h-1 rounded-full" style={{ backgroundColor: regStep >= 2 ? '#B8654A' : '#E2E8F0' }} />
               </div>
 
               {/* Modal Body */}
@@ -210,27 +210,27 @@ export default function Login() {
                 {regStep === 1 && (
                   <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-4">
                     <div className="text-center mb-2">
-                      <div className="w-14 h-14 rounded-full mx-auto mb-2 flex items-center justify-center" style={{ backgroundColor: '#7A9E7E15' }}>
-                        <User className="w-7 h-7" style={{ color: '#7A9E7E' }} />
+                      <div className="w-14 h-14 rounded-full mx-auto mb-2 flex items-center justify-center" style={{ backgroundColor: '#6B908015' }}>
+                        <User className="w-7 h-7" style={{ color: '#6B9080' }} />
                       </div>
-                      <p className="text-sm font-medium" style={{ color: '#5D4037' }}>Datos personales</p>
-                      <p className="text-[11px]" style={{ color: '#8A7B6B' }}>Para que la familia te identifique</p>
+                      <p className="text-sm font-medium" style={{ color: '#FFFFFF' }}>Datos personales</p>
+                      <p className="text-[11px]" style={{ color: '#64748B' }}>Para que la familia te identifique</p>
                     </div>
 
-                    <InputField icon={User} label="Nombre completo *" color="#7A9E7E" type="text" value={reg.name} onChange={(e) => setReg(p => ({ ...p, name: e.target.value }))} placeholder="Tu nombre completo" />
-                    <InputField icon={Heart} label="Apodo" color="#7A9E7E" type="text" value={reg.nickname} onChange={(e) => setReg(p => ({ ...p, nickname: e.target.value }))} placeholder="Como te dicen (opcional)" />
-                    <InputField icon={Phone} label="Telefono" color="#7A9E7E" type="tel" value={reg.phone} onChange={(e) => setReg(p => ({ ...p, phone: e.target.value }))} placeholder="Tu numero (opcional)" />
-                    <InputField icon={MapPin} label="Donde vives" color="#7A9E7E" type="text" value={reg.location} onChange={(e) => setReg(p => ({ ...p, location: e.target.value }))} placeholder="Ciudad, Estado (opcional)" />
+                    <InputField icon={User} label="Nombre completo *" color="#6B9080" type="text" value={reg.name} onChange={(e) => setReg(p => ({ ...p, name: e.target.value }))} placeholder="Tu nombre completo" />
+                    <InputField icon={Heart} label="Apodo" color="#6B9080" type="text" value={reg.nickname} onChange={(e) => setReg(p => ({ ...p, nickname: e.target.value }))} placeholder="Como te dicen (opcional)" />
+                    <InputField icon={Phone} label="Telefono" color="#6B9080" type="tel" value={reg.phone} onChange={(e) => setReg(p => ({ ...p, phone: e.target.value }))} placeholder="Tu numero (opcional)" />
+                    <InputField icon={MapPin} label="Donde vives" color="#6B9080" type="text" value={reg.location} onChange={(e) => setReg(p => ({ ...p, location: e.target.value }))} placeholder="Ciudad, Estado (opcional)" />
 
                     <div>
-                      <label className={labelStyle} style={{ color: '#7A9E7E' }}>Parentesco</label>
+                      <label className={labelStyle} style={{ color: '#6B9080' }}>Parentesco</label>
                       <div className="relative">
-                        <Users className="absolute left-3 top-3 w-4 h-4" style={{ color: '#B8943E' }} />
+                        <Users className="absolute left-3 top-3 w-4 h-4" style={{ color: '#B8976A' }} />
                         <select
                           value={reg.relationship}
                           onChange={(e) => setReg(p => ({ ...p, relationship: e.target.value }))}
                           className={inputStyle}
-                          style={{ borderColor: '#E0D5C8', color: '#5D4037', backgroundColor: 'white' }}
+                          style={{ borderColor: 'rgba(255,255,255,0.8)', color: '#FFFFFF', backgroundColor: 'rgba(255,255,255,0.05)' }}
                         >
                           <option value="">Selecciona tu parentesco</option>
                           <option value="hijo">Hijo(a) de los abuelos</option>
@@ -247,21 +247,21 @@ export default function Login() {
                 {regStep === 2 && (
                   <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-4">
                     <div className="text-center mb-2">
-                      <div className="w-14 h-14 rounded-full mx-auto mb-2 flex items-center justify-center" style={{ backgroundColor: '#C4704B15' }}>
-                        <Lock className="w-7 h-7" style={{ color: '#C4704B' }} />
+                      <div className="w-14 h-14 rounded-full mx-auto mb-2 flex items-center justify-center" style={{ backgroundColor: '#B8654A15' }}>
+                        <Lock className="w-7 h-7" style={{ color: '#B8654A' }} />
                       </div>
-                      <p className="text-sm font-medium" style={{ color: '#5D4037' }}>Datos de acceso</p>
-                      <p className="text-[11px]" style={{ color: '#8A7B6B' }}>Para iniciar sesion</p>
+                      <p className="text-sm font-medium" style={{ color: '#FFFFFF' }}>Datos de acceso</p>
+                      <p className="text-[11px]" style={{ color: '#64748B' }}>Para iniciar sesion</p>
                     </div>
 
                     {/* Show name summary */}
-                    <div className="flex items-center gap-3 p-3 rounded-xl" style={{ backgroundColor: '#7A9E7E10', border: '1px solid #7A9E7E20' }}>
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#7A9E7E20' }}>
-                        <User className="w-5 h-5" style={{ color: '#7A9E7E' }} />
+                    <div className="flex items-center gap-3 p-3 rounded-xl" style={{ backgroundColor: '#6B908010', border: '1px solid #6B908020' }}>
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#6B908020' }}>
+                        <User className="w-5 h-5" style={{ color: '#6B9080' }} />
                       </div>
                       <div>
-                        <p className="text-sm font-bold" style={{ color: '#5D4037' }}>{reg.name}</p>
-                        {reg.nickname && <p className="text-[11px]" style={{ color: '#7A9E7E' }}>"{reg.nickname}"</p>}
+                        <p className="text-sm font-bold" style={{ color: '#FFFFFF' }}>{reg.name}</p>
+                        {reg.nickname && <p className="text-[11px]" style={{ color: '#6B9080' }}>"{reg.nickname}"</p>}
                       </div>
                     </div>
 
@@ -277,11 +277,11 @@ export default function Login() {
               </div>
 
               {/* Modal Footer */}
-              <div className="flex gap-3 px-6 py-4 border-t" style={{ borderColor: '#E8D5C4' }}>
+              <div className="flex gap-3 px-6 py-4 border-t" style={{ borderColor: 'rgba(255,255,255,0.8)' }}>
                 <button
                   onClick={() => regStep === 1 ? setShowRegister(false) : setRegStep(1)}
                   className="flex-1 py-2.5 rounded-xl font-bold text-sm transition"
-                  style={{ color: '#5D4037', border: '2px solid #E0D5C8' }}
+                  style={{ color: '#FFFFFF', border: '2px solid #E2E8F0' }}
                 >
                   {regStep === 1 ? 'Cancelar' : 'Atras'}
                 </button>
@@ -289,7 +289,7 @@ export default function Login() {
                   onClick={handleRegister}
                   disabled={regLoading}
                   className="flex-1 py-2.5 rounded-xl font-bold text-white text-sm flex items-center justify-center gap-2 transition hover:opacity-90"
-                  style={{ backgroundColor: regStep === 1 ? '#7A9E7E' : '#C4704B' }}
+                  style={{ backgroundColor: regStep === 1 ? '#6B9080' : '#B8654A' }}
                 >
                   {regLoading ? (
                     <Loader2 className="w-5 h-5 animate-spin" />

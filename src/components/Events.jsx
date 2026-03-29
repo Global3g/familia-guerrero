@@ -9,29 +9,29 @@ import { SkeletonGrid } from './Skeleton'
 const typeStyles = {
   'cumpleaños': {
     bg: '#FDF0EB',
-    accent: '#C4704B',
-    iconBg: '#C4704B',
+    accent: '#B8654A',
+    iconBg: '#B8654A',
     border: '#E8C4B4',
     label: 'Cumpleaños',
   },
   aniversario: {
-    bg: '#FBF6EA',
-    accent: '#B8943E',
-    iconBg: '#B8943E',
+    bg: '#F8FAFC',
+    accent: '#B8976A',
+    iconBg: '#B8976A',
     border: '#E0D5A8',
     label: 'Aniversario',
   },
   reunion: {
     bg: '#EEF6EF',
-    accent: '#7A9E7E',
-    iconBg: '#7A9E7E',
+    accent: '#6B9080',
+    iconBg: '#6B9080',
     border: '#BDD4BF',
     label: 'Reunion',
   },
   celebracion: {
     bg: '#FEF0EC',
-    accent: '#E8956D',
-    iconBg: '#E8956D',
+    accent: '#C8846A',
+    iconBg: '#C8846A',
     border: '#F0C8B4',
     label: 'Celebracion',
   },
@@ -83,8 +83,8 @@ const cardVariants = {
   },
 }
 
-const inputClass = 'w-full rounded-lg border border-[#7A9E7E]/20 bg-white px-3 py-2 text-sm text-[#5D4037] focus:outline-none focus:ring-2 focus:ring-[#7A9E7E]/30'
-const labelClass = 'block text-xs font-medium text-[#5D4037] mb-1'
+const inputClass = 'w-full rounded-lg border-4 border-white/80 bg-white/5 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#6B9080]/30'
+const labelClass = 'block text-xs font-medium text-white mb-1'
 
 const eventTypeOptions = [
   { value: 'cumpleaños', label: 'Cumpleaños' },
@@ -150,7 +150,7 @@ function EventForm({ isOpen, onClose, eventData, onSave }) {
           <textarea value={form.description} onChange={(e) => setForm(p => ({ ...p, description: e.target.value }))} rows={2} className={inputClass + ' resize-none'} placeholder="Detalles del evento..." />
         </div>
         <div className="flex justify-end pt-2">
-          <button type="submit" disabled={loading} className="flex items-center gap-2 rounded-lg bg-[#7A9E7E] px-6 py-2.5 text-white hover:bg-[#7A9E7E]/90 transition disabled:opacity-60">
+          <button type="submit" disabled={loading} className="flex items-center gap-2 rounded-lg bg-[#6B9080] px-6 py-2.5 text-white hover:bg-[#6B9080]/90 transition disabled:opacity-60">
             {loading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Save className="h-5 w-5" />}
             {loading ? 'Guardando...' : 'Guardar'}
           </button>
@@ -214,7 +214,7 @@ export default function Events() {
     <section
       id="eventos"
       className="py-20 px-4"
-      style={{ backgroundColor: '#FAF7F2' }}
+      style={{ backgroundColor: '#0F172A' }}
     >
       <div className="max-w-6xl mx-auto">
         {/* Header */}
@@ -225,20 +225,12 @@ export default function Events() {
           transition={{ duration: 0.7 }}
           className="text-center mb-16"
         >
-          <span
-            className="inline-flex items-center gap-2 text-sm font-medium tracking-wide uppercase mb-3"
-            style={{ color: '#C4704B' }}
-          >
-            <Calendar className="w-4 h-4" />
-            Agenda Familiar
-          </span>
-          <h2
-            className="text-3xl sm:text-4xl md:text-5xl font-serif font-bold mb-4"
-            style={{ color: '#5D4037', fontFamily: "'Playfair Display', serif" }}
-          >
+          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Momentos</p>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
             Agenda Familiar
           </h2>
-          <p className="text-lg max-w-2xl mx-auto" style={{ color: '#6B5B5B' }}>
+          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
+          <p className="text-base text-white/50 max-w-md mx-auto leading-relaxed">
             Las fechas que nos unen. Cada evento es parte de nuestra historia.
           </p>
         </motion.div>
@@ -249,8 +241,8 @@ export default function Events() {
             onClick={() => setTab('proximos')}
             className="px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300"
             style={tab === 'proximos'
-              ? { backgroundColor: '#C4704B', color: '#fff', boxShadow: '0 4px 14px rgba(196,112,75,0.35)' }
-              : { backgroundColor: '#fff', color: '#6B5B5B', border: '1px solid #E0D5C8' }
+              ? { backgroundColor: '#B8654A', color: '#fff', boxShadow: '0 4px 14px rgba(196,112,75,0.35)' }
+              : { backgroundColor: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.5)', border: '4px solid rgba(255,255,255,0.8)' }
             }
           >
             Proximos ({upcoming.length})
@@ -259,8 +251,8 @@ export default function Events() {
             onClick={() => setTab('pasados')}
             className="px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300"
             style={tab === 'pasados'
-              ? { backgroundColor: '#B8943E', color: '#fff', boxShadow: '0 4px 14px rgba(184,148,62,0.35)' }
-              : { backgroundColor: '#fff', color: '#6B5B5B', border: '1px solid #E0D5C8' }
+              ? { backgroundColor: '#B8976A', color: '#fff', boxShadow: '0 4px 14px rgba(184,148,62,0.35)' }
+              : { backgroundColor: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.5)', border: '4px solid rgba(255,255,255,0.8)' }
             }
           >
             Pasados ({past.length})
@@ -280,19 +272,19 @@ export default function Events() {
         >
           {displayEvents.length === 0 && (
             <div className="col-span-full text-center py-16">
-              <div className="w-16 h-16 rounded-full bg-[#C4704B]/10 flex items-center justify-center mx-auto mb-4">
-                <Calendar className="w-8 h-8 text-[#C4704B]/50" />
+              <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4">
+                <Calendar className="w-8 h-8 text-white/30" />
               </div>
-              <p className="text-lg font-serif font-bold text-[#5D4037]/60 mb-2">
+              <p className="text-lg font-serif font-bold text-white/60 mb-2">
                 {tab === 'proximos' ? 'Sin eventos proximos' : 'Sin eventos pasados'}
               </p>
-              <p className="text-sm text-[#5D4037]/40 mb-6">
+              <p className="text-sm text-white/40 mb-6">
                 {tab === 'proximos' ? 'Agrega un evento familiar para que todos esten informados' : 'Los eventos pasados apareceran aqui automaticamente'}
               </p>
               {tab === 'proximos' && (
                 <button
                   onClick={() => setShowCreateForm(true)}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#C4704B] text-white hover:bg-[#C4704B]/90 transition font-medium shadow-md"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#B8654A] text-white hover:bg-[#B8654A]/90 transition font-medium shadow-md"
                 >
                   <Plus className="w-5 h-5" />
                   Agregar primer evento
@@ -314,29 +306,29 @@ export default function Events() {
                 whileHover={{ y: -6, transition: { duration: 0.25 } }}
                 className={`rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 relative group ${isPast ? 'opacity-80' : ''}`}
                 style={{
-                  backgroundColor: '#fff',
-                  border: `2px solid ${style.border}`,
+                  backgroundColor: 'rgba(255,255,255,0.05)',
+                  border: '6px solid rgba(255,255,255,0.8)',
                 }}
               >
                 {/* Edit/Delete buttons */}
                 <div className="absolute top-2 right-2 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10">
-                  <button onClick={() => setEditingEvent(event)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-[#B8943E]/10 shadow text-[#B8943E] transition">
+                  <button onClick={() => setEditingEvent(event)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 shadow text-[#B8976A] transition">
                     <Pencil className="w-3.5 h-3.5" />
                   </button>
-                  <button onClick={() => setDeletingEvent(event)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-red-50 shadow text-red-400 hover:text-red-600 transition">
+                  <button onClick={() => setDeletingEvent(event)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 shadow text-red-400 hover:text-red-500 transition">
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
 
                 {/* Card top: date + type badge */}
                 <div
-                  className="relative p-5 flex items-center gap-5"
-                  style={{ backgroundColor: style.bg }}
+                  className="relative p-8 flex items-center gap-5"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.03)' }}
                 >
                   {/* Date block */}
                   <div
                     className="flex-shrink-0 w-20 h-20 rounded-xl flex flex-col items-center justify-center shadow-sm"
-                    style={{ backgroundColor: '#fff' }}
+                    style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
                   >
                     <span
                       className="text-3xl font-bold leading-none"
@@ -345,8 +337,7 @@ export default function Events() {
                       {day}
                     </span>
                     <span
-                      className="text-xs font-semibold uppercase tracking-wider mt-1"
-                      style={{ color: '#6B5B5B' }}
+                      className="text-xs font-semibold uppercase tracking-wider mt-1 text-white/50"
                     >
                       {monthNames[month - 1]}
                     </span>
@@ -367,7 +358,7 @@ export default function Events() {
                     <h3
                       className="text-lg font-serif font-bold leading-tight truncate"
                       style={{
-                        color: '#3D2C2C',
+                        color: '#fff',
                         fontFamily: "'Playfair Display', serif",
                       }}
                     >
@@ -377,8 +368,8 @@ export default function Events() {
                 </div>
 
                 {/* Card body */}
-                <div className="p-5 space-y-3">
-                  <p className="text-sm leading-relaxed" style={{ color: '#6B5B5B' }}>
+                <div className="p-8 space-y-3">
+                  <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
                     {event.description}
                   </p>
 
@@ -388,7 +379,7 @@ export default function Events() {
                       <MapPin className="w-4 h-4" style={{ color: style.accent }} />
                       <span
                         className="text-xs font-medium"
-                        style={{ color: '#6B5B5B' }}
+                        style={{ color: 'rgba(255,255,255,0.5)' }}
                       >
                         {event.location}
                       </span>
@@ -398,7 +389,7 @@ export default function Events() {
                     <span
                       className="text-xs font-semibold px-2 py-0.5 rounded-full"
                       style={{
-                        backgroundColor: style.bg,
+                        backgroundColor: 'rgba(255,255,255,0.05)',
                         color: style.accent,
                       }}
                     >
@@ -409,10 +400,10 @@ export default function Events() {
                   {/* Full date line */}
                   <div
                     className="flex items-center gap-1.5 pt-1 border-t"
-                    style={{ borderColor: '#F0E8DE' }}
+                    style={{ borderColor: 'rgba(255,255,255,0.8)' }}
                   >
-                    <Calendar className="w-3.5 h-3.5" style={{ color: '#B0A090' }} />
-                    <span className="text-xs" style={{ color: '#B0A090' }}>
+                    <Calendar className="w-3.5 h-3.5" style={{ color: 'rgba(255,255,255,0.4)' }} />
+                    <span className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
                       {day} de {monthNamesFull[month - 1]},{' '}
                       {parseDate(event.date).year}
                     </span>
@@ -423,28 +414,28 @@ export default function Events() {
                     const photos = getEventPhotos(event.id)
                     if (photos.length === 0) return null
                     return (
-                      <div className="pt-2 border-t" style={{ borderColor: '#F0E8DE' }}>
+                      <div className="pt-2 border-t" style={{ borderColor: 'rgba(255,255,255,0.8)' }}>
                         <div className="flex items-center gap-1.5 mb-2">
                           <Camera className="w-3.5 h-3.5" style={{ color: style.accent }} />
-                          <span className="text-[11px] font-semibold uppercase tracking-wider" style={{ color: '#6B5B5B' }}>
+                          <span className="text-[11px] font-semibold uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.5)' }}>
                             {photos.length} foto{photos.length > 1 ? 's' : ''}
                           </span>
                         </div>
-                        <div className="flex gap-1.5 overflow-x-auto">
+                        <div className="flex gap-2 overflow-x-auto">
                           {photos.slice(0, 4).map((p, pi) => (
-                            <div key={pi} className="w-14 h-14 rounded-lg overflow-hidden flex-shrink-0 border border-[#E0D5C8]">
+                            <div key={pi} className="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0 border-4 border-white/80">
                               {p.photoURL ? (
                                 <img src={p.photoURL} alt={p.caption} className="w-full h-full object-cover" />
                               ) : (
                                 <div className="w-full h-full bg-gradient-to-br from-amber-100 to-orange-200 flex items-center justify-center">
-                                  <Camera className="w-4 h-4 text-white/60" />
+                                  <Camera className="w-6 h-6 text-white/60" />
                                 </div>
                               )}
                             </div>
                           ))}
                           {photos.length > 4 && (
-                            <div className="w-14 h-14 rounded-lg flex-shrink-0 bg-[#FAF6EE] flex items-center justify-center border border-[#E0D5C8]">
-                              <span className="text-xs font-bold" style={{ color: style.accent }}>+{photos.length - 4}</span>
+                            <div className="w-24 h-24 rounded-lg flex-shrink-0 bg-white/5 flex items-center justify-center border-4 border-white/80">
+                              <span className="text-sm font-bold" style={{ color: style.accent }}>+{photos.length - 4}</span>
                             </div>
                           )}
                         </div>
@@ -462,7 +453,7 @@ export default function Events() {
         <div className="flex justify-center mt-12">
           <button
             onClick={() => setShowCreateForm(true)}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-[#7A9E7E]/40 text-[#7A9E7E] hover:bg-[#7A9E7E]/5 hover:border-[#7A9E7E] transition font-medium"
+            className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-white/20 text-white/50 hover:bg-white/5 hover:border-white/30 transition font-medium"
           >
             <Plus className="w-5 h-5" />
             Agregar evento
@@ -479,13 +470,13 @@ export default function Events() {
         >
           <div
             className="inline-flex items-center gap-2 px-5 py-3 rounded-full"
-            style={{ backgroundColor: '#EBF5EC' }}
+            style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
           >
-            <Star className="w-4 h-4" style={{ color: '#7A9E7E' }} />
-            <span className="text-sm font-medium" style={{ color: '#5A7E5E' }}>
+            <Star className="w-4 h-4" style={{ color: '#6B9080' }} />
+            <span className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.5)' }}>
               Cada encuentro es una oportunidad para crear nuevos recuerdos
             </span>
-            <Star className="w-4 h-4" style={{ color: '#7A9E7E' }} />
+            <Star className="w-4 h-4" style={{ color: '#6B9080' }} />
           </div>
         </motion.div>
       </div>
@@ -499,11 +490,11 @@ export default function Events() {
         {deletingEvent && (
           <motion.div className="fixed inset-0 z-50 flex items-center justify-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setDeletingEvent(null)} />
-            <motion.div className="relative bg-[#FFF8F0] rounded-2xl shadow-2xl p-6 max-w-sm w-full text-center" initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}>
-              <h3 className="text-lg font-serif font-bold text-[#5D4037] mb-2">Eliminar evento</h3>
-              <p className="text-sm text-[#5D4037]/70 mb-6">¿Eliminar <strong>"{deletingEvent.title}"</strong>?</p>
+            <motion.div className="relative bg-[#1E293B] rounded-2xl shadow-2xl p-6 max-w-sm w-full text-center" initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}>
+              <h3 className="text-lg font-serif font-bold text-white mb-2">Eliminar evento</h3>
+              <p className="text-sm text-white/70 mb-6">¿Eliminar <strong>"{deletingEvent.title}"</strong>?</p>
               <div className="flex gap-3 justify-center">
-                <button onClick={() => setDeletingEvent(null)} className="px-5 py-2 rounded-lg border border-[#C4704B]/20 text-[#5D4037] hover:bg-[#FAF6EE] transition text-sm font-medium">Cancelar</button>
+                <button onClick={() => setDeletingEvent(null)} className="px-5 py-2 rounded-lg border border-white/20 text-white/70 hover:bg-white/5 transition text-sm font-medium">Cancelar</button>
                 <button onClick={handleDelete} className="px-5 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition text-sm font-medium">Eliminar</button>
               </div>
             </motion.div>

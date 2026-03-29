@@ -89,7 +89,7 @@ function createIcon(color, count) {
   });
 }
 
-const locationColors = ['#C4704B', '#7A9E7E', '#B8943E', '#5D4037'];
+const locationColors = ['#B8654A', '#6B9080', '#B8976A', '#0F172A'];
 
 function getColorForIndex(index) {
   return locationColors[index % locationColors.length];
@@ -172,7 +172,7 @@ export default function FamilyMap() {
     <section
       id="mapa"
       className="py-20 px-4"
-      style={{ backgroundColor: '#FAF7F2' }}
+      style={{ backgroundColor: '#0F172A' }}
     >
       <div className="max-w-6xl mx-auto">
         {/* Header */}
@@ -183,13 +183,12 @@ export default function FamilyMap() {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h2
-            className="text-4xl md:text-5xl font-serif font-bold mb-4"
-            style={{ color: '#5D4037' }}
-          >
+          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Donde estamos</p>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
             Donde Estamos
           </h2>
-          <p className="text-lg max-w-2xl mx-auto" style={{ color: '#7A6B5D' }}>
+          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
+          <p className="text-lg max-w-2xl mx-auto text-white/50">
             Nuestra familia se extiende por distintos lugares, pero siempre
             permanecemos unidos sin importar la distancia.
           </p>
@@ -206,7 +205,7 @@ export default function FamilyMap() {
           >
             <div
               className="rounded-2xl p-5 text-center shadow-sm"
-              style={{ backgroundColor: '#7A9E7E', color: '#fff' }}
+              style={{ backgroundColor: '#6B9080', color: '#fff' }}
             >
               <Globe className="mx-auto mb-2" size={28} />
               <p className="text-3xl font-bold">{locations.length}</p>
@@ -216,7 +215,7 @@ export default function FamilyMap() {
             </div>
             <div
               className="rounded-2xl p-5 text-center shadow-sm"
-              style={{ backgroundColor: '#C4704B', color: '#fff' }}
+              style={{ backgroundColor: '#B8654A', color: '#fff' }}
             >
               <Users className="mx-auto mb-2" size={28} />
               <p className="text-3xl font-bold">{totalPeople}</p>
@@ -248,7 +247,7 @@ export default function FamilyMap() {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6 }}
-              className="mb-12 rounded-2xl overflow-hidden shadow-lg border border-[#E0D5C8]"
+              className="mb-12 rounded-2xl overflow-hidden shadow-lg border-4 border-white/80"
               style={{ height: '400px' }}
             >
               <MapContainer center={[centerLat, centerLng]} zoom={5} style={{ height: '100%', width: '100%' }} scrollWheelZoom={false}>
@@ -260,10 +259,10 @@ export default function FamilyMap() {
                   <Marker key={m.name} position={m.coords} icon={createIcon(m.color, m.count)}>
                     <Popup>
                       <div style={{ minWidth: '150px' }}>
-                        <p style={{ fontWeight: 'bold', fontSize: '14px', color: '#5D4037', marginBottom: '4px' }}>{m.name}</p>
+                        <p style={{ fontWeight: 'bold', fontSize: '14px', color: '#FFFFFF', marginBottom: '4px' }}>{m.name}</p>
                         <p style={{ fontSize: '12px', color: '#7A6B5D', marginBottom: '6px' }}>{m.count} {m.count === 1 ? 'familiar' : 'familiares'}</p>
                         {m.people.map((p, i) => (
-                          <p key={i} style={{ fontSize: '11px', color: '#5D4037', padding: '1px 0' }}>• {p.name}</p>
+                          <p key={i} style={{ fontSize: '11px', color: '#FFFFFF', padding: '1px 0' }}>• {p.name}</p>
                         ))}
                       </div>
                     </Popup>
@@ -280,11 +279,11 @@ export default function FamilyMap() {
             <div
               className="inline-block w-10 h-10 border-4 rounded-full animate-spin"
               style={{
-                borderColor: '#C4704B',
+                borderColor: '#B8654A',
                 borderTopColor: 'transparent',
               }}
             />
-            <p className="mt-4" style={{ color: '#7A6B5D' }}>
+            <p className="mt-4 text-white/50">
               Cargando ubicaciones...
             </p>
           </div>
@@ -293,7 +292,7 @@ export default function FamilyMap() {
         {/* No locations message */}
         {!loading && locations.length === 0 && (
           <motion.div
-            className="text-center py-16 rounded-2xl shadow-sm bg-white"
+            className="text-center py-16 rounded-2xl shadow-sm bg-white/5"
             initial={{ opacity: 0 }}
             whileInView={{ opacity: 1 }}
             viewport={{ once: true }}
@@ -302,15 +301,14 @@ export default function FamilyMap() {
             <Home
               className="mx-auto mb-4"
               size={48}
-              style={{ color: '#B8943E' }}
+              style={{ color: '#B8976A' }}
             />
             <p
-              className="text-lg font-medium mb-2"
-              style={{ color: '#5D4037' }}
+              className="text-lg font-medium mb-2 text-white"
             >
               Agrega la ubicacion de cada familia en su perfil
             </p>
-            <p className="text-sm" style={{ color: '#7A6B5D' }}>
+            <p className="text-sm text-white/50">
               Cuando los miembros tengan una ubicacion asignada, apareceran aqui
               agrupados por ciudad.
             </p>
@@ -334,7 +332,7 @@ export default function FamilyMap() {
                 <motion.div
                   key={location}
                   variants={cardVariants}
-                  className="bg-white rounded-2xl shadow-md overflow-hidden"
+                  className="bg-white/5 rounded-2xl shadow-md overflow-hidden"
                   style={{ borderLeft: `4px solid ${color}` }}
                 >
                   {/* Card Header */}
@@ -343,8 +341,7 @@ export default function FamilyMap() {
                       <div className="flex items-center gap-2">
                         <MapPin size={22} style={{ color }} />
                         <h3
-                          className="text-xl font-bold"
-                          style={{ color: '#5D4037' }}
+                          className="text-xl font-bold text-white"
                         >
                           {location}
                         </h3>
@@ -366,8 +363,7 @@ export default function FamilyMap() {
                       {members.map((member) => (
                         <li
                           key={member.id}
-                          className="flex items-center gap-2 text-sm"
-                          style={{ color: '#5D4037' }}
+                          className="flex items-center gap-2 text-sm text-white/70"
                         >
                           <span
                             className="w-2 h-2 rounded-full flex-shrink-0"

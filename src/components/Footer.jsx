@@ -3,38 +3,30 @@ import { Heart } from "lucide-react";
 export default function Footer() {
   return (
     <footer
-      className="relative py-20 overflow-hidden"
-      style={{ backgroundColor: "#5D4037" }}
+      className="relative py-32 overflow-hidden"
+      style={{ backgroundColor: '#0F172A' }}
       aria-label="Pie de pagina"
     >
-      {/* Subtle warm glow */}
-      <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[30rem] h-40 rounded-full bg-[#B8943E] opacity-[0.06] blur-[80px] pointer-events-none" />
+      {/* Subtle radial glow */}
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[800px] h-[400px] rounded-full opacity-[0.06] blur-[100px]" style={{ background: 'radial-gradient(circle, #3B82F6, transparent 70%)' }} />
 
       <div className="relative z-10 max-w-3xl mx-auto px-6 text-center">
-        {/* Heart icon */}
-        <Heart
-          className="mx-auto mb-8 w-8 h-8 text-[#D4B96A]/60"
-          fill="currentColor"
-        />
+        {/* Small line */}
+        <div className="w-8 h-[1px] bg-white/20 mx-auto mb-12" />
 
         {/* Main quote */}
-        <blockquote className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[#FFF8F0] leading-tight">
+        <blockquote className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-white/90 leading-tight">
           &ldquo;La familia no es algo importante.
           <br />
-          Es todo.&rdquo;
+          <span className="italic" style={{ color: '#C8846A' }}>Es todo.</span>&rdquo;
         </blockquote>
 
+        {/* Heart */}
+        <Heart className="mx-auto mt-12 mb-12 w-5 h-5 text-[#B8654A]/40" fill="currentColor" />
+
         {/* Attribution */}
-        <p className="mt-6 font-sans text-lg text-[#D4B96A]/70 tracking-wide">
-          &mdash; Familia Guerrero
-        </p>
-
-        {/* Divider */}
-        <div className="mx-auto my-10 w-24 h-px bg-gradient-to-r from-transparent via-[#D4B96A]/30 to-transparent" />
-
-        {/* Legacy text */}
-        <p className="font-sans text-sm text-[#FFF8F0]/40 tracking-wider">
-          Familia Guerrero &mdash; Preservando nuestro legado desde 1906
+        <p className="font-sans text-[11px] text-white/25 uppercase tracking-[4px]">
+          Familia Guerrero &mdash; Desde 1906
         </p>
       </div>
     </footer>

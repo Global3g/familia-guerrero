@@ -6,10 +6,10 @@ import { getFamilyMembers } from '../firebase/familyService'
 const STORAGE_KEY = 'familia-guerrero-onboarding-dismissed'
 
 const steps = [
-  { icon: Users, label: 'Agrega a los hijos de los abuelos', color: '#7A9E7E' },
-  { icon: Camera, label: 'Sube fotos de cada familiar', color: '#C4704B' },
-  { icon: Heart, label: 'Agrega esposos y datos de boda', color: '#B8943E' },
-  { icon: MapPin, label: 'Completa las ubicaciones', color: '#5D4037' },
+  { icon: Users, label: 'Agrega a los hijos de los abuelos', color: '#6B9080' },
+  { icon: Camera, label: 'Sube fotos de cada familiar', color: '#B8654A' },
+  { icon: Heart, label: 'Agrega esposos y datos de boda', color: '#B8976A' },
+  { icon: MapPin, label: 'Completa las ubicaciones', color: '#FFFFFF' },
 ]
 
 export default function Onboarding() {
@@ -59,13 +59,13 @@ export default function Onboarding() {
             className="absolute top-3 right-3 rounded-full p-1 transition-colors hover:bg-black/10"
             aria-label="Cerrar"
           >
-            <X size={18} style={{ color: '#5D4037' }} />
+            <X size={18} style={{ color: '#FFFFFF' }} />
           </button>
 
           {/* Title */}
           <h3
             className="mb-4 text-lg font-bold"
-            style={{ color: '#5D4037' }}
+            style={{ color: '#FFFFFF' }}
           >
             Bienvenido! Empieza a construir tu arbol familiar
           </h3>
@@ -101,7 +101,7 @@ export default function Onboarding() {
           <button
             onClick={handleShare}
             className="inline-flex items-center gap-2 rounded-xl px-4 py-2 text-sm font-semibold text-white transition-all hover:brightness-110"
-            style={{ backgroundColor: '#7A9E7E' }}
+            style={{ backgroundColor: '#6B9080' }}
           >
             {copied ? 'Enlace copiado!' : 'Compartir formulario'}
             {!copied && <ArrowRight size={14} />}

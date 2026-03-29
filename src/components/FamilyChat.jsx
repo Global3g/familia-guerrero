@@ -9,7 +9,7 @@ function ChatButton({ onClick, unread }) {
   return (
     <button
       onClick={onClick}
-      className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-[#C4704B] text-white shadow-xl hover:bg-[#C4704B]/90 transition flex items-center justify-center"
+      className="fixed bottom-6 right-6 z-40 w-14 h-14 rounded-full bg-[#B8654A] text-white shadow-xl hover:bg-[#B8654A]/90 transition flex items-center justify-center"
     >
       <MessageCircle className="w-6 h-6" />
       {unread > 0 && (
@@ -120,10 +120,10 @@ export default function FamilyChat() {
           animate={{ y: 0, opacity: 1 }}
           exit={{ y: 600, opacity: 0 }}
           transition={{ type: 'spring', damping: 25, stiffness: 300 }}
-          className="fixed bottom-6 right-6 z-50 w-80 sm:w-96 h-[500px] bg-[#FFF8F0] rounded-2xl shadow-2xl flex flex-col overflow-hidden"
+          className="fixed bottom-6 right-6 z-50 w-80 sm:w-96 h-[500px] bg-[#1E293B] rounded-2xl shadow-2xl flex flex-col overflow-hidden"
         >
           {/* Header */}
-          <div className="bg-[#5D4037] text-white px-4 py-3 flex items-center justify-between rounded-t-2xl shrink-0">
+          <div className="bg-[#0F172A] text-white px-4 py-3 flex items-center justify-between rounded-t-2xl shrink-0">
             <div className="flex items-center gap-2">
               <MessageCircle className="w-5 h-5" />
               <span className="font-semibold text-lg">Chat Familiar</span>
@@ -148,16 +148,16 @@ export default function FamilyChat() {
                   <div
                     className={`max-w-[75%] rounded-xl px-3 py-2 ${
                       isOwn
-                        ? 'bg-[#C4704B]/10 rounded-br-sm'
+                        ? 'bg-[#B8654A]/10 rounded-br-sm'
                         : 'bg-white rounded-bl-sm shadow-sm'
                     }`}
                   >
                     {!isOwn && (
                       <div className="flex items-center gap-2 mb-1">
-                        <div className="w-6 h-6 rounded-full bg-[#5D4037] text-white text-xs font-bold flex items-center justify-center shrink-0">
+                        <div className="w-6 h-6 rounded-full bg-[#0F172A] text-white text-xs font-bold flex items-center justify-center shrink-0">
                           {msg.author?.charAt(0)?.toUpperCase() || '?'}
                         </div>
-                        <span className="text-xs font-semibold text-[#5D4037]">
+                        <span className="text-xs font-semibold text-white">
                           {msg.author}
                         </span>
                       </div>
@@ -182,7 +182,7 @@ export default function FamilyChat() {
           {/* Input */}
           <form
             onSubmit={handleSend}
-            className="shrink-0 border-t border-gray-200 px-3 py-2 flex items-center gap-2 bg-white"
+            className="shrink-0 border-t border-white/80 px-3 py-2 flex items-center gap-2 bg-white/5"
           >
             <input
               ref={inputRef}
@@ -190,12 +190,12 @@ export default function FamilyChat() {
               value={newMessage}
               onChange={(e) => setNewMessage(e.target.value)}
               placeholder="Escribe un mensaje..."
-              className="flex-1 text-sm px-3 py-2 rounded-full border border-gray-300 focus:outline-none focus:border-[#C4704B] bg-[#FFF8F0]"
+              className="flex-1 text-sm px-3 py-2 rounded-full border-4 border-white/80 focus:outline-none focus:border-[#B8654A] bg-white/5 text-white"
             />
             <button
               type="submit"
               disabled={!newMessage.trim()}
-              className="w-9 h-9 rounded-full bg-[#C4704B] text-white flex items-center justify-center hover:bg-[#C4704B]/90 transition disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
+              className="w-9 h-9 rounded-full bg-[#B8654A] text-white flex items-center justify-center hover:bg-[#B8654A]/90 transition disabled:opacity-40 disabled:cursor-not-allowed shrink-0"
             >
               <Send className="w-4 h-4" />
             </button>

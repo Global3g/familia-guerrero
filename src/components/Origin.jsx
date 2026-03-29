@@ -29,17 +29,16 @@ const ProfileCard = ({ person, index, onEdit }) => {
       className="flex-1 min-w-[300px] max-w-md relative"
     >
       <div
-        className="rounded-2xl shadow-lg overflow-hidden border"
+        className="rounded-2xl shadow-lg overflow-hidden border-4 border-white/80"
         style={{
-          backgroundColor: '#FFF8F0',
-          borderColor: isGrandfather ? '#C4704B40' : '#7A9E7E40',
+          backgroundColor: 'rgba(255,255,255,0.05)',
         }}
       >
         {/* Edit button */}
         <button
           onClick={onEdit}
-          className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full flex items-center justify-center bg-white/80 hover:bg-white shadow-md transition"
-          style={{ color: isGrandfather ? '#C4704B' : '#7A9E7E' }}
+          className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 shadow-md transition"
+          style={{ color: isGrandfather ? '#B8654A' : '#6B9080' }}
         >
           <Pencil className="w-4 h-4" />
         </button>
@@ -50,17 +49,17 @@ const ProfileCard = ({ person, index, onEdit }) => {
             <img
               src={person.photoURL || person.photo}
               alt={person.name}
-              className={`w-40 h-40 rounded-full object-cover shadow-md ring-4 ${isGrandfather ? 'ring-[#C4704B]/20' : 'ring-[#7A9E7E]/20'}`}
-              style={{ border: `4px solid ${isGrandfather ? '#C4704B' : '#7A9E7E'}` }}
+              className={`w-40 h-40 rounded-full object-cover shadow-md ring-4 ${isGrandfather ? 'ring-[#B8654A]/20' : 'ring-[#6B9080]/20'}`}
+              style={{ border: `4px solid ${isGrandfather ? '#B8654A' : '#6B9080'}` }}
             />
           ) : (
             <div
               className="w-40 h-40 rounded-full flex items-center justify-center shadow-md"
               style={{
                 background: isGrandfather
-                  ? 'linear-gradient(135deg, #C4704B, #B8943E)'
-                  : 'linear-gradient(135deg, #7A9E7E, #B8943E)',
-                border: `4px solid ${isGrandfather ? '#C4704B' : '#7A9E7E'}`,
+                  ? 'linear-gradient(135deg, #B8654A, #B8976A)'
+                  : 'linear-gradient(135deg, #6B9080, #B8976A)',
+                border: `4px solid ${isGrandfather ? '#B8654A' : '#6B9080'}`,
               }}
             >
               <Camera className="w-12 h-12 text-white/80" />
@@ -71,8 +70,8 @@ const ProfileCard = ({ person, index, onEdit }) => {
         {/* Info */}
         <div className="px-5 pb-6 text-center">
           <h3
-            className="text-2xl font-serif font-bold mb-1"
-            style={{ color: '#5D4037' }}
+            className="text-3xl font-serif font-bold mb-1"
+            style={{ color: '#FFFFFF' }}
           >
             {person.name}
             {(() => {
@@ -82,8 +81,8 @@ const ProfileCard = ({ person, index, onEdit }) => {
                 <span
                   className="ml-2 text-xs font-medium px-2 py-0.5 rounded-full align-middle"
                   style={{
-                    backgroundColor: r.deceased ? '#B8943E20' : '#7A9E7E20',
-                    color: r.deceased ? '#B8943E' : '#7A9E7E',
+                    backgroundColor: r.deceased ? '#B8976A20' : '#6B908020',
+                    color: r.deceased ? '#B8976A' : '#6B9080',
                   }}
                 >
                   {r.deceased ? `${r.age} años` : `${r.age} años`}
@@ -93,16 +92,16 @@ const ProfileCard = ({ person, index, onEdit }) => {
           </h3>
 
           {person.nickname && (
-            <p className="text-sm font-medium italic mb-1" style={{ color: isGrandfather ? '#C4704B' : '#7A9E7E' }}>
+            <p className="text-lg font-medium italic mb-1" style={{ color: isGrandfather ? '#B8654A' : '#6B9080' }}>
               "{person.nickname}"
             </p>
           )}
 
           <span
-            className="inline-block text-sm font-semibold tracking-wider uppercase mb-4 px-3 py-1 rounded-full"
+            className="inline-block text-base font-semibold tracking-wider uppercase mb-4 px-3 py-1 rounded-full"
             style={{
-              color: isGrandfather ? '#C4704B' : '#7A9E7E',
-              backgroundColor: isGrandfather ? '#C4704B15' : '#7A9E7E15',
+              color: isGrandfather ? '#B8654A' : '#6B9080',
+              backgroundColor: isGrandfather ? '#B8654A15' : '#6B908015',
             }}
           >
             {person.role}
@@ -110,8 +109,8 @@ const ProfileCard = ({ person, index, onEdit }) => {
 
           {/* Birth info */}
           <div className="flex flex-col items-center gap-1 mb-5">
-            <div className="flex items-center gap-2 text-sm" style={{ color: '#5D4037CC' }}>
-              <Calendar className="w-4 h-4" style={{ color: '#B8943E' }} />
+            <div className="flex items-center gap-2 text-base" style={{ color: '#FFFFFF' }}>
+              <Calendar className="w-5 h-5" style={{ color: '#B8976A' }} />
               <span>{formatDate(person.birthDate)}</span>
               {person.deathDate && (
                 <>
@@ -120,8 +119,8 @@ const ProfileCard = ({ person, index, onEdit }) => {
                 </>
               )}
             </div>
-            <div className="flex items-center gap-2 text-sm" style={{ color: '#5D4037CC' }}>
-              <MapPin className="w-4 h-4" style={{ color: '#C4704B' }} />
+            <div className="flex items-center gap-2 text-base" style={{ color: '#FFFFFF' }}>
+              <MapPin className="w-5 h-5" style={{ color: '#B8654A' }} />
               <span>{person.birthPlace}</span>
             </div>
           </div>
@@ -130,15 +129,15 @@ const ProfileCard = ({ person, index, onEdit }) => {
           {person.quote && (
             <div
               className="relative mb-5 px-4 py-3 rounded-xl"
-              style={{ backgroundColor: '#B8943E10' }}
+              style={{ backgroundColor: '#B8976A10' }}
             >
               <Quote
                 className="w-5 h-5 absolute -top-2 left-3"
-                style={{ color: '#B8943E' }}
+                style={{ color: '#B8976A' }}
               />
               <p
-                className="text-sm italic font-serif leading-relaxed"
-                style={{ color: '#5D4037' }}
+                className="text-base italic font-serif leading-relaxed"
+                style={{ color: '#FFFFFF' }}
               >
                 {person.quote}
               </p>
@@ -147,8 +146,8 @@ const ProfileCard = ({ person, index, onEdit }) => {
 
           {/* Bio */}
           <p
-            className="text-sm leading-relaxed mb-5"
-            style={{ color: '#5D4037CC' }}
+            className="text-base leading-relaxed mb-5"
+            style={{ color: '#FFFFFF' }}
           >
             {person.bio}
           </p>
@@ -159,11 +158,11 @@ const ProfileCard = ({ person, index, onEdit }) => {
               {person.values.map((value, i) => (
                 <span
                   key={i}
-                  className="text-xs font-medium px-3 py-1 rounded-full"
+                  className="text-sm font-medium px-3 py-1 rounded-full"
                   style={{
-                    color: isGrandfather ? '#C4704B' : '#7A9E7E',
-                    backgroundColor: isGrandfather ? '#C4704B18' : '#7A9E7E18',
-                    border: `1px solid ${isGrandfather ? '#C4704B30' : '#7A9E7E30'}`,
+                    color: isGrandfather ? '#B8654A' : '#6B9080',
+                    backgroundColor: isGrandfather ? '#B8654A18' : '#6B908018',
+                    border: `1px solid ${isGrandfather ? '#B8654A30' : '#6B908030'}`,
                   }}
                 >
                   {value}
@@ -215,8 +214,8 @@ export default function Origin() {
   return (
     <section
       id="origen"
-      className="py-20 px-4"
-      style={{ backgroundColor: '#FFFBF5' }}
+      className="py-24 px-4"
+      style={{ backgroundColor: '#0F172A' }}
     >
       <div className="max-w-6xl mx-auto">
         {/* Section title */}
@@ -225,19 +224,14 @@ export default function Origin() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.7 }}
-          className="text-center mb-16"
+          className="text-center mb-20"
         >
-          <h2
-            className="text-4xl md:text-5xl font-serif font-bold mb-4"
-            style={{ color: '#5D4037', fontFamily: "'Playfair Display', serif" }}
-          >
+          <p className="text-[16px] font-sans font-semibold uppercase tracking-[5px] text-white mb-4">Nuestro origen</p>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
             Donde Todo Comenzo
           </h2>
-          <div
-            className="w-24 h-1 mx-auto rounded-full mb-4"
-            style={{ backgroundColor: '#B8943E' }}
-          />
-          <p className="text-lg max-w-2xl mx-auto" style={{ color: '#5D4037AA' }}>
+          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
+          <p className="text-2xl text-white max-w-2xl mx-auto leading-relaxed font-medium">
             El amor que nos dio vida a todos
           </p>
         </motion.div>
@@ -257,7 +251,7 @@ export default function Origin() {
             <div
               className="w-16 h-16 rounded-full flex items-center justify-center shadow-md"
               style={{
-                background: 'linear-gradient(135deg, #C4704B, #B8943E)',
+                background: 'linear-gradient(135deg, #B8654A, #B8976A)',
               }}
             >
               <Heart className="w-8 h-8 text-white fill-white" />
@@ -276,43 +270,42 @@ export default function Origin() {
           className="max-w-3xl mx-auto"
         >
           <div
-            className="rounded-2xl shadow-lg p-8 md:p-10 text-center border"
+            className="rounded-2xl shadow-lg p-8 md:p-10 text-center border-4 border-white/80"
             style={{
-              backgroundColor: '#FFF8F0',
-              borderColor: '#B8943E30',
+              backgroundColor: 'rgba(255,255,255,0.05)',
             }}
           >
             {/* Wedding heart icon */}
             <div className="flex justify-center mb-5">
               <div
                 className="w-14 h-14 rounded-full flex items-center justify-center"
-                style={{ backgroundColor: '#C4704B15' }}
+                style={{ backgroundColor: '#B8654A15' }}
               >
-                <Heart className="w-7 h-7" style={{ color: '#C4704B', fill: '#C4704B' }} />
+                <Heart className="w-7 h-7" style={{ color: '#B8654A', fill: '#B8654A' }} />
               </div>
             </div>
 
             <h3
               className="text-3xl md:text-4xl font-serif font-bold mb-2"
-              style={{ color: '#5D4037', fontFamily: "'Playfair Display', serif" }}
+              style={{ color: '#FFFFFF', fontFamily: "'Playfair Display', serif" }}
             >
               Su Historia de Amor
             </h3>
             {weddingDate && (
-              <p className="text-sm font-medium tracking-wide mb-3" style={{ color: '#B8943E' }}>
+              <p className="text-sm font-medium tracking-wide mb-3" style={{ color: '#B8976A' }}>
                 Juntos desde {new Date(weddingDate).getFullYear()}
               </p>
             )}
 
             {/* Wedding details */}
             <div className="flex flex-col sm:flex-row items-center justify-center gap-4 mb-6">
-              <div className="flex items-center gap-2 text-sm" style={{ color: '#5D4037CC' }}>
-                <Calendar className="w-4 h-4" style={{ color: '#B8943E' }} />
+              <div className="flex items-center gap-2 text-base" style={{ color: '#FFFFFF' }}>
+                <Calendar className="w-5 h-5" style={{ color: '#B8976A' }} />
                 <span>{formatDate(weddingDate)}</span>
               </div>
-              <span className="hidden sm:inline" style={{ color: '#B8943E' }}>|</span>
-              <div className="flex items-center gap-2 text-sm" style={{ color: '#5D4037CC' }}>
-                <MapPin className="w-4 h-4" style={{ color: '#C4704B' }} />
+              <span className="hidden sm:inline" style={{ color: '#B8976A' }}>|</span>
+              <div className="flex items-center gap-2 text-base" style={{ color: '#FFFFFF' }}>
+                <MapPin className="w-5 h-5" style={{ color: '#B8654A' }} />
                 <span>{weddingPlace}</span>
               </div>
             </div>
@@ -320,16 +313,16 @@ export default function Origin() {
             {/* Story */}
             <p
               className="text-lg md:text-xl leading-relaxed font-serif italic"
-              style={{ color: '#5D4037' }}
+              style={{ color: '#FFFFFF' }}
             >
               {story}
             </p>
 
             {/* Decorative divider */}
             <div className="flex items-center justify-center gap-3 mt-6">
-              <div className="w-12 h-px" style={{ backgroundColor: '#B8943E50' }} />
-              <Heart className="w-4 h-4" style={{ color: '#B8943E' }} />
-              <div className="w-12 h-px" style={{ backgroundColor: '#B8943E50' }} />
+              <div className="w-12 h-px" style={{ backgroundColor: '#B8976A50' }} />
+              <Heart className="w-4 h-4" style={{ color: '#B8976A' }} />
+              <div className="w-12 h-px" style={{ backgroundColor: '#B8976A50' }} />
             </div>
           </div>
         </motion.div>

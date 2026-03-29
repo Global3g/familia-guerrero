@@ -79,34 +79,37 @@ export default function FamilyProgress() {
   if (data.missingGender > 0) missing.push(`${data.missingGender} generos`)
 
   return (
-    <div className="bg-[#7A9E7E]/10 border border-[#7A9E7E]/20 rounded-xl p-3">
+    <div className="bg-[#0F172A] rounded-2xl border-4 border-white/80 p-5 shadow-sm">
       {/* Header */}
-      <div className="flex items-center justify-between mb-2">
-        <div className="flex items-center gap-2">
-          <CheckCircle className="w-4 h-4 text-[#7A9E7E]" />
-          <span className="text-sm font-semibold text-[#5D4037]">
-            Tu familia esta {data.percentage}% completa
-          </span>
+      <div className="flex items-center justify-between mb-3">
+        <div className="flex items-center gap-2.5">
+          <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+            <CheckCircle className="w-4 h-4 text-[#60D394]" />
+          </div>
+          <div>
+            <span className="text-sm font-semibold text-white">
+              {data.percentage}% completo
+            </span>
+            <p className="text-[11px] text-white/50">{totalPeople} personas registradas</p>
+          </div>
         </div>
-        <span className="text-xs text-[#5D4037]/50">
-          {totalPeople} personas
-        </span>
+        <span className="text-2xl font-serif font-bold text-white">{data.percentage}%</span>
       </div>
 
       {/* Progress bar */}
-      <div className="w-full h-3 rounded-full bg-[#E0D5C8]/50 overflow-hidden mb-2">
+      <div className="w-full h-1.5 rounded-full bg-white/5 overflow-hidden mb-3">
         <motion.div
           initial={{ width: 0 }}
           animate={{ width: `${data.percentage}%` }}
           transition={{ duration: 1.2, ease: 'easeOut' }}
           className="h-full rounded-full"
-          style={{ backgroundColor: '#7A9E7E' }}
+          style={{ backgroundColor: '#0F172A' }}
         />
       </div>
 
       {/* Missing items */}
       {missing.length > 0 && (
-        <p className="text-xs text-[#5D4037]/60">
+        <p className="text-xs text-white/50">
           Faltan: {missing.join(', ')}
         </p>
       )}

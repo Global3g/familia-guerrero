@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
-import { motion } from 'framer-motion'
-import { Gift, Heart, PartyPopper, Calendar } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
+import { Gift, Heart, PartyPopper, Calendar, X } from 'lucide-react'
 import { getFamilyMembers, getGrandparents } from '../firebase/familyService'
 
 const MESES = ['', 'Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic']
@@ -8,6 +8,7 @@ const MESES_FULL = ['', 'Enero', 'Febrero', 'Marzo', 'Abril', 'Mayo', 'Junio', '
 
 export default function WeeklyBanner() {
   const [events, setEvents] = useState([])
+  const [lightboxPhoto, setLightboxPhoto] = useState(null)
 
   useEffect(() => {
     async function load() {
@@ -73,34 +74,35 @@ export default function WeeklyBanner() {
   }
 
   const getColors = (e) => {
-    if (e.diffDays === 0) return { bg: '#C4704B', text: 'white', accent: '#FFD6C4' }
-    if (e.diffDays <= 7) return { bg: '#FFF3ED', text: '#C4704B', accent: '#C4704B' }
-    if (e.type === 'anniversary') return { bg: '#FDF6EE', text: '#B8943E', accent: '#B8943E' }
-    return { bg: '#F2F7F3', text: '#5D4037', accent: '#7A9E7E' }
+    if (e.diffDays === 0) return { bg: '#B8654A', text: 'white', accent: '#BFDBFE' }
+    if (e.diffDays <= 7) return { bg: '#EFF6FF', text: '#B8654A', accent: '#B8654A' }
+    if (e.type === 'anniversary') return { bg: '#F8FAFC', text: '#B8976A', accent: '#B8976A' }
+    return { bg: '#F1F5F9', text: '#0F172A', accent: '#6B9080' }
   }
 
   const initials = (name) => (name || '?').split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase()
 
   return (
-    <section className="py-6" style={{ backgroundColor: '#FFFDF7' }}>
+    <section className="py-16" style={{ backgroundColor: '#0F172A' }}>
       <div className="max-w-6xl mx-auto px-4">
         {/* Title */}
-        <div className="flex items-center gap-2 mb-4">
-          <Calendar className="w-5 h-5" style={{ color: '#C4704B' }} />
-          <h3 className="text-lg font-serif font-bold" style={{ color: '#5D4037' }}>
-            Proximos Eventos
-          </h3>
+        <div className="flex items-center justify-between mb-8">
+          <div>
+            <p className="text-[16px] font-sans font-semibold uppercase tracking-[5px] text-white mb-2">Calendario</p>
+            <h3 className="text-2xl font-serif font-bold text-white">Proximos Eventos</h3>
+          </div>
+          <Calendar className="w-5 h-5 text-white/20" />
         </div>
 
         {/* Scrollable cards */}
         <div
-          className="flex gap-3 overflow-x-auto pb-3 -mx-4 px-4"
+          className="flex gap-4 overflow-x-auto pb-4 -mx-4 px-4"
           style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}
         >
           <style>{`.event-scroll::-webkit-scrollbar { display: none; }`}</style>
           {events.map((e, i) => {
-            const c = getColors(e)
             const isToday = e.diffDays === 0
+            const isSoon = e.diffDays <= 7
             const Icon = e.type === 'birthday' ? Gift : Heart
 
             return (
@@ -108,79 +110,55 @@ export default function WeeklyBanner() {
                 key={i}
                 initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: i * 0.08, duration: 0.4 }}
-                className="flex-shrink-0 rounded-2xl overflow-hidden relative"
+                transition={{ delay: i * 0.06, duration: 0.4 }}
+                className="flex-shrink-0 rounded-2xl overflow-hidden"
                 style={{
-                  backgroundColor: c.bg,
-                  width: 180,
-                  border: isToday ? `2px solid ${c.bg}` : '1px solid #E0D5C830',
-                  boxShadow: isToday ? '0 4px 20px rgba(196,112,75,0.25)' : '0 2px 8px rgba(0,0,0,0.06)',
+                  backgroundColor: isToday ? '#B8654A' : 'rgba(255,255,255,0.05)',
+                  width: 220,
+                  border: '6px solid rgba(255,255,255,0.8)',
                 }}
               >
-                {/* Date header */}
-                <div
-                  className="text-center py-3.5 px-4"
-                  style={{ backgroundColor: isToday ? '#C4704B' : `${c.accent}15` }}
-                >
-                  <p
-                    className="text-3xl font-bold leading-none"
-                    style={{ color: isToday ? 'white' : c.accent }}
-                  >
+                {/* Date */}
+                <div className="text-center pt-8 pb-3 px-5">
+                  <p className={`text-4xl font-serif font-bold leading-none ${isToday ? 'text-white' : 'text-white/90'}`}>
                     {e.day}
                   </p>
-                  <p
-                    className="text-[11px] font-semibold uppercase tracking-wider"
-                    style={{ color: isToday ? 'rgba(255,255,255,0.8)' : `${c.accent}99` }}
-                  >
+                  <p className={`text-[11px] font-medium uppercase tracking-wider mt-1 ${isToday ? 'text-white/70' : 'text-white/30'}`}>
                     {MESES[e.month]}
                   </p>
                 </div>
 
                 {/* Body */}
-                <div className="px-4 py-4 text-center">
-                  {/* Avatar */}
-                  <div className="flex justify-center mb-2">
+                <div className="px-5 py-6 text-center">
+                  <div className="flex justify-center mb-4">
                     {e.photoURL ? (
                       <img
                         src={e.photoURL}
                         alt={e.name}
-                        className="w-12 h-12 rounded-full object-cover"
-                        style={{ border: `2px solid ${c.accent}40` }}
+                        className="w-20 h-20 rounded-full object-cover border-4 border-white/30 cursor-pointer hover:border-white/60 transition-all hover:scale-105"
+                        onClick={() => setLightboxPhoto({ url: e.photoURL, name: e.fullName })}
                       />
                     ) : (
-                      <div
-                        className="w-12 h-12 rounded-full flex items-center justify-center text-sm font-bold"
-                        style={{ backgroundColor: `${c.accent}20`, color: c.accent }}
-                      >
+                      <div className="w-20 h-20 rounded-full flex items-center justify-center text-base font-bold bg-white/10 text-white/60">
                         {initials(e.name)}
                       </div>
                     )}
                   </div>
 
-                  {/* Name */}
-                  <p
-                    className="text-base font-bold leading-tight mb-1 truncate"
-                    style={{ color: isToday ? '#5D4037' : c.text }}
-                  >
+                  <p className={`text-sm font-semibold leading-tight mb-1 truncate ${isToday ? 'text-white' : 'text-white/80'}`}>
                     {e.name}
                   </p>
 
-                  {/* Type badge */}
-                  <div className="flex items-center justify-center gap-1 mb-1.5">
-                    <Icon className="w-3 h-3" style={{ color: c.accent }} />
-                    <span className="text-[10px] font-medium" style={{ color: `${c.text}90` }}>
+                  <div className="flex items-center justify-center gap-1 mb-2">
+                    <Icon className={`w-3 h-3 ${isToday ? 'text-white/60' : 'text-white/30'}`} />
+                    <span className={`text-[10px] ${isToday ? 'text-white/60' : 'text-white/30'}`}>
                       {e.type === 'birthday' ? 'Cumple' : 'Aniversario'}
                     </span>
                   </div>
 
-                  {/* Countdown */}
-                  <span
-                    className="inline-block text-[10px] font-bold px-2.5 py-0.5 rounded-full"
-                    style={{
-                      backgroundColor: isToday ? '#C4704B' : `${c.accent}18`,
-                      color: isToday ? 'white' : c.accent,
-                    }}
-                  >
+                  <span className={`inline-block text-[10px] font-semibold px-2.5 py-1 rounded-full ${
+                    isToday ? 'bg-white/20 text-white' : isSoon ? 'bg-[#B8654A]/20 text-[#B8654A]' : 'bg-white/5 text-white/40'
+                  }`}>
                     {isToday && <PartyPopper className="w-3 h-3 inline mr-0.5 -mt-0.5" />}
                     {formatDiff(e.diffDays)}
                   </span>
@@ -190,6 +168,42 @@ export default function WeeklyBanner() {
           })}
         </div>
       </div>
+
+      {/* Lightbox Modal */}
+      <AnimatePresence>
+        {lightboxPhoto && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setLightboxPhoto(null)}
+          >
+            <motion.div
+              className="relative max-w-4xl max-h-[90vh]"
+              initial={{ scale: 0.9 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.9 }}
+              onClick={(e) => e.stopPropagation()}
+            >
+              <button
+                onClick={() => setLightboxPhoto(null)}
+                className="absolute -top-4 -right-4 w-10 h-10 rounded-full bg-white flex items-center justify-center hover:bg-gray-100 transition"
+              >
+                <X className="w-6 h-6 text-gray-800" />
+              </button>
+              <img
+                src={lightboxPhoto.url}
+                alt={lightboxPhoto.name}
+                className="max-w-full max-h-[90vh] rounded-lg shadow-2xl"
+              />
+              <div className="mt-4 text-center">
+                <p className="text-white text-lg font-semibold">{lightboxPhoto.name}</p>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </section>
   )
 }

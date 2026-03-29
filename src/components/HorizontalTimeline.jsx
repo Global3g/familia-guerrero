@@ -6,40 +6,40 @@ import formatDate from '../utils/formatDate';
 
 const typeConfig = {
   nacimiento: {
-    color: '#7A9E7E',
-    gradient: 'from-[#7A9E7E] to-[#5a7e5e]',
+    color: '#6B9080',
+    gradient: 'from-[#6B9080] to-[#5a7e5e]',
     icon: Baby,
     label: 'Nacimiento',
   },
   boda: {
-    color: '#C4704B',
-    gradient: 'from-[#C4704B] to-[#a4553a]',
+    color: '#B8654A',
+    gradient: 'from-[#B8654A] to-[#a4553a]',
     icon: Heart,
     label: 'Boda',
   },
   memorial: {
-    color: '#B8943E',
-    gradient: 'from-[#B8943E] to-[#98742e]',
+    color: '#B8976A',
+    gradient: 'from-[#B8976A] to-[#98742e]',
     icon: Star,
     label: 'Memorial',
   },
   reunion: {
-    color: '#2C3E50',
-    gradient: 'from-[#2C3E50] to-[#1a252f]',
+    color: '#FFFFFF',
+    gradient: 'from-[#0F172A] to-[#1a252f]',
     icon: Users,
     label: 'Reunion',
   },
   aniversario: {
-    color: '#E8956D',
-    gradient: 'from-[#E8956D] to-[#c8754d]',
+    color: '#C8846A',
+    gradient: 'from-[#C8846A] to-[#c8754d]',
     icon: Heart,
     label: 'Aniversario',
   },
 };
 
 const defaultConfig = {
-  color: '#5D4037',
-  gradient: 'from-[#5D4037] to-[#3e2a25]',
+  color: '#FFFFFF',
+  gradient: 'from-[#0F172A] to-[#3e2a25]',
   icon: Star,
   label: 'Evento',
 };
@@ -210,7 +210,7 @@ export default function HorizontalTimeline() {
   };
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8 bg-[#FFFDF7]">
+    <section className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#0F172A' }}>
       <div className="max-w-7xl mx-auto">
         {/* Section title */}
         <motion.div
@@ -220,10 +220,14 @@ export default function HorizontalTimeline() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <h2 className="font-serif text-3xl sm:text-4xl md:text-5xl font-bold text-[#5D4037] tracking-tight">
+          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Linea del tiempo</p>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
             Momentos Clave
           </h2>
-          <div className="mt-4 mx-auto w-24 h-1 rounded-full bg-gradient-to-r from-[#7A9E7E] to-[#C4704B]" />
+          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
+          <p className="text-base text-white/50 max-w-md mx-auto leading-relaxed">
+            Un recorrido por los eventos mas importantes de nuestra familia.
+          </p>
         </motion.div>
 
         {/* Loading state */}
@@ -232,7 +236,7 @@ export default function HorizontalTimeline() {
             {[...Array(4)].map((_, i) => (
               <div
                 key={i}
-                className="flex-shrink-0 w-[280px] h-[320px] rounded-2xl bg-[#F5EDE3] animate-pulse"
+                className="flex-shrink-0 w-[280px] h-[320px] rounded-2xl bg-white/5 animate-pulse"
               />
             ))}
           </div>
@@ -245,7 +249,7 @@ export default function HorizontalTimeline() {
             {canScrollLeft && (
               <button
                 onClick={() => scroll('left')}
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-white/90 shadow-lg border border-[#E0D5C8] flex items-center justify-center text-[#5D4037] hover:bg-white hover:shadow-xl transition -ml-2 backdrop-blur-sm"
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-white/10 shadow-lg border-4 border-white/80 flex items-center justify-center text-white/50 hover:bg-white/20 hover:shadow-xl transition -ml-2 backdrop-blur-sm"
               >
                 <ChevronLeft size={22} />
               </button>
@@ -255,7 +259,7 @@ export default function HorizontalTimeline() {
             {canScrollRight && (
               <button
                 onClick={() => scroll('right')}
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-white/90 shadow-lg border border-[#E0D5C8] flex items-center justify-center text-[#5D4037] hover:bg-white hover:shadow-xl transition -mr-2 backdrop-blur-sm"
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-white/10 shadow-lg border-4 border-white/80 flex items-center justify-center text-white/50 hover:bg-white/20 hover:shadow-xl transition -mr-2 backdrop-blur-sm"
               >
                 <ChevronRight size={22} />
               </button>
@@ -287,7 +291,7 @@ export default function HorizontalTimeline() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: '-40px' }}
                     transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.3) }}
-                    className="flex-shrink-0 w-[280px] h-[320px] rounded-2xl shadow-lg overflow-hidden cursor-default hover:shadow-xl transition-shadow duration-300"
+                    className="flex-shrink-0 w-[280px] h-[320px] rounded-2xl shadow-lg overflow-hidden cursor-default hover:shadow-xl transition-shadow duration-300 bg-white/5 border-4 border-white/80"
                     style={{ scrollSnapAlign: 'start' }}
                   >
                     {/* Top half: gradient or photo */}
@@ -322,30 +326,29 @@ export default function HorizontalTimeline() {
                     </div>
 
                     {/* Bottom half: content */}
-                    <div className="h-[180px] bg-white p-5 flex flex-col">
+                    <div className="h-[180px] bg-transparent p-5 flex flex-col">
                       {/* Year */}
                       <span
-                        className="text-3xl font-serif font-bold leading-none mb-1"
-                        style={{ color: config.color }}
+                        className="text-3xl font-serif font-bold leading-none mb-1 text-white"
                       >
                         {event.year}
                       </span>
 
                       {/* Date */}
                       {event.date && (
-                        <p className="text-[11px] text-[#5D4037]/45 tracking-wide uppercase mb-2">
+                        <p className="text-[11px] text-white/50 tracking-wide uppercase mb-2">
                           {formatDate(event.date)}
                         </p>
                       )}
 
                       {/* Title */}
-                      <h3 className="font-serif text-base font-bold text-[#5D4037] leading-snug line-clamp-2 mb-1">
+                      <h3 className="font-serif text-base font-bold text-white leading-snug line-clamp-2 mb-1">
                         {event.title}
                       </h3>
 
                       {/* Description */}
                       {event.description && (
-                        <p className="text-xs text-[#5D4037]/60 leading-relaxed line-clamp-2 mt-auto">
+                        <p className="text-xs text-white/50 leading-relaxed line-clamp-2 mt-auto">
                           {event.description}
                         </p>
                       )}
@@ -360,10 +363,10 @@ export default function HorizontalTimeline() {
         {/* Empty state */}
         {!loading && events.length === 0 && (
           <div className="text-center py-16">
-            <div className="w-16 h-16 rounded-full bg-[#C4704B]/10 flex items-center justify-center mx-auto mb-4">
-              <Star className="w-8 h-8 text-[#C4704B]/50" />
+            <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-4">
+              <Star className="w-8 h-8 text-white/30" />
             </div>
-            <p className="text-lg font-serif font-bold text-[#5D4037]/60">
+            <p className="text-lg font-serif font-bold text-white/60">
               Sin momentos clave todavia
             </p>
           </div>

@@ -4,10 +4,10 @@ import { Bell, Calendar, Heart, Star, Gift, Clock } from 'lucide-react'
 import { getFamilyMembers, getGrandparents } from '../firebase/familyService'
 
 const COLORS = {
-  birthday: '#7A9E7E',
-  anniversary: '#C4704B',
-  memorial: '#B8943E',
-  milestone: '#E8956D',
+  birthday: '#6B9080',
+  anniversary: '#B8654A',
+  memorial: '#B8976A',
+  milestone: '#C8846A',
 }
 
 const ICONS = {
@@ -232,7 +232,7 @@ export default function Reminders() {
   }, [])
 
   return (
-    <section id="recordatorios" className="py-20 px-4" style={{ backgroundColor: '#FAF7F2' }}>
+    <section id="recordatorios" className="py-20 px-4" style={{ backgroundColor: '#0F172A' }}>
       <div className="max-w-3xl mx-auto">
         {/* Title */}
         <motion.div
@@ -242,13 +242,12 @@ export default function Reminders() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <div className="flex items-center justify-center gap-3 mb-4">
-            <Calendar className="w-7 h-7" style={{ color: '#C4704B' }} />
-            <h2 className="text-3xl md:text-4xl font-serif font-bold" style={{ color: '#5D4037' }}>
-              No Olvides Estas Fechas
-            </h2>
-          </div>
-          <p className="text-sm" style={{ color: '#5D4037', opacity: 0.6 }}>
+          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Recordatorios</p>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
+            No Olvides Estas Fechas
+          </h2>
+          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
+          <p className="text-sm text-white/50">
             Recordatorios automaticos de los proximos 30 dias
           </p>
         </motion.div>
@@ -256,7 +255,7 @@ export default function Reminders() {
         {/* Loading */}
         {loading && (
           <div className="flex justify-center py-16">
-            <Clock className="w-8 h-8 animate-spin" style={{ color: '#C4704B' }} />
+            <Clock className="w-8 h-8 animate-spin" style={{ color: '#B8654A' }} />
           </div>
         )}
 
@@ -267,8 +266,8 @@ export default function Reminders() {
             animate={{ opacity: 1, scale: 1 }}
             className="text-center py-16"
           >
-            <Bell className="w-12 h-12 mx-auto mb-4" style={{ color: '#B8943E', opacity: 0.4 }} />
-            <p className="text-lg font-serif" style={{ color: '#5D4037', opacity: 0.5 }}>
+            <Bell className="w-12 h-12 mx-auto mb-4" style={{ color: '#B8976A', opacity: 0.4 }} />
+            <p className="text-lg font-serif text-white/50">
               No hay recordatorios proximos
             </p>
           </motion.div>
@@ -304,13 +303,12 @@ export default function Reminders() {
             >
               {/* Vertical timeline line */}
               <div
-                className="absolute left-6 top-0 bottom-0 w-0.5"
-                style={{ backgroundColor: '#5D403720' }}
+                className="absolute left-6 top-0 bottom-0 w-0.5 bg-white/10"
               />
 
               <div className="space-y-4">
                 {orderedTypes.map((type) => {
-                  const groupColor = COLORS[type] || '#5D4037'
+                  const groupColor = COLORS[type] || '#0F172A'
                   const GroupIcon = ICONS[type] || Bell
 
                   return (
@@ -374,7 +372,7 @@ export default function Reminders() {
                             <div
                               className="rounded-xl shadow-sm p-4 border-l-4"
                               style={{
-                                backgroundColor: isToday ? `${color}15` : '#FFFFFF',
+                                backgroundColor: isToday ? `${color}15` : 'rgba(255,255,255,0.05)',
                                 borderLeftColor: color,
                               }}
                             >
@@ -387,14 +385,12 @@ export default function Reminders() {
                                     {reminder.title}
                                   </p>
                                   <p
-                                    className="text-xs mb-1"
-                                    style={{ color: '#5D4037', opacity: 0.7 }}
+                                    className="text-xs mb-1 text-white/70"
                                   >
                                     {reminder.subtitle}
                                   </p>
                                   <p
-                                    className="text-xs flex items-center gap-1"
-                                    style={{ color: '#5D4037', opacity: 0.5 }}
+                                    className="text-xs flex items-center gap-1 text-white/50"
                                   >
                                     <Calendar className="w-3 h-3" />
                                     {formatDateShort(reminder.date)}

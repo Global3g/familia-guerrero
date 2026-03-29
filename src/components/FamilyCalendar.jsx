@@ -11,9 +11,9 @@ const MONTH_NAMES = [
 const DAY_NAMES = ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom']
 
 const EVENT_COLORS = {
-  birthday: '#7A9E7E',
-  anniversary: '#C4704B',
-  memorial: '#B8943E',
+  birthday: '#6B9080',
+  anniversary: '#B8654A',
+  memorial: '#B8976A',
 }
 
 const EVENT_LABELS = {
@@ -202,8 +202,8 @@ export default function FamilyCalendar() {
       <section className="py-12 px-4">
         <div className="max-w-lg mx-auto text-center">
           <div className="animate-pulse space-y-4">
-            <div className="h-8 bg-[#E0D5C8]/50 rounded w-48 mx-auto" />
-            <div className="h-64 bg-[#E0D5C8]/30 rounded-2xl" />
+            <div className="h-8 bg-white/10 rounded w-48 mx-auto" />
+            <div className="h-64 bg-white/5 rounded-2xl" />
           </div>
         </div>
       </section>
@@ -220,36 +220,40 @@ export default function FamilyCalendar() {
         className="max-w-lg mx-auto"
       >
         {/* Title */}
-        <h2 className="text-3xl font-serif font-bold text-[#5D4037] text-center mb-6">
-          Calendario Familiar
-        </h2>
+        <div className="text-center mb-6">
+          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Calendario</p>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
+            Calendario Familiar
+          </h2>
+          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
+        </div>
 
-        <div className="bg-white/80 rounded-2xl shadow-md border border-[#E0D5C8]/50 overflow-hidden">
+        <div className="bg-white/5 rounded-2xl shadow-md border-4 border-white/80 overflow-hidden">
           {/* Month/year header with arrows */}
-          <div className="flex items-center justify-between px-5 py-4 bg-[#FAF6F1]">
+          <div className="flex items-center justify-between px-5 py-4 bg-white/5">
             <button
               onClick={prevMonth}
-              className="p-2 rounded-full hover:bg-[#E0D5C8]/40 transition-colors"
+              className="p-2 rounded-full hover:bg-white/10 transition-colors"
               aria-label="Mes anterior"
             >
-              <ChevronLeft size={20} className="text-[#5D4037]" />
+              <ChevronLeft size={20} className="text-white" />
             </button>
-            <h3 className="text-lg font-serif font-semibold text-[#5D4037]">
+            <h3 className="text-lg font-serif font-semibold text-white">
               {MONTH_NAMES[currentMonth]} {currentYear}
             </h3>
             <button
               onClick={nextMonth}
-              className="p-2 rounded-full hover:bg-[#E0D5C8]/40 transition-colors"
+              className="p-2 rounded-full hover:bg-white/10 transition-colors"
               aria-label="Mes siguiente"
             >
-              <ChevronRight size={20} className="text-[#5D4037]" />
+              <ChevronRight size={20} className="text-white" />
             </button>
           </div>
 
           {/* Day names row */}
-          <div className="grid grid-cols-7 border-b border-[#E0D5C8]/40">
+          <div className="grid grid-cols-7 border-b border-white/80">
             {DAY_NAMES.map((name) => (
-              <div key={name} className="py-2 text-center text-xs font-semibold text-[#8D6E63] uppercase tracking-wide">
+              <div key={name} className="py-2 text-center text-xs font-semibold text-white/50 uppercase tracking-wide">
                 {name}
               </div>
             ))}
@@ -273,15 +277,15 @@ export default function FamilyCalendar() {
                   className={`
                     relative flex flex-col items-center justify-start py-2 min-h-[3rem]
                     transition-colors text-sm
-                    ${cell.currentMonth ? 'hover:bg-[#FAF6F1] cursor-pointer' : 'opacity-30 cursor-default'}
-                    ${isSelected ? 'bg-[#FAF6F1]' : ''}
+                    ${cell.currentMonth ? 'hover:bg-white/10 cursor-pointer' : 'opacity-30 cursor-default'}
+                    ${isSelected ? 'bg-white/10' : ''}
                   `}
                 >
                   <span
                     className={`
                       w-7 h-7 flex items-center justify-center rounded-full text-sm leading-none
-                      ${isTodayCell ? 'bg-[#C4704B] text-white font-bold' : 'text-[#5D4037]'}
-                      ${isSelected && !isTodayCell ? 'ring-2 ring-[#C4704B]/40' : ''}
+                      ${isTodayCell ? 'bg-[#B8654A] text-white font-bold' : 'text-white'}
+                      ${isSelected && !isTodayCell ? 'ring-2 ring-[#B8654A]/40' : ''}
                     `}
                   >
                     {cell.day}
@@ -303,18 +307,18 @@ export default function FamilyCalendar() {
           </div>
 
           {/* Legend */}
-          <div className="flex items-center justify-center gap-4 px-4 py-3 border-t border-[#E0D5C8]/40 bg-[#FAF6F1]">
+          <div className="flex items-center justify-center gap-4 px-4 py-3 border-t border-white/80 bg-white/5">
             <div className="flex items-center gap-1">
               <span className="w-2 h-2 rounded-full" style={{ backgroundColor: EVENT_COLORS.birthday }} />
-              <span className="text-xs text-[#8D6E63]">Cumpleaños</span>
+              <span className="text-xs text-white/50">Cumpleaños</span>
             </div>
             <div className="flex items-center gap-1">
               <span className="w-2 h-2 rounded-full" style={{ backgroundColor: EVENT_COLORS.anniversary }} />
-              <span className="text-xs text-[#8D6E63]">Aniversario</span>
+              <span className="text-xs text-white/50">Aniversario</span>
             </div>
             <div className="flex items-center gap-1">
               <span className="w-2 h-2 rounded-full" style={{ backgroundColor: EVENT_COLORS.memorial }} />
-              <span className="text-xs text-[#8D6E63]">Memorial</span>
+              <span className="text-xs text-white/50">Memorial</span>
             </div>
           </div>
         </div>
@@ -325,23 +329,23 @@ export default function FamilyCalendar() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.3 }}
-            className="mt-4 bg-white/80 rounded-2xl shadow-md border border-[#E0D5C8]/50 overflow-hidden"
+            className="mt-4 bg-white/5 rounded-2xl shadow-md border-4 border-white/80 overflow-hidden"
           >
-            <div className="px-5 py-3 bg-[#FAF6F1] border-b border-[#E0D5C8]/40">
-              <h4 className="font-serif font-semibold text-[#5D4037]">
+            <div className="px-5 py-3 bg-white/5 border-b border-white/80">
+              <h4 className="font-serif font-semibold text-white">
                 {selectedDay} de {MONTH_NAMES[currentMonth]}
               </h4>
             </div>
             <div className="px-5 py-3">
               {selectedEvents.length === 0 ? (
-                <p className="text-sm text-[#8D6E63] italic">No hay eventos este dia.</p>
+                <p className="text-sm text-white/50 italic">No hay eventos este dia.</p>
               ) : (
                 <ul className="space-y-2">
                   {selectedEvents.map((ev, i) => (
                     <li key={i} className="flex items-center gap-3 py-1">
                       <EventIcon type={ev.type} size={18} />
                       <div>
-                        <p className="text-sm font-medium text-[#5D4037]">{ev.name}</p>
+                        <p className="text-sm font-medium text-white">{ev.name}</p>
                         <p className="text-xs" style={{ color: EVENT_COLORS[ev.type] }}>
                           {EVENT_LABELS[ev.type]} — {ev.date}
                         </p>

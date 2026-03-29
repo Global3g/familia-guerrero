@@ -135,11 +135,11 @@ export default function Messages() {
     <section
       id="mensajes"
       className="relative py-24 overflow-hidden"
-      style={{ backgroundColor: '#FFFDF7' }}
+      style={{ backgroundColor: '#0F172A' }}
     >
       {/* Background warmth */}
-      <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-[#C4704B] opacity-[0.04] blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-[#B8943E] opacity-[0.04] blur-[80px] pointer-events-none" />
+      <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-[#B8654A] opacity-[0.04] blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-[#B8976A] opacity-[0.04] blur-[80px] pointer-events-none" />
 
       <div className="relative z-10 max-w-5xl mx-auto px-6">
         {/* Section header */}
@@ -151,17 +151,12 @@ export default function Messages() {
           custom={0}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-3 mb-6">
-            <MessageCircle className="w-5 h-5 text-[#C4704B]" />
-            <span className="font-sans text-sm tracking-widest uppercase text-[#C4704B]/70">
-              Recuerdos compartidos
-            </span>
-            <MessageCircle className="w-5 h-5 text-[#C4704B]" />
-          </div>
-          <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-[#5D4037] leading-tight">
+          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Voces de familia</p>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
             Voces de la Familia
           </h2>
-          <p className="font-sans mt-4 text-lg text-[#5D4037]/60 max-w-xl mx-auto">
+          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
+          <p className="text-base text-white/50 max-w-md mx-auto leading-relaxed">
             Palabras que nacen del coraz&oacute;n y se quedan para siempre.
           </p>
         </motion.div>
@@ -173,7 +168,7 @@ export default function Messages() {
             whileTap={{ scale: 0.97 }}
             onClick={openCreate}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-white font-semibold shadow-lg transition-colors"
-            style={{ backgroundColor: '#C4704B' }}
+            style={{ backgroundColor: '#B8654A' }}
           >
             <Plus className="w-5 h-5" />
             Agregar mensaje
@@ -183,7 +178,7 @@ export default function Messages() {
         {/* Loading */}
         {loading && (
           <div className="flex justify-center py-16">
-            <Loader2 className="w-8 h-8 text-[#C4704B] animate-spin" />
+            <Loader2 className="w-8 h-8 text-[#B8654A] animate-spin" />
           </div>
         )}
 
@@ -198,13 +193,13 @@ export default function Messages() {
             className="max-w-md mx-auto"
           >
             <div className="text-center py-16">
-              <div className="w-16 h-16 rounded-full bg-[#C4704B]/10 flex items-center justify-center mx-auto mb-4">
-                <MessageCircle className="w-8 h-8 text-[#C4704B]/50" />
+              <div className="w-16 h-16 rounded-full bg-[#B8654A]/10 flex items-center justify-center mx-auto mb-4">
+                <MessageCircle className="w-8 h-8 text-[#B8654A]/50" />
               </div>
-              <p className="text-lg font-serif font-bold text-[#5D4037]/60 mb-2">
+              <p className="text-lg font-serif font-bold text-white/60 mb-2">
                 Sin mensajes aun
               </p>
-              <p className="text-sm text-[#5D4037]/40">
+              <p className="text-sm text-white/40">
                 Comparte un recuerdo o mensaje para la familia.
               </p>
             </div>
@@ -225,14 +220,13 @@ export default function Messages() {
                   viewport={{ once: true, margin: '-30px' }}
                   custom={i * 0.08}
                   exit={{ opacity: 0, scale: 0.9 }}
-                  className="group relative rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow"
-                  style={{ backgroundColor: '#FFF8F0', border: '1px solid #F0E0D0' }}
+                  className="group relative rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow bg-white/5 border-4 border-white/80"
                 >
                   {/* Edit / Delete buttons */}
                   <div className="absolute top-3 right-3 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
                     <button
                       onClick={() => openEdit(msg)}
-                      className="p-1.5 rounded-full hover:bg-[#B8943E]/15 text-[#B8943E] transition-colors"
+                      className="p-1.5 rounded-full hover:bg-[#B8976A]/15 text-[#B8976A] transition-colors"
                       aria-label="Editar"
                     >
                       <Pencil className="w-4 h-4" />
@@ -252,23 +246,23 @@ export default function Messages() {
                       <img
                         src={msg.photoURL}
                         alt={msg.author}
-                        className="w-10 h-10 rounded-full object-cover ring-2 ring-[#C4704B]/20"
+                        className="w-10 h-10 rounded-full object-cover ring-2 ring-[#B8654A]/20"
                       />
                     ) : (
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm bg-[#7A9E7E]">
+                      <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm bg-[#6B9080]">
                         {(msg.author || '?')[0].toUpperCase()}
                       </div>
                     )}
                     <div>
-                      <p className="font-serif font-bold text-[#5D4037] leading-tight">
+                      <p className="font-serif font-bold text-white leading-tight">
                         {msg.author}
                       </p>
-                      <p className="text-xs text-[#5D4037]/45">{formatDate(msg.date)}</p>
+                      <p className="text-xs text-white/40">{formatDate(msg.date)}</p>
                     </div>
                   </div>
 
                   {/* Message */}
-                  <p className="font-serif italic text-[#5D4037]/80 leading-relaxed">
+                  <p className="font-serif italic text-white/50 leading-relaxed">
                     &ldquo;{msg.message}&rdquo;
                   </p>
                 </motion.div>
@@ -287,36 +281,36 @@ export default function Messages() {
         <div className="space-y-5">
           {/* Author */}
           <div>
-            <label className="block text-sm font-semibold text-[#5D4037] mb-1">Autor</label>
+            <label className="block text-sm font-semibold text-white mb-1">Autor</label>
             <input
               type="text"
               placeholder="Nombre del familiar"
               value={form.author}
               onChange={(e) => setForm({ ...form, author: e.target.value })}
-              className="w-full rounded-xl border border-[#E8D5C4] bg-white px-4 py-2.5 text-[#5D4037] placeholder:text-[#5D4037]/30 focus:outline-none focus:ring-2 focus:ring-[#C4704B]/40"
+              className="w-full rounded-xl border-4 border-white/80 bg-white/5 px-4 py-2.5 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#B8654A]/40"
             />
           </div>
 
           {/* Message */}
           <div>
-            <label className="block text-sm font-semibold text-[#5D4037] mb-1">Mensaje</label>
+            <label className="block text-sm font-semibold text-white mb-1">Mensaje</label>
             <textarea
               rows={4}
               placeholder="Escribe un recuerdo o mensaje..."
               value={form.message}
               onChange={(e) => setForm({ ...form, message: e.target.value })}
-              className="w-full rounded-xl border border-[#E8D5C4] bg-white px-4 py-2.5 text-[#5D4037] placeholder:text-[#5D4037]/30 focus:outline-none focus:ring-2 focus:ring-[#C4704B]/40 resize-none"
+              className="w-full rounded-xl border-4 border-white/80 bg-white/5 px-4 py-2.5 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#B8654A]/40 resize-none"
             />
           </div>
 
           {/* Date */}
           <div>
-            <label className="block text-sm font-semibold text-[#5D4037] mb-1">Fecha</label>
+            <label className="block text-sm font-semibold text-white mb-1">Fecha</label>
             <input
               type="date"
               value={form.date}
               onChange={(e) => setForm({ ...form, date: e.target.value })}
-              className="w-full rounded-xl border border-[#E8D5C4] bg-white px-4 py-2.5 text-[#5D4037] focus:outline-none focus:ring-2 focus:ring-[#C4704B]/40"
+              className="w-full rounded-xl border-4 border-white/80 bg-white/5 px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-[#B8654A]/40"
             />
           </div>
 
@@ -325,7 +319,7 @@ export default function Messages() {
             onClick={handleSave}
             disabled={saving || !form.author.trim() || !form.message.trim()}
             className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-white font-semibold transition-opacity disabled:opacity-40"
-            style={{ backgroundColor: '#7A9E7E' }}
+            style={{ backgroundColor: '#6B9080' }}
           >
             {saving ? (
               <Loader2 className="w-5 h-5 animate-spin" />
@@ -347,9 +341,9 @@ export default function Messages() {
         title="Eliminar mensaje"
       >
         <div className="space-y-5">
-          <p className="text-[#5D4037]/70">
+          <p className="text-white/50">
             Estas seguro de eliminar el mensaje de{' '}
-            <span className="font-bold text-[#5D4037]">{deleteTarget?.author}</span>? Esta
+            <span className="font-bold text-white">{deleteTarget?.author}</span>? Esta
             accion no se puede deshacer.
           </p>
           <div className="flex gap-3">
@@ -358,7 +352,7 @@ export default function Messages() {
                 setDeleteOpen(false)
                 setDeleteTarget(null)
               }}
-              className="flex-1 py-2.5 rounded-xl border border-[#E8D5C4] text-[#5D4037] font-semibold hover:bg-[#F0E0D0]/50 transition-colors"
+              className="flex-1 py-2.5 rounded-xl border-4 border-white/80 text-white font-semibold hover:bg-white/5 transition-colors"
             >
               Cancelar
             </button>

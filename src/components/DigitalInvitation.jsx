@@ -3,11 +3,11 @@ import { motion } from 'framer-motion'
 import { Calendar, MapPin, Share2, Copy, Check, Download } from 'lucide-react'
 
 const typeColors = {
-  cumpleanos: '#C4704B',
-  reunion: '#7A9E7E',
-  boda: '#B8943E',
-  aniversario: '#E8956D',
-  otro: '#5D4037',
+  cumpleanos: '#B8654A',
+  reunion: '#6B9080',
+  boda: '#B8976A',
+  aniversario: '#C8846A',
+  otro: '#0F172A',
 }
 
 const typeLabels = {
@@ -67,8 +67,8 @@ const DigitalInvitation = () => {
     const ctx = canvas.getContext('2d')
     // gradient background
     const grad = ctx.createLinearGradient(0, 0, 600, 500)
-    grad.addColorStop(0, '#FDF8F0')
-    grad.addColorStop(1, '#FDEBD3')
+    grad.addColorStop(0, '#F8FAFC')
+    grad.addColorStop(1, '#F1F5F9')
     ctx.fillStyle = grad
     ctx.fillRect(0, 0, 600, 500)
     // top accent bar
@@ -79,7 +79,7 @@ const DigitalInvitation = () => {
     ctx.textAlign = 'center'
     ctx.fillText(typeEmojis[form.type] || '🎉', 300, 70)
     // event name
-    ctx.fillStyle = '#5D4037'
+    ctx.fillStyle = '#0F172A'
     ctx.font = 'bold 28px Georgia, serif'
     ctx.textAlign = 'center'
     ctx.fillText(form.name, 300, 120)
@@ -88,11 +88,11 @@ const DigitalInvitation = () => {
     ctx.fillStyle = typeColor
     ctx.fillText(form.date + (form.time ? ' · ' + form.time : ''), 300, 160)
     // location
-    ctx.fillStyle = '#7A9E7E'
+    ctx.fillStyle = '#6B9080'
     ctx.font = '16px Inter, sans-serif'
     ctx.fillText(form.location, 300, 200)
     // message
-    ctx.fillStyle = '#5D4037AA'
+    ctx.fillStyle = '#0F172AAA'
     ctx.font = 'italic 14px Georgia, serif'
     // wrap text
     const words = form.message.split(' ')
@@ -110,7 +110,7 @@ const DigitalInvitation = () => {
     })
     ctx.fillText(line, 300, y)
     // branding
-    ctx.fillStyle = '#C4704B60'
+    ctx.fillStyle = '#B8654A60'
     ctx.font = '12px Inter, sans-serif'
     ctx.fillText('Familia Guerrero', 300, 480)
     // download
@@ -123,8 +123,7 @@ const DigitalInvitation = () => {
   return (
     <div className="max-w-4xl mx-auto p-4 space-y-8">
       <motion.h2
-        className="text-3xl font-serif text-center"
-        style={{ color: '#5D4037' }}
+        className="text-3xl font-serif text-center text-white"
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
       >
@@ -134,20 +133,20 @@ const DigitalInvitation = () => {
       <div className="grid md:grid-cols-2 gap-8">
         {/* Form */}
         <motion.div
-          className="bg-white rounded-2xl shadow-lg p-6 space-y-4"
+          className="bg-white/5 border-4 border-white/80 rounded-2xl shadow-lg p-6 space-y-4"
           initial={{ opacity: 0, x: -30 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.1 }}
         >
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-white/70 mb-1">
               Tipo de evento
             </label>
             <select
               name="type"
               value={form.type}
               onChange={handleChange}
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2"
+              className="w-full border-4 border-white/80 bg-white/5 text-white rounded-lg px-3 py-2 focus:outline-none focus:ring-2"
               style={{ focusRingColor: typeColor }}
             >
               {Object.entries(typeLabels).map(([key, label]) => (
@@ -159,7 +158,7 @@ const DigitalInvitation = () => {
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-white/70 mb-1">
               Nombre del evento
             </label>
             <input
@@ -168,13 +167,13 @@ const DigitalInvitation = () => {
               value={form.name}
               onChange={handleChange}
               placeholder="Ej: Cumpleanos de Abuelita"
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2"
+              className="w-full border-4 border-white/80 bg-white/5 text-white rounded-lg px-3 py-2 focus:outline-none focus:ring-2"
             />
           </div>
 
           <div className="grid grid-cols-2 gap-3">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-white/70 mb-1">
                 Fecha
               </label>
               <input
@@ -182,11 +181,11 @@ const DigitalInvitation = () => {
                 name="date"
                 value={form.date}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2"
+                className="w-full border-4 border-white/80 bg-white/5 text-white rounded-lg px-3 py-2 focus:outline-none focus:ring-2"
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-1">
+              <label className="block text-sm font-medium text-white/70 mb-1">
                 Hora
               </label>
               <input
@@ -194,13 +193,13 @@ const DigitalInvitation = () => {
                 name="time"
                 value={form.time}
                 onChange={handleChange}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2"
+                className="w-full border-4 border-white/80 bg-white/5 text-white rounded-lg px-3 py-2 focus:outline-none focus:ring-2"
               />
             </div>
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-white/70 mb-1">
               Lugar
             </label>
             <input
@@ -209,12 +208,12 @@ const DigitalInvitation = () => {
               value={form.location}
               onChange={handleChange}
               placeholder="Ej: Casa de los abuelos"
-              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2"
+              className="w-full border-4 border-white/80 bg-white/5 text-white rounded-lg px-3 py-2 focus:outline-none focus:ring-2"
             />
           </div>
 
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-sm font-medium text-white/70 mb-1">
               Mensaje personal
             </label>
             <textarea
@@ -235,11 +234,11 @@ const DigitalInvitation = () => {
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.2 }}
         >
-          <p className="text-sm text-gray-500 text-center">Vista previa</p>
+          <p className="text-sm text-white/50 text-center">Vista previa</p>
 
           <div
             className="rounded-2xl shadow-lg overflow-hidden"
-            style={{ background: 'linear-gradient(135deg, #FDF8F0, #FDEBD3)' }}
+            style={{ background: 'linear-gradient(135deg, rgba(255,255,255,0.05), rgba(255,255,255,0.02))' }}
           >
             {/* Top decorative border */}
             <div
@@ -262,8 +261,7 @@ const DigitalInvitation = () => {
 
               {/* Event name */}
               <h3
-                className="text-2xl font-serif font-bold"
-                style={{ color: '#5D4037' }}
+                className="text-2xl font-serif font-bold text-white"
               >
                 {form.name || 'Nombre del evento'}
               </h3>
@@ -279,7 +277,7 @@ const DigitalInvitation = () => {
 
               {/* Location */}
               {(form.location || true) && (
-                <div className="flex items-center justify-center gap-2 text-sm" style={{ color: '#7A9E7E' }}>
+                <div className="flex items-center justify-center gap-2 text-sm" style={{ color: '#6B9080' }}>
                   <MapPin size={16} />
                   <span>{form.location || 'Lugar'}</span>
                 </div>
@@ -289,14 +287,14 @@ const DigitalInvitation = () => {
               {form.message && (
                 <p
                   className="text-sm italic mt-4 px-4 leading-relaxed"
-                  style={{ color: '#5D4037AA' }}
+                  style={{ color: 'rgba(255,255,255,0.5)' }}
                 >
                   {form.message}
                 </p>
               )}
 
               {/* Branding */}
-              <p className="text-xs pt-6" style={{ color: '#C4704B60' }}>
+              <p className="text-xs pt-6" style={{ color: 'rgba(184,101,74,0.5)' }}>
                 Familia Guerrero
               </p>
             </div>
@@ -307,7 +305,7 @@ const DigitalInvitation = () => {
             <motion.button
               onClick={copyToClipboard}
               className="flex items-center gap-2 px-4 py-2 rounded-lg text-white text-sm font-medium"
-              style={{ backgroundColor: copied ? '#7A9E7E' : '#5D4037' }}
+              style={{ backgroundColor: copied ? '#6B9080' : '#0F172A' }}
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}
             >

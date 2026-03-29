@@ -39,8 +39,8 @@ const iconMap = {
   scroll: ScrollText,
 };
 
-const inputClass = 'w-full rounded-lg border border-[#7A9E7E]/20 bg-white px-3 py-2 text-sm text-[#5D4037] focus:outline-none focus:ring-2 focus:ring-[#7A9E7E]/30'
-const labelClass = 'block text-xs font-medium text-[#5D4037] mb-1'
+const inputClass = 'w-full rounded-lg border-4 border-white/80 bg-white/5 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#6B9080]/30'
+const labelClass = 'block text-xs font-medium text-white mb-1'
 
 const iconOptions = [
   { value: 'utensils', label: 'Comida' },
@@ -148,12 +148,12 @@ export default function Traditions() {
     <section
       id="tradiciones"
       className="relative py-24 overflow-hidden"
-      style={{ backgroundColor: "#FFFDF7" }}
+      style={{ backgroundColor: '#0F172A' }}
     >
       {/* Background accents */}
-      <div className="absolute top-0 left-0 w-72 h-72 rounded-full bg-[#7A9E7E] opacity-[0.04] blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-[#C4704B] opacity-[0.04] blur-[100px] pointer-events-none" />
-      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30rem] h-[30rem] rounded-full bg-[#B8943E] opacity-[0.03] blur-[120px] pointer-events-none" />
+      <div className="absolute top-0 left-0 w-72 h-72 rounded-full bg-[#6B9080] opacity-[0.04] blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-[#B8654A] opacity-[0.04] blur-[100px] pointer-events-none" />
+      <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30rem] h-[30rem] rounded-full bg-[#B8976A] opacity-[0.03] blur-[120px] pointer-events-none" />
 
       <div className="relative z-10 max-w-6xl mx-auto px-6">
         {/* Section header */}
@@ -165,17 +165,12 @@ export default function Traditions() {
           custom={0}
           className="text-center mb-16"
         >
-          <div className="inline-flex items-center gap-3 mb-6">
-            <Sparkles className="w-5 h-5 text-[#B8943E]" />
-            <span className="font-sans text-sm tracking-widest uppercase text-[#7A9E7E]">
-              Lo que nos define
-            </span>
-            <Sparkles className="w-5 h-5 text-[#B8943E]" />
-          </div>
-          <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-[#5D4037] leading-tight">
+          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Nuestras raices</p>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
             Tradiciones y Valores
           </h2>
-          <p className="font-sans mt-4 text-lg text-[#5D4037]/60 max-w-xl mx-auto">
+          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
+          <p className="text-base text-white/50 max-w-md mx-auto leading-relaxed">
             Las costumbres que nos unen y los principios que nos gu&iacute;an.
           </p>
         </motion.div>
@@ -193,37 +188,37 @@ export default function Traditions() {
                   whileInView="visible"
                   viewport={{ once: true, margin: "-50px" }}
                   custom={index * 0.15 + 0.2}
-                  className="group relative bg-white/60 backdrop-blur-sm rounded-2xl border border-[#7A9E7E]/15 p-6 hover:shadow-lg hover:shadow-[#7A9E7E]/10 hover:border-[#7A9E7E]/25 transition-all duration-500"
+                  className="group relative bg-white/5 backdrop-blur-sm rounded-2xl border-4 border-white/80 p-6 hover:shadow-lg hover:shadow-[#6B9080]/10 hover:border-white/20 transition-all duration-500"
                 >
                   {/* Edit/Delete */}
                   <div className="absolute top-3 right-3 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10">
-                    <button onClick={() => openTradForm(tradition)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-[#B8943E]/10 shadow text-[#B8943E] transition">
+                    <button onClick={() => openTradForm(tradition)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/5 hover:bg-[#B8976A]/10 shadow text-[#B8976A] transition">
                       <Pencil className="w-3.5 h-3.5" />
                     </button>
-                    <button onClick={() => setDeletingTrad(tradition)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-red-50 shadow text-red-400 hover:text-red-600 transition">
+                    <button onClick={() => setDeletingTrad(tradition)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/5 hover:bg-red-500/10 shadow text-red-400 hover:text-red-600 transition">
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
 
-                  <div className="mb-4 w-12 h-12 rounded-xl bg-gradient-to-br from-[#7A9E7E]/15 to-[#B8943E]/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <IconComponent className="w-6 h-6 text-[#C4704B]" />
+                  <div className="mb-4 w-12 h-12 rounded-xl bg-gradient-to-br from-[#6B9080]/15 to-[#B8976A]/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                    <IconComponent className="w-6 h-6 text-white/40" />
                   </div>
-                  <h3 className="font-serif text-xl font-bold text-[#5D4037] mb-2">{tradition.title}</h3>
-                  <p className="font-sans text-sm text-[#5D4037]/70 leading-relaxed">{tradition.description}</p>
+                  <h3 className="font-serif text-xl font-bold text-white mb-2">{tradition.title}</h3>
+                  <p className="font-sans text-sm text-white/50 leading-relaxed">{tradition.description}</p>
                 </motion.article>
               );
             })}
           </div>
         ) : (
           <div className="text-center py-16 mb-10">
-            <div className="w-16 h-16 rounded-full bg-[#C4704B]/10 flex items-center justify-center mx-auto mb-4">
-              <UtensilsCrossed className="w-8 h-8 text-[#C4704B]/50" />
+            <div className="w-16 h-16 rounded-full bg-[#B8654A]/10 flex items-center justify-center mx-auto mb-4">
+              <UtensilsCrossed className="w-8 h-8 text-[#B8654A]/50" />
             </div>
-            <p className="text-lg font-serif font-bold text-[#5D4037]/60 mb-2">Sin tradiciones todavia</p>
-            <p className="text-sm text-[#5D4037]/40 mb-6">Registra las tradiciones que hacen unica a tu familia</p>
+            <p className="text-lg font-serif font-bold text-white/60 mb-2">Sin tradiciones todavia</p>
+            <p className="text-sm text-white/40 mb-6">Registra las tradiciones que hacen unica a tu familia</p>
             <button
               onClick={() => openTradForm()}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#C4704B] text-white hover:bg-[#C4704B]/90 transition font-medium shadow-md"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#B8654A] text-white hover:bg-[#B8654A]/90 transition font-medium shadow-md"
             >
               <Plus className="w-5 h-5" />
               Agregar primera tradicion
@@ -234,7 +229,7 @@ export default function Traditions() {
         {/* Add tradition button */}
         {displayTraditions.length > 0 && (
           <div className="flex justify-center mb-20">
-            <button onClick={() => openTradForm()} className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-[#7A9E7E]/40 text-[#7A9E7E] hover:bg-[#7A9E7E]/5 hover:border-[#7A9E7E] transition font-medium">
+            <button onClick={() => openTradForm()} className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-[#6B9080]/40 text-[#6B9080] hover:bg-[#6B9080]/5 hover:border-[#6B9080] transition font-medium">
               <Plus className="w-5 h-5" /> Agregar tradicion
             </button>
           </div>
@@ -249,7 +244,7 @@ export default function Traditions() {
           custom={0}
           className="text-center"
         >
-          <h3 className="font-serif text-2xl sm:text-3xl font-bold text-[#5D4037] mb-8">
+          <h3 className="font-serif text-2xl sm:text-3xl font-bold text-white mb-8">
             Nuestros Valores
           </h3>
 
@@ -265,9 +260,9 @@ export default function Traditions() {
                     whileInView="visible"
                     viewport={{ once: true, margin: "-50px" }}
                     custom={index * 0.1 + 0.1}
-                    className="group/val inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/70 border border-[#B8943E]/20 font-sans text-sm font-medium text-[#5D4037]/80 hover:bg-[#B8943E]/10 hover:border-[#B8943E]/30 transition-colors duration-300 backdrop-blur-sm shadow-sm"
+                    className="group/val inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 border-4 border-white/80 font-sans text-sm font-medium text-white hover:bg-[#B8976A]/10 hover:border-[#B8976A]/30 transition-colors duration-300 backdrop-blur-sm shadow-sm"
                   >
-                    <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: index % 3 === 0 ? "#7A9E7E" : index % 3 === 1 ? "#C4704B" : "#B8943E" }} />
+                    <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: index % 3 === 0 ? "#6B9080" : index % 3 === 1 ? "#B8654A" : "#B8976A" }} />
                     {val}
                     <button onClick={() => handleDeleteValue(v)} className="opacity-0 group-hover/val:opacity-100 transition ml-1 text-red-400 hover:text-red-600">
                       <X className="w-3 h-3" />
@@ -278,7 +273,7 @@ export default function Traditions() {
             </div>
           ) : (
             <div className="mb-6">
-              <p className="text-sm text-[#5D4037]/40 mb-2">Agrega los valores que definen a tu familia</p>
+              <p className="text-sm text-white/40 mb-2">Agrega los valores que definen a tu familia</p>
             </div>
           )}
 
@@ -290,9 +285,9 @@ export default function Traditions() {
               onChange={(e) => setNewValue(e.target.value)}
               onKeyDown={(e) => e.key === 'Enter' && handleAddValue()}
               placeholder="Nuevo valor..."
-              className="flex-1 px-4 py-2 rounded-full border-2 border-[#B8943E]/20 bg-white text-sm text-[#5D4037] focus:outline-none focus:border-[#B8943E]/50"
+              className="flex-1 px-4 py-2 rounded-full border-4 border-white/80 bg-white/5 text-sm text-white focus:outline-none focus:border-[#B8976A]/50"
             />
-            <button onClick={handleAddValue} className="w-10 h-10 rounded-full bg-[#B8943E] text-white flex items-center justify-center hover:bg-[#B8943E]/90 transition shadow">
+            <button onClick={handleAddValue} className="w-10 h-10 rounded-full bg-[#B8976A] text-white flex items-center justify-center hover:bg-[#B8976A]/90 transition shadow">
               <Plus className="w-5 h-5" />
             </button>
           </div>
@@ -317,7 +312,7 @@ export default function Traditions() {
             </select>
           </div>
           <div className="flex justify-end pt-2">
-            <button onClick={handleSaveTrad} disabled={tradLoading} className="flex items-center gap-2 rounded-lg bg-[#7A9E7E] px-6 py-2.5 text-white hover:bg-[#7A9E7E]/90 transition disabled:opacity-60">
+            <button onClick={handleSaveTrad} disabled={tradLoading} className="flex items-center gap-2 rounded-lg bg-[#6B9080] px-6 py-2.5 text-white hover:bg-[#6B9080]/90 transition disabled:opacity-60">
               {tradLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Save className="h-5 w-5" />}
               {tradLoading ? 'Guardando...' : 'Guardar'}
             </button>
@@ -330,11 +325,11 @@ export default function Traditions() {
         {deletingTrad && (
           <motion.div className="fixed inset-0 z-50 flex items-center justify-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
             <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setDeletingTrad(null)} />
-            <motion.div className="relative bg-[#FFF8F0] rounded-2xl shadow-2xl p-6 max-w-sm w-full text-center" initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}>
-              <h3 className="text-lg font-serif font-bold text-[#5D4037] mb-2">Eliminar tradicion</h3>
-              <p className="text-sm text-[#5D4037]/70 mb-6">¿Eliminar <strong>"{deletingTrad.title}"</strong>?</p>
+            <motion.div className="relative bg-[#1E293B] rounded-2xl shadow-2xl p-6 max-w-sm w-full text-center border-4 border-white/80" initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}>
+              <h3 className="text-lg font-serif font-bold text-white mb-2">Eliminar tradicion</h3>
+              <p className="text-sm text-white/50 mb-6">¿Eliminar <strong>"{deletingTrad.title}"</strong>?</p>
               <div className="flex gap-3 justify-center">
-                <button onClick={() => setDeletingTrad(null)} className="px-5 py-2 rounded-lg border border-[#C4704B]/20 text-[#5D4037] hover:bg-[#FAF6EE] transition text-sm font-medium">Cancelar</button>
+                <button onClick={() => setDeletingTrad(null)} className="px-5 py-2 rounded-lg border-4 border-white/80 text-white hover:bg-white/5 transition text-sm font-medium">Cancelar</button>
                 <button onClick={handleDeleteTrad} className="px-5 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition text-sm font-medium">Eliminar</button>
               </div>
             </motion.div>

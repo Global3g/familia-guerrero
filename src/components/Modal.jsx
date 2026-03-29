@@ -24,7 +24,7 @@ export default function Modal({ isOpen, onClose, title, children }) {
           {/* Modal Card */}
           <motion.div
             className="relative w-full max-w-lg rounded-2xl shadow-2xl"
-            style={{ backgroundColor: '#FFF8F0' }}
+            style={{ backgroundColor: '#0F172A' }}
             initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.85, opacity: 0 }}
@@ -32,17 +32,17 @@ export default function Modal({ isOpen, onClose, title, children }) {
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header */}
-            <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-[#E8D5C4]">
+            <div className="flex items-center justify-between px-6 pt-6 pb-4 border-b border-white/80">
               <h2
                 className="text-2xl font-serif font-bold"
-                style={{ color: '#5D4037', fontFamily: "'Playfair Display', serif" }}
+                style={{ color: '#FFFFFF', fontFamily: "'Playfair Display', serif" }}
               >
                 {title}
               </h2>
               <button
                 onClick={onClose}
                 className="p-1 rounded-full transition-colors hover:bg-[#F0E0D0]"
-                style={{ color: '#C4704B' }}
+                style={{ color: '#B8654A' }}
                 aria-label="Cerrar"
               >
                 <X size={24} />

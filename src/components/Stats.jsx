@@ -4,7 +4,7 @@ import { BarChart3, Users, Heart, Baby, Calendar, MapPin, Crown, Star } from 'lu
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, CartesianGrid } from 'recharts'
 import { getFamilyMembers, getGrandparents } from '../firebase/familyService'
 
-const COLORS = ['#C4704B', '#7A9E7E', '#B8943E', '#E8956D', '#5D4037', '#D4B96A', '#A8C5AB', '#8D6E63']
+const COLORS = ['#B8654A', '#6B9080', '#B8976A', '#C8846A', '#0F172A', '#C8A87A', '#9BBAA8', '#64748B']
 
 function calcAge(birthDate, deathDate) {
   if (!birthDate) return null
@@ -72,14 +72,14 @@ function StatCard({ icon: Icon, label, value, color, sub }) {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="bg-white/80 rounded-2xl shadow-md p-5 text-center border border-[#E0D5C8]/50"
+      className="bg-white/5 rounded-2xl shadow-md p-5 text-center border-4 border-white/80"
     >
-      <div className="w-12 h-12 rounded-full mx-auto mb-3 flex items-center justify-center" style={{ backgroundColor: `${color}15` }}>
-        <Icon className="w-6 h-6" style={{ color }} />
+      <div className="w-12 h-12 rounded-full mx-auto mb-3 flex items-center justify-center bg-white/5">
+        <Icon className="w-6 h-6" style={{ color: '#FFD700' }} />
       </div>
-      <p className="text-3xl font-bold font-serif" style={{ color }}><AnimatedNumber value={value} /></p>
-      <p className="text-xs text-[#5D4037]/60 uppercase tracking-wider mt-1">{label}</p>
-      {sub && <p className="text-[11px] text-[#5D4037]/40 mt-0.5">{sub}</p>}
+      <p className="text-3xl font-bold font-serif text-white"><AnimatedNumber value={value} /></p>
+      <p className="text-xs text-white/40 uppercase tracking-wider mt-1">{label}</p>
+      {sub && <p className="text-[11px] text-white/40 mt-0.5">{sub}</p>}
     </motion.div>
   )
 }
@@ -90,9 +90,9 @@ function ChartCard({ title, children }) {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="bg-white/80 rounded-2xl shadow-md p-5 border border-[#E0D5C8]/50"
+      className="bg-white/5 rounded-2xl shadow-md p-5 border-4 border-white/80"
     >
-      <h4 className="text-sm font-bold text-[#5D4037] mb-4 uppercase tracking-wider">{title}</h4>
+      <h4 className="text-sm font-bold text-white mb-4 uppercase tracking-wider">{title}</h4>
       {children}
     </motion.div>
   )
@@ -101,8 +101,8 @@ function ChartCard({ title, children }) {
 const CustomTooltip = ({ active, payload, label }) => {
   if (!active || !payload?.length) return null
   return (
-    <div className="bg-white rounded-lg shadow-lg p-3 border border-[#E0D5C8] text-xs">
-      <p className="font-bold text-[#5D4037]">{label}</p>
+    <div className="bg-[#1E293B] rounded-lg shadow-lg p-3 border-4 border-white/80 text-xs">
+      <p className="font-bold text-white">{label}</p>
       {payload.map((p, i) => (
         <p key={i} style={{ color: p.color }}>{p.name}: {p.value}</p>
       ))}
@@ -167,7 +167,7 @@ export default function Stats() {
     ...(females.length > 0 ? [{ name: 'Mujeres', value: females.length }] : []),
     ...(unknown.length > 0 ? [{ name: 'Sin especificar', value: unknown.length }] : []),
   ]
-  const genderColors = ['#5D4037', '#C4704B', '#ccc']
+  const genderColors = ['#94A3B8', '#B8654A', '#ccc']
 
   // Births by decade
   const decadeCounts = {}
@@ -215,7 +215,7 @@ export default function Stats() {
   const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
 
   return (
-    <section id="estadisticas" className="py-20 px-4 sm:px-6 lg:px-10" style={{ backgroundColor: '#FAF7F2' }}>
+    <section id="estadisticas" className="py-20 px-4 sm:px-6 lg:px-10" style={{ backgroundColor: '#0F172A' }}>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
@@ -225,34 +225,32 @@ export default function Stats() {
           transition={{ duration: 0.7 }}
           className="text-center mb-16"
         >
-          <span className="inline-flex items-center gap-2 text-sm font-medium tracking-wide uppercase mb-3" style={{ color: '#B8943E' }}>
-            <BarChart3 className="w-4 h-4" />
-            Datos y Estadisticas
-          </span>
-          <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4" style={{ color: '#3D2C2C' }}>
+          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Estadisticas</p>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
             Nuestra Familia en Numeros
           </h2>
-          <p className="text-lg max-w-2xl mx-auto" style={{ color: '#6B5B5B' }}>
+          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
+          <p className="text-lg max-w-2xl mx-auto text-white/50">
             Cada numero cuenta una historia. Asi crece el legado Guerrero.
           </p>
         </motion.div>
 
         {/* Stat cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
-          <StatCard icon={Users} label="Total familia" value={people.length} color="#5D4037" />
-          <StatCard icon={Heart} label="Vivos" value={alive.length} color="#7A9E7E" />
-          <StatCard icon={Star} label="En memoria" value={deceased.length} color="#B8943E" />
-          <StatCard icon={Users} label="Hombres" value={males.length} color="#5D4037" />
-          <StatCard icon={Users} label="Mujeres" value={females.length} color="#C4704B" />
-          <StatCard icon={Calendar} label="Edad promedio" value={avgAge} color="#E8956D" sub="de los vivos" />
+          <StatCard icon={Users} label="Total familia" value={people.length} color="#0F172A" />
+          <StatCard icon={Heart} label="Vivos" value={alive.length} color="#6B9080" />
+          <StatCard icon={Star} label="En memoria" value={deceased.length} color="#B8976A" />
+          <StatCard icon={Users} label="Hombres" value={males.length} color="#0F172A" />
+          <StatCard icon={Users} label="Mujeres" value={females.length} color="#B8654A" />
+          <StatCard icon={Calendar} label="Edad promedio" value={avgAge} color="#C8846A" sub="de los vivos" />
         </div>
 
         {/* Second row of stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
-          <StatCard icon={Baby} label="Mas joven" value={`${youngest} a`} color="#7A9E7E" sub={youngestPerson?.name?.split(' ')[0]} />
-          <StatCard icon={Crown} label="Mayor" value={`${oldest} a`} color="#B8943E" sub={oldestPerson?.name?.split(' ')[0]} />
-          <StatCard icon={Heart} label="Anos de matrimonio" value={totalMarriageYears} color="#C4704B" sub="acumulados" />
-          <StatCard icon={Calendar} label={`Cumpleanos en ${monthNames[currentMonth - 1]}`} value={birthdaysThisMonth.length} color="#E8956D" />
+          <StatCard icon={Baby} label="Mas joven" value={`${youngest} a`} color="#6B9080" sub={youngestPerson?.name?.split(' ')[0]} />
+          <StatCard icon={Crown} label="Mayor" value={`${oldest} a`} color="#B8976A" sub={oldestPerson?.name?.split(' ')[0]} />
+          <StatCard icon={Heart} label="Anos de matrimonio" value={totalMarriageYears} color="#B8654A" sub="acumulados" />
+          <StatCard icon={Calendar} label={`Cumpleanos en ${monthNames[currentMonth - 1]}`} value={birthdaysThisMonth.length} color="#C8846A" />
         </div>
 
         {/* Birthday list this month */}
@@ -261,9 +259,9 @@ export default function Stats() {
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-[#7A9E7E]/10 rounded-2xl p-5 mb-12 border border-[#7A9E7E]/20"
+            className="bg-white/5 rounded-2xl p-5 mb-12 border-4 border-white/80"
           >
-            <h4 className="text-sm font-bold text-[#7A9E7E] uppercase tracking-wider mb-3 flex items-center gap-2">
+            <h4 className="text-sm font-bold text-white/50 uppercase tracking-wider mb-3 flex items-center gap-2">
               <Calendar className="w-4 h-4" />
               Cumpleanos en {monthNames[currentMonth - 1]}
             </h4>
@@ -272,10 +270,10 @@ export default function Stats() {
                 const age = calcAge(p.birthDate)
                 const day = parseInt(p.birthDate.split('-')[2])
                 return (
-                  <div key={i} className="flex items-center gap-2 bg-white rounded-full px-4 py-2 shadow-sm">
-                    <span className="text-sm font-bold text-[#C4704B]">{day}</span>
-                    <span className="text-sm text-[#5D4037]">{p.name?.split(' ')[0]}</span>
-                    {age && <span className="text-xs text-[#7A9E7E] font-medium">cumple {age}</span>}
+                  <div key={i} className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2 shadow-sm">
+                    <span className="text-sm font-bold text-[#B8654A]">{day}</span>
+                    <span className="text-sm text-white">{p.name?.split(' ')[0]}</span>
+                    {age && <span className="text-xs text-white/50 font-medium">cumple {age}</span>}
                   </div>
                 )
               })}
@@ -289,9 +287,9 @@ export default function Stats() {
           <ChartCard title="Distribucion por Generacion">
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={genData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="#E0D5C8" />
-                <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#5D4037' }} />
-                <YAxis tick={{ fontSize: 11, fill: '#5D4037' }} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                <XAxis dataKey="name" tick={{ fontSize: 11, fill: 'rgba(255,255,255,0.5)' }} />
+                <YAxis tick={{ fontSize: 11, fill: 'rgba(255,255,255,0.5)' }} />
                 <Tooltip content={<CustomTooltip />} />
                 <Bar dataKey="total" name="Personas" radius={[6, 6, 0, 0]}>
                   {genData.map((_, i) => (
@@ -312,9 +310,9 @@ export default function Stats() {
                   <div key={g.name}>
                     <div className="flex items-center justify-between mb-1.5">
                       <span className="text-sm font-bold" style={{ color: genderColors[i] }}>{g.name}</span>
-                      <span className="text-lg font-bold" style={{ color: genderColors[i] }}>{g.value} <span className="text-xs font-normal text-[#5D4037]/40">({pct}%)</span></span>
+                      <span className="text-lg font-bold" style={{ color: genderColors[i] }}>{g.value} <span className="text-xs font-normal text-white/40">({pct}%)</span></span>
                     </div>
-                    <div className="w-full h-6 rounded-full bg-[#F0E8DE] overflow-hidden">
+                    <div className="w-full h-6 rounded-full bg-white/10 overflow-hidden">
                       <motion.div
                         initial={{ width: 0 }}
                         whileInView={{ width: `${pct}%` }}
@@ -328,9 +326,9 @@ export default function Stats() {
                 )
               })}
               {/* Total */}
-              <div className="text-center pt-3 border-t border-[#E0D5C8]">
-                <span className="text-2xl font-bold text-[#5D4037]">{people.length}</span>
-                <span className="text-xs text-[#5D4037]/50 ml-1">total de integrantes</span>
+              <div className="text-center pt-3 border-t border-white/80">
+                <span className="text-2xl font-bold text-white">{people.length}</span>
+                <span className="text-xs text-white/50 ml-1">total de integrantes</span>
               </div>
             </div>
           </ChartCard>
@@ -340,11 +338,11 @@ export default function Stats() {
             <ChartCard title="Nacimientos por Decada">
               <ResponsiveContainer width="100%" height={250}>
                 <LineChart data={decadeData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="#E0D5C8" />
-                  <XAxis dataKey="name" tick={{ fontSize: 11, fill: '#5D4037' }} />
-                  <YAxis tick={{ fontSize: 11, fill: '#5D4037' }} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                  <XAxis dataKey="name" tick={{ fontSize: 11, fill: 'rgba(255,255,255,0.5)' }} />
+                  <YAxis tick={{ fontSize: 11, fill: 'rgba(255,255,255,0.5)' }} />
                   <Tooltip content={<CustomTooltip />} />
-                  <Line type="monotone" dataKey="nacimientos" name="Nacimientos" stroke="#7A9E7E" strokeWidth={3} dot={{ fill: '#7A9E7E', r: 5 }} />
+                  <Line type="monotone" dataKey="nacimientos" name="Nacimientos" stroke="#6B9080" strokeWidth={3} dot={{ fill: '#6B9080', r: 5 }} />
                 </LineChart>
               </ResponsiveContainer>
             </ChartCard>
@@ -355,9 +353,9 @@ export default function Stats() {
             <ChartCard title="Ramas Familiares mas Grandes">
               <ResponsiveContainer width="100%" height={250}>
                 <BarChart data={familyData} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" stroke="#E0D5C8" />
-                  <XAxis type="number" tick={{ fontSize: 11, fill: '#5D4037' }} />
-                  <YAxis type="category" dataKey="name" tick={{ fontSize: 11, fill: '#5D4037' }} width={80} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
+                  <XAxis type="number" tick={{ fontSize: 11, fill: 'rgba(255,255,255,0.5)' }} />
+                  <YAxis type="category" dataKey="name" tick={{ fontSize: 11, fill: 'rgba(255,255,255,0.5)' }} width={80} />
                   <Tooltip content={<CustomTooltip />} />
                   <Bar dataKey="descendientes" name="Descendientes" radius={[0, 6, 6, 0]}>
                     {familyData.map((_, i) => (

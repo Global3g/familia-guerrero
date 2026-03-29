@@ -27,9 +27,9 @@ export function ToastProvider({ children }) {
               animate={{ opacity: 1, x: 0 }}
               exit={{ opacity: 0, x: 100 }}
               className={`flex items-center gap-2 px-4 py-3 rounded-xl shadow-lg text-sm font-medium ${
-                toast.type === 'success' ? 'bg-[#7A9E7E] text-white' :
+                toast.type === 'success' ? 'bg-[#6B9080] text-white' :
                 toast.type === 'error' ? 'bg-red-500 text-white' :
-                'bg-[#B8943E] text-white'
+                'bg-[#B8976A] text-white'
               }`}
             >
               {toast.type === 'success' ? <CheckCircle className="w-4 h-4" /> : <AlertCircle className="w-4 h-4" />}

@@ -17,12 +17,12 @@ function timeAgo(dateStr) {
 }
 
 const typeConfig = {
-  form_response: { icon: UserPlus, color: '#7A9E7E', label: 'Nuevo formulario' },
-  birthday: { icon: Gift, color: '#C4704B', label: 'Cumpleanos' },
-  anniversary: { icon: Heart, color: '#E8956D', label: 'Aniversario' },
-  new_photo: { icon: Image, color: '#B8943E', label: 'Nueva foto' },
-  new_event: { icon: Calendar, color: '#7A9E7E', label: 'Nuevo evento' },
-  milestone: { icon: Star, color: '#C4704B', label: 'Hito familiar' },
+  form_response: { icon: UserPlus, color: '#6B9080', label: 'Nuevo formulario' },
+  birthday: { icon: Gift, color: '#B8654A', label: 'Cumpleanos' },
+  anniversary: { icon: Heart, color: '#C8846A', label: 'Aniversario' },
+  new_photo: { icon: Image, color: '#B8976A', label: 'Nueva foto' },
+  new_event: { icon: Calendar, color: '#6B9080', label: 'Nuevo evento' },
+  milestone: { icon: Star, color: '#B8654A', label: 'Hito familiar' },
 }
 
 export default function NotificationBell() {
@@ -145,14 +145,14 @@ export default function NotificationBell() {
       {/* Bell button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 rounded-full transition-colors hover:bg-[#5D4037]/10"
+        className="relative p-2 rounded-full transition-colors hover:bg-[#0F172A]/10"
       >
-        <Bell className="w-5 h-5" style={{ color: '#5D4037' }} />
+        <Bell className="w-5 h-5" style={{ color: '#FFFFFF' }} />
         {unreadCount > 0 && (
           <motion.span
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className="absolute -top-0.5 -right-0.5 w-5 h-5 rounded-full bg-[#C4704B] text-white text-[11px] font-bold flex items-center justify-center"
+            className="absolute -top-0.5 -right-0.5 w-5 h-5 rounded-full bg-[#B8654A] text-white text-[11px] font-bold flex items-center justify-center"
           >
             {unreadCount > 9 ? '9+' : unreadCount}
           </motion.span>
@@ -170,19 +170,19 @@ export default function NotificationBell() {
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
               transition={{ duration: 0.2 }}
               className="absolute right-0 top-12 z-50 w-80 sm:w-96 rounded-2xl shadow-2xl overflow-hidden"
-              style={{ backgroundColor: '#FFF8F0', border: '1px solid #E0D5C8' }}
+              style={{ backgroundColor: '#0F172A', border: '1px solid #E2E8F0' }}
             >
               {/* Header */}
-              <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: '#E0D5C8' }}>
-                <h3 className="text-sm font-bold" style={{ color: '#5D4037' }}>Notificaciones</h3>
+              <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: 'rgba(255,255,255,0.8)' }}>
+                <h3 className="text-sm font-bold" style={{ color: '#FFFFFF' }}>Notificaciones</h3>
                 <div className="flex items-center gap-2">
                   {unreadCount > 0 && (
-                    <button onClick={markAllRead} className="text-[11px] font-medium px-2 py-1 rounded-full" style={{ color: '#7A9E7E', backgroundColor: '#7A9E7E15' }}>
+                    <button onClick={markAllRead} className="text-[11px] font-medium px-2 py-1 rounded-full" style={{ color: '#6B9080', backgroundColor: '#6B908015' }}>
                       Marcar leidas
                     </button>
                   )}
                   <button onClick={() => setIsOpen(false)}>
-                    <X className="w-4 h-4" style={{ color: '#5D4037' }} />
+                    <X className="w-4 h-4" style={{ color: '#FFFFFF' }} />
                   </button>
                 </div>
               </div>
@@ -191,8 +191,8 @@ export default function NotificationBell() {
               <div className="max-h-80 overflow-y-auto">
                 {notifications.length === 0 ? (
                   <div className="text-center py-8">
-                    <Bell className="w-8 h-8 mx-auto mb-2" style={{ color: '#E0D5C8' }} />
-                    <p className="text-xs" style={{ color: '#8A7B6B' }}>Sin notificaciones</p>
+                    <Bell className="w-8 h-8 mx-auto mb-2" style={{ color: '#E2E8F0' }} />
+                    <p className="text-xs" style={{ color: '#64748B' }}>Sin notificaciones</p>
                   </div>
                 ) : (
                   notifications.slice(0, 15).map((notif) => {
@@ -203,8 +203,8 @@ export default function NotificationBell() {
                         key={notif.id}
                         className="flex items-start gap-3 px-4 py-3 border-b transition-colors"
                         style={{
-                          borderColor: '#F0E8DE',
-                          backgroundColor: notif.read ? 'transparent' : '#7A9E7E08',
+                          borderColor: 'rgba(255,255,255,0.8)',
+                          backgroundColor: notif.read ? 'transparent' : '#6B908008',
                         }}
                       >
                         <div
@@ -214,13 +214,13 @@ export default function NotificationBell() {
                           <Icon className="w-4 h-4" style={{ color: config.color }} />
                         </div>
                         <div className="flex-1 min-w-0">
-                          <p className="text-xs font-bold leading-tight" style={{ color: '#5D4037' }}>
+                          <p className="text-xs font-bold leading-tight" style={{ color: '#FFFFFF' }}>
                             {notif.title}
                           </p>
                           {notif.subtitle && (
-                            <p className="text-[11px] mt-0.5" style={{ color: '#8A7B6B' }}>{notif.subtitle}</p>
+                            <p className="text-[11px] mt-0.5" style={{ color: '#64748B' }}>{notif.subtitle}</p>
                           )}
-                          <p className="text-[11px] mt-1" style={{ color: '#B0A090' }}>{timeAgo(notif.date)}</p>
+                          <p className="text-[11px] mt-1" style={{ color: '#64748B' }}>{timeAgo(notif.date)}</p>
                         </div>
                         {!notif.read && (
                           <div className="w-2 h-2 rounded-full mt-2 flex-shrink-0" style={{ backgroundColor: config.color }} />

@@ -25,12 +25,12 @@ export default function Navbar({ user, isAdmin, onLogout }) {
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? 'bg-[#FDF8F0]/95 backdrop-blur-md shadow-md'
+          ? 'backdrop-blur-xl shadow-sm border-b border-white/80'
           : 'bg-transparent'
       }`}
     >
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-center h-16 sm:h-20">
+        <div className="flex items-center h-14 sm:h-16">
           {/* Logo / Title */}
           <a
             href="#"
@@ -43,13 +43,13 @@ export default function Navbar({ user, isAdmin, onLogout }) {
             <img src="/logo.svg" alt="FG" className="w-7 h-7" />
             <span
               className={`font-serif text-xl sm:text-2xl font-bold tracking-wide transition-colors duration-500 ${
-                scrolled ? 'text-[#5D4037]' : 'text-[#FDF8F0]'
+                scrolled ? 'text-white' : 'text-[#F8FAFC]'
               }`}
             >
               Familia Guerrero
             </span>
             {user?.displayName && (
-              <span className={`hidden sm:inline text-xs font-sans ml-2 transition-colors duration-500 ${scrolled ? 'text-[#5D4037]/50' : 'text-[#FDF8F0]/50'}`}>
+              <span className={`hidden sm:inline text-xs font-sans ml-2 transition-colors duration-500 ${scrolled ? 'text-white/50' : 'text-[#F8FAFC]/50'}`}>
                 Hola, {user.displayName.split(' ')[0]}
                 {isAdmin && <AdminBadge />}
               </span>
@@ -69,8 +69,8 @@ export default function Navbar({ user, isAdmin, onLogout }) {
                 onClick={onLogout}
                 className={`flex items-center gap-1.5 font-sans text-sm font-medium px-3 py-2 rounded-md transition-colors duration-300 ${
                   scrolled
-                    ? 'text-[#C4704B] hover:bg-[#C4704B]/10'
-                    : 'text-[#FDF8F0]/70 hover:text-[#FDF8F0] hover:bg-white/10'
+                    ? 'text-[#B8654A] hover:bg-[#B8654A]/10'
+                    : 'text-[#F8FAFC]/70 hover:text-[#F8FAFC] hover:bg-white/10'
                 }`}
               >
                 <LogOut className="w-4 h-4" />
@@ -85,8 +85,8 @@ export default function Navbar({ user, isAdmin, onLogout }) {
               onClick={() => setMobileOpen(!mobileOpen)}
               className={`md:hidden p-2 rounded-lg transition-colors duration-300 ${
                 scrolled
-                  ? 'text-[#5D4037] hover:bg-[#5D4037]/10'
-                  : 'text-[#FDF8F0] hover:bg-white/10'
+                  ? 'text-white hover:bg-[#0F172A]/10'
+                  : 'text-[#F8FAFC] hover:bg-white/10'
               }`}
               aria-label={mobileOpen ? 'Cerrar menu' : 'Abrir menu'}
             >
@@ -103,15 +103,15 @@ export default function Navbar({ user, isAdmin, onLogout }) {
           animate={{ opacity: 1, height: 'auto' }}
           exit={{ opacity: 0, height: 0 }}
           transition={{ duration: 0.3, ease: 'easeInOut' }}
-          className="md:hidden bg-[#FDF8F0]/98 backdrop-blur-lg border-t border-[#5D4037]/10 shadow-lg"
+          className="md:hidden bg-[#1E293B]/98 backdrop-blur-lg border-t border-white/80 shadow-lg"
         >
           <div className="flex flex-col px-4 py-4 gap-2">
             <SearchBar />
 
             {/* Notification Bell */}
-            <div className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[#5D4037]/5 transition-colors duration-200">
+            <div className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[#0F172A]/5 transition-colors duration-200">
               <NotificationBell />
-              <span className="font-sans text-base font-medium text-[#5D4037]">Notificaciones</span>
+              <span className="font-sans text-base font-medium text-white">Notificaciones</span>
             </div>
 
             {/* Logout */}
@@ -120,7 +120,7 @@ export default function Navbar({ user, isAdmin, onLogout }) {
                 setMobileOpen(false)
                 onLogout()
               }}
-              className="flex items-center gap-3 font-sans text-base font-medium text-[#C4704B] hover:bg-[#C4704B]/10 px-4 py-3 rounded-lg transition-colors duration-200"
+              className="flex items-center gap-3 font-sans text-base font-medium text-[#B8654A] hover:bg-[#B8654A]/10 px-4 py-3 rounded-lg transition-colors duration-200"
             >
               <LogOut className="w-5 h-5" />
               Salir

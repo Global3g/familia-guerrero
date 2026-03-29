@@ -27,11 +27,11 @@ export default function ExportTree() {
       const ctx = canvas.getContext('2d')
 
       // Background
-      ctx.fillStyle = '#FDF8F0'
+      ctx.fillStyle = '#F8FAFC'
       ctx.fillRect(0, 0, canvasW, canvasH)
 
       // Title
-      ctx.fillStyle = '#5D4037'
+      ctx.fillStyle = '#0F172A'
       ctx.font = 'bold 32px Georgia, serif'
       ctx.textAlign = 'center'
       ctx.fillText('Familia Guerrero', canvasW / 2, 50)
@@ -53,24 +53,24 @@ export default function ExportTree() {
         ctx.roundRect(x, y, nodeW, nodeH, 12)
         ctx.fill()
         ctx.stroke()
-        ctx.fillStyle = '#5D4037'
+        ctx.fillStyle = '#0F172A'
         ctx.font = 'bold 14px Inter, sans-serif'
         ctx.textAlign = 'center'
         const shortName = name.length > 22 ? name.substring(0, 20) + '...' : name
         ctx.fillText(shortName, x + nodeW / 2, y + nodeH / 2 + 5)
       }
 
-      drawNode(gpX, gpY, gpName, '#B8943E')
-      drawNode(gmX, gpY, gmName, '#B8943E')
+      drawNode(gpX, gpY, gpName, '#B8976A')
+      drawNode(gmX, gpY, gmName, '#B8976A')
 
       // Heart between grandparents
-      ctx.fillStyle = '#C4704B'
+      ctx.fillStyle = '#B8654A'
       ctx.font = '20px sans-serif'
       ctx.textAlign = 'center'
       ctx.fillText('❤', canvasW / 2, gpY + nodeH / 2 + 7)
 
       // Line down from grandparents
-      ctx.strokeStyle = '#C4704B80'
+      ctx.strokeStyle = '#B8654A80'
       ctx.lineWidth = 2
       ctx.beginPath()
       ctx.moveTo(canvasW / 2, gpY + nodeH)
@@ -90,7 +90,7 @@ export default function ExportTree() {
       // Draw each member
       members.forEach((m, i) => {
         const x = startX + i * (nodeW + gapX)
-        const color = i % 2 === 0 ? '#7A9E7E' : '#C4704B'
+        const color = i % 2 === 0 ? '#6B9080' : '#B8654A'
 
         // Vertical tick
         ctx.beginPath()
@@ -103,14 +103,14 @@ export default function ExportTree() {
         // Children count
         const kidCount = (m.children || []).length
         if (kidCount > 0) {
-          ctx.fillStyle = '#B8943E'
+          ctx.fillStyle = '#B8976A'
           ctx.font = '11px Inter, sans-serif'
           ctx.fillText(kidCount + ' hijos', x + nodeW / 2, childrenY + nodeH + 15)
         }
       })
 
       // Watermark
-      ctx.fillStyle = '#5D403740'
+      ctx.fillStyle = '#0F172A40'
       ctx.font = '11px Inter, sans-serif'
       ctx.textAlign = 'center'
       ctx.fillText('familia-guerrero.vercel.app', canvasW / 2, canvasH - 15)
@@ -129,7 +129,7 @@ export default function ExportTree() {
   }
 
   return (
-    <button onClick={handleExport} disabled={exporting} className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#B8943E] text-white text-sm font-medium hover:bg-[#B8943E]/90 transition shadow-lg disabled:opacity-50">
+    <button onClick={handleExport} disabled={exporting} className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#B8976A] text-white text-sm font-medium hover:bg-[#B8976A]/90 transition shadow-lg disabled:opacity-50">
       {exporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
       {exporting ? 'Exportando...' : 'Exportar Arbol'}
     </button>
