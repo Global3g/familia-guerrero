@@ -16,6 +16,7 @@ import Traditions from './components/Traditions'
 import Messages from './components/Messages'
 import Footer from './components/Footer'
 import FamilyProgress from './components/FamilyProgress'
+import Dashboard from './components/Dashboard'
 import Onboarding from './components/Onboarding'
 import ShareExport from './components/ShareExport'
 import PresentationMode, { PresentationButton } from './components/PresentationMode'
@@ -115,12 +116,9 @@ function App() {
     <div className="min-h-screen bg-cream">
       <Navbar user={user} isAdmin={isAdmin} onLogout={() => signOut(auth)} />
 
-      {/* Tab Bar - Floating pill */}
+      {/* Tab Bar - Floating pill V2 */}
       <div className="sticky top-14 sm:top-16 z-40 flex justify-center py-4" style={{ background: 'linear-gradient(to bottom, #0F172A 60%, transparent)' }}>
-        <nav
-          className="inline-flex overflow-x-auto rounded-full shadow-lg border-4 border-white/80 px-2.5 py-2.5"
-          style={{ scrollbarWidth: 'none', msOverflowStyle: 'none', backgroundColor: 'rgba(255,255,255,0.08)' }}
-        >
+        <nav className="inline-flex overflow-x-auto rounded-full px-2 py-2 md:px-4 md:py-3 glass-panel-static shadow-[0_10px_40px_rgba(0,0,0,0.5)]" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           <style>{`nav::-webkit-scrollbar { display: none; }`}</style>
           {tabs.map((tab) => {
             const Icon = tab.icon
@@ -132,25 +130,24 @@ function App() {
                   setActiveTab(tab.id)
                   window.scrollTo({ top: 0, behavior: 'smooth' })
                 }}
-                className={`relative flex items-center gap-2 px-6 py-3 text-[17px] font-semibold whitespace-nowrap transition-all duration-200 flex-shrink-0 rounded-full ${
+                className={`relative group px-4 py-2 text-sm font-sans tracking-wide whitespace-nowrap transition-all duration-200 flex-shrink-0 rounded-full ${
                   isActive
-                    ? 'text-[#FFD700]'
-                    : 'text-[#D4AF37]/70 hover:text-[#FFD700] hover:bg-white/10'
+                    ? 'text-white'
+                    : 'text-white/70 hover:text-white'
                 }`}
-                style={isActive ? {
-                  textShadow: '0 0 20px #FFD700, 0 0 30px #FFD700, 0 0 40px #FFD700'
-                } : {}}
               >
                 {isActive && (
-                  <motion.div
-                    layoutId="tab-pill"
-                    className="absolute inset-0 rounded-full"
-                    style={{ backgroundColor: '#B8654A' }}
+                  <motion.span
+                    layoutId="tab-pill-v2"
+                    className="absolute inset-0 bg-white/5 rounded-full"
                     transition={{ type: 'spring', stiffness: 400, damping: 35 }}
                   />
                 )}
-                <span className="relative z-10 flex items-center gap-2">
-                  <Icon size={20} />
+                {!isActive && (
+                  <span className="absolute inset-0 bg-white/5 rounded-full scale-50 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all" />
+                )}
+                <span className="relative z-10 flex items-center gap-2 font-medium">
+                  <Icon size={18} />
                   {tab.label}
                 </span>
               </button>
@@ -173,10 +170,8 @@ function App() {
           transition={{ duration: 0.3 }}
         >
           <Hero />
+          <Dashboard />
           <WeeklyBanner />
-          <div className="max-w-4xl mx-auto px-4 py-8">
-            <FamilyProgress />
-          </div>
           <Origin />
           <YourBranch />
           <div className="py-16 bg-white/5">

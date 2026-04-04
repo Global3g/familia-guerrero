@@ -25,7 +25,7 @@ export default function Navbar({ user, isAdmin, onLogout }) {
       transition={{ duration: 0.6, ease: 'easeOut' }}
       className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
         scrolled
-          ? 'backdrop-blur-xl shadow-sm border-b border-white/80'
+          ? 'glass-panel-static shadow-[0_4px_20px_rgba(0,0,0,0.4)] border-b border-white/5'
           : 'bg-transparent'
       }`}
     >

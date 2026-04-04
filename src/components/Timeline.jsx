@@ -148,21 +148,19 @@ function TimelineEvent({ event, index, onEdit, onDelete }) {
 function EventCard({ event, config, IconComponent, align, onEdit, onDelete }) {
   return (
     <div
-      className={`rounded-2xl shadow-lg p-5 border-2 transition-all hover:scale-[1.02] relative group ${
+      className={`glass-panel rounded-2xl p-5 transition-all relative group ${
         align === 'right' ? 'text-right' : 'text-left'
       }`}
       style={{
-        backgroundColor: config.bgLight,
-        borderColor: config.border,
-        boxShadow: `0 4px 20px ${config.color}30`
+        boxShadow: `0 4px 20px ${config.color}20`
       }}
       onMouseEnter={(e) => {
-        e.currentTarget.style.boxShadow = `0 8px 30px ${config.color}60`;
-        e.currentTarget.style.borderColor = config.color;
+        e.currentTarget.style.boxShadow = `0 8px 30px ${config.color}50, 0 0 40px ${config.color}15`;
+        e.currentTarget.style.borderColor = `${config.color}60`;
       }}
       onMouseLeave={(e) => {
-        e.currentTarget.style.boxShadow = `0 4px 20px ${config.color}30`;
-        e.currentTarget.style.borderColor = config.border;
+        e.currentTarget.style.boxShadow = `0 4px 20px ${config.color}20`;
+        e.currentTarget.style.borderColor = 'rgba(184, 151, 106, 0.15)';
       }}
     >
       {/* Edit/Delete buttons (hidden for auto-generated events) */}

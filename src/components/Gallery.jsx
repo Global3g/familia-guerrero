@@ -318,7 +318,7 @@ export default function Gallery() {
                       className="break-inside-avoid mb-5"
                     >
                       <div
-                        className="group relative rounded-xl overflow-hidden shadow-md cursor-pointer transition-all duration-300 hover:shadow-xl hover:-translate-y-1 bg-white/5 border-4 border-white/80"
+                        className="glass-panel group relative rounded-xl overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1"
                       >
                         {/* Edit/Delete buttons */}
                         <div className="absolute top-2 left-2 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-20">

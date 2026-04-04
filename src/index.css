@@ -20,6 +20,10 @@
   --color-navy-light: #334155;
   --color-brown: #0F172A;
   --color-brown-light: #64748B;
+  --color-primary: #B8654A;
+  --color-secondary: #6B9080;
+  --color-accent: #B8976A;
+  --color-base: #0F172A;
 }
 
 html {
@@ -115,6 +119,82 @@ img[loading] {
 .card-hover:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(0,0,0,0.08);
+}
+
+/* Glassmorphism V2 Styles */
+.glass-panel {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.005) 100%);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  border: 1px solid rgba(184, 151, 106, 0.15);
+  box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.3);
+  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.glass-panel:hover {
+  border-color: rgba(184, 151, 106, 0.4);
+  box-shadow: 0 8px 32px -4px rgba(184, 151, 106, 0.15);
+  transform: translateY(-2px);
+}
+
+.glass-panel-static {
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.005) 100%);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(184, 151, 106, 0.1);
+}
+
+/* Ambient Orbs */
+.ambient-orb {
+  position: fixed;
+  border-radius: 50%;
+  filter: blur(120px);
+  z-index: -1;
+  opacity: 0.4;
+  animation: pulse-slow 8s infinite alternate;
+  pointer-events: none;
+}
+
+.orb-1 {
+  top: -10%;
+  left: -10%;
+  width: 50vw;
+  height: 50vw;
+  background: rgba(184, 101, 74, 0.2);
+}
+
+.orb-2 {
+  bottom: -20%;
+  right: -10%;
+  width: 60vw;
+  height: 60vw;
+  background: rgba(107, 144, 128, 0.15);
+}
+
+.orb-3 {
+  top: 40%;
+  left: 50%;
+  width: 40vw;
+  height: 40vw;
+  background: rgba(184, 151, 106, 0.1);
+  transform: translate(-50%, -50%);
+}
+
+@keyframes pulse-slow {
+  0%, 100% {
+    opacity: 0.3;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+/* Text Gradient Gold */
+.text-gradient-gold {
+  background: linear-gradient(to right, #ffffff, #B8976A);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
 }
 
 /* Dark mode */

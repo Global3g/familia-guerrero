@@ -79,7 +79,7 @@ export default function FamilyProgress() {
   if (data.missingGender > 0) missing.push(`${data.missingGender} generos`)
 
   return (
-    <div className="bg-[#0F172A] rounded-2xl border-4 border-white/80 p-5 shadow-sm">
+    <div className="glass-panel rounded-2xl p-5">
       {/* Header */}
       <div className="flex items-center justify-between mb-3">
         <div className="flex items-center gap-2.5">

@@ -28,12 +28,7 @@ const ProfileCard = ({ person, index, onEdit }) => {
       transition={{ duration: 0.8, delay: index * 0.3 }}
       className="flex-1 min-w-[300px] max-w-md relative"
     >
-      <div
-        className="rounded-2xl shadow-lg overflow-hidden border-4 border-white/80"
-        style={{
-          backgroundColor: 'rgba(255,255,255,0.05)',
-        }}
-      >
+      <div className="glass-panel rounded-2xl overflow-hidden">
         {/* Edit button */}
         <button
           onClick={onEdit}
@@ -269,12 +264,7 @@ export default function Origin() {
           transition={{ duration: 0.8, delay: 0.2 }}
           className="max-w-3xl mx-auto"
         >
-          <div
-            className="rounded-2xl shadow-lg p-8 md:p-10 text-center border-4 border-white/80"
-            style={{
-              backgroundColor: 'rgba(255,255,255,0.05)',
-            }}
-          >
+          <div className="glass-panel rounded-2xl p-8 md:p-10 text-center">
             {/* Wedding heart icon */}
             <div className="flex justify-center mb-5">
               <div

@@ -76,70 +76,82 @@ export default function Hero() {
   const hasPhoto = !!heroPhoto;
 
   return (
-    <section className="relative min-h-[100vh] flex flex-col items-center justify-center overflow-hidden">
-      {/* === Background === */}
-      {hasPhoto ? (
-        <div className="absolute inset-0">
+    <header className="relative min-h-[90vh] flex flex-col items-center justify-center pt-20 px-6 overflow-hidden">
+      {/* Ambient Orbs */}
+      <div className="ambient-orb orb-1" />
+      <div className="ambient-orb orb-2" />
+      <div className="ambient-orb orb-3" />
+
+      {/* Custom photo background if available */}
+      {hasPhoto && (
+        <div className="absolute inset-0 z-0">
           <motion.img
             src={heroPhoto}
             alt=""
-            className="w-full h-full object-cover"
+            className="w-full h-full object-cover opacity-20"
             initial={{ scale: 1.1 }}
             animate={{ scale: 1 }}
             transition={{ duration: 8, ease: 'easeOut' }}
           />
-          <div className="absolute inset-0" style={{ background: 'linear-gradient(to bottom, rgba(28,25,23,0.3) 0%, rgba(28,25,23,0.15) 40%, rgba(28,25,23,0.7) 100%)' }} />
-        </div>
-      ) : (
-        <div className="absolute inset-0" style={{ background: 'linear-gradient(135deg, #0F172A 0%, #1E293B 50%, #0F172A 100%)' }}>
-          {/* Cool ambient glows */}
-          <div className="absolute top-0 right-0 w-[50%] h-[50%] rounded-full opacity-[0.08] blur-[120px]" style={{ background: '#3B82F6' }} />
-          <div className="absolute bottom-0 left-0 w-[40%] h-[40%] rounded-full opacity-[0.06] blur-[100px]" style={{ background: '#6366F1' }} />
         </div>
       )}
 
-      {/* === Content === */}
-      <div className="relative z-10 max-w-4xl mx-auto px-6 text-center flex flex-col items-center">
+      {/* Family Crest / Shield */}
+      <motion.div
+        initial={{ opacity: 0, y: -20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.8 }}
+        className="relative w-32 h-40 mb-10 mx-auto animate-float flex items-center justify-center z-10"
+      >
+        {/* Outermost Shield line */}
+        <svg className="absolute inset-0 w-full h-full text-accent/40" viewBox="0 0 100 120" fill="none" stroke="currentColor" strokeWidth="1">
+          <path d="M50 5 L90 20 L90 60 C90 90, 50 115, 50 115 C50 115, 10 90, 10 60 L10 20 Z" />
+        </svg>
+        {/* Inner Shield shape filled */}
+        <svg className="absolute inset-0 w-full h-full p-2 text-base/80" viewBox="0 0 100 120" fill="currentColor">
+          <path d="M50 10 L85 24 L85 62 C85 88, 50 110, 50 110 C50 110, 15 88, 15 62 L15 24 Z" />
+        </svg>
+        {/* Decorative interior lines */}
+        <svg className="absolute inset-0 w-full h-full p-2 text-primary/60" viewBox="0 0 100 120" fill="none" stroke="currentColor" strokeWidth="0.5">
+          <path d="M50 10 L85 24 L85 62 C85 88, 50 110, 50 110 C50 110, 15 88, 15 62 L15 24 Z" />
+          <line x1="50" y1="10" x2="50" y2="110" />
+          <line x1="15" y1="40" x2="85" y2="40" />
+        </svg>
+        <span className="font-serif text-5xl text-accent z-10 relative">G</span>
+      </motion.div>
 
-        {/* Overline */}
-        <motion.div
-          initial={{ opacity: 0, width: 0 }}
-          animate={{ opacity: 1, width: 48 }}
-          transition={{ duration: 1, delay: 0.2 }}
-          className="h-[1px] mb-6 bg-white/30"
-        />
+      {/* Hero Content */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ delay: 0.3, duration: 0.8 }}
+        className="text-center z-10 max-w-3xl mx-auto space-y-6"
+      >
+        <motion.h3
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.5, duration: 0.6 }}
+          className="text-secondary tracking-[0.3em] uppercase text-xs font-semibold"
+        >
+          Linaje & Herencia
+        </motion.h3>
+
+        <motion.h1
+          initial={{ opacity: 0, scale: 0.95 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 0.6, duration: 0.8 }}
+          className="text-6xl md:text-8xl font-serif text-white tracking-tight leading-none text-gradient-gold"
+        >
+          Familia <br /> Guerrero
+        </motion.h1>
+
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ duration: 0.8, delay: 0.4 }}
-          className="text-[16px] font-sans font-semibold uppercase tracking-[5px] mb-10 text-white"
+          transition={{ delay: 0.9, duration: 0.6 }}
+          className="font-serif italic text-xl md:text-2xl text-white/60 max-w-xl mx-auto pt-4 border-t border-accent/20"
         >
-          Legado &amp; Memoria
-        </motion.p>
-
-        {/* Title - SAME TYPOGRAPHY */}
-        <motion.h1
-          initial={{ opacity: 0, y: 30, scale: 0.95 }}
-          animate={{ opacity: 1, y: 0, scale: 1 }}
-          transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-          className="font-serif font-bold leading-[1.1] tracking-tight text-white"
-          style={{ fontSize: 'clamp(5rem, 12vw, 11rem)' }}
-        >
-          Familia{" "}
-          <span className="relative inline-block">
-            Guerrero
-            <span className="absolute -bottom-1 left-0 w-full h-[3px] rounded-full bg-gradient-to-r from-[#B8654A] to-[#B8654A]/20" />
-          </span>
-        </motion.h1>
-
-        {/* Subtitle */}
-        <motion.p
-          initial={{ opacity: 0, y: 15 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-          className="mt-8 font-serif text-2xl sm:text-3xl md:text-4xl italic leading-relaxed max-w-2xl text-white font-medium"
-        >
-          {stats?.generations > 0 ? `${stats.generations} generaciones` : 'Generaciones'} unidas por el amor, la fe y la memoria
+          {stats?.generations > 0 ? `${stats.generations} generaciones` : 'Generaciones'} unidas por el amor, la fe y la memoria. Un legado que trasciende el tiempo.
         </motion.p>
 
         {/* Stats */}
@@ -147,44 +159,46 @@ export default function Hero() {
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1, duration: 0.8 }}
-            className="mt-14 flex items-center gap-12"
+            transition={{ delay: 1.1, duration: 0.8 }}
+            className="pt-8 flex items-center justify-center gap-8 md:gap-12"
           >
             {[
               { value: stats.total, label: 'Integrantes' },
               { value: stats.generations, label: 'Generaciones' },
               ...(stats.since ? [{ value: stats.since, label: 'Desde' }] : []),
             ].map((item, i) => (
-              <div key={i} className="text-center">
-                <p className="text-3xl sm:text-4xl font-serif font-bold text-white">{item.value}</p>
-                <p className="text-[10px] uppercase tracking-[3px] mt-1 text-white/30">{item.label}</p>
+              <div key={i} className="text-center glass-panel-static rounded-xl px-6 py-4">
+                <p className="text-2xl sm:text-3xl font-serif font-bold text-accent">{item.value}</p>
+                <p className="text-[9px] uppercase tracking-[3px] mt-1 text-white/40">{item.label}</p>
               </div>
             ))}
           </motion.div>
         )}
-      </div>
-
-      {/* Scroll indicator */}
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ delay: 2, duration: 1 }}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-10"
-      >
-        <motion.div
-          animate={{ y: [0, 6, 0] }}
-          transition={{ repeat: Infinity, duration: 2.5, ease: 'easeInOut' }}
-        >
-          <ChevronDown className="w-5 h-5 text-white/20" />
-        </motion.div>
       </motion.div>
 
+      {/* Scroll indicator */}
+      <motion.a
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 0.5 }}
+        whileHover={{ opacity: 1 }}
+        transition={{ delay: 1.4, duration: 0.6 }}
+        href="#dashboard"
+        onClick={(e) => {
+          e.preventDefault();
+          document.querySelector('#dashboard')?.scrollIntoView({ behavior: 'smooth' });
+        }}
+        className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center transition-opacity cursor-pointer z-10"
+      >
+        <span className="text-[10px] uppercase tracking-widest mb-2 font-sans text-accent">Explorar</span>
+        <div className="w-px h-12 bg-gradient-to-b from-accent to-transparent" />
+      </motion.a>
+
       {/* Photo upload */}
-      <label className="absolute bottom-6 right-6 z-10 cursor-pointer flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all bg-white/10 hover:bg-white/20 text-white/40 hover:text-white/70 backdrop-blur-md border-4 border-white/80">
+      <label className="absolute bottom-6 right-6 z-20 cursor-pointer flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all glass-panel-static text-white/60 hover:text-white border border-white/10 hover:border-accent/40">
         <Camera className="w-3.5 h-3.5" />
         <span className="hidden sm:inline">Cambiar foto</span>
         <input type="file" accept="image/*" onChange={handleHeroPhoto} className="hidden" />
       </label>
-    </section>
+    </header>
   );
 }
