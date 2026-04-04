@@ -1234,82 +1234,114 @@ export default function FamilyTree() {
                         </div>
                       </div>
 
-                      {/* Couple cards - REDESIGNED LARGER */}
-                      <div className="flex items-start justify-center gap-6 sm:gap-12 mb-12 px-2">
-                        {/* Main person card - MUCH LARGER */}
-                        <div className="flex-1 max-w-[360px] rounded-3xl shadow-2xl p-8 text-center" style={{
-                          background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%)',
-                          backdropFilter: 'blur(20px)',
-                          border: '1px solid rgba(255, 255, 255, 0.1)',
-                          boxShadow: '0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                        }}>
-                          <div className="mb-6">
-                            <div className="inline-block rounded-full p-2 bg-white/5 ring-2 ring-white/10">
-                              {selectedMember.photoURL ? (
-                                <img src={selectedMember.photoURL} alt={selectedMember.name} className="w-32 h-32 rounded-full object-cover cursor-pointer" onClick={() => setLightboxPhoto({ photoURL: selectedMember.photoURL, caption: selectedMember.name })} />
-                              ) : (
-                                <div className="w-32 h-32 rounded-full flex items-center justify-center bg-white/5">
-                                  <User className="w-16 h-16 text-white/30" />
-                                </div>
-                              )}
-                            </div>
-                          </div>
-                          <h3 className="text-2xl font-serif font-bold text-white mb-2">{selectedMember.name}</h3>
-                          {selectedMember.nickname && (
-                            <p className="text-sm text-white/60 font-medium italic mb-3">"{selectedMember.nickname}"</p>
-                          )}
-                          <AgeBadge birthDate={selectedMember.birthDate} deathDate={selectedMember.deathDate} />
-                          {selectedMember.role && (
-                            <span className="inline-block mt-3 text-xs font-semibold uppercase tracking-wider px-4 py-2 rounded-full bg-white/10 text-white/70">
-                              {selectedMember.role}
-                            </span>
-                          )}
-                        </div>
+                      {/* NEW MAGAZINE-STYLE HERO SECTION */}
+                      <div className="relative mb-16 rounded-3xl overflow-hidden" style={{
+                        background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 100%)',
+                        backdropFilter: 'blur(30px)',
+                        border: '1px solid rgba(255, 255, 255, 0.15)',
+                        boxShadow: '0 30px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15)'
+                      }}>
+                        {/* Background pattern */}
+                        <div className="absolute inset-0 opacity-5" style={{
+                          backgroundImage: 'radial-gradient(circle at 2px 2px, white 1px, transparent 0)',
+                          backgroundSize: '50px 50px'
+                        }} />
 
-                        {/* Heart connector - LARGER */}
-                        {selectedMember.spouse && (
-                          <>
-                            <div className="flex flex-col items-center pt-16 flex-shrink-0">
-                              <div className="w-14 h-14 rounded-full bg-white/10 flex items-center justify-center shadow-lg backdrop-blur-sm">
-                                <Heart className="w-7 h-7 text-white/70 fill-white/50" />
-                              </div>
-                            </div>
+                        <div className="relative p-10 sm:p-16">
+                          {/* Split layout - Photos on left, Info on right */}
+                          <div className="flex flex-col lg:flex-row gap-12 items-center">
 
-                            {/* Spouse card - MUCH LARGER */}
-                            <div className="flex-1 max-w-[360px] rounded-3xl shadow-2xl p-8 text-center" style={{
-                              background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.03) 100%)',
-                              backdropFilter: 'blur(20px)',
-                              border: '1px solid rgba(255, 255, 255, 0.1)',
-                              boxShadow: '0 20px 60px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                            }}>
-                              <div className="mb-6">
-                                <div className="inline-block rounded-full p-2 bg-white/5 ring-2 ring-white/10">
-                                  {typeof selectedMember.spouse === 'object' && selectedMember.spouse.photoURL ? (
-                                    <img src={selectedMember.spouse.photoURL} alt={selectedMember.spouse.name} className="w-32 h-32 rounded-full object-cover cursor-pointer" onClick={() => setLightboxPhoto({ photoURL: selectedMember.spouse.photoURL, caption: selectedMember.spouse.name })} />
+                            {/* LEFT: Large Photos Side by Side */}
+                            <div className="flex gap-8 items-center justify-center flex-shrink-0">
+                              {/* Main person - HUGE PHOTO */}
+                              <div className="relative group">
+                                <div className="absolute -inset-1 bg-gradient-to-r from-white/20 to-white/5 rounded-full blur-xl opacity-75 group-hover:opacity-100 transition" />
+                                <div className="relative rounded-full p-3 bg-white/10 ring-4 ring-white/20 backdrop-blur-xl">
+                                  {selectedMember.photoURL ? (
+                                    <img src={selectedMember.photoURL} alt={selectedMember.name}
+                                      className="w-40 h-40 sm:w-48 sm:h-48 rounded-full object-cover cursor-pointer transform group-hover:scale-105 transition-transform duration-500"
+                                      onClick={() => setLightboxPhoto({ photoURL: selectedMember.photoURL, caption: selectedMember.name })}
+                                    />
                                   ) : (
-                                    <div className="w-32 h-32 rounded-full flex items-center justify-center bg-white/5">
-                                      <User className="w-16 h-16 text-white/30" />
+                                    <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-full flex items-center justify-center bg-gradient-to-br from-white/10 to-white/5">
+                                      <User className="w-20 h-20 text-white/30" />
                                     </div>
                                   )}
                                 </div>
                               </div>
-                              {typeof selectedMember.spouse === 'object' ? (
-                                <>
-                                  <h3 className="text-2xl font-serif font-bold text-white mb-2">{selectedMember.spouse.name}</h3>
-                                  {selectedMember.spouse.nickname && (
-                                    <p className="text-sm text-white/60 font-medium italic mb-3">"{selectedMember.spouse.nickname}"</p>
-                                  )}
-                                  <AgeBadge birthDate={selectedMember.spouse.birthDate} deathDate={selectedMember.spouse.deathDate} />
-                                  {selectedMember.spouse.bio && (
-                                    <p className="text-xs text-white/60 italic mt-3 leading-relaxed">{selectedMember.spouse.bio}</p>
-                                  )}
-                                </>
-                              ) : (
-                                <h3 className="text-2xl font-serif font-bold text-white">{selectedMember.spouse}</h3>
+
+                              {/* Heart connector - Elegant */}
+                              {selectedMember.spouse && (
+                                <div className="flex flex-col items-center">
+                                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex items-center justify-center shadow-2xl backdrop-blur-xl ring-2 ring-white/10">
+                                    <Heart className="w-8 h-8 text-white/90 fill-white/70 animate-pulse" style={{ animationDuration: '2s' }} />
+                                  </div>
+                                </div>
+                              )}
+
+                              {/* Spouse - HUGE PHOTO */}
+                              {selectedMember.spouse && (
+                                <div className="relative group">
+                                  <div className="absolute -inset-1 bg-gradient-to-l from-white/20 to-white/5 rounded-full blur-xl opacity-75 group-hover:opacity-100 transition" />
+                                  <div className="relative rounded-full p-3 bg-white/10 ring-4 ring-white/20 backdrop-blur-xl">
+                                    {typeof selectedMember.spouse === 'object' && selectedMember.spouse.photoURL ? (
+                                      <img src={selectedMember.spouse.photoURL} alt={selectedMember.spouse.name}
+                                        className="w-40 h-40 sm:w-48 sm:h-48 rounded-full object-cover cursor-pointer transform group-hover:scale-105 transition-transform duration-500"
+                                        onClick={() => setLightboxPhoto({ photoURL: selectedMember.spouse.photoURL, caption: selectedMember.spouse.name })}
+                                      />
+                                    ) : (
+                                      <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-full flex items-center justify-center bg-gradient-to-br from-white/10 to-white/5">
+                                        <User className="w-20 h-20 text-white/30" />
+                                      </div>
+                                    )}
+                                  </div>
+                                </div>
                               )}
                             </div>
-                          </>
-                        )}
+
+                            {/* RIGHT: Information Panel */}
+                            <div className="flex-1 text-center lg:text-left space-y-6">
+                              {/* Main person info */}
+                              <div className="space-y-3">
+                                <div>
+                                  <h2 className="text-4xl sm:text-5xl font-serif font-bold text-white leading-tight tracking-tight">
+                                    {selectedMember.name}
+                                  </h2>
+                                  {selectedMember.nickname && (
+                                    <p className="text-lg text-white/70 italic mt-2">"{selectedMember.nickname}"</p>
+                                  )}
+                                </div>
+                                <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
+                                  <AgeBadge birthDate={selectedMember.birthDate} deathDate={selectedMember.deathDate} />
+                                  {selectedMember.role && (
+                                    <span className="inline-flex items-center px-4 py-2 rounded-full bg-white/10 text-white/80 text-sm font-medium backdrop-blur-sm ring-1 ring-white/20">
+                                      {selectedMember.role}
+                                    </span>
+                                  )}
+                                </div>
+                              </div>
+
+                              {/* Spouse info */}
+                              {selectedMember.spouse && (
+                                <div className="pt-6 border-t border-white/10 space-y-3">
+                                  <div>
+                                    <h3 className="text-3xl sm:text-4xl font-serif font-bold text-white/90 leading-tight">
+                                      {typeof selectedMember.spouse === 'object' ? selectedMember.spouse.name : selectedMember.spouse}
+                                    </h3>
+                                    {typeof selectedMember.spouse === 'object' && selectedMember.spouse.nickname && (
+                                      <p className="text-base text-white/60 italic mt-2">"{selectedMember.spouse.nickname}"</p>
+                                    )}
+                                  </div>
+                                  {typeof selectedMember.spouse === 'object' && (
+                                    <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
+                                      <AgeBadge birthDate={selectedMember.spouse.birthDate} deathDate={selectedMember.spouse.deathDate} />
+                                    </div>
+                                  )}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+                        </div>
                       </div>
 
                       {/* Tab bar */}
