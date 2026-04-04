@@ -69,17 +69,20 @@ function AnimatedNumber({ value }) {
 function StatCard({ icon: Icon, label, value, color, sub }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="bg-white/5 rounded-2xl shadow-md p-5 text-center border-4 border-white/80"
+      transition={{ duration: 0.6 }}
+      className="glass-panel rounded-3xl p-8 text-center min-h-[180px] flex flex-col justify-between"
     >
-      <div className="w-12 h-12 rounded-full mx-auto mb-3 flex items-center justify-center bg-white/5">
-        <Icon className="w-6 h-6" style={{ color: '#FFD700' }} />
+      <div className="w-16 h-16 rounded-2xl mx-auto mb-4 flex items-center justify-center bg-accent/5 border border-accent/10">
+        <Icon className="w-8 h-8 text-accent" />
       </div>
-      <p className="text-3xl font-bold font-serif text-white"><AnimatedNumber value={value} /></p>
-      <p className="text-xs text-white/40 uppercase tracking-wider mt-1">{label}</p>
-      {sub && <p className="text-[11px] text-white/40 mt-0.5">{sub}</p>}
+      <div>
+        <p className="elegant-heading text-4xl text-white mb-2"><AnimatedNumber value={value} /></p>
+        <p className="elegant-caps text-white/40">{label}</p>
+        {sub && <p className="text-xs text-white/30 mt-2 font-medium">{sub}</p>}
+      </div>
     </motion.div>
   )
 }
@@ -87,12 +90,13 @@ function StatCard({ icon: Icon, label, value, color, sub }) {
 function ChartCard({ title, children }) {
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
+      initial={{ opacity: 0, y: 30 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      className="bg-white/5 rounded-2xl shadow-md p-5 border-4 border-white/80"
+      transition={{ duration: 0.6 }}
+      className="glass-panel rounded-3xl p-8"
     >
-      <h4 className="text-sm font-bold text-white mb-4 uppercase tracking-wider">{title}</h4>
+      <h4 className="elegant-caps text-white/50 mb-6">{title}</h4>
       {children}
     </motion.div>
   )
@@ -215,23 +219,36 @@ export default function Stats() {
   const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
 
   return (
-    <section id="estadisticas" className="py-20 px-4 sm:px-6 lg:px-10" style={{ backgroundColor: '#0F172A' }}>
+    <section id="estadisticas" className="py-32 px-4 sm:px-6 lg:px-10" style={{ backgroundColor: '#0F172A' }}>
       <div className="max-w-7xl mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.7 }}
-          className="text-center mb-16"
+          transition={{ duration: 1 }}
+          className="text-center mb-24"
         >
-          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Estadisticas</p>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
-            Nuestra Familia en Numeros
+          <motion.div
+            initial={{ width: 0 }}
+            whileInView={{ width: '3rem' }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 1.2 }}
+            className="decorative-line mx-auto mb-8"
+          />
+          <p className="elegant-caps text-white/60 mb-6">Estadísticas</p>
+          <h2 className="elegant-heading text-5xl sm:text-6xl md:text-7xl text-white mb-6" style={{ letterSpacing: '-0.02em' }}>
+            Nuestra Familia en Números
           </h2>
-          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
-          <p className="text-lg max-w-2xl mx-auto text-white/50">
-            Cada numero cuenta una historia. Asi crece el legado Guerrero.
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <div className="w-12 h-px bg-gradient-to-r from-transparent to-accent/30" />
+            <svg width="8" height="8" viewBox="0 0 8 8" className="text-accent/40">
+              <circle cx="4" cy="4" r="2" fill="currentColor" />
+            </svg>
+            <div className="w-12 h-px bg-gradient-to-l from-transparent to-accent/30" />
+          </div>
+          <p className="elegant-subheading text-xl text-white/40 max-w-2xl mx-auto leading-relaxed">
+            Cada número cuenta una historia. Así crece el legado Guerrero.
           </p>
         </motion.div>
 
@@ -256,13 +273,14 @@ export default function Stats() {
         {/* Birthday list this month */}
         {birthdaysThisMonth.length > 0 && (
           <motion.div
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            className="bg-white/5 rounded-2xl p-5 mb-12 border-4 border-white/80"
+            transition={{ duration: 0.6 }}
+            className="glass-panel rounded-3xl p-8 mb-12"
           >
-            <h4 className="text-sm font-bold text-white/50 uppercase tracking-wider mb-3 flex items-center gap-2">
-              <Calendar className="w-4 h-4" />
+            <h4 className="elegant-caps text-white/50 mb-6 flex items-center gap-3">
+              <Calendar className="w-5 h-5 text-accent" />
               Cumpleanos en {monthNames[currentMonth - 1]}
             </h4>
             <div className="flex flex-wrap gap-3">
