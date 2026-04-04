@@ -579,11 +579,11 @@ function NucleusCardTree({ member, onClose }) {
     { M: 'Bisnieto', F: 'Bisnieta', default: 'Bisnieto(a)', plural: 'Bisnietos' },
   ]
 
-  // Vibrant generation themes
+  // Elegant heritage generation themes
   const genThemes = [
-    { gradient: 'linear-gradient(135deg, #6366F1, #8B5CF6)', glow: '#6366F130', accent: '#8B5CF6', pillBg: 'linear-gradient(135deg, #6366F1, #8B5CF6)', line: '#8B5CF6' },
-    { gradient: 'linear-gradient(135deg, #B8976A, #EF4444)', glow: '#B8976A30', accent: '#B8976A', pillBg: 'linear-gradient(135deg, #B8976A, #EF4444)', line: '#B8976A' },
-    { gradient: 'linear-gradient(135deg, #10B981, #06B6D4)', glow: '#10B98130', accent: '#10B981', pillBg: 'linear-gradient(135deg, #10B981, #06B6D4)', line: '#10B981' },
+    { gradient: 'linear-gradient(135deg, #B8654A, #C8846A)', glow: 'rgba(184, 101, 74, 0.2)', accent: '#B8654A', pillBg: 'linear-gradient(135deg, #B8654A, #B8976A)', line: '#B8976A' },
+    { gradient: 'linear-gradient(135deg, #6B9080, #8AAA98)', glow: 'rgba(107, 144, 128, 0.2)', accent: '#6B9080', pillBg: 'linear-gradient(135deg, #6B9080, #B8976A)', line: '#B8976A' },
+    { gradient: 'linear-gradient(135deg, #B8976A, #C8A87A)', glow: 'rgba(184, 151, 106, 0.2)', accent: '#B8976A', pillBg: 'linear-gradient(135deg, #B8976A, #C8846A)', line: '#B8976A' },
   ]
 
   // Card accent colors - 3 tones only
@@ -628,22 +628,22 @@ function NucleusCardTree({ member, onClose }) {
       {/* Subtle pattern overlay */}
       <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
 
-      {/* Header bar - glassmorphism */}
-      <div className="relative flex items-center justify-between px-5 py-3 border-b border-white/80 flex-shrink-0" style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(20px)' }}>
+      {/* Header bar - premium glassmorphism */}
+      <div className="relative flex items-center justify-between px-6 py-4 border-b border-accent/10 flex-shrink-0 glass-panel">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-lg flex items-center justify-center" style={{ background: 'linear-gradient(135deg, #B8976A, #EF4444)' }}>
-            <GitBranch className="w-4 h-4 text-white" />
+          <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-accent/10 border border-accent/20">
+            <GitBranch className="w-5 h-5 text-accent" />
           </div>
           <div>
-            <h3 className="text-base font-serif font-bold text-white">{familyTitle}</h3>
-            <p className="text-[10px] text-white/40 uppercase tracking-widest">Arbol Genealogico</p>
+            <h3 className="elegant-heading text-xl text-white">{familyTitle}</h3>
+            <p className="elegant-caps text-white/40">Árbol Genealógico</p>
           </div>
         </div>
         <button
           onClick={onClose}
-          className="w-9 h-9 rounded-xl flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition"
+          className="w-10 h-10 rounded-xl flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition"
         >
-          <span className="text-xl">&times;</span>
+          <span className="text-2xl">&times;</span>
         </button>
       </div>
 
@@ -655,46 +655,46 @@ function NucleusCardTree({ member, onClose }) {
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="relative rounded-2xl px-8 py-6 border-4 border-white/80"
-            style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(16px)', boxShadow: '0 0 60px rgba(245,158,11,0.1), 0 8px 32px rgba(0,0,0,0.3)' }}
+            className="glass-panel relative rounded-3xl px-10 py-8"
+            style={{ boxShadow: '0 0 60px rgba(184, 151, 106, 0.15), 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255, 255, 255, 0.05)' }}
           >
             {/* Glow accent */}
-            <div className="absolute -inset-px rounded-2xl opacity-50" style={{ background: 'linear-gradient(135deg, #B8976A20, transparent 50%, #EF444420)' }} />
+            <div className="absolute -inset-px rounded-3xl opacity-30" style={{ background: 'linear-gradient(135deg, rgba(184, 151, 106, 0.2), transparent 50%, rgba(184, 101, 74, 0.2))' }} />
 
-            <div className="relative flex items-center gap-6">
-              <div className="flex flex-col items-center gap-1.5">
-                <div className="rounded-full p-[3px]" style={{ background: 'linear-gradient(135deg, #B8976A, #EF4444)' }}>
+            <div className="relative flex items-center gap-8">
+              <div className="flex flex-col items-center gap-2">
+                <div className="rounded-full p-1 shadow-lg ring-2 ring-accent/20" style={{ background: 'linear-gradient(135deg, #B8976A, #C8A87A)' }}>
                   {member.photoURL ? (
-                    <img src={member.photoURL} alt={member.name} className="w-20 h-20 rounded-full object-cover border-2 border-[#0F172A]" />
+                    <img src={member.photoURL} alt={member.name} className="w-24 h-24 rounded-full object-cover border-3 border-[#0F172A]" />
                   ) : (
-                    <div className="w-20 h-20 rounded-full flex items-center justify-center bg-[#1E293B] border-2 border-[#0F172A]">
-                      <User className="w-8 h-8 text-white/40" />
+                    <div className="w-24 h-24 rounded-full flex items-center justify-center bg-[#1E293B] border-3 border-[#0F172A]">
+                      <User className="w-10 h-10 text-white/40" />
                     </div>
                   )}
                 </div>
-                <p className="text-sm font-serif font-bold text-white text-center leading-tight max-w-[130px]">{member.name}</p>
-                {member.nickname && <p className="text-[11px] text-amber-400 italic">"{member.nickname}"</p>}
+                <p className="elegant-heading text-base text-white text-center leading-tight max-w-[140px]">{member.name}</p>
+                {member.nickname && <p className="text-xs text-accent italic font-medium">"{member.nickname}"</p>}
                 <AgeBadge birthDate={member.birthDate} deathDate={member.deathDate} />
               </div>
 
               {hasSp && (
                 <>
-                  <div className="flex flex-col items-center gap-1">
-                    <Heart className="w-7 h-7 text-rose-400 fill-rose-400 drop-shadow-lg" style={{ filter: 'drop-shadow(0 0 8px rgba(251,113,133,0.5))' }} />
-                    {wy && <span className="text-[10px] text-amber-400/80 font-medium">{wy}</span>}
+                  <div className="flex flex-col items-center gap-2">
+                    <Heart className="w-8 h-8 text-primary fill-primary drop-shadow-lg" style={{ filter: 'drop-shadow(0 0 8px rgba(184, 101, 74, 0.5))' }} />
+                    {wy && <span className="elegant-caps text-accent/80">{wy}</span>}
                   </div>
-                  <div className="flex flex-col items-center gap-1.5">
-                    <div className="rounded-full p-[3px]" style={{ background: 'linear-gradient(135deg, #EF4444, #EC4899)' }}>
+                  <div className="flex flex-col items-center gap-2">
+                    <div className="rounded-full p-1 shadow-lg ring-2 ring-primary/20" style={{ background: 'linear-gradient(135deg, #B8654A, #C8846A)' }}>
                       {typeof sp === 'object' && sp.photoURL ? (
-                        <img src={sp.photoURL} alt={sp.name} className="w-20 h-20 rounded-full object-cover border-2 border-[#0F172A]" />
+                        <img src={sp.photoURL} alt={sp.name} className="w-24 h-24 rounded-full object-cover border-3 border-[#0F172A]" />
                       ) : (
-                        <div className="w-20 h-20 rounded-full flex items-center justify-center bg-[#1E293B] border-2 border-[#0F172A]">
-                          <User className="w-8 h-8 text-white/40" />
+                        <div className="w-24 h-24 rounded-full flex items-center justify-center bg-[#1E293B] border-3 border-[#0F172A]">
+                          <User className="w-10 h-10 text-white/40" />
                         </div>
                       )}
                     </div>
-                    <p className="text-sm font-serif font-bold text-white text-center leading-tight max-w-[130px]">{typeof sp === 'object' ? sp.name : sp}</p>
-                    {typeof sp === 'object' && sp.nickname && <p className="text-[11px] text-rose-400 italic">"{sp.nickname}"</p>}
+                    <p className="elegant-heading text-base text-white text-center leading-tight max-w-[140px]">{typeof sp === 'object' ? sp.name : sp}</p>
+                    {typeof sp === 'object' && sp.nickname && <p className="text-xs text-primary italic font-medium">"{sp.nickname}"</p>}
                     {typeof sp === 'object' && <AgeBadge birthDate={sp.birthDate} deathDate={sp.deathDate} />}
                   </div>
                 </>
@@ -719,11 +719,11 @@ function NucleusCardTree({ member, onClose }) {
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: genIndex * 0.1 }}
-                  className="inline-flex items-center gap-2 px-5 py-2 rounded-full text-white text-xs font-bold uppercase tracking-[2px] mb-5 shadow-lg"
-                  style={{ background: theme.pillBg, boxShadow: `0 0 30px ${theme.glow}, 0 4px 15px rgba(0,0,0,0.3)` }}
+                  className="glass-panel inline-flex items-center gap-2 px-6 py-3 rounded-2xl text-white elegant-caps mb-6"
+                  style={{ background: theme.pillBg, boxShadow: `0 0 20px ${theme.glow}, 0 4px 15px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255, 255, 255, 0.1)` }}
                 >
-                  <Users className="w-3.5 h-3.5" />
-                  {labels.plural} ({totalPeople})
+                  <Users className="w-4 h-4" />
+                  <span className="elegant-heading text-sm">{labels.plural} ({totalPeople})</span>
                 </motion.div>
 
                 {/* Groups */}
@@ -734,9 +734,9 @@ function NucleusCardTree({ member, onClose }) {
                       <div key={gi} className="flex flex-col items-center">
                         {/* Group parent label */}
                         {groups.length > 1 && (
-                          <div className="mb-3 px-3 py-1 rounded-full border-4 border-white/80" style={{ background: 'rgba(255,255,255,0.05)' }}>
-                            <p className="text-[10px] font-bold text-white/40 uppercase tracking-wider flex items-center gap-1.5">
-                              <Users className="w-3 h-3" />
+                          <div className="glass-panel mb-4 px-4 py-2 rounded-xl border border-accent/10">
+                            <p className="elegant-caps text-white/50 flex items-center gap-2">
+                              <Users className="w-3 h-3 text-accent/60" />
                               Hijos de {group.parent.name?.split(' ')[0]}
                             </p>
                           </div>
@@ -767,55 +767,55 @@ function NucleusCardTree({ member, onClose }) {
                                   initial={{ opacity: 0, y: 12 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ delay: ci * 0.05 + genIndex * 0.1 }}
-                                  className="rounded-xl overflow-hidden w-full border-4 border-white/80"
-                                  style={{ background: 'rgba(255,255,255,0.06)', backdropFilter: 'blur(12px)', boxShadow: `0 0 20px ${colorFrom}15, 0 4px 20px rgba(0,0,0,0.2)` }}
+                                  className="glass-panel rounded-2xl overflow-hidden w-full"
+                                  style={{ boxShadow: `0 0 20px ${colorFrom}15, 0 4px 20px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255, 255, 255, 0.05)` }}
                                 >
                                   {/* Gradient header */}
-                                  <div className="px-3 py-1.5 flex items-center justify-between" style={{ background: `linear-gradient(135deg, ${colorFrom}, ${colorTo})` }}>
-                                    <p className="text-[9px] font-bold uppercase tracking-[2px] text-white/90">{lbl}</p>
-                                    <div className="w-1.5 h-1.5 rounded-full bg-white/40" />
+                                  <div className="px-4 py-2 flex items-center justify-between" style={{ background: `linear-gradient(135deg, ${colorFrom}, ${colorTo})` }}>
+                                    <p className="elegant-caps text-white/90">{lbl}</p>
+                                    <div className="w-1.5 h-1.5 rounded-full bg-white/50 shadow-sm" />
                                   </div>
 
                                   {/* Person */}
-                                  <div className="px-3 py-3 flex items-center gap-2.5">
-                                    <div className="rounded-full p-[2px] flex-shrink-0" style={{ background: `linear-gradient(135deg, ${colorFrom}, ${colorTo})` }}>
+                                  <div className="px-4 py-4 flex items-center gap-3">
+                                    <div className="rounded-full p-0.5 flex-shrink-0 shadow-md ring-1 ring-white/10" style={{ background: `linear-gradient(135deg, ${colorFrom}, ${colorTo})` }}>
                                       {child.photoURL ? (
-                                        <img src={child.photoURL} alt={child.name} className="w-11 h-11 rounded-full object-cover border-2 border-[#1E293B]" />
+                                        <img src={child.photoURL} alt={child.name} className="w-12 h-12 rounded-full object-cover border-2 border-[#1E293B]" />
                                       ) : (
-                                        <div className="w-11 h-11 rounded-full flex items-center justify-center bg-[#1E293B] border-2 border-[#1E293B]">
-                                          <User className="w-4 h-4 text-white/30" />
+                                        <div className="w-12 h-12 rounded-full flex items-center justify-center bg-[#1E293B] border-2 border-[#1E293B]">
+                                          <User className="w-5 h-5 text-white/30" />
                                         </div>
                                       )}
                                     </div>
                                     <div className="flex-1 min-w-0">
-                                      <p className="text-xs font-bold truncate leading-tight" style={{ color: '#0F172A' }}>{child.name}</p>
-                                      {child.nickname && <p className="text-[10px] italic truncate" style={{ color: colorTo }}>"{child.nickname}"</p>}
+                                      <p className="text-sm elegant-heading text-white truncate leading-tight">{child.name}</p>
+                                      {child.nickname && <p className="text-xs italic truncate font-medium" style={{ color: colorTo }}>"{child.nickname}"</p>}
                                       <AgeBadge birthDate={child.birthDate} deathDate={child.deathDate} />
                                     </div>
                                   </div>
 
                                   {/* Spouse */}
                                   {childHasSp && (
-                                    <div className="px-3 pb-3 flex items-center gap-2 border-t border-white/5 pt-2">
-                                      <Heart className="w-3 h-3 flex-shrink-0" style={{ color: colorTo, fill: colorTo, filter: `drop-shadow(0 0 4px ${colorTo}60)` }} />
+                                    <div className="px-4 pb-4 flex items-center gap-2.5 border-t border-white/10 pt-3">
+                                      <Heart className="w-3.5 h-3.5 flex-shrink-0" style={{ color: colorTo, fill: colorTo, filter: `drop-shadow(0 0 4px ${colorTo}60)` }} />
                                       {typeof childSp === 'object' ? (
                                         <>
-                                          <div className="rounded-full p-[1.5px] flex-shrink-0" style={{ background: `linear-gradient(135deg, ${colorFrom}80, ${colorTo}80)` }}>
+                                          <div className="rounded-full p-0.5 flex-shrink-0 shadow-sm ring-1 ring-white/10" style={{ background: `linear-gradient(135deg, ${colorFrom}80, ${colorTo}80)` }}>
                                             {childSp.photoURL ? (
-                                              <img src={childSp.photoURL} alt={childSp.name} className="w-8 h-8 rounded-full object-cover border border-[#1E293B]" />
+                                              <img src={childSp.photoURL} alt={childSp.name} className="w-9 h-9 rounded-full object-cover border border-[#1E293B]" />
                                             ) : (
-                                              <div className="w-8 h-8 rounded-full flex items-center justify-center bg-[#1E293B] border border-[#1E293B]">
-                                                <User className="w-3 h-3 text-white/30" />
+                                              <div className="w-9 h-9 rounded-full flex items-center justify-center bg-[#1E293B] border border-[#1E293B]">
+                                                <User className="w-3.5 h-3.5 text-white/30" />
                                               </div>
                                             )}
                                           </div>
                                           <div className="flex-1 min-w-0">
-                                            <p className="text-[11px] font-bold truncate" style={{ color: '#0F172A' }}>{childSp.name}</p>
+                                            <p className="text-xs elegant-heading text-white truncate">{childSp.name}</p>
                                             <AgeBadge birthDate={childSp.birthDate} deathDate={childSp.deathDate} />
                                           </div>
                                         </>
                                       ) : (
-                                        <p className="text-[11px] truncate" style={{ color: '#0F172A' }}>{childSp}</p>
+                                        <p className="text-xs truncate text-white/70 font-medium">{childSp}</p>
                                       )}
                                     </div>
                                   )}
