@@ -579,36 +579,36 @@ function NucleusCardTree({ member, onClose }) {
     { M: 'Bisnieto', F: 'Bisnieta', default: 'Bisnieto(a)', plural: 'Bisnietos' },
   ]
 
-  // Premium monochromatic design - unified gold/terracotta palette
+  // Elegant minimalist design - neutral tones only
   const genThemes = [
     {
-      gradient: 'linear-gradient(135deg, rgba(184, 151, 106, 0.15), rgba(184, 101, 74, 0.15))',
-      glow: 'rgba(184, 151, 106, 0.15)',
-      accent: '#B8976A',
-      pillBg: 'linear-gradient(135deg, rgba(184, 151, 106, 0.2), rgba(184, 101, 74, 0.2))',
-      line: 'rgba(184, 151, 106, 0.3)'
+      gradient: 'linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01))',
+      glow: 'rgba(255, 255, 255, 0.05)',
+      accent: 'rgba(255, 255, 255, 0.9)',
+      pillBg: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03))',
+      line: 'rgba(255, 255, 255, 0.15)'
     },
     {
-      gradient: 'linear-gradient(135deg, rgba(184, 151, 106, 0.12), rgba(107, 144, 128, 0.12))',
-      glow: 'rgba(184, 151, 106, 0.12)',
-      accent: '#B8976A',
-      pillBg: 'linear-gradient(135deg, rgba(184, 151, 106, 0.18), rgba(107, 144, 128, 0.18))',
-      line: 'rgba(184, 151, 106, 0.25)'
+      gradient: 'linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01))',
+      glow: 'rgba(255, 255, 255, 0.05)',
+      accent: 'rgba(255, 255, 255, 0.9)',
+      pillBg: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03))',
+      line: 'rgba(255, 255, 255, 0.15)'
     },
     {
-      gradient: 'linear-gradient(135deg, rgba(184, 151, 106, 0.1), rgba(200, 168, 122, 0.1))',
-      glow: 'rgba(184, 151, 106, 0.1)',
-      accent: '#B8976A',
-      pillBg: 'linear-gradient(135deg, rgba(184, 151, 106, 0.15), rgba(200, 168, 122, 0.15))',
-      line: 'rgba(184, 151, 106, 0.2)'
+      gradient: 'linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01))',
+      glow: 'rgba(255, 255, 255, 0.05)',
+      accent: 'rgba(255, 255, 255, 0.9)',
+      pillBg: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03))',
+      line: 'rgba(255, 255, 255, 0.15)'
     },
   ]
 
-  // Unified premium card colors - all use gold gradient
+  // Elegant neutral card colors - white/gray only
   const cardColors = [
-    ['rgba(184, 151, 106, 0.3)', 'rgba(184, 101, 74, 0.3)'],
-    ['rgba(184, 151, 106, 0.25)', 'rgba(107, 144, 128, 0.25)'],
-    ['rgba(184, 151, 106, 0.3)', 'rgba(200, 132, 106, 0.3)'],
+    ['rgba(255, 255, 255, 0.08)', 'rgba(255, 255, 255, 0.03)'],
+    ['rgba(255, 255, 255, 0.08)', 'rgba(255, 255, 255, 0.03)'],
+    ['rgba(255, 255, 255, 0.08)', 'rgba(255, 255, 255, 0.03)'],
   ]
 
   // ── Build generation rows ──
@@ -646,22 +646,25 @@ function NucleusCardTree({ member, onClose }) {
       {/* Subtle pattern overlay */}
       <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
 
-      {/* Header bar - premium glassmorphism */}
-      <div className="relative flex items-center justify-between px-6 py-4 border-b border-accent/10 flex-shrink-0 glass-panel">
-        <div className="flex items-center gap-3">
-          <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-accent/10 border border-accent/20">
-            <GitBranch className="w-5 h-5 text-accent" />
+      {/* Header bar - minimalist elegant */}
+      <div className="relative flex items-center justify-between px-8 py-6 border-b border-white/5 flex-shrink-0" style={{
+        background: 'rgba(255, 255, 255, 0.02)',
+        backdropFilter: 'blur(20px)'
+      }}>
+        <div className="flex items-center gap-4">
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-white/5 border border-white/10">
+            <GitBranch className="w-6 h-6 text-white/80" />
           </div>
           <div>
-            <h3 className="elegant-heading text-xl text-white">{familyTitle}</h3>
-            <p className="elegant-caps text-white/40">Árbol Genealógico</p>
+            <h3 className="elegant-heading text-2xl text-white">{familyTitle}</h3>
+            <p className="text-xs text-white/40 font-light tracking-wider uppercase mt-1">Árbol Genealógico</p>
           </div>
         </div>
         <button
           onClick={onClose}
-          className="w-10 h-10 rounded-xl flex items-center justify-center text-white/60 hover:text-white hover:bg-white/10 transition"
+          className="w-12 h-12 rounded-2xl flex items-center justify-center text-white/50 hover:text-white hover:bg-white/5 transition-all"
         >
-          <span className="text-2xl">&times;</span>
+          <span className="text-3xl font-light">&times;</span>
         </button>
       </div>
 
@@ -669,80 +672,61 @@ function NucleusCardTree({ member, onClose }) {
       <div className="relative flex-1 overflow-auto" style={{ scrollbarWidth: 'thin' }}>
         <div className="inline-flex flex-col items-center min-w-full py-10 px-10">
 
-          {/* ═══ ROOT COUPLE - Ultra Premium ═══ */}
+          {/* ═══ ROOT COUPLE - Minimalist Elegant ═══ */}
           <motion.div
-            initial={{ opacity: 0, scale: 0.95 }}
+            initial={{ opacity: 0, scale: 0.98 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="relative"
+            className="relative mb-16"
           >
-            {/* Outer glow effect */}
-            <div className="absolute -inset-6 bg-gradient-to-b from-accent/5 via-transparent to-transparent rounded-3xl blur-2xl" />
-
-            <div className="glass-panel relative rounded-3xl px-12 py-10" style={{
-              background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%)',
-              boxShadow: '0 0 80px rgba(184, 151, 106, 0.2), 0 20px 60px rgba(0,0,0,0.4), inset 0 1px 2px rgba(255, 255, 255, 0.1)'
+            <div className="relative rounded-3xl px-16 py-14" style={{
+              background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%)',
+              backdropFilter: 'blur(20px)',
+              boxShadow: '0 20px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+              border: '1px solid rgba(255, 255, 255, 0.08)'
             }}>
-              {/* Shimmer overlay */}
-              <div className="absolute inset-0 rounded-3xl overflow-hidden opacity-20">
-                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-accent/10 to-transparent" />
-              </div>
-
-              <div className="relative flex items-center gap-10">
-                <div className="flex flex-col items-center gap-3">
+              <div className="relative flex items-center justify-center gap-16">
+                <div className="flex flex-col items-center gap-4">
                   <div className="relative">
-                    <div className="absolute -inset-2 bg-gradient-to-br from-accent/20 to-transparent rounded-full blur-md" />
-                    <div className="relative rounded-full p-1.5 ring-1 ring-white/10" style={{
-                      background: 'linear-gradient(135deg, rgba(184, 151, 106, 0.4), rgba(184, 151, 106, 0.2))',
-                      boxShadow: '0 8px 32px rgba(184, 151, 106, 0.3)'
-                    }}>
+                    <div className="rounded-full p-2 bg-white/5 ring-1 ring-white/10">
                       {member.photoURL ? (
-                        <img src={member.photoURL} alt={member.name} className="w-28 h-28 rounded-full object-cover border-2 border-base/80" />
+                        <img src={member.photoURL} alt={member.name} className="w-36 h-36 rounded-full object-cover" />
                       ) : (
-                        <div className="w-28 h-28 rounded-full flex items-center justify-center bg-base/60 backdrop-blur-sm border-2 border-base/80">
-                          <User className="w-12 h-12 text-accent/60" />
+                        <div className="w-36 h-36 rounded-full flex items-center justify-center bg-white/5">
+                          <User className="w-16 h-16 text-white/30" />
                         </div>
                       )}
                     </div>
                   </div>
-                  <div className="text-center max-w-[160px]">
-                    <p className="elegant-heading text-lg text-white leading-tight mb-1">{member.name}</p>
-                    {member.nickname && <p className="text-xs text-accent/80 italic font-medium mb-2">"{member.nickname}"</p>}
+                  <div className="text-center max-w-[180px]">
+                    <p className="elegant-heading text-xl text-white leading-tight mb-2">{member.name}</p>
+                    {member.nickname && <p className="text-sm text-white/50 italic font-light mb-2">"{member.nickname}"</p>}
                     <AgeBadge birthDate={member.birthDate} deathDate={member.deathDate} />
                   </div>
                 </div>
 
                 {hasSp && (
                   <>
-                    <div className="flex flex-col items-center gap-3 px-4">
-                      <div className="relative">
-                        <div className="absolute -inset-2 bg-accent/10 rounded-full blur-lg" />
-                        <Heart className="relative w-9 h-9 text-accent fill-accent/80" style={{
-                          filter: 'drop-shadow(0 4px 12px rgba(184, 151, 106, 0.6))',
-                        }} />
-                      </div>
+                    <div className="flex flex-col items-center gap-4">
+                      <Heart className="w-10 h-10 text-white/60 fill-white/20" />
                       {wy && (
-                        <span className="elegant-caps text-accent/90 bg-accent/5 px-3 py-1 rounded-full border border-accent/10">{wy}</span>
+                        <span className="text-xs text-white/40 font-light tracking-wider">{wy}</span>
                       )}
                     </div>
-                    <div className="flex flex-col items-center gap-3">
+                    <div className="flex flex-col items-center gap-4">
                       <div className="relative">
-                        <div className="absolute -inset-2 bg-gradient-to-br from-accent/20 to-transparent rounded-full blur-md" />
-                        <div className="relative rounded-full p-1.5 ring-1 ring-white/10" style={{
-                          background: 'linear-gradient(135deg, rgba(184, 151, 106, 0.4), rgba(184, 151, 106, 0.2))',
-                          boxShadow: '0 8px 32px rgba(184, 151, 106, 0.3)'
-                        }}>
+                        <div className="rounded-full p-2 bg-white/5 ring-1 ring-white/10">
                           {typeof sp === 'object' && sp.photoURL ? (
-                            <img src={sp.photoURL} alt={sp.name} className="w-28 h-28 rounded-full object-cover border-2 border-base/80" />
+                            <img src={sp.photoURL} alt={sp.name} className="w-36 h-36 rounded-full object-cover" />
                           ) : (
-                            <div className="w-28 h-28 rounded-full flex items-center justify-center bg-base/60 backdrop-blur-sm border-2 border-base/80">
-                              <User className="w-12 h-12 text-accent/60" />
+                            <div className="w-36 h-36 rounded-full flex items-center justify-center bg-white/5">
+                              <User className="w-16 h-16 text-white/30" />
                             </div>
                           )}
                         </div>
                       </div>
-                      <div className="text-center max-w-[160px]">
-                        <p className="elegant-heading text-lg text-white leading-tight mb-1">{typeof sp === 'object' ? sp.name : sp}</p>
-                        {typeof sp === 'object' && sp.nickname && <p className="text-xs text-accent/80 italic font-medium mb-2">"{sp.nickname}"</p>}
+                      <div className="text-center max-w-[180px]">
+                        <p className="elegant-heading text-xl text-white leading-tight mb-2">{typeof sp === 'object' ? sp.name : sp}</p>
+                        {typeof sp === 'object' && sp.nickname && <p className="text-sm text-white/50 italic font-light mb-2">"{sp.nickname}"</p>}
                         {typeof sp === 'object' && <AgeBadge birthDate={sp.birthDate} deathDate={sp.deathDate} />}
                       </div>
                     </div>
@@ -764,27 +748,24 @@ function NucleusCardTree({ member, onClose }) {
                 {/* Elegant connector line */}
                 <div className="w-px h-12" style={{ background: `linear-gradient(to bottom, transparent, ${theme.line}, transparent)` }} />
 
-                {/* Generation pill - Ultra Premium */}
+                {/* Generation label - Minimalist */}
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.9 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
                   transition={{ delay: genIndex * 0.1 }}
-                  className="relative mb-8"
+                  className="mb-12"
                 >
-                  {/* Pill glow */}
-                  <div className="absolute -inset-2 bg-gradient-to-b from-accent/10 to-transparent rounded-2xl blur-xl" />
-
-                  <div className="glass-panel relative inline-flex items-center gap-3 px-8 py-3.5 rounded-2xl text-white" style={{
-                    background: 'linear-gradient(145deg, rgba(184, 151, 106, 0.08), rgba(184, 151, 106, 0.02))',
-                    boxShadow: `0 0 30px ${theme.glow}, 0 8px 24px rgba(0,0,0,0.3), inset 0 1px 2px rgba(255, 255, 255, 0.1)`,
-                    border: '1px solid rgba(184, 151, 106, 0.15)'
+                  <div className="inline-flex items-center gap-4 px-10 py-4 rounded-2xl" style={{
+                    background: 'rgba(255, 255, 255, 0.04)',
+                    backdropFilter: 'blur(20px)',
+                    border: '1px solid rgba(255, 255, 255, 0.08)'
                   }}>
-                    <div className="w-8 h-8 rounded-full flex items-center justify-center bg-accent/10 border border-accent/20">
-                      <Users className="w-4 h-4 text-accent" />
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/5">
+                      <Users className="w-5 h-5 text-white/70" />
                     </div>
                     <div>
-                      <p className="elegant-heading text-base text-white leading-none">{labels.plural}</p>
-                      <p className="elegant-caps text-accent/60 text-[10px] mt-0.5">{totalPeople} {totalPeople === 1 ? 'persona' : 'personas'}</p>
+                      <p className="elegant-heading text-lg text-white leading-none">{labels.plural}</p>
+                      <p className="text-xs text-white/40 font-light mt-1">{totalPeople} {totalPeople === 1 ? 'persona' : 'personas'}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -797,14 +778,12 @@ function NucleusCardTree({ member, onClose }) {
                       <div key={gi} className="flex flex-col items-center">
                         {/* Group parent label */}
                         {groups.length > 1 && (
-                          <div className="relative mb-6">
-                            <div className="absolute -inset-1 bg-accent/5 rounded-xl blur-sm" />
-                            <div className="glass-panel relative px-5 py-2.5 rounded-xl" style={{
-                              background: 'linear-gradient(145deg, rgba(184, 151, 106, 0.05), rgba(184, 151, 106, 0.01))',
-                              border: '1px solid rgba(184, 151, 106, 0.1)'
+                          <div className="mb-8">
+                            <div className="px-6 py-3 rounded-xl" style={{
+                              background: 'rgba(255, 255, 255, 0.03)',
+                              border: '1px solid rgba(255, 255, 255, 0.05)'
                             }}>
-                              <p className="elegant-caps text-white/60 flex items-center gap-2">
-                                <div className="w-1 h-1 rounded-full bg-accent/40" />
+                              <p className="text-sm text-white/50 font-light tracking-wide">
                                 Familia de {group.parent.name?.split(' ')[0]}
                               </p>
                             </div>
@@ -813,13 +792,13 @@ function NucleusCardTree({ member, onClose }) {
 
                         {/* Horizontal connector bar */}
                         {kids.length > 1 && (
-                          <div className="relative flex justify-center mb-0" style={{ width: `${kids.length * 210}px` }}>
-                            <div className="absolute top-0 left-[105px] right-[105px] h-px" style={{ background: `linear-gradient(90deg, transparent, ${theme.line}60, transparent)` }} />
+                          <div className="relative flex justify-center mb-0" style={{ width: `${kids.length * 280}px` }}>
+                            <div className="absolute top-0 left-[140px] right-[140px] h-px bg-white/5" />
                           </div>
                         )}
 
-                        {/* Cards row */}
-                        <div className="flex justify-center gap-2.5">
+                        {/* Cards row - BIGGER CARDS */}
+                        <div className="flex justify-center gap-6">
                           {kids.map((child, ci) => {
                             const [colorFrom, colorTo] = cardColors[(ci + gi * 3) % cardColors.length]
                             const lbl = child.gender === 'M' ? labels.M : child.gender === 'F' ? labels.F : labels.default
@@ -827,91 +806,73 @@ function NucleusCardTree({ member, onClose }) {
                             const childHasSp = childSp && (typeof childSp === 'object' ? childSp.name : childSp)
 
                             return (
-                              <div key={ci} className="flex flex-col items-center" style={{ width: '205px' }}>
+                              <div key={ci} className="flex flex-col items-center" style={{ width: '280px' }}>
                                 {/* Tick */}
-                                <div className="w-px h-4" style={{ background: `${theme.line}50` }} />
+                                <div className="w-px h-6 bg-white/5" />
 
-                                {/* Card - Ultra Premium Design */}
+                                {/* Card - LARGER & MINIMALIST */}
                                 <motion.div
                                   initial={{ opacity: 0, y: 12 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ delay: ci * 0.05 + genIndex * 0.1 }}
-                                  className="relative"
+                                  className="w-full"
                                 >
-                                  {/* Subtle outer glow */}
-                                  <div className="absolute -inset-1 bg-gradient-to-b from-accent/5 to-transparent rounded-2xl blur-sm" />
-
-                                  <div className="glass-panel relative rounded-2xl overflow-hidden w-full" style={{
-                                    background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%)',
-                                    boxShadow: `0 0 24px ${colorFrom}, 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255, 255, 255, 0.08)`,
-                                    border: '1px solid rgba(184, 151, 106, 0.1)'
+                                  <div className="relative rounded-2xl overflow-hidden" style={{
+                                    background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%)',
+                                    backdropFilter: 'blur(20px)',
+                                    boxShadow: '0 10px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
+                                    border: '1px solid rgba(255, 255, 255, 0.08)'
                                   }}>
-                                    {/* Minimal accent bar at top */}
-                                    <div className="h-0.5" style={{ background: `linear-gradient(90deg, ${colorFrom}, ${colorTo})`, opacity: 0.4 }} />
-
                                     {/* Header label */}
-                                    <div className="px-4 py-2.5 border-b border-white/5">
-                                      <p className="elegant-caps text-accent/70 text-center">{lbl}</p>
+                                    <div className="px-6 py-3 border-b border-white/5" style={{ background: 'rgba(255, 255, 255, 0.02)' }}>
+                                      <p className="text-xs text-white/50 font-light text-center tracking-wider uppercase">{lbl}</p>
                                     </div>
 
-                                    {/* Person */}
-                                    <div className="px-5 py-5 flex items-center gap-3.5">
-                                      <div className="relative flex-shrink-0">
-                                        <div className="absolute -inset-1 bg-gradient-to-br from-accent/15 to-transparent rounded-full blur-sm" />
-                                        <div className="relative rounded-full p-0.5 ring-1 ring-accent/10" style={{
-                                          background: `linear-gradient(135deg, ${colorFrom}, ${colorTo})`,
-                                          boxShadow: '0 4px 16px rgba(0,0,0,0.2)'
-                                        }}>
+                                    {/* Person - BIGGER */}
+                                    <div className="px-6 py-6">
+                                      <div className="flex flex-col items-center gap-4">
+                                        <div className="rounded-full p-1.5 bg-white/5 ring-1 ring-white/10">
                                           {child.photoURL ? (
-                                            <img src={child.photoURL} alt={child.name} className="w-14 h-14 rounded-full object-cover border-2 border-base/70" />
+                                            <img src={child.photoURL} alt={child.name} className="w-24 h-24 rounded-full object-cover" />
                                           ) : (
-                                            <div className="w-14 h-14 rounded-full flex items-center justify-center bg-base/50 backdrop-blur-sm border-2 border-base/70">
-                                              <User className="w-6 h-6 text-accent/50" />
+                                            <div className="w-24 h-24 rounded-full flex items-center justify-center bg-white/5">
+                                              <User className="w-10 h-10 text-white/30" />
                                             </div>
                                           )}
                                         </div>
-                                      </div>
-                                      <div className="flex-1 min-w-0">
-                                        <p className="elegant-heading text-sm text-white truncate leading-tight mb-1">{child.name}</p>
-                                        {child.nickname && <p className="text-xs italic truncate font-medium text-accent/70 mb-1">"{child.nickname}"</p>}
-                                        <AgeBadge birthDate={child.birthDate} deathDate={child.deathDate} />
+                                        <div className="text-center w-full">
+                                          <p className="elegant-heading text-base text-white leading-tight mb-1 px-2">{child.name}</p>
+                                          {child.nickname && <p className="text-xs italic text-white/50 font-light mb-2">"{child.nickname}"</p>}
+                                          <AgeBadge birthDate={child.birthDate} deathDate={child.deathDate} />
+                                        </div>
                                       </div>
                                     </div>
 
-                                    {/* Spouse */}
+                                    {/* Spouse - BIGGER */}
                                     {childHasSp && (
-                                      <div className="px-5 pb-5 flex items-center gap-3 border-t border-white/5 pt-4">
-                                        <div className="relative flex-shrink-0">
-                                          <div className="absolute -inset-1 bg-accent/10 rounded-full blur-md" />
-                                          <Heart className="relative w-4 h-4 text-accent fill-accent/70" style={{
-                                            filter: 'drop-shadow(0 2px 6px rgba(184, 151, 106, 0.4))',
-                                          }} />
-                                        </div>
-                                        {typeof childSp === 'object' ? (
-                                          <>
-                                            <div className="relative flex-shrink-0">
-                                              <div className="absolute -inset-0.5 bg-gradient-to-br from-accent/10 to-transparent rounded-full blur-sm" />
-                                              <div className="relative rounded-full p-0.5 ring-1 ring-accent/10" style={{
-                                                background: `linear-gradient(135deg, ${colorFrom}60, ${colorTo}60)`,
-                                                boxShadow: '0 2px 12px rgba(0,0,0,0.15)'
-                                              }}>
+                                      <div className="px-6 pb-6 border-t border-white/5 pt-5">
+                                        <div className="flex items-center gap-4">
+                                          <Heart className="w-5 h-5 text-white/40 fill-white/10 flex-shrink-0" />
+                                          {typeof childSp === 'object' ? (
+                                            <>
+                                              <div className="rounded-full p-1 bg-white/5 ring-1 ring-white/10 flex-shrink-0">
                                                 {childSp.photoURL ? (
-                                                  <img src={childSp.photoURL} alt={childSp.name} className="w-10 h-10 rounded-full object-cover border border-base/60" />
+                                                  <img src={childSp.photoURL} alt={childSp.name} className="w-14 h-14 rounded-full object-cover" />
                                                 ) : (
-                                                  <div className="w-10 h-10 rounded-full flex items-center justify-center bg-base/40 backdrop-blur-sm border border-base/60">
-                                                    <User className="w-4 h-4 text-accent/40" />
+                                                  <div className="w-14 h-14 rounded-full flex items-center justify-center bg-white/5">
+                                                    <User className="w-6 h-6 text-white/30" />
                                                   </div>
                                                 )}
                                               </div>
-                                            </div>
-                                            <div className="flex-1 min-w-0">
-                                              <p className="elegant-heading text-xs text-white/90 truncate mb-0.5">{childSp.name}</p>
-                                              <AgeBadge birthDate={childSp.birthDate} deathDate={childSp.deathDate} />
-                                            </div>
-                                          </>
-                                        ) : (
-                                          <p className="text-xs truncate text-white/60 font-medium">{childSp}</p>
-                                        )}
+                                              <div className="flex-1 min-w-0">
+                                                <p className="elegant-heading text-sm text-white/90 truncate mb-1">{childSp.name}</p>
+                                                <AgeBadge birthDate={childSp.birthDate} deathDate={childSp.deathDate} />
+                                              </div>
+                                            </>
+                                          ) : (
+                                            <p className="text-sm text-white/60 font-light">{childSp}</p>
+                                          )}
+                                        </div>
                                       </div>
                                     )}
                                   </div>
