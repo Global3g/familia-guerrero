@@ -62,7 +62,7 @@ function PersonCircle({ name, photo, size = 'md', onClick }) {
     <div
       className={`${sizes[size]} rounded-full flex items-center justify-center shadow-md ${
         photo ? '' : 'bg-gradient-to-br from-white/10 to-white/5'
-      } ${photo && onClick ? 'cursor-pointer ring-2 ring-transparent hover:ring-[#B8654A]/40 transition-all' : ''}`}
+      } ${photo && onClick ? 'cursor-pointer ring-2 ring-transparent hover:ring-white/20 transition-all' : ''}`}
       onClick={photo && onClick ? onClick : undefined}
     >
       {photo ? (
@@ -352,7 +352,7 @@ function MoveModal({ person, members, currentParentId, isDeepNested, onMove, onC
 // ── Nucleus Tree Node ─────────────────────────────────────
 function NucleusPersonNode({ data }) {
   const { name, photoURL, gender, isDeceased, role, spouse, isRoot } = data
-  const borderColor = isRoot ? 'rgba(255, 255, 255, 0.15)' : gender === 'F' ? '#B8654A' : '#6B9080'
+  const borderColor = isRoot ? 'rgba(255, 255, 255, 0.15)' : gender === 'F' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.15)'
   const bgColor = isRoot ? '#FFFFFF' : '#F1F5F9'
 
   return (
@@ -385,7 +385,7 @@ function NucleusPersonNode({ data }) {
           {spouse.photoURL ? (
             <img src={spouse.photoURL} alt={spouse.name} className="w-6 h-6 rounded-full object-cover" />
           ) : (
-            <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#B8654A15' }}>
+            <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(255, 255, 255, 0.08)' }}>
               <User className="w-3 h-3 text-white/70" />
             </div>
           )}
@@ -414,7 +414,7 @@ function buildNucleusTree(member) {
     return kids.reduce((sum, c) => sum + subtreeW(c), 0)
   }
 
-  const edgeColors = ['#B8654A', '#6B9080', 'rgba(255, 255, 255, 0.15)', '#0F172A']
+  const edgeColors = ['rgba(255, 255, 255, 0.15)', 'rgba(255, 255, 255, 0.15)', 'rgba(255, 255, 255, 0.15)', '#0F172A']
 
   function place(person, x, y, depth, parentId) {
     const id = getId()
@@ -478,7 +478,7 @@ function NucleusTreeView({ member }) {
   if (!rfModule) {
     return (
       <div className="flex justify-center py-20">
-        <div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#B8654A', borderTopColor: 'transparent' }} />
+        <div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: 'rgba(255, 255, 255, 0.15)', borderTopColor: 'transparent' }} />
       </div>
     )
   }
@@ -488,7 +488,7 @@ function NucleusTreeView({ member }) {
   // Re-define node component with handles now that we have access to Handle/Position
   const PersonNodeWithHandles = ({ data }) => {
     const { name, photoURL, gender, isDeceased, role, spouse, isRoot } = data
-    const borderColor = isRoot ? 'rgba(255, 255, 255, 0.15)' : gender === 'F' ? '#B8654A' : '#6B9080'
+    const borderColor = isRoot ? 'rgba(255, 255, 255, 0.15)' : gender === 'F' ? 'rgba(255, 255, 255, 0.15)' : 'rgba(255, 255, 255, 0.15)'
     const bgColor = isRoot ? '#FFFFFF' : '#F1F5F9'
 
     return (
@@ -522,7 +522,7 @@ function NucleusTreeView({ member }) {
             {spouse.photoURL ? (
               <img src={spouse.photoURL} alt={spouse.name} className="w-6 h-6 rounded-full object-cover" />
             ) : (
-              <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#B8654A15' }}>
+              <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: 'rgba(255, 255, 255, 0.08)' }}>
                 <User className="w-3 h-3 text-white/70" />
               </div>
             )}
@@ -561,8 +561,8 @@ function NucleusTreeView({ member }) {
           style={{ borderRadius: '12px', overflow: 'hidden', border: '2px solid #E2E8F0' }}
           nodeColor={(n) => {
             if (n.data?.isRoot) return 'rgba(255, 255, 255, 0.15)'
-            if (n.data?.gender === 'F') return '#B8654A'
-            return '#6B9080'
+            if (n.data?.gender === 'F') return 'rgba(255, 255, 255, 0.15)'
+            return 'rgba(255, 255, 255, 0.15)'
           }}
           maskColor="rgba(253, 248, 240, 0.7)"
         />
