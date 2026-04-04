@@ -39,8 +39,8 @@ function AgeBadge({ birthDate, deathDate }) {
   return (
     <span className={`text-[11px] font-medium px-1.5 py-0.5 rounded-full ${
       result.deceased
-        ? 'bg-[#B8976A]/15 text-[#B8976A]'
-        : 'bg-[#6B9080]/15 text-[#6B9080]'
+        ? 'bg-white/15/15 text-white/70'
+        : 'bg-white/15/15 text-white/70'
     }`}>
       {result.deceased ? `${result.age} años` : `${result.age} años`}
     </span>
@@ -61,7 +61,7 @@ function PersonCircle({ name, photo, size = 'md', onClick }) {
   return (
     <div
       className={`${sizes[size]} rounded-full flex items-center justify-center shadow-md ${
-        photo ? '' : 'bg-gradient-to-br from-[#B8654A] to-[#B8976A]'
+        photo ? '' : 'bg-gradient-to-br from-white/10 to-white/5'
       } ${photo && onClick ? 'cursor-pointer ring-2 ring-transparent hover:ring-[#B8654A]/40 transition-all' : ''}`}
       onClick={photo && onClick ? onClick : undefined}
     >
@@ -86,18 +86,18 @@ function GrandparentsPair({ grandparentsData }) {
         <div className="flex flex-col items-center gap-1.5">
           <PersonCircle name={grandfather.fullName || grandfather.name} photo={grandfather.photoURL || grandfather.photo} size="lg" />
           <p className="text-lg font-serif font-bold text-white text-center leading-tight">{grandfather.fullName || grandfather.name}</p>
-          {grandfather.nickname && <p className="text-xs text-[#B8654A] font-medium italic">"{grandfather.nickname}"</p>}
+          {grandfather.nickname && <p className="text-xs text-white/70 font-medium italic">"{grandfather.nickname}"</p>}
           <p className="text-xs text-white/50 font-medium">{grandfather.role}</p>
           <AgeBadge birthDate={grandfather.birthDate} deathDate={grandfather.deathDate} />
         </div>
         <div className="flex flex-col items-center gap-1">
-          <Heart className="w-8 h-8 text-[#B8654A] fill-[#B8654A]" />
-          {weddingYear && <span className="text-xs text-[#B8976A] font-medium">{weddingYear}</span>}
+          <Heart className="w-8 h-8 text-white/70 fill-white/50" />
+          {weddingYear && <span className="text-xs text-white/70 font-medium">{weddingYear}</span>}
         </div>
         <div className="flex flex-col items-center gap-1.5">
           <PersonCircle name={grandmother.fullName || grandmother.name} photo={grandmother.photoURL || grandmother.photo} size="lg" />
           <p className="text-lg font-serif font-bold text-white text-center leading-tight">{grandmother.fullName || grandmother.name}</p>
-          {grandmother.nickname && <p className="text-xs text-[#B8654A] font-medium italic">"{grandmother.nickname}"</p>}
+          {grandmother.nickname && <p className="text-xs text-white/70 font-medium italic">"{grandmother.nickname}"</p>}
           <p className="text-xs text-white/50 font-medium">{grandmother.role}</p>
           <AgeBadge birthDate={grandmother.birthDate} deathDate={grandmother.deathDate} />
         </div>
@@ -162,7 +162,7 @@ function ChildCard({ child, onEdit, onDelete, onView }) {
         {hasSpouse && (
           <>
             <div className="flex flex-col items-center gap-0.5 flex-shrink-0 pt-14">
-              <Heart className="w-4 h-4 text-[#B8654A]/60 fill-[#B8654A]/60" />
+              <Heart className="w-4 h-4 text-white/70/60 fill-white/50/60" />
             </div>
 
             {/* Spouse */}
@@ -204,7 +204,7 @@ function ChildCard({ child, onEdit, onDelete, onView }) {
         return (
           <div className="flex items-center justify-center gap-3 mt-3 pt-2 border-t border-white/80 flex-wrap">
             <span className="flex items-center gap-1 text-xs text-white/50">
-              <Users className="w-3.5 h-3.5 text-[#B8976A]" />
+              <Users className="w-3.5 h-3.5 text-white/70" />
               {hijos} hijos
             </span>
             {yernos > 0 && (
@@ -300,8 +300,8 @@ function MoveModal({ person, members, currentParentId, isDeepNested, onMove, onC
         animate={{ scale: 1, opacity: 1 }}
         exit={{ scale: 0.9, opacity: 0 }}
       >
-        <div className="w-12 h-12 rounded-full bg-[#6B9080]/10 flex items-center justify-center mx-auto mb-4">
-          <ArrowRightLeft className="w-6 h-6 text-[#6B9080]" />
+        <div className="w-12 h-12 rounded-full bg-white/15/10 flex items-center justify-center mx-auto mb-4">
+          <ArrowRightLeft className="w-6 h-6 text-white/70" />
         </div>
         <h3 className="text-lg font-serif font-bold text-white mb-1 text-center">Mover a {person.name}</h3>
         <p className="text-xs text-white/60 text-center mb-4">Selecciona donde quieres ubicar a esta persona</p>
@@ -314,12 +314,12 @@ function MoveModal({ person, members, currentParentId, isDeepNested, onMove, onC
               onClick={() => setSelectedTarget(dest)}
               className={`w-full text-left px-4 py-3 rounded-xl border transition text-sm ${
                 selectedTarget?.id === dest.id
-                  ? 'border-[#6B9080] bg-[#6B9080]/10 text-white font-semibold'
-                  : 'border-[#B8654A]/10 bg-white hover:bg-white/5 text-white/80'
+                  ? 'border-white/20 bg-white/15/10 text-white font-semibold'
+                  : 'border-white/20/10 bg-white hover:bg-white/5 text-white/80'
               }`}
             >
               <span className="flex items-center gap-2">
-                <Users className="w-4 h-4 text-[#B8976A] flex-shrink-0" />
+                <Users className="w-4 h-4 text-white/70 flex-shrink-0" />
                 <span>Como hijo de <strong>{dest.name}</strong></span>
               </span>
             </button>
@@ -332,14 +332,14 @@ function MoveModal({ person, members, currentParentId, isDeepNested, onMove, onC
         <div className="flex gap-3 justify-center">
           <button
             onClick={onCancel}
-            className="px-5 py-2 rounded-lg border border-[#B8654A]/20 text-white hover:bg-white/5 transition text-sm font-medium"
+            className="px-5 py-2 rounded-lg border border-white/20/20 text-white hover:bg-white/5 transition text-sm font-medium"
           >
             Cancelar
           </button>
           <button
             onClick={() => selectedTarget && onMove(selectedTarget)}
             disabled={!selectedTarget}
-            className="px-5 py-2 rounded-lg bg-[#6B9080] text-white hover:bg-[#6B9080]/90 transition text-sm font-medium disabled:opacity-40"
+            className="px-5 py-2 rounded-lg bg-white/15 text-white hover:bg-white/15/90 transition text-sm font-medium disabled:opacity-40"
           >
             Mover aqui
           </button>
@@ -352,7 +352,7 @@ function MoveModal({ person, members, currentParentId, isDeepNested, onMove, onC
 // ── Nucleus Tree Node ─────────────────────────────────────
 function NucleusPersonNode({ data }) {
   const { name, photoURL, gender, isDeceased, role, spouse, isRoot } = data
-  const borderColor = isRoot ? '#B8976A' : gender === 'F' ? '#B8654A' : '#6B9080'
+  const borderColor = isRoot ? 'rgba(255, 255, 255, 0.15)' : gender === 'F' ? '#B8654A' : '#6B9080'
   const bgColor = isRoot ? '#FFFFFF' : '#F1F5F9'
 
   return (
@@ -375,18 +375,18 @@ function NucleusPersonNode({ data }) {
         )}
         <div className="flex-1 min-w-0 text-left">
           <p className="text-xs font-bold leading-tight truncate" style={{ color: '#0F172A' }}>{name}</p>
-          {role && <p className="text-[11px] text-[#6B9080] font-medium">{role}</p>}
-          {isDeceased && <p className="text-[11px] text-[#B8976A] italic">En memoria</p>}
+          {role && <p className="text-[11px] text-white/70 font-medium">{role}</p>}
+          {isDeceased && <p className="text-[11px] text-white/70 italic">En memoria</p>}
         </div>
       </div>
       {spouse && (
         <div className="mt-1.5 pt-1.5 border-t flex items-center gap-1.5" style={{ borderColor: `${borderColor}30` }}>
-          <Heart className="w-3 h-3 text-[#B8654A] flex-shrink-0" />
+          <Heart className="w-3 h-3 text-white/70 flex-shrink-0" />
           {spouse.photoURL ? (
             <img src={spouse.photoURL} alt={spouse.name} className="w-6 h-6 rounded-full object-cover" />
           ) : (
             <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#B8654A15' }}>
-              <User className="w-3 h-3 text-[#B8654A]" />
+              <User className="w-3 h-3 text-white/70" />
             </div>
           )}
           <p className="text-[11px] truncate" style={{ color: '#0F172A' }}>{spouse.name}</p>
@@ -414,7 +414,7 @@ function buildNucleusTree(member) {
     return kids.reduce((sum, c) => sum + subtreeW(c), 0)
   }
 
-  const edgeColors = ['#B8654A', '#6B9080', '#B8976A', '#0F172A']
+  const edgeColors = ['#B8654A', '#6B9080', 'rgba(255, 255, 255, 0.15)', '#0F172A']
 
   function place(person, x, y, depth, parentId) {
     const id = getId()
@@ -488,7 +488,7 @@ function NucleusTreeView({ member }) {
   // Re-define node component with handles now that we have access to Handle/Position
   const PersonNodeWithHandles = ({ data }) => {
     const { name, photoURL, gender, isDeceased, role, spouse, isRoot } = data
-    const borderColor = isRoot ? '#B8976A' : gender === 'F' ? '#B8654A' : '#6B9080'
+    const borderColor = isRoot ? 'rgba(255, 255, 255, 0.15)' : gender === 'F' ? '#B8654A' : '#6B9080'
     const bgColor = isRoot ? '#FFFFFF' : '#F1F5F9'
 
     return (
@@ -512,18 +512,18 @@ function NucleusTreeView({ member }) {
           )}
           <div className="flex-1 min-w-0 text-left">
             <p className="text-xs font-bold leading-tight truncate" style={{ color: '#0F172A' }}>{name}</p>
-            {role && <p className="text-[11px] text-[#6B9080] font-medium">{role}</p>}
-            {isDeceased && <p className="text-[11px] text-[#B8976A] italic">En memoria</p>}
+            {role && <p className="text-[11px] text-white/70 font-medium">{role}</p>}
+            {isDeceased && <p className="text-[11px] text-white/70 italic">En memoria</p>}
           </div>
         </div>
         {spouse && (
           <div className="mt-1.5 pt-1.5 border-t flex items-center gap-1.5" style={{ borderColor: `${borderColor}30` }}>
-            <Heart className="w-3 h-3 text-[#B8654A] flex-shrink-0" />
+            <Heart className="w-3 h-3 text-white/70 flex-shrink-0" />
             {spouse.photoURL ? (
               <img src={spouse.photoURL} alt={spouse.name} className="w-6 h-6 rounded-full object-cover" />
             ) : (
               <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#B8654A15' }}>
-                <User className="w-3 h-3 text-[#B8654A]" />
+                <User className="w-3 h-3 text-white/70" />
               </div>
             )}
             <p className="text-[11px] truncate" style={{ color: '#0F172A' }}>{spouse.name}</p>
@@ -560,7 +560,7 @@ function NucleusTreeView({ member }) {
           position="bottom-right"
           style={{ borderRadius: '12px', overflow: 'hidden', border: '2px solid #E2E8F0' }}
           nodeColor={(n) => {
-            if (n.data?.isRoot) return '#B8976A'
+            if (n.data?.isRoot) return 'rgba(255, 255, 255, 0.15)'
             if (n.data?.gender === 'F') return '#B8654A'
             return '#6B9080'
           }}
@@ -1060,7 +1060,7 @@ export default function FamilyTree() {
           <h2 className="font-serif text-4xl sm:text-5xl md:text-6xl font-bold text-white mb-5">
             Arbol Familiar
           </h2>
-          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto" />
+          <div className="w-8 h-[1px] bg-white/15 mx-auto" />
           <p className="mt-6 max-w-3xl mx-auto text-3xl leading-relaxed font-medium italic" style={{ color: '#FFD700' }}>
             "Desde las raices hasta las nuevas ramas, cada miembro es parte esencial de esta historia."
           </p>
@@ -1212,8 +1212,9 @@ export default function FamilyTree() {
                   const totalGrandchildren = selectedMember.children ? selectedMember.children.reduce((acc, child) => acc + (child.children ? child.children.length : 0), 0) : 0
 
                   const memberIndex = members.findIndex(m => m.id === selectedMember?.id)
-                  const hijoColors = ['#B8654A', '#6B9080', '#B8976A', '#B8654A', '#6B9080', '#B8976A', '#B8654A', '#6B9080']
-                  const memberColor = hijoColors[memberIndex % hijoColors.length] || '#0F172A'
+                  // Minimalist neutral colors - white/gray only
+                  const hijoColors = ['rgba(255, 255, 255, 0.08)', 'rgba(255, 255, 255, 0.08)', 'rgba(255, 255, 255, 0.08)', 'rgba(255, 255, 255, 0.08)', 'rgba(255, 255, 255, 0.08)', 'rgba(255, 255, 255, 0.08)', 'rgba(255, 255, 255, 0.08)', 'rgba(255, 255, 255, 0.08)']
+                  const memberColor = hijoColors[memberIndex % hijoColors.length] || 'rgba(255, 255, 255, 0.08)'
 
                   return (
                     <>
@@ -1242,11 +1243,11 @@ export default function FamilyTree() {
                           </div>
                           <h3 className="text-base font-serif font-bold text-white">{selectedMember.name}</h3>
                           {selectedMember.nickname && (
-                            <p className="text-xs text-[#B8654A] font-medium italic">"{selectedMember.nickname}"</p>
+                            <p className="text-xs text-white/60 font-medium italic">"{selectedMember.nickname}"</p>
                           )}
                           <AgeBadge birthDate={selectedMember.birthDate} deathDate={selectedMember.deathDate} />
                           {selectedMember.role && (
-                            <span className="inline-block mt-1 text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-[#6B9080]/10 text-[#6B9080]">
+                            <span className="inline-block mt-1 text-[11px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded-full bg-white/10 text-white/70">
                               {selectedMember.role}
                             </span>
                           )}
@@ -1256,8 +1257,8 @@ export default function FamilyTree() {
                         {selectedMember.spouse && (
                           <>
                             <div className="flex flex-col items-center pt-4 flex-shrink-0">
-                              <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#B8654A] to-[#B8976A] flex items-center justify-center shadow-lg">
-                                <Heart className="w-5 h-5 text-white fill-white" />
+                              <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center shadow-lg">
+                                <Heart className="w-5 h-5 text-white/70 fill-white/50" />
                               </div>
                             </div>
 
@@ -1274,7 +1275,7 @@ export default function FamilyTree() {
                                 <>
                                   <h3 className="text-base font-serif font-bold text-white">{selectedMember.spouse.name}</h3>
                                   {selectedMember.spouse.nickname && (
-                                    <p className="text-xs text-[#B8654A] font-medium italic">"{selectedMember.spouse.nickname}"</p>
+                                    <p className="text-xs text-white/60 font-medium italic">"{selectedMember.spouse.nickname}"</p>
                                   )}
                                   <AgeBadge birthDate={selectedMember.spouse.birthDate} deathDate={selectedMember.spouse.deathDate} />
                                   {selectedMember.spouse.bio && (
@@ -1307,7 +1308,7 @@ export default function FamilyTree() {
                               onClick={() => setModalTab(tab.key)}
                               className={`flex items-center gap-1.5 text-sm font-medium py-2.5 px-4 rounded-xl whitespace-nowrap transition-all ${
                                 modalTab === tab.key
-                                  ? 'bg-[#B8654A] text-white shadow-md'
+                                  ? 'bg-white/15 text-white shadow-md'
                                   : 'bg-[#0F172A] text-white/60 hover:text-white hover:bg-[#0F172A]/80 border-4 border-white/80'
                               }`}
                             >
@@ -1325,17 +1326,17 @@ export default function FamilyTree() {
                           {/* Quick stats pills + view toggle */}
                           <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
                             {selectedMember.children?.length > 0 && (
-                              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#6B9080]/10 text-[#6B9080] text-xs font-semibold">
+                              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 text-white/80 text-xs font-semibold">
                                 <Users className="w-3.5 h-3.5" /> {selectedMember.children.length} hijos
                               </span>
                             )}
                             {totalGrandchildren > 0 && (
-                              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#C8846A]/10 text-[#C8846A] text-xs font-semibold">
+                              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 text-white/80 text-xs font-semibold">
                                 <Users className="w-3.5 h-3.5" /> {totalGrandchildren} nietos
                               </span>
                             )}
                             {selectedMember.location && (
-                              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-[#B8654A]/10 text-[#B8654A] text-xs font-semibold">
+                              <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 text-white/80 text-xs font-semibold">
                                 <MapPin className="w-3.5 h-3.5" /> {selectedMember.location}
                               </span>
                             )}
@@ -1349,7 +1350,7 @@ export default function FamilyTree() {
                                   onClick={() => setFamiliaView('tarjetas')}
                                   className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
                                     familiaView === 'tarjetas'
-                                      ? 'bg-[#B8654A] text-white shadow-md'
+                                      ? 'bg-white/15 text-white shadow-md'
                                       : 'text-white/60 hover:text-white'
                                   }`}
                                 >
@@ -1360,7 +1361,7 @@ export default function FamilyTree() {
                                   onClick={() => setFamiliaView('arbol-visual')}
                                   className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
                                     familiaView === 'arbol-visual'
-                                      ? 'bg-[#B8654A] text-white shadow-md'
+                                      ? 'bg-white/15 text-white shadow-md'
                                       : 'text-white/60 hover:text-white'
                                   }`}
                                 >
@@ -1371,7 +1372,7 @@ export default function FamilyTree() {
                                   onClick={() => setFamiliaView('arbol')}
                                   className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
                                     familiaView === 'arbol'
-                                      ? 'bg-[#B8654A] text-white shadow-md'
+                                      ? 'bg-white/15 text-white shadow-md'
                                       : 'text-white/60 hover:text-white'
                                   }`}
                                 >
@@ -1402,7 +1403,7 @@ export default function FamilyTree() {
                                 </div>
                               )}
                               {selectedMember.location && (
-                                <div className="flex items-center gap-1.5 text-sm text-[#6B9080]">
+                                <div className="flex items-center gap-1.5 text-sm text-white/70">
                                   <MapPin className="w-3.5 h-3.5" />
                                   <span className="font-medium">{selectedMember.location}</span>
                                 </div>
@@ -1414,7 +1415,7 @@ export default function FamilyTree() {
                                 let y = now.getFullYear() - wd.getFullYear()
                                 if (now.getMonth() < wd.getMonth() || (now.getMonth() === wd.getMonth() && now.getDate() < wd.getDate())) y--
                                 return y > 0 ? (
-                                  <div className="flex items-center gap-1.5 text-sm font-bold text-[#B8654A]">
+                                  <div className="flex items-center gap-1.5 text-sm font-bold text-white/70">
                                     <Heart className="w-3.5 h-3.5" />
                                     <span>{y} años de casados</span>
                                   </div>
@@ -1450,19 +1451,19 @@ export default function FamilyTree() {
                       {selectedMember.children && selectedMember.children.length > 0 && (
                         <div className="mb-8">
                           <h4 className="text-sm font-serif font-semibold text-white uppercase tracking-wider flex items-center gap-2 mb-4">
-                            <Users className="w-4 h-4 text-[#B8976A]" />
+                            <Users className="w-4 h-4 text-white/70" />
                             Hijos ({selectedMember.children.length})
                           </h4>
                           <div className="space-y-8">
                             {selectedMember.children.map((child, i) => {
-                              const hijoColors = ['#B8654A', '#6B9080', '#B8976A', '#B8654A', '#6B9080', '#B8976A', '#B8654A', '#6B9080']
+                              const hijoColors = ['rgba(255, 255, 255, 0.15)', 'rgba(255, 255, 255, 0.15)', 'rgba(255, 255, 255, 0.15)', 'rgba(255, 255, 255, 0.15)', 'rgba(255, 255, 255, 0.15)', 'rgba(255, 255, 255, 0.15)', 'rgba(255, 255, 255, 0.15)', 'rgba(255, 255, 255, 0.15)']
                               const hijoColor = hijoColors[i % hijoColors.length]
                               return (
                               <div key={i} className="bg-[#0F172A] rounded-2xl shadow-lg border-2 overflow-hidden group/child relative" style={{ borderColor: hijoColor }}>
                                 {/* Move button */}
                                 <button
                                   onClick={() => setMovingPerson({ person: child, parentId: selectedMember.id, childIndex: i })}
-                                  className="absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center bg-white/80 hover:bg-[#6B9080]/10 shadow text-[#6B9080] transition opacity-0 group-hover/child:opacity-100 z-10"
+                                  className="absolute top-3 right-3 w-7 h-7 rounded-full flex items-center justify-center bg-white/80 hover:bg-white/15/10 shadow text-white/70 transition opacity-0 group-hover/child:opacity-100 z-10"
                                   title="Mover a otro familiar"
                                 >
                                   <ArrowRightLeft className="w-3.5 h-3.5" />
@@ -1481,25 +1482,25 @@ export default function FamilyTree() {
                                     <PersonCircle name={child.name} photo={child.photoURL} size="md" onClick={() => setLightboxPhoto({ photoURL: child.photoURL, caption: child.name })} />
                                     <div className="min-w-0">
                                       <p className="text-base font-bold text-white truncate">{child.name}</p>
-                                      {child.nickname && <p className="text-xs text-[#B8654A] italic">"{child.nickname}"</p>}
+                                      {child.nickname && <p className="text-xs text-white/70 italic">"{child.nickname}"</p>}
                                       <AgeBadge birthDate={child.birthDate} deathDate={child.deathDate} />
-                                      {child.location && <p className="text-xs text-[#6B9080] mt-0.5 flex items-center gap-0.5"><MapPin className="w-3 h-3" /> {child.location}</p>}
+                                      {child.location && <p className="text-xs text-white/70 mt-0.5 flex items-center gap-0.5"><MapPin className="w-3 h-3" /> {child.location}</p>}
                                     </div>
                                   </div>
 
                                   {/* Heart + Esposo/a */}
                                   {child.spouse && (
                                     <>
-                                      <Heart className="w-4 h-4 text-[#B8654A] fill-[#B8654A] flex-shrink-0" />
+                                      <Heart className="w-4 h-4 text-white/70 fill-white/50 flex-shrink-0" />
                                       <div className="flex items-center gap-3 flex-1 min-w-0">
                                         {typeof child.spouse === 'object' ? (
                                           <>
                                             <PersonCircle name={child.spouse.name} photo={child.spouse.photoURL} size="md" onClick={() => setLightboxPhoto({ photoURL: child.spouse.photoURL, caption: child.spouse.name })} />
                                             <div className="min-w-0">
                                               <p className="text-base font-bold text-white truncate">{child.spouse.name}</p>
-                                              {child.spouse.nickname && <p className="text-xs text-[#B8654A] italic">"{child.spouse.nickname}"</p>}
+                                              {child.spouse.nickname && <p className="text-xs text-white/70 italic">"{child.spouse.nickname}"</p>}
                                               <AgeBadge birthDate={child.spouse.birthDate} deathDate={child.spouse.deathDate} />
-                                              {child.spouse.location && <p className="text-xs text-[#6B9080] mt-0.5 flex items-center gap-0.5"><MapPin className="w-3 h-3" /> {child.spouse.location}</p>}
+                                              {child.spouse.location && <p className="text-xs text-white/70 mt-0.5 flex items-center gap-0.5"><MapPin className="w-3 h-3" /> {child.spouse.location}</p>}
                                             </div>
                                           </>
                                         ) : (
@@ -1525,7 +1526,7 @@ export default function FamilyTree() {
                                       const now = new Date()
                                       let y = now.getFullYear() - wd.getFullYear()
                                       if (now.getMonth() < wd.getMonth() || (now.getMonth() === wd.getMonth() && now.getDate() < wd.getDate())) y--
-                                      return y > 0 ? <span className="text-xs font-bold text-[#B8654A] flex items-center gap-1"><Heart className="w-3.5 h-3.5" /> {y} años casados</span> : null
+                                      return y > 0 ? <span className="text-xs font-bold text-white/70 flex items-center gap-1"><Heart className="w-3.5 h-3.5" /> {y} años casados</span> : null
                                     })()}
                                   </div>
                                 )}
@@ -1535,12 +1536,12 @@ export default function FamilyTree() {
                                   <div className="px-5 py-2 border-t border-white/80/40 space-y-1.5">
                                     {child.bio && (
                                       <p className="text-xs text-white/60 italic leading-relaxed">
-                                        <span className="font-semibold not-italic text-[#6B9080]">{child.name?.split(' ')[0]}:</span> {child.bio}
+                                        <span className="font-semibold not-italic text-white/70">{child.name?.split(' ')[0]}:</span> {child.bio}
                                       </p>
                                     )}
                                     {child.spouse && typeof child.spouse === 'object' && child.spouse.bio && (
                                       <p className="text-xs text-white/60 italic leading-relaxed">
-                                        <span className="font-semibold not-italic text-[#B8654A]">{child.spouse.name?.split(' ')[0]}:</span> {child.spouse.bio}
+                                        <span className="font-semibold not-italic text-white/70">{child.spouse.name?.split(' ')[0]}:</span> {child.spouse.bio}
                                       </p>
                                     )}
                                   </div>
@@ -1549,20 +1550,20 @@ export default function FamilyTree() {
                                 {/* Children of this hijo (nietos) */}
                                 {child.children && child.children.length > 0 && (
                                   <div className="px-4 pb-4 pt-2 border-t border-white/80/40">
-                                    <p className="text-[11px] font-semibold text-[#B8976A] uppercase tracking-wider mb-2 flex items-center gap-1">
+                                    <p className="text-[11px] font-semibold text-white/70 uppercase tracking-wider mb-2 flex items-center gap-1">
                                       <Users className="w-3 h-3" />
                                       Hijos de {child.name.split(' ')[0]} ({child.children.length})
                                     </p>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                       {child.children.map((ggc, gi) => {
-                                        const cardColors = ['#B8654A', '#6B9080', '#B8976A', '#B8654A', '#6B9080']
+                                        const cardColors = ['rgba(255, 255, 255, 0.15)', 'rgba(255, 255, 255, 0.15)', 'rgba(255, 255, 255, 0.15)', 'rgba(255, 255, 255, 0.15)', 'rgba(255, 255, 255, 0.15)']
                                         const cardColor = cardColors[gi % cardColors.length]
                                         return (
                                         <div key={gi} className="rounded-2xl bg-[#0F172A] border-2 shadow-md overflow-hidden relative group/ggc" style={{ borderColor: cardColor }}>
                                           {/* Move button */}
                                           <button
                                             onClick={() => setMovingPerson({ person: ggc, parentId: selectedMember.id, childIndex: i, grandchildIndex: gi })}
-                                            className="absolute top-2 right-2 w-7 h-7 rounded-full flex items-center justify-center bg-white/80 hover:bg-[#6B9080]/10 shadow text-[#6B9080] transition opacity-0 group-hover/ggc:opacity-100 z-10"
+                                            className="absolute top-2 right-2 w-7 h-7 rounded-full flex items-center justify-center bg-white/80 hover:bg-white/15/10 shadow text-white/70 transition opacity-0 group-hover/ggc:opacity-100 z-10"
                                             title="Mover"
                                           >
                                             <ArrowRightLeft className="w-3.5 h-3.5" />
@@ -1581,10 +1582,10 @@ export default function FamilyTree() {
                                               <PersonCircle name={ggc.name} photo={ggc.photoURL} size="md" onClick={() => setLightboxPhoto({ photoURL: ggc.photoURL, caption: ggc.name })} />
                                               <div className="flex-1 min-w-0">
                                                 <p className="text-base font-serif font-bold text-white truncate">{ggc.name}</p>
-                                                {ggc.nickname && <p className="text-xs text-[#B8654A] italic">"{ggc.nickname}"</p>}
+                                                {ggc.nickname && <p className="text-xs text-white/70 italic">"{ggc.nickname}"</p>}
                                                 <AgeBadge birthDate={ggc.birthDate} deathDate={ggc.deathDate} />
                                                 {ggc.location && (
-                                                  <p className="text-[11px] text-[#6B9080] mt-0.5 flex items-center gap-0.5"><MapPin className="w-3 h-3" /> {ggc.location}</p>
+                                                  <p className="text-[11px] text-white/70 mt-0.5 flex items-center gap-0.5"><MapPin className="w-3 h-3" /> {ggc.location}</p>
                                                 )}
                                               </div>
                                             </div>
@@ -1599,7 +1600,7 @@ export default function FamilyTree() {
                                                       <PersonCircle name={ggc.spouse.name} photo={ggc.spouse.photoURL} size="md" onClick={() => setLightboxPhoto({ photoURL: ggc.spouse.photoURL, caption: ggc.spouse.name })} />
                                                       <div className="flex-1 min-w-0">
                                                         <p className="text-base font-serif font-bold text-white truncate">{ggc.spouse.name}</p>
-                                                        {ggc.spouse.nickname && <p className="text-xs text-[#B8654A] italic">"{ggc.spouse.nickname}"</p>}
+                                                        {ggc.spouse.nickname && <p className="text-xs text-white/70 italic">"{ggc.spouse.nickname}"</p>}
                                                         <AgeBadge birthDate={ggc.spouse.birthDate} deathDate={ggc.spouse.deathDate} />
                                                       </div>
                                                     </>
@@ -1625,7 +1626,7 @@ export default function FamilyTree() {
                                                   const now = new Date()
                                                   let y = now.getFullYear() - wd.getFullYear()
                                                   if (now.getMonth() < wd.getMonth() || (now.getMonth() === wd.getMonth() && now.getDate() < wd.getDate())) y--
-                                                  return y > 0 ? <span className="text-xs font-bold text-[#B8654A] flex items-center gap-1"><Heart className="w-3.5 h-3.5" /> {y} años casados</span> : null
+                                                  return y > 0 ? <span className="text-xs font-bold text-white/70 flex items-center gap-1"><Heart className="w-3.5 h-3.5" /> {y} años casados</span> : null
                                                 })()}
                                               </div>
                                             )}
@@ -1650,7 +1651,7 @@ export default function FamilyTree() {
                                                     </div>
                                                     {bn.spouse && (
                                                       <div className="flex items-center gap-1.5 flex-shrink-0">
-                                                        <Heart className="w-2.5 h-2.5 text-[#B8654A]" />
+                                                        <Heart className="w-2.5 h-2.5 text-white/70" />
                                                         <span className="text-xs text-white/60 truncate max-w-[80px]">{typeof bn.spouse === 'object' ? bn.spouse.name : bn.spouse}</span>
                                                       </div>
                                                     )}
@@ -1679,19 +1680,19 @@ export default function FamilyTree() {
                       {modalTab === 'momentos' && selectedMember.moments && selectedMember.moments.length > 0 && (
                         <div className="mb-8">
                           <h4 className="text-sm font-serif font-semibold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
-                            <Star className="w-4 h-4 text-[#B8976A]" />
+                            <Star className="w-4 h-4 text-white/70" />
                             Momentos Importantes
                           </h4>
                           <div className="space-y-3">
                             {selectedMember.moments.map((m, i) => (
                               <div key={i} className="flex gap-3 p-3 rounded-xl bg-[#0F172A] border-4 border-white/80 shadow-sm relative overflow-hidden">
-                                <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl" style={{ background: 'linear-gradient(to bottom, #B8654A, #B8976A)' }} />
-                                <div className="w-10 h-10 rounded-full bg-[#B8976A]/10 flex items-center justify-center flex-shrink-0 ml-1">
-                                  <Star className="w-5 h-5 text-[#B8976A]" />
+                                <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl" style={{ background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.10))' }} />
+                                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0 ml-1">
+                                  <Star className="w-5 h-5 text-white/70" />
                                 </div>
                                 <div>
                                   <p className="text-sm font-bold text-white">{m.title}</p>
-                                  {m.date && <p className="text-[11px] text-[#B8976A] font-medium">{formatDate(m.date)}</p>}
+                                  {m.date && <p className="text-[11px] text-white/70 font-medium">{formatDate(m.date)}</p>}
                                   {m.description && <p className="text-xs text-white/70 mt-0.5">{m.description}</p>}
                                 </div>
                               </div>
@@ -1741,7 +1742,7 @@ export default function FamilyTree() {
                           <div className="mb-8 space-y-6">
                             {Object.entries(grouped).map(([owner, photos]) => (
                               <div key={owner}>
-                                <h4 className="text-xs font-bold text-[#6B9080] uppercase tracking-wider mb-3 flex items-center gap-1.5">
+                                <h4 className="text-xs font-bold text-white/70 uppercase tracking-wider mb-3 flex items-center gap-1.5">
                                   <Camera className="w-3.5 h-3.5" />
                                   Fotos de {owner} ({photos.length})
                                 </h4>
@@ -1751,8 +1752,8 @@ export default function FamilyTree() {
                                       {g.photoURL ? (
                                         <img src={g.photoURL} alt={g.caption} className="w-full h-40 object-cover" />
                                       ) : (
-                                        <div className="w-full h-40 bg-gradient-to-br from-[#6B9080]/20 to-[#B8976A]/20 flex items-center justify-center">
-                                          <Camera className="w-8 h-8 text-[#6B9080]/40" />
+                                        <div className="w-full h-40 bg-gradient-to-br from-white/10/20 to-white/5/20 flex items-center justify-center">
+                                          <Camera className="w-8 h-8 text-white/70/40" />
                                         </div>
                                       )}
                                       {g.caption && <p className="text-[11px] text-white/70 p-2 text-center">{g.caption}</p>}
@@ -1769,15 +1770,15 @@ export default function FamilyTree() {
                       {modalTab === 'mensajes' && selectedMember.messages && selectedMember.messages.length > 0 && (
                         <div className="mb-8">
                           <h4 className="text-sm font-serif font-semibold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
-                            <MessageCircle className="w-4 h-4 text-[#B8654A]" />
+                            <MessageCircle className="w-4 h-4 text-white/70" />
                             Voces de la Familia
                           </h4>
                           <div className="space-y-3">
                             {selectedMember.messages.map((msg, i) => (
                               <div key={i} className="p-4 rounded-xl bg-[#0F172A] border-4 border-white/80 shadow-sm relative">
-                                <span className="absolute top-2 left-3 text-4xl font-serif text-[#B8654A]/15 leading-none select-none">"</span>
+                                <span className="absolute top-2 left-3 text-4xl font-serif text-white/70/15 leading-none select-none">"</span>
                                 <div className="flex items-center gap-2 mb-2 relative">
-                                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-[#B8654A] to-[#B8976A] flex items-center justify-center shadow-sm">
+                                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center shadow-sm">
                                     <span className="text-white text-[11px] font-bold">{(msg.author || '?')[0].toUpperCase()}</span>
                                   </div>
                                   <div>
@@ -1786,7 +1787,7 @@ export default function FamilyTree() {
                                   </div>
                                 </div>
                                 <p className="text-sm text-white/80 italic ml-10 relative">"{msg.message}"</p>
-                                <span className="absolute bottom-1 right-4 text-4xl font-serif text-[#B8654A]/15 leading-none select-none rotate-180">"</span>
+                                <span className="absolute bottom-1 right-4 text-4xl font-serif text-white/70/15 leading-none select-none rotate-180">"</span>
                               </div>
                             ))}
                           </div>
@@ -1802,7 +1803,7 @@ export default function FamilyTree() {
                         <div className="flex gap-3">
                           <button
                             onClick={() => { setSelectedMember(null); setEditingMember(selectedMember); }}
-                            className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg bg-[#B8976A] text-white hover:bg-[#B8976A]/90 transition text-sm font-medium shadow-md"
+                            className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg bg-white/15 text-white hover:bg-white/20 transition text-sm font-medium shadow-md"
                           >
                             <Pencil className="w-4 h-4" />
                             Editar
@@ -1852,7 +1853,7 @@ export default function FamilyTree() {
               {(lightboxPhoto.caption || lightboxPhoto.owner) && (
                 <div className="bg-[#0F172A] p-4">
                   {lightboxPhoto.caption && <p className="text-base font-serif font-bold text-white">{lightboxPhoto.caption}</p>}
-                  {lightboxPhoto.owner && <p className="text-xs text-[#6B9080] mt-1">Subida por {lightboxPhoto.owner}</p>}
+                  {lightboxPhoto.owner && <p className="text-xs text-white/70 mt-1">Subida por {lightboxPhoto.owner}</p>}
                 </div>
               )}
             </motion.div>
