@@ -1517,17 +1517,22 @@ export default function FamilyTree() {
                             </div>
                           </div>
 
-                          {/* Bento Grid Layout */}
-                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                          {/* Each child gets their own hero section */}
+                          <div className="space-y-12">
                             {selectedMember.children.map((child, i) => {
                               const hasChildren = child.children && child.children.length > 0
+                              const hasSpouse = child.spouse && (typeof child.spouse === 'object' ? child.spouse.name : child.spouse)
+
                               return (
-                              <div key={i} className="group/child relative rounded-3xl overflow-hidden" style={{
-                                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%)',
-                                backdropFilter: 'blur(30px)',
-                                border: '1px solid rgba(255, 255, 255, 0.1)',
-                                boxShadow: '0 20px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
-                              }}>
+                              <div key={i} className="space-y-8">
+                                {/* HERO SECTION for each married child */}
+                                {hasSpouse ? (
+                                  <div className="group/child relative rounded-3xl overflow-hidden" style={{
+                                    background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.1) 0%, rgba(255, 255, 255, 0.02) 100%)',
+                                    backdropFilter: 'blur(30px)',
+                                    border: '1px solid rgba(255, 255, 255, 0.15)',
+                                    boxShadow: '0 30px 80px rgba(0,0,0,0.6), inset 0 1px 0 rgba(255, 255, 255, 0.15)'
+                                  }}>
                                 {/* Move button */}
                                 <button
                                   onClick={() => setMovingPerson({ person: child, parentId: selectedMember.id, childIndex: i })}
