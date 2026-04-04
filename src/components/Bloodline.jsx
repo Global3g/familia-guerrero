@@ -61,19 +61,20 @@ function StatCard({ icon: Icon, label, value, color, delay = 0 }) {
       initial={{ opacity: 0, y: 20 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
-      transition={{ delay, duration: 0.5 }}
-      className="bg-white/5 rounded-2xl shadow-md p-6 text-center border-4 border-white/80"
+      transition={{ delay, duration: 0.6 }}
+      className="glass-panel rounded-3xl p-8 text-center min-h-[180px] flex flex-col justify-between"
     >
       <div
-        className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-3"
-        style={{ backgroundColor: `${color}20` }}
+        className="w-16 h-16 rounded-2xl flex items-center justify-center mx-auto mb-4 bg-accent/5 border border-accent/10"
       >
-        <Icon size={28} style={{ color }} />
+        <Icon size={28} className="text-accent" />
       </div>
-      <p className="text-3xl font-bold text-white">
-        {value}
-      </p>
-      <p className="text-sm text-white/50 mt-1">{label}</p>
+      <div>
+        <p className="elegant-heading text-4xl text-white mb-2">
+          {value}
+        </p>
+        <p className="elegant-caps text-white/40">{label}</p>
+      </div>
     </motion.div>
   )
 }
@@ -190,64 +191,72 @@ export default function Bloodline() {
   }
 
   return (
-    <section id="linea-de-sangre" className="py-20" style={{ backgroundColor: PALETTE.bg }}>
+    <section id="linea-de-sangre" className="py-32" style={{ backgroundColor: PALETTE.bg }}>
       <div className="max-w-6xl mx-auto px-4">
         {/* Header */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          transition={{ duration: 1 }}
+          className="text-center mb-24"
         >
-          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Linaje</p>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
-            Linea de Sangre Guerrero
+          <motion.div
+            initial={{ width: 0 }}
+            whileInView={{ width: '3rem' }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 1.2 }}
+            className="decorative-line mx-auto mb-8"
+          />
+          <p className="elegant-caps text-white/60 mb-6">Linaje</p>
+          <h2 className="elegant-heading text-5xl sm:text-6xl md:text-7xl text-white mb-6" style={{ letterSpacing: '-0.02em' }}>
+            Línea de Sangre Guerrero
           </h2>
-          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
-          <p className="text-white/50 text-lg max-w-xl mx-auto">
-            Como se propaga nuestro apellido a traves de las generaciones
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <div className="w-12 h-px bg-gradient-to-r from-transparent to-accent/30" />
+            <svg width="8" height="8" viewBox="0 0 8 8" className="text-accent/40">
+              <circle cx="4" cy="4" r="2" fill="currentColor" />
+            </svg>
+            <div className="w-12 h-px bg-gradient-to-l from-transparent to-accent/30" />
+          </div>
+          <p className="elegant-subheading text-2xl text-white/40 max-w-2xl mx-auto leading-relaxed">
+            Cómo se propaga nuestro apellido a través de las generaciones
           </p>
         </motion.div>
 
         {/* Stats Cards */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-14">
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-16">
           <StatCard
             icon={Shield}
             label="Total Guerreros"
             value={totalGuerreros}
-            color={PALETTE.primary}
             delay={0}
           />
           <StatCard
             icon={Users}
             label="Porcentaje con el apellido"
             value={`${pctGlobal}%`}
-            color={PALETTE.copper}
             delay={0.15}
           />
           <StatCard
             icon={GitBranch}
             label="Generaciones con el apellido"
             value={generationsSpanned}
-            color={PALETTE.green}
             delay={0.3}
           />
         </div>
 
         {/* Flow Diagram */}
         <motion.div
-          initial={{ opacity: 0 }}
-          whileInView={{ opacity: 1 }}
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="bg-white/5 rounded-2xl shadow-md p-6 md:p-10 mb-14 border-4 border-white/80"
+          transition={{ duration: 0.8 }}
+          className="glass-panel rounded-3xl p-10 mb-16"
         >
-          <h3
-            className="text-xl font-serif font-bold mb-6 flex items-center gap-2 text-white"
-          >
-            <GitBranch size={22} />
-            Propagacion del Apellido por Generacion
+          <h3 className="elegant-heading text-2xl text-white mb-8 flex items-center gap-2">
+            <GitBranch size={22} className="text-accent" />
+            Propagación del Apellido por Generación
           </h3>
 
           {/* Shield at top */}
@@ -313,14 +322,12 @@ export default function Bloodline() {
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="bg-white/5 rounded-2xl shadow-md p-6 md:p-10 border-4 border-white/80"
+          transition={{ duration: 0.8 }}
+          className="glass-panel rounded-3xl p-10"
         >
-          <h3
-            className="text-xl font-serif font-bold mb-6 flex items-center gap-2 text-white"
-          >
-            <Users size={22} />
-            Quienes Llevan el Apellido Guerrero
+          <h3 className="elegant-heading text-2xl text-white mb-8 flex items-center gap-2">
+            <Users size={22} className="text-accent" />
+            Quiénes Llevan el Apellido Guerrero
           </h3>
 
           {sortedGens.map((gen) => {

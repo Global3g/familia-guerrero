@@ -195,22 +195,35 @@ function BirthdayHighlight() {
   }
 
   return (
-    <section id="cumpleanos" className="py-16" style={{ backgroundColor: '#0F172A' }}>
+    <section id="cumpleanos" className="py-32" style={{ backgroundColor: '#0F172A' }}>
       <div className="max-w-6xl mx-auto px-4">
         {/* Title */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          transition={{ duration: 1 }}
+          className="text-center mb-24"
         >
-          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Celebraciones</p>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
-            Cumpleaneros del Mes
+          <motion.div
+            initial={{ width: 0 }}
+            whileInView={{ width: '3rem' }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 1.2 }}
+            className="decorative-line mx-auto mb-8"
+          />
+          <p className="elegant-caps text-white/60 mb-6">Celebraciones</p>
+          <h2 className="elegant-heading text-5xl sm:text-6xl md:text-7xl text-white mb-6" style={{ letterSpacing: '-0.02em' }}>
+            Cumpleañeros del Mes
           </h2>
-          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
-          <p className="text-xl font-serif" style={{ color: '#B8976A' }}>
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <div className="w-12 h-px bg-gradient-to-r from-transparent to-accent/30" />
+            <svg width="8" height="8" viewBox="0 0 8 8" className="text-accent/40">
+              <circle cx="4" cy="4" r="2" fill="currentColor" />
+            </svg>
+            <div className="w-12 h-px bg-gradient-to-l from-transparent to-accent/30" />
+          </div>
+          <p className="elegant-subheading text-2xl text-accent/80">
             {currentMonthName} {now.getFullYear()}
           </p>
         </motion.div>
@@ -226,14 +239,10 @@ function BirthdayHighlight() {
                 whileInView="visible"
                 viewport={{ once: true }}
                 variants={cardVariants}
-                className="rounded-2xl shadow-lg overflow-hidden"
-                style={{
-                  background: 'linear-gradient(135deg, #FFF5EB 0%, #FFE8D6 50%, #FFDDC1 100%)',
-                  border: '2px solid rgba(196, 112, 75, 0.2)'
-                }}
+                className="glass-panel rounded-3xl overflow-hidden relative"
               >
                 {/* Card top accent */}
-                <div className="h-2" style={{ background: 'linear-gradient(to right, #B8654A, #B8976A, #C8846A)' }} />
+                <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-primary via-accent to-primary opacity-60" />
 
                 <div className="p-6 text-center">
                   {/* Confetti decorations */}
@@ -266,7 +275,7 @@ function BirthdayHighlight() {
                   </div>
 
                   {/* Name */}
-                  <h3 className="text-xl font-serif font-bold mb-2" style={{ color: '#B8654A' }}>
+                  <h3 className="elegant-heading text-2xl text-white mb-2">
                     {person.name}
                   </h3>
 
@@ -283,9 +292,9 @@ function BirthdayHighlight() {
 
                   {/* Age turning */}
                   {person.ageTurning && (
-                    <p className="text-sm mb-3" style={{ color: '#6B9080' }}>
+                    <p className="text-sm mb-3 text-secondary/90 font-medium">
                       <Gift size={14} className="inline mr-1" />
-                      Cumple <span className="font-bold text-lg">{person.ageTurning}</span> anios
+                      Cumple <span className="elegant-heading text-lg">{person.ageTurning}</span> años
                     </p>
                   )}
 
@@ -322,7 +331,7 @@ function BirthdayHighlight() {
                       style={{ background: 'linear-gradient(135deg, #B8654A, #C8846A)', color: 'white' }}
                     >
                       <Cake size={16} />
-                      <span className="font-bold">Hoy es su cumpleanos!</span>
+                      <span className="font-bold">¡Hoy es su cumpleaños!</span>
                     </motion.div>
                   )}
                 </div>
@@ -337,9 +346,9 @@ function BirthdayHighlight() {
             transition={{ duration: 0.6 }}
             className="text-center mb-12 py-8"
           >
-            <Cake size={48} className="mx-auto mb-4" style={{ color: '#B8654A', opacity: 0.5 }} />
-            <p className="text-xl font-serif" style={{ color: 'rgba(255,255,255,0.5)' }}>
-              No hay cumpleanos este mes
+            <Cake size={48} className="mx-auto mb-4 text-primary/40" />
+            <p className="elegant-subheading text-xl text-white/40">
+              No hay cumpleaños este mes
             </p>
           </motion.div>
         )}
@@ -353,43 +362,37 @@ function BirthdayHighlight() {
             transition={{ duration: 0.6, delay: 0.3 }}
             className="max-w-lg mx-auto"
           >
-            <div
-              className="rounded-2xl shadow-lg overflow-hidden"
-              style={{
-                background: 'linear-gradient(135deg, #F0F7F1 0%, #E8F5E9 100%)',
-                border: '2px solid rgba(122, 158, 126, 0.3)'
-              }}
-            >
-              <div className="h-2" style={{ background: 'linear-gradient(to right, #6B9080, #B8976A)' }} />
+            <div className="glass-panel rounded-3xl overflow-hidden relative">
+              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-secondary via-accent to-secondary opacity-60" />
 
-              <div className="p-6 text-center">
-                <h3 className="text-lg font-serif font-semibold mb-4" style={{ color: '#6B9080' }}>
+              <div className="p-10 text-center">
+                <h3 className="elegant-heading text-xl text-secondary mb-6">
                   <Gift size={20} className="inline mr-2" />
-                  Proximo Cumpleanos
+                  Próximo Cumpleaños
                 </h3>
 
                 {/* Photo placeholder */}
                 <div
-                  className="w-16 h-16 mx-auto rounded-full flex items-center justify-center mb-3 shadow-md"
+                  className="w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4 shadow-lg ring-2 ring-secondary/20"
                   style={{
                     background: nextBirthday.photo
                       ? `url(${nextBirthday.photo}) center/cover`
                       : 'linear-gradient(135deg, #6B9080, #B8976A)',
-                    border: '2px solid #6B9080'
+                    border: '3px solid #6B9080'
                   }}
                 >
                   {!nextBirthday.photo && (
-                    <Gift size={24} color="white" />
+                    <Gift size={28} color="white" />
                   )}
                 </div>
 
-                <p className="text-xl font-serif font-bold mb-1" style={{ color: '#B8654A' }}>
+                <p className="elegant-heading text-2xl text-white mb-2">
                   {nextBirthday.name}
                 </p>
 
-                <p className="text-sm mb-3" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                <p className="text-sm mb-6 text-white/50 font-medium">
                   {nextBirthday.day} de {MONTH_NAMES[nextBirthday.month - 1]}
-                  {nextBirthday.ageTurning && ` - Cumplira ${nextBirthday.ageTurning} anios`}
+                  {nextBirthday.ageTurning && ` - Cumplirá ${nextBirthday.ageTurning} años`}
                 </p>
 
                 <motion.div
@@ -397,21 +400,19 @@ function BirthdayHighlight() {
                   whileInView="visible"
                   viewport={{ once: true }}
                   variants={countdownVariants}
-                  className="inline-flex items-center gap-2 px-5 py-2 rounded-full"
-                  style={{ background: 'rgba(122, 158, 126, 0.2)' }}
+                  className="inline-flex items-center gap-2 px-5 py-3 rounded-full bg-secondary/10 border border-secondary/20"
                 >
-                  <Clock size={18} style={{ color: '#6B9080' }} />
-                  <span style={{ color: '#6B9080' }}>
+                  <Clock size={18} className="text-secondary" />
+                  <span className="text-secondary font-medium">
                     Faltan{' '}
                     <motion.span
-                      className="font-bold text-2xl"
-                      style={{ color: '#B8654A' }}
+                      className="elegant-heading text-2xl text-accent"
                       animate={{ scale: [1, 1.15, 1] }}
                       transition={{ repeat: Infinity, duration: 2 }}
                     >
                       {nextBirthday.daysUntil}
                     </motion.span>
-                    {' '}dias
+                    {' '}días
                   </span>
                 </motion.div>
               </div>
@@ -428,9 +429,9 @@ function BirthdayHighlight() {
             transition={{ duration: 0.6, delay: 0.5 }}
             className="max-w-lg mx-auto mt-8"
           >
-            <h3 className="text-lg font-serif font-semibold text-center mb-4" style={{ color: '#B8976A' }}>
+            <h3 className="elegant-heading text-xl text-accent text-center mb-6">
               <Calendar size={18} className="inline mr-2" />
-              Proximos Cumpleanos
+              Próximos Cumpleaños
             </h3>
             <div className="space-y-3">
               {nextBirthdays.map((person, i) => (
@@ -440,14 +441,10 @@ function BirthdayHighlight() {
                   whileInView={{ opacity: 1, x: 0 }}
                   viewport={{ once: true }}
                   transition={{ delay: i * 0.1, duration: 0.4 }}
-                  className="flex items-center gap-3 rounded-xl px-4 py-3 shadow-sm"
-                  style={{
-                    background: 'rgba(255,255,255,0.05)',
-                    border: '4px solid rgba(255,255,255,0.8)'
-                  }}
+                  className="glass-panel rounded-2xl flex items-center gap-4 px-5 py-4"
                 >
                   <div
-                    className="w-10 h-10 rounded-full flex items-center justify-center flex-shrink-0"
+                    className="w-12 h-12 rounded-full flex items-center justify-center flex-shrink-0 shadow-md ring-2 ring-accent/10"
                     style={{
                       background: person.photo
                         ? `url(${person.photo}) center/cover`
@@ -458,17 +455,17 @@ function BirthdayHighlight() {
                     {!person.photo && <Cake size={18} color="white" />}
                   </div>
                   <div className="flex-1 min-w-0">
-                    <p className="font-serif font-bold text-sm truncate" style={{ color: '#B8654A' }}>
+                    <p className="elegant-heading text-base text-white truncate">
                       {person.name}
                     </p>
-                    <p className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                    <p className="text-xs text-white/50 font-medium">
                       {person.day} de {MONTH_NAMES[person.month - 1]}
-                      {person.ageTurning ? ` - Cumple ${person.ageTurning} anios` : ''}
+                      {person.ageTurning ? ` - Cumple ${person.ageTurning} años` : ''}
                     </p>
                   </div>
                   <div className="text-right flex-shrink-0">
-                    <p className="text-lg font-bold" style={{ color: '#B8976A' }}>{person.daysUntil}</p>
-                    <p className="text-[11px]" style={{ color: 'rgba(255,255,255,0.5)' }}>dias</p>
+                    <p className="elegant-heading text-xl text-accent">{person.daysUntil}</p>
+                    <p className="elegant-caps text-white/40">días</p>
                   </div>
                 </motion.div>
               ))}

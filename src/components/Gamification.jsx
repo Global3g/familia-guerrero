@@ -33,15 +33,28 @@ export default function Gamification() {
   if (people.length === 0) return null
 
   return (
-    <div className="py-8">
-      <div className="text-center mb-6">
-        <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Logros</p>
-        <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
+    <div className="py-16">
+      <div className="text-center mb-12">
+        <motion.div
+          initial={{ width: 0 }}
+          whileInView={{ width: '3rem' }}
+          viewport={{ once: true }}
+          transition={{ delay: 0.2, duration: 1.2 }}
+          className="decorative-line mx-auto mb-8"
+        />
+        <p className="elegant-caps text-white/60 mb-6">Logros</p>
+        <h2 className="elegant-heading text-5xl sm:text-6xl text-white mb-6" style={{ letterSpacing: '-0.02em' }}>
           Logros Familiares
         </h2>
-        <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
+        <div className="flex items-center justify-center gap-3 mb-8">
+          <div className="w-12 h-px bg-gradient-to-r from-transparent to-accent/30" />
+          <svg width="8" height="8" viewBox="0 0 8 8" className="text-accent/40">
+            <circle cx="4" cy="4" r="2" fill="currentColor" />
+          </svg>
+          <div className="w-12 h-px bg-gradient-to-l from-transparent to-accent/30" />
+        </div>
       </div>
-      <div className="flex flex-wrap gap-3">
+      <div className="flex flex-wrap gap-4 justify-center">
         {badges.map(badge => {
           const Icon = badge.icon
           const isEarned = earned.includes(badge.id)
@@ -49,12 +62,16 @@ export default function Gamification() {
             <motion.div
               key={badge.id}
               whileHover={{ scale: 1.05 }}
-              className={`flex items-center gap-2 px-4 py-2 rounded-xl border ${isEarned ? 'bg-[#B8976A]/10 border-[#B8976A]/30' : 'bg-white/5 border-white/80 opacity-40'}`}
+              className={`glass-panel rounded-2xl flex items-center gap-3 px-5 py-3 ${!isEarned && 'opacity-40'}`}
+              style={{
+                backgroundColor: isEarned ? 'rgba(184, 151, 106, 0.1)' : undefined,
+                borderColor: isEarned ? 'rgba(184, 151, 106, 0.2)' : undefined,
+              }}
             >
-              <Icon className={`w-5 h-5 ${isEarned ? 'text-[#B8976A]' : 'text-white/30'}`} />
+              <Icon className={`w-6 h-6 ${isEarned ? 'text-accent' : 'text-white/30'}`} />
               <div>
-                <p className={`text-xs font-bold ${isEarned ? 'text-white' : 'text-white/40'}`}>{badge.label}</p>
-                <p className="text-[10px] text-white/50">{badge.desc}</p>
+                <p className={`elegant-heading text-sm ${isEarned ? 'text-white' : 'text-white/40'}`}>{badge.label}</p>
+                <p className="text-xs text-white/50 font-medium">{badge.desc}</p>
               </div>
             </motion.div>
           )

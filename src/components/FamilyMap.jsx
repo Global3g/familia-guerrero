@@ -171,24 +171,37 @@ export default function FamilyMap() {
   return (
     <section
       id="mapa"
-      className="py-20 px-4"
+      className="py-32 px-4"
       style={{ backgroundColor: '#0F172A' }}
     >
       <div className="max-w-6xl mx-auto">
         {/* Header */}
         <motion.div
-          className="text-center mb-14"
-          initial={{ opacity: 0, y: -20 }}
+          className="text-center mb-24"
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
+          transition={{ duration: 1 }}
         >
-          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Donde estamos</p>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
-            Donde Estamos
+          <motion.div
+            initial={{ width: 0 }}
+            whileInView={{ width: '3rem' }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 1.2 }}
+            className="decorative-line mx-auto mb-8"
+          />
+          <p className="elegant-caps text-white/60 mb-6">Donde estamos</p>
+          <h2 className="elegant-heading text-5xl sm:text-6xl md:text-7xl text-white mb-6" style={{ letterSpacing: '-0.02em' }}>
+            Dónde Estamos
           </h2>
-          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
-          <p className="text-lg max-w-2xl mx-auto text-white/50">
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <div className="w-12 h-px bg-gradient-to-r from-transparent to-accent/30" />
+            <svg width="8" height="8" viewBox="0 0 8 8" className="text-accent/40">
+              <circle cx="4" cy="4" r="2" fill="currentColor" />
+            </svg>
+            <div className="w-12 h-px bg-gradient-to-l from-transparent to-accent/30" />
+          </div>
+          <p className="elegant-subheading text-2xl max-w-2xl mx-auto text-white/40 leading-relaxed">
             Nuestra familia se extiende por distintos lugares, pero siempre
             permanecemos unidos sin importar la distancia.
           </p>

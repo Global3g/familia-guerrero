@@ -232,23 +232,36 @@ export default function Reminders() {
   }, [])
 
   return (
-    <section id="recordatorios" className="py-20 px-4" style={{ backgroundColor: '#0F172A' }}>
+    <section id="recordatorios" className="py-32 px-4" style={{ backgroundColor: '#0F172A' }}>
       <div className="max-w-3xl mx-auto">
         {/* Title */}
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-          className="text-center mb-12"
+          transition={{ duration: 1 }}
+          className="text-center mb-24"
         >
-          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Recordatorios</p>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
+          <motion.div
+            initial={{ width: 0 }}
+            whileInView={{ width: '3rem' }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 1.2 }}
+            className="decorative-line mx-auto mb-8"
+          />
+          <p className="elegant-caps text-white/60 mb-6">Recordatorios</p>
+          <h2 className="elegant-heading text-5xl sm:text-6xl md:text-7xl text-white mb-6" style={{ letterSpacing: '-0.02em' }}>
             No Olvides Estas Fechas
           </h2>
-          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
-          <p className="text-sm text-white/50">
-            Recordatorios automaticos de los proximos 30 dias
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <div className="w-12 h-px bg-gradient-to-r from-transparent to-accent/30" />
+            <svg width="8" height="8" viewBox="0 0 8 8" className="text-accent/40">
+              <circle cx="4" cy="4" r="2" fill="currentColor" />
+            </svg>
+            <div className="w-12 h-px bg-gradient-to-l from-transparent to-accent/30" />
+          </div>
+          <p className="elegant-subheading text-lg text-white/50">
+            Recordatorios automáticos de los próximos 30 días
           </p>
         </motion.div>
 
@@ -266,9 +279,9 @@ export default function Reminders() {
             animate={{ opacity: 1, scale: 1 }}
             className="text-center py-16"
           >
-            <Bell className="w-12 h-12 mx-auto mb-4" style={{ color: '#B8976A', opacity: 0.4 }} />
-            <p className="text-lg font-serif text-white/50">
-              No hay recordatorios proximos
+            <Bell className="w-12 h-12 mx-auto mb-4 text-accent/40" />
+            <p className="elegant-subheading text-xl text-white/40">
+              No hay recordatorios próximos
             </p>
           </motion.div>
         )}
@@ -370,28 +383,24 @@ export default function Reminders() {
 
                             {/* Reminder card */}
                             <div
-                              className="rounded-xl shadow-sm p-4 border-l-4"
+                              className="glass-panel rounded-2xl p-5 border-l-4"
                               style={{
-                                backgroundColor: isToday ? `${color}15` : 'rgba(255,255,255,0.05)',
+                                backgroundColor: isToday ? `${color}15` : undefined,
                                 borderLeftColor: color,
                               }}
                             >
-                              <div className="flex items-start justify-between gap-3">
+                              <div className="flex items-start justify-between gap-4">
                                 <div className="flex-1 min-w-0">
                                   <p
-                                    className="text-sm font-bold mb-0.5"
+                                    className="elegant-heading text-base mb-1"
                                     style={{ color }}
                                   >
                                     {reminder.title}
                                   </p>
-                                  <p
-                                    className="text-xs mb-1 text-white/70"
-                                  >
+                                  <p className="text-sm mb-2 text-white/60 font-medium">
                                     {reminder.subtitle}
                                   </p>
-                                  <p
-                                    className="text-xs flex items-center gap-1 text-white/50"
-                                  >
+                                  <p className="text-xs flex items-center gap-1 text-white/40">
                                     <Calendar className="w-3 h-3" />
                                     {formatDateShort(reminder.date)}
                                   </p>
@@ -399,25 +408,24 @@ export default function Reminders() {
 
                                 {/* Countdown badge */}
                                 <div
-                                  className="flex-shrink-0 rounded-lg px-3 py-1.5 text-center"
-                                  style={{ backgroundColor: `${color}15` }}
+                                  className="flex-shrink-0 rounded-xl px-4 py-2 text-center bg-white/5 border border-white/10"
                                 >
                                   {isToday ? (
                                     <motion.div
                                       animate={{ scale: [1, 1.05, 1] }}
                                       transition={{ duration: 1.5, repeat: Infinity }}
                                     >
-                                      <p className="text-xs font-bold" style={{ color }}>
+                                      <p className="elegant-heading text-sm" style={{ color }}>
                                         HOY
                                       </p>
                                     </motion.div>
                                   ) : (
                                     <>
-                                      <p className="text-lg font-bold leading-none" style={{ color }}>
+                                      <p className="elegant-heading text-2xl leading-none mb-1" style={{ color }}>
                                         {reminder.daysUntil}
                                       </p>
-                                      <p className="text-[11px]" style={{ color, opacity: 0.8 }}>
-                                        {reminder.daysUntil === 1 ? 'dia' : 'dias'}
+                                      <p className="elegant-caps text-white/40">
+                                        {reminder.daysUntil === 1 ? 'día' : 'días'}
                                       </p>
                                     </>
                                   )}
