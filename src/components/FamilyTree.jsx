@@ -1501,124 +1501,135 @@ export default function FamilyTree() {
                       {/* TAB: Familia - Cards View */}
                       {modalTab === 'familia' && familiaView === 'tarjetas' && (
                         <>
-                      {/* Children - each one with their complete family */}
+                      {/* BENTO GRID: Premium Dashboard Style */}
                       {selectedMember.children && selectedMember.children.length > 0 && (
-                        <div className="mb-8">
-                          <h4 className="text-sm font-serif font-semibold text-white uppercase tracking-wider flex items-center gap-2 mb-4">
-                            <Users className="w-4 h-4 text-white/70" />
-                            Hijos ({selectedMember.children.length})
-                          </h4>
-                          <div className="space-y-10">
+                        <div className="mb-12">
+                          {/* Section Header with Stats */}
+                          <div className="flex items-center justify-between mb-8">
+                            <div>
+                              <h4 className="text-2xl font-serif font-bold text-white mb-2">
+                                Familia & Descendencia
+                              </h4>
+                              <p className="text-sm text-white/60">
+                                {selectedMember.children.length} {selectedMember.children.length === 1 ? 'hijo' : 'hijos'} •
+                                {' '}{selectedMember.children.reduce((acc, child) => acc + (child.children ? child.children.length : 0), 0)} nietos
+                              </p>
+                            </div>
+                          </div>
+
+                          {/* Bento Grid Layout */}
+                          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                             {selectedMember.children.map((child, i) => {
+                              const hasChildren = child.children && child.children.length > 0
                               return (
-                              <div key={i} className="rounded-3xl shadow-2xl overflow-hidden group/child relative" style={{
-                                background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%)',
-                                backdropFilter: 'blur(20px)',
-                                border: '1px solid rgba(255, 255, 255, 0.08)',
-                                boxShadow: '0 20px 60px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255, 255, 255, 0.08)'
+                              <div key={i} className="group/child relative rounded-3xl overflow-hidden" style={{
+                                background: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%)',
+                                backdropFilter: 'blur(30px)',
+                                border: '1px solid rgba(255, 255, 255, 0.1)',
+                                boxShadow: '0 20px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1)'
                               }}>
                                 {/* Move button */}
                                 <button
                                   onClick={() => setMovingPerson({ person: child, parentId: selectedMember.id, childIndex: i })}
-                                  className="absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 shadow-lg text-white/70 transition opacity-0 group-hover/child:opacity-100 z-10 backdrop-blur-sm"
+                                  className="absolute top-5 right-5 w-10 h-10 rounded-full flex items-center justify-center bg-black/40 hover:bg-black/60 shadow-xl text-white transition opacity-0 group-hover/child:opacity-100 z-20 backdrop-blur-xl"
                                   title="Mover a otro familiar"
                                 >
                                   <ArrowRightLeft className="w-4 h-4" />
                                 </button>
 
-                                {/* Header with role */}
-                                <div className="px-8 py-4 border-b border-white/5" style={{ background: 'rgba(255, 255, 255, 0.03)' }}>
-                                  <p className="text-xs font-bold uppercase tracking-widest text-white/50">{child.role || (child.gender === 'F' ? 'Hija' : child.gender === 'M' ? 'Hijo' : 'Hijo(a)')}</p>
-                                  <p className="text-xl font-serif font-bold text-white mt-1">{child.name.split(' ')[0]} {child.spouse && typeof child.spouse === 'object' ? `& ${child.spouse.name.split(' ')[0]}` : ''}</p>
-                                </div>
-
-                                {/* Couple: hijo + esposo/a side by side - MUCH LARGER */}
-                                <div className="p-8 flex items-center gap-8">
-                                  {/* Hijo - LARGER PHOTO */}
-                                  <div className="flex items-center gap-5 flex-1 min-w-0">
-                                    <div className="rounded-full p-1.5 bg-white/5 ring-2 ring-white/10 flex-shrink-0">
-                                      {child.photoURL ? (
-                                        <img src={child.photoURL} alt={child.name} className="w-20 h-20 rounded-full object-cover cursor-pointer" onClick={() => setLightboxPhoto({ photoURL: child.photoURL, caption: child.name })} />
-                                      ) : (
-                                        <div className="w-20 h-20 rounded-full flex items-center justify-center bg-white/5">
-                                          <User className="w-10 h-10 text-white/30" />
+                                {/* Top Section: Couple Photos in Grid */}
+                                <div className="relative p-8 pb-6">
+                                  <div className="flex gap-6 items-start">
+                                    {/* Main Child - Large Photo */}
+                                    <div className="flex-1">
+                                      <div className="relative group/photo mb-4">
+                                        <div className="absolute -inset-1 bg-gradient-to-br from-white/30 to-white/10 rounded-2xl blur-lg opacity-0 group-hover/photo:opacity-100 transition" />
+                                        <div className="relative rounded-2xl overflow-hidden ring-2 ring-white/20">
+                                          {child.photoURL ? (
+                                            <img src={child.photoURL} alt={child.name}
+                                              className="w-full aspect-square object-cover cursor-pointer transform group-hover/photo:scale-105 transition-transform duration-700"
+                                              onClick={() => setLightboxPhoto({ photoURL: child.photoURL, caption: child.name })}
+                                            />
+                                          ) : (
+                                            <div className="w-full aspect-square flex items-center justify-center bg-gradient-to-br from-white/10 to-white/5">
+                                              <User className="w-16 h-16 text-white/30" />
+                                            </div>
+                                          )}
                                         </div>
-                                      )}
-                                    </div>
-                                    <div className="min-w-0">
-                                      <p className="text-lg font-bold text-white truncate">{child.name}</p>
-                                      {child.nickname && <p className="text-sm text-white/60 italic">"{child.nickname}"</p>}
-                                      <AgeBadge birthDate={child.birthDate} deathDate={child.deathDate} />
-                                      {child.location && <p className="text-xs text-white/60 mt-1 flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {child.location}</p>}
-                                    </div>
-                                  </div>
-
-                                  {/* Heart + Esposo/a - LARGER */}
-                                  {child.spouse && (
-                                    <>
-                                      <Heart className="w-6 h-6 text-white/60 fill-white/40 flex-shrink-0" />
-                                      <div className="flex items-center gap-5 flex-1 min-w-0">
-                                        {typeof child.spouse === 'object' ? (
-                                          <>
-                                            <div className="rounded-full p-1.5 bg-white/5 ring-2 ring-white/10 flex-shrink-0">
-                                              {child.spouse.photoURL ? (
-                                                <img src={child.spouse.photoURL} alt={child.spouse.name} className="w-20 h-20 rounded-full object-cover cursor-pointer" onClick={() => setLightboxPhoto({ photoURL: child.spouse.photoURL, caption: child.spouse.name })} />
-                                              ) : (
-                                                <div className="w-20 h-20 rounded-full flex items-center justify-center bg-white/5">
-                                                  <User className="w-10 h-10 text-white/30" />
-                                                </div>
-                                              )}
-                                            </div>
-                                            <div className="min-w-0">
-                                              <p className="text-lg font-bold text-white truncate">{child.spouse.name}</p>
-                                              {child.spouse.nickname && <p className="text-sm text-white/60 italic">"{child.spouse.nickname}"</p>}
-                                              <AgeBadge birthDate={child.spouse.birthDate} deathDate={child.spouse.deathDate} />
-                                              {child.spouse.location && <p className="text-xs text-white/60 mt-1 flex items-center gap-1"><MapPin className="w-3.5 h-3.5" /> {child.spouse.location}</p>}
-                                            </div>
-                                          </>
-                                        ) : (
-                                          <p className="text-base text-white/70">{child.spouse}</p>
-                                        )}
                                       </div>
-                                    </>
-                                  )}
+                                      <div>
+                                        <p className="text-xs uppercase tracking-widest text-white/50 mb-1">{child.role || (child.gender === 'F' ? 'Hija' : child.gender === 'M' ? 'Hijo' : 'Hijo(a)')}</p>
+                                        <h3 className="text-2xl font-serif font-bold text-white mb-1">{child.name}</h3>
+                                        {child.nickname && <p className="text-sm text-white/60 italic mb-2">"{child.nickname}"</p>}
+                                        <AgeBadge birthDate={child.birthDate} deathDate={child.deathDate} />
+                                        {child.location && <p className="text-xs text-white/50 mt-2 flex items-center gap-1"><MapPin className="w-3 h-3" /> {child.location}</p>}
+                                      </div>
+                                    </div>
+
+                                    {/* Spouse - Side Photo */}
+                                    {child.spouse && (
+                                      <div className="flex-1">
+                                        <div className="relative group/photo mb-4">
+                                          <div className="absolute -inset-1 bg-gradient-to-bl from-white/30 to-white/10 rounded-2xl blur-lg opacity-0 group-hover/photo:opacity-100 transition" />
+                                          <div className="relative rounded-2xl overflow-hidden ring-2 ring-white/20">
+                                            {typeof child.spouse === 'object' && child.spouse.photoURL ? (
+                                              <img src={child.spouse.photoURL} alt={child.spouse.name}
+                                                className="w-full aspect-square object-cover cursor-pointer transform group-hover/photo:scale-105 transition-transform duration-700"
+                                                onClick={() => setLightboxPhoto({ photoURL: child.spouse.photoURL, caption: child.spouse.name })}
+                                              />
+                                            ) : (
+                                              <div className="w-full aspect-square flex items-center justify-center bg-gradient-to-bl from-white/10 to-white/5">
+                                                <User className="w-16 h-16 text-white/30" />
+                                              </div>
+                                            )}
+                                          </div>
+                                        </div>
+                                        <div>
+                                          <p className="text-xs uppercase tracking-widest text-white/50 mb-1">Cónyuge</p>
+                                          <h3 className="text-2xl font-serif font-bold text-white mb-1">
+                                            {typeof child.spouse === 'object' ? child.spouse.name : child.spouse}
+                                          </h3>
+                                          {typeof child.spouse === 'object' && child.spouse.nickname && (
+                                            <p className="text-sm text-white/60 italic mb-2">"{child.spouse.nickname}"</p>
+                                          )}
+                                          {typeof child.spouse === 'object' && (
+                                            <>
+                                              <AgeBadge birthDate={child.spouse.birthDate} deathDate={child.spouse.deathDate} />
+                                              {child.spouse.location && <p className="text-xs text-white/50 mt-2 flex items-center gap-1"><MapPin className="w-3 h-3" /> {child.spouse.location}</p>}
+                                            </>
+                                          )}
+                                        </div>
+                                      </div>
+                                    )}
+                                  </div>
                                 </div>
 
-
-                                {/* Wedding info for hijo */}
-                                {(child.weddingDate || child.weddingPlace) && (
-                                  <div className="px-5 py-2 flex flex-wrap items-center gap-x-4 gap-y-1 border-t border-white/80/40">
-                                    {child.weddingDate && (
-                                      <span className="text-xs text-white/70 flex items-center gap-1"><Calendar className="w-3.5 h-3.5" /> {formatDate(child.weddingDate)}</span>
-                                    )}
-                                    {child.weddingPlace && (
-                                      <span className="text-xs text-white/70 flex items-center gap-1"><Home className="w-3.5 h-3.5" /> {child.weddingPlace}</span>
-                                    )}
-                                    {child.weddingDate && (() => {
-                                      const wd = new Date(child.weddingDate)
-                                      const now = new Date()
-                                      let y = now.getFullYear() - wd.getFullYear()
-                                      if (now.getMonth() < wd.getMonth() || (now.getMonth() === wd.getMonth() && now.getDate() < wd.getDate())) y--
-                                      return y > 0 ? <span className="text-xs font-bold text-white/70 flex items-center gap-1"><Heart className="w-3.5 h-3.5" /> {y} años casados</span> : null
-                                    })()}
+                                {/* Divider with Heart */}
+                                {child.spouse && (
+                                  <div className="flex items-center justify-center -mt-2 mb-2">
+                                    <div className="w-12 h-12 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex items-center justify-center shadow-xl backdrop-blur-xl ring-2 ring-white/10">
+                                      <Heart className="w-5 h-5 text-white/80 fill-white/60" />
+                                    </div>
                                   </div>
                                 )}
 
-                                {/* Bios */}
-                                {(child.bio || (child.spouse && typeof child.spouse === 'object' && child.spouse.bio)) && (
-                                  <div className="px-5 py-2 border-t border-white/80/40 space-y-1.5">
-                                    {child.bio && (
-                                      <p className="text-xs text-white/60 italic leading-relaxed">
-                                        <span className="font-semibold not-italic text-white/70">{child.name?.split(' ')[0]}:</span> {child.bio}
-                                      </p>
-                                    )}
-                                    {child.spouse && typeof child.spouse === 'object' && child.spouse.bio && (
-                                      <p className="text-xs text-white/60 italic leading-relaxed">
-                                        <span className="font-semibold not-italic text-white/70">{child.spouse.name?.split(' ')[0]}:</span> {child.spouse.bio}
-                                      </p>
-                                    )}
-                                  </div>
-                                )}
+                                {/* Wedding Anniversary Badge */}
+                                {child.weddingDate && (() => {
+                                  const wd = new Date(child.weddingDate)
+                                  const now = new Date()
+                                  let y = now.getFullYear() - wd.getFullYear()
+                                  if (now.getMonth() < wd.getMonth() || (now.getMonth() === wd.getMonth() && now.getDate() < wd.getDate())) y--
+                                  if (y < 0) y = 0
+                                  return y > 0 ? (
+                                    <div className="px-8 pb-4">
+                                      <div className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 backdrop-blur-sm ring-1 ring-white/10">
+                                        <Heart className="w-4 h-4 text-white/70" />
+                                        <span className="text-sm font-medium text-white/80">{y} años casados</span>
+                                      </div>
+                                    </div>
+                                  ) : null
+                                })()}
+
 
                                 {/* Children of this hijo (nietos) */}
                                 {child.children && child.children.length > 0 && (
