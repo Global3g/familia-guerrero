@@ -100,56 +100,82 @@ export default function Hero() {
       <motion.div
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.8 }}
-        className="relative w-32 h-40 mb-10 mx-auto animate-float flex items-center justify-center z-10"
+        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
+        className="relative w-36 h-44 mb-12 mx-auto animate-float flex items-center justify-center z-10"
+        style={{ filter: 'drop-shadow(0 0 40px rgba(184, 151, 106, 0.15))' }}
       >
         {/* Outermost Shield line */}
-        <svg className="absolute inset-0 w-full h-full text-accent/40" viewBox="0 0 100 120" fill="none" stroke="currentColor" strokeWidth="1">
+        <svg className="absolute inset-0 w-full h-full text-accent/30" viewBox="0 0 100 120" fill="none" stroke="currentColor" strokeWidth="0.5">
           <path d="M50 5 L90 20 L90 60 C90 90, 50 115, 50 115 C50 115, 10 90, 10 60 L10 20 Z" />
         </svg>
         {/* Inner Shield shape filled */}
-        <svg className="absolute inset-0 w-full h-full p-2 text-base/80" viewBox="0 0 100 120" fill="currentColor">
+        <svg className="absolute inset-0 w-full h-full p-2 text-base/70" viewBox="0 0 100 120" fill="currentColor">
           <path d="M50 10 L85 24 L85 62 C85 88, 50 110, 50 110 C50 110, 15 88, 15 62 L15 24 Z" />
         </svg>
         {/* Decorative interior lines */}
-        <svg className="absolute inset-0 w-full h-full p-2 text-primary/60" viewBox="0 0 100 120" fill="none" stroke="currentColor" strokeWidth="0.5">
+        <svg className="absolute inset-0 w-full h-full p-2 text-accent/40" viewBox="0 0 100 120" fill="none" stroke="currentColor" strokeWidth="0.3">
           <path d="M50 10 L85 24 L85 62 C85 88, 50 110, 50 110 C50 110, 15 88, 15 62 L15 24 Z" />
           <line x1="50" y1="10" x2="50" y2="110" />
           <line x1="15" y1="40" x2="85" y2="40" />
         </svg>
-        <span className="font-serif text-5xl text-accent z-10 relative">G</span>
+        {/* Glow effect */}
+        <div className="absolute inset-0 bg-accent/5 blur-2xl rounded-full" />
+        <span className="font-serif text-6xl text-accent z-10 relative tracking-tight" style={{ fontWeight: 300 }}>G</span>
       </motion.div>
 
       {/* Hero Content */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
-        transition={{ delay: 0.3, duration: 0.8 }}
-        className="text-center z-10 max-w-3xl mx-auto space-y-6"
+        transition={{ delay: 0.4, duration: 1 }}
+        className="text-center z-10 max-w-4xl mx-auto space-y-8"
       >
+        {/* Decorative line above */}
+        <motion.div
+          initial={{ width: 0 }}
+          animate={{ width: '4rem' }}
+          transition={{ delay: 0.6, duration: 1.2 }}
+          className="decorative-line mx-auto"
+        />
+
         <motion.h3
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.5, duration: 0.6 }}
-          className="text-secondary tracking-[0.3em] uppercase text-xs font-semibold"
+          transition={{ delay: 0.7, duration: 0.8 }}
+          className="elegant-caps text-secondary/80"
         >
           Linaje & Herencia
         </motion.h3>
 
         <motion.h1
-          initial={{ opacity: 0, scale: 0.95 }}
+          initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 0.6, duration: 0.8 }}
-          className="text-6xl md:text-8xl font-serif text-white tracking-tight leading-none text-gradient-gold"
+          transition={{ delay: 0.8, duration: 1, ease: [0.22, 1, 0.36, 1] }}
+          className="elegant-heading text-7xl md:text-9xl text-gradient-gold px-4"
+          style={{ letterSpacing: '-0.03em' }}
         >
           Familia <br /> Guerrero
         </motion.h1>
 
+        {/* Decorative ornament */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ delay: 1.1, duration: 0.6 }}
+          className="flex items-center justify-center gap-3"
+        >
+          <div className="w-8 h-px bg-gradient-to-r from-transparent to-accent/30" />
+          <svg width="12" height="12" viewBox="0 0 12 12" className="text-accent/40">
+            <circle cx="6" cy="6" r="2" fill="currentColor" />
+          </svg>
+          <div className="w-8 h-px bg-gradient-to-l from-transparent to-accent/30" />
+        </motion.div>
+
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
-          transition={{ delay: 0.9, duration: 0.6 }}
-          className="font-serif italic text-xl md:text-2xl text-white/60 max-w-xl mx-auto pt-4 border-t border-accent/20"
+          transition={{ delay: 1.2, duration: 0.8 }}
+          className="elegant-subheading text-2xl md:text-3xl text-white/50 max-w-2xl mx-auto px-6 leading-relaxed"
         >
           {stats?.generations > 0 ? `${stats.generations} generaciones` : 'Generaciones'} unidas por el amor, la fe y la memoria. Un legado que trasciende el tiempo.
         </motion.p>

@@ -121,27 +121,35 @@ img[loading] {
   box-shadow: 0 8px 25px rgba(0,0,0,0.08);
 }
 
-/* Glassmorphism V2 Styles */
+/* Glassmorphism V2 Styles - Elegant Edition */
 .glass-panel {
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.005) 100%);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border: 1px solid rgba(184, 151, 106, 0.15);
-  box-shadow: 0 4px 24px -1px rgba(0, 0, 0, 0.3);
-  transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border: 1px solid rgba(184, 151, 106, 0.08);
+  box-shadow:
+    0 8px 32px -4px rgba(0, 0, 0, 0.25),
+    inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
 }
 
 .glass-panel:hover {
-  border-color: rgba(184, 151, 106, 0.4);
-  box-shadow: 0 8px 32px -4px rgba(184, 151, 106, 0.15);
-  transform: translateY(-2px);
+  border-color: rgba(184, 151, 106, 0.2);
+  box-shadow:
+    0 12px 48px -8px rgba(0, 0, 0, 0.3),
+    0 0 40px rgba(184, 151, 106, 0.08),
+    inset 0 1px 1px rgba(255, 255, 255, 0.08);
+  transform: translateY(-3px);
 }
 
 .glass-panel-static {
-  background: linear-gradient(145deg, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.005) 100%);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(184, 151, 106, 0.1);
+  background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  border: 1px solid rgba(184, 151, 106, 0.06);
+  box-shadow:
+    0 4px 20px rgba(0, 0, 0, 0.15),
+    inset 0 1px 1px rgba(255, 255, 255, 0.03);
 }
 
 /* Ambient Orbs */
@@ -191,10 +199,92 @@ img[loading] {
 
 /* Text Gradient Gold */
 .text-gradient-gold {
-  background: linear-gradient(to right, #ffffff, #B8976A);
+  background: linear-gradient(135deg, #ffffff 0%, #E8DDD0 25%, #B8976A 50%, #D4AF37 75%, #B8976A 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
+  background-size: 200% 200%;
+  animation: shimmer 8s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+/* Elegant Typography */
+.elegant-heading {
+  font-family: 'Playfair Display', serif;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.1;
+}
+
+.elegant-subheading {
+  font-family: 'Playfair Display', serif;
+  font-weight: 400;
+  font-style: italic;
+  letter-spacing: 0.01em;
+  line-height: 1.5;
+}
+
+.elegant-caps {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+}
+
+/* Decorative Elements */
+.decorative-line {
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(184, 151, 106, 0.3), transparent);
+}
+
+.decorative-line-vertical {
+  width: 1px;
+  background: linear-gradient(to bottom, transparent, rgba(184, 151, 106, 0.3), transparent);
+}
+
+/* Elegant Divider */
+.elegant-divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 2rem 0;
+}
+
+.elegant-divider::before,
+.elegant-divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, transparent, rgba(184, 151, 106, 0.2), transparent);
+}
+
+.elegant-divider::before {
+  background: linear-gradient(to left, rgba(184, 151, 106, 0.2), transparent);
+}
+
+.elegant-divider::after {
+  background: linear-gradient(to right, rgba(184, 151, 106, 0.2), transparent);
+}
+
+/* Premium Shadow */
+.premium-shadow {
+  box-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.05),
+    0 4px 12px rgba(0, 0, 0, 0.08),
+    0 16px 48px rgba(0, 0, 0, 0.12);
+}
+
+.premium-shadow-lg {
+  box-shadow:
+    0 2px 4px rgba(0, 0, 0, 0.04),
+    0 8px 24px rgba(0, 0, 0, 0.08),
+    0 24px 64px rgba(0, 0, 0, 0.12),
+    0 0 80px rgba(184, 151, 106, 0.04);
 }
 
 /* Dark mode */

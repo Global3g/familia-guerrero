@@ -209,7 +209,7 @@ export default function Origin() {
   return (
     <section
       id="origen"
-      className="py-24 px-4"
+      className="py-32 px-4"
       style={{ backgroundColor: '#0F172A' }}
     >
       <div className="max-w-6xl mx-auto">
@@ -218,15 +218,28 @@ export default function Origin() {
           initial={{ opacity: 0, y: 40 }}
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
-          transition={{ duration: 0.7 }}
-          className="text-center mb-20"
+          transition={{ duration: 1 }}
+          className="text-center mb-24"
         >
-          <p className="text-[16px] font-sans font-semibold uppercase tracking-[5px] text-white mb-4">Nuestro origen</p>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
-            Donde Todo Comenzo
+          <motion.div
+            initial={{ width: 0 }}
+            whileInView={{ width: '3rem' }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 1.2 }}
+            className="decorative-line mx-auto mb-8"
+          />
+          <p className="elegant-caps text-white/60 mb-6">Nuestro origen</p>
+          <h2 className="elegant-heading text-5xl sm:text-6xl md:text-7xl text-white mb-6" style={{ letterSpacing: '-0.02em' }}>
+            Donde Todo Comenzó
           </h2>
-          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
-          <p className="text-2xl text-white max-w-2xl mx-auto leading-relaxed font-medium">
+          <div className="flex items-center justify-center gap-3 mb-8">
+            <div className="w-12 h-px bg-gradient-to-r from-transparent to-accent/30" />
+            <svg width="8" height="8" viewBox="0 0 8 8" className="text-accent/40">
+              <circle cx="4" cy="4" r="2" fill="currentColor" />
+            </svg>
+            <div className="w-12 h-px bg-gradient-to-l from-transparent to-accent/30" />
+          </div>
+          <p className="elegant-subheading text-2xl md:text-3xl text-white/40 max-w-2xl mx-auto leading-relaxed">
             El amor que nos dio vida a todos
           </p>
         </motion.div>

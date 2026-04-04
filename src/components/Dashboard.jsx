@@ -62,17 +62,24 @@ export default function Dashboard() {
   }, [])
 
   return (
-    <section id="dashboard" className="pt-10 scroll-mt-24 max-w-7xl mx-auto px-6 pb-16">
+    <section id="dashboard" className="pt-20 scroll-mt-24 max-w-7xl mx-auto px-6 pb-32">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.6 }}
-        className="flex items-end justify-between mb-8 border-b border-white/10 pb-4"
+        transition={{ duration: 0.8 }}
+        className="mb-12"
       >
-        <div>
-          <h2 className="text-3xl font-serif text-white">Panorama Familiar</h2>
-          <p className="text-sm text-white/50 font-sans mt-1">El estado de nuestro linaje al día de hoy.</p>
+        <div className="text-center">
+          <motion.div
+            initial={{ width: 0 }}
+            whileInView={{ width: '3rem' }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2, duration: 1 }}
+            className="decorative-line mx-auto mb-6"
+          />
+          <h2 className="elegant-heading text-4xl md:text-5xl text-white mb-3">Panorama Familiar</h2>
+          <p className="elegant-subheading text-lg text-white/40">El estado de nuestro linaje al día de hoy.</p>
         </div>
       </motion.div>
 
@@ -83,22 +90,22 @@ export default function Dashboard() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="glass-panel rounded-2xl p-8 lg:col-span-2 relative overflow-hidden group"
+          className="glass-panel rounded-3xl p-10 lg:col-span-2 relative overflow-hidden group"
         >
-          <div className="absolute inset-0 opacity-10 bg-[url('https://images.unsplash.com/photo-1502472584811-0a2f2feb8968?auto=format&fit=crop&q=80')] bg-cover bg-center mix-blend-overlay" />
-          <div className="relative z-10 h-full flex flex-col justify-between">
-            <svg className="w-8 h-8 text-accent/50 mb-4" fill="currentColor" viewBox="0 0 24 24">
+          <div className="absolute inset-0 opacity-[0.07] bg-[url('https://images.unsplash.com/photo-1502472584811-0a2f2feb8968?auto=format&fit=crop&q=80')] bg-cover bg-center mix-blend-overlay" />
+          <div className="relative z-10 h-full flex flex-col justify-between min-h-[280px]">
+            <svg className="w-10 h-10 text-accent/40 mb-6" fill="currentColor" viewBox="0 0 24 24">
               <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
             </svg>
-            <div>
-              <h3 className="text-2xl font-serif text-white mb-2">Bienvenidos al Archivo Digital</h3>
-              <p className="text-white/70 font-sans text-sm leading-relaxed mb-6">
+            <div className="flex-1">
+              <h3 className="elegant-heading text-3xl text-white mb-4">Bienvenidos al Archivo Digital</h3>
+              <p className="elegant-subheading text-base text-white/50 leading-loose">
                 Este espacio fue creado para preservar la memoria, conectar ramas dispersas de la familia y celebrar los hitos que definen el nombre Guerrero. Desde las montañas de Andalucía hasta América, nuestra historia continúa escribiéndose.
               </p>
             </div>
-            <div className="flex items-center space-x-3 text-xs font-sans text-accent">
+            <div className="flex items-center space-x-3 text-xs font-sans text-accent/60 mt-6">
               <span className="flex items-center">
-                <span className="w-2 h-2 rounded-full bg-secondary mr-2" />
+                <span className="w-1.5 h-1.5 rounded-full bg-secondary mr-2 animate-pulse" />
                 Sistema Actualizado
               </span>
             </div>
@@ -111,18 +118,18 @@ export default function Dashboard() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="glass-panel rounded-2xl p-6 flex flex-col justify-between"
+          className="glass-panel rounded-3xl p-8 flex flex-col justify-between min-h-[200px]"
         >
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-3 rounded-lg bg-primary/10 border border-primary/20 text-primary">
-              <Users className="w-6 h-6" />
+          <div className="flex justify-between items-start mb-6">
+            <div className="p-4 rounded-2xl bg-primary/5 border border-primary/10 text-primary">
+              <Users className="w-7 h-7" />
             </div>
           </div>
           <div>
-            <p className="text-xs uppercase tracking-wider text-white/50 mb-1">Miembros Registrados</p>
-            <p className="text-4xl font-serif text-white">{stats?.total || 0}</p>
-            <p className="text-xs text-secondary mt-2 flex items-center">
-              <TrendingUp className="w-3 h-3 mr-1" /> +4 este año
+            <p className="elegant-caps text-white/40 mb-2">Miembros Registrados</p>
+            <p className="elegant-heading text-5xl text-white mb-3">{stats?.total || 0}</p>
+            <p className="text-xs text-secondary/80 flex items-center font-medium">
+              <TrendingUp className="w-3 h-3 mr-1.5" /> +4 este año
             </p>
           </div>
         </motion.div>
@@ -133,17 +140,17 @@ export default function Dashboard() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="glass-panel rounded-2xl p-6 flex flex-col justify-between"
+          className="glass-panel rounded-3xl p-8 flex flex-col justify-between min-h-[200px]"
         >
-          <div className="flex justify-between items-start mb-4">
-            <div className="p-3 rounded-lg bg-accent/10 border border-accent/20 text-accent">
-              <TreePine className="w-6 h-6" />
+          <div className="flex justify-between items-start mb-6">
+            <div className="p-4 rounded-2xl bg-accent/5 border border-accent/10 text-accent">
+              <TreePine className="w-7 h-7" />
             </div>
           </div>
           <div>
-            <p className="text-xs uppercase tracking-wider text-white/50 mb-1">Generaciones</p>
-            <p className="text-4xl font-serif text-white">{stats?.generations || 0}</p>
-            <p className="text-xs text-white/40 mt-2">
+            <p className="elegant-caps text-white/40 mb-2">Generaciones</p>
+            <p className="elegant-heading text-5xl text-white mb-3">{stats?.generations || 0}</p>
+            <p className="text-xs text-white/30 font-medium">
               {stats?.since ? `Datan desde ${stats.since}` : 'Historia familiar'}
             </p>
           </div>
