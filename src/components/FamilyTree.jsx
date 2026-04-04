@@ -579,18 +579,36 @@ function NucleusCardTree({ member, onClose }) {
     { M: 'Bisnieto', F: 'Bisnieta', default: 'Bisnieto(a)', plural: 'Bisnietos' },
   ]
 
-  // Elegant heritage generation themes
+  // Premium monochromatic design - unified gold/terracotta palette
   const genThemes = [
-    { gradient: 'linear-gradient(135deg, #B8654A, #C8846A)', glow: 'rgba(184, 101, 74, 0.2)', accent: '#B8654A', pillBg: 'linear-gradient(135deg, #B8654A, #B8976A)', line: '#B8976A' },
-    { gradient: 'linear-gradient(135deg, #6B9080, #8AAA98)', glow: 'rgba(107, 144, 128, 0.2)', accent: '#6B9080', pillBg: 'linear-gradient(135deg, #6B9080, #B8976A)', line: '#B8976A' },
-    { gradient: 'linear-gradient(135deg, #B8976A, #C8A87A)', glow: 'rgba(184, 151, 106, 0.2)', accent: '#B8976A', pillBg: 'linear-gradient(135deg, #B8976A, #C8846A)', line: '#B8976A' },
+    {
+      gradient: 'linear-gradient(135deg, rgba(184, 151, 106, 0.15), rgba(184, 101, 74, 0.15))',
+      glow: 'rgba(184, 151, 106, 0.15)',
+      accent: '#B8976A',
+      pillBg: 'linear-gradient(135deg, rgba(184, 151, 106, 0.2), rgba(184, 101, 74, 0.2))',
+      line: 'rgba(184, 151, 106, 0.3)'
+    },
+    {
+      gradient: 'linear-gradient(135deg, rgba(184, 151, 106, 0.12), rgba(107, 144, 128, 0.12))',
+      glow: 'rgba(184, 151, 106, 0.12)',
+      accent: '#B8976A',
+      pillBg: 'linear-gradient(135deg, rgba(184, 151, 106, 0.18), rgba(107, 144, 128, 0.18))',
+      line: 'rgba(184, 151, 106, 0.25)'
+    },
+    {
+      gradient: 'linear-gradient(135deg, rgba(184, 151, 106, 0.1), rgba(200, 168, 122, 0.1))',
+      glow: 'rgba(184, 151, 106, 0.1)',
+      accent: '#B8976A',
+      pillBg: 'linear-gradient(135deg, rgba(184, 151, 106, 0.15), rgba(200, 168, 122, 0.15))',
+      line: 'rgba(184, 151, 106, 0.2)'
+    },
   ]
 
-  // Card accent colors - 3 tones only
+  // Unified premium card colors - all use gold gradient
   const cardColors = [
-    ['#B8654A', '#C8846A'], ['#6B9080', '#8AAA98'], ['#B8976A', '#C8A87A'],
-    ['#B8654A', '#C8846A'], ['#6B9080', '#8AAA98'], ['#B8976A', '#C8A87A'],
-    ['#B8654A', '#C8846A'], ['#6B9080', '#8AAA98'],
+    ['rgba(184, 151, 106, 0.3)', 'rgba(184, 101, 74, 0.3)'],
+    ['rgba(184, 151, 106, 0.25)', 'rgba(107, 144, 128, 0.25)'],
+    ['rgba(184, 151, 106, 0.3)', 'rgba(200, 132, 106, 0.3)'],
   ]
 
   // ── Build generation rows ──
@@ -651,54 +669,86 @@ function NucleusCardTree({ member, onClose }) {
       <div className="relative flex-1 overflow-auto" style={{ scrollbarWidth: 'thin' }}>
         <div className="inline-flex flex-col items-center min-w-full py-10 px-10">
 
-          {/* ═══ ROOT COUPLE ═══ */}
+          {/* ═══ ROOT COUPLE - Ultra Premium ═══ */}
           <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             animate={{ opacity: 1, scale: 1 }}
-            className="glass-panel relative rounded-3xl px-10 py-8"
-            style={{ boxShadow: '0 0 60px rgba(184, 151, 106, 0.15), 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255, 255, 255, 0.05)' }}
+            className="relative"
           >
-            {/* Glow accent */}
-            <div className="absolute -inset-px rounded-3xl opacity-30" style={{ background: 'linear-gradient(135deg, rgba(184, 151, 106, 0.2), transparent 50%, rgba(184, 101, 74, 0.2))' }} />
+            {/* Outer glow effect */}
+            <div className="absolute -inset-6 bg-gradient-to-b from-accent/5 via-transparent to-transparent rounded-3xl blur-2xl" />
 
-            <div className="relative flex items-center gap-8">
-              <div className="flex flex-col items-center gap-2">
-                <div className="rounded-full p-1 shadow-lg ring-2 ring-accent/20" style={{ background: 'linear-gradient(135deg, #B8976A, #C8A87A)' }}>
-                  {member.photoURL ? (
-                    <img src={member.photoURL} alt={member.name} className="w-24 h-24 rounded-full object-cover border-3 border-[#0F172A]" />
-                  ) : (
-                    <div className="w-24 h-24 rounded-full flex items-center justify-center bg-[#1E293B] border-3 border-[#0F172A]">
-                      <User className="w-10 h-10 text-white/40" />
-                    </div>
-                  )}
-                </div>
-                <p className="elegant-heading text-base text-white text-center leading-tight max-w-[140px]">{member.name}</p>
-                {member.nickname && <p className="text-xs text-accent italic font-medium">"{member.nickname}"</p>}
-                <AgeBadge birthDate={member.birthDate} deathDate={member.deathDate} />
+            <div className="glass-panel relative rounded-3xl px-12 py-10" style={{
+              background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.01) 100%)',
+              boxShadow: '0 0 80px rgba(184, 151, 106, 0.2), 0 20px 60px rgba(0,0,0,0.4), inset 0 1px 2px rgba(255, 255, 255, 0.1)'
+            }}>
+              {/* Shimmer overlay */}
+              <div className="absolute inset-0 rounded-3xl overflow-hidden opacity-20">
+                <div className="absolute inset-0 bg-gradient-to-br from-transparent via-accent/10 to-transparent" />
               </div>
 
-              {hasSp && (
-                <>
-                  <div className="flex flex-col items-center gap-2">
-                    <Heart className="w-8 h-8 text-primary fill-primary drop-shadow-lg" style={{ filter: 'drop-shadow(0 0 8px rgba(184, 101, 74, 0.5))' }} />
-                    {wy && <span className="elegant-caps text-accent/80">{wy}</span>}
-                  </div>
-                  <div className="flex flex-col items-center gap-2">
-                    <div className="rounded-full p-1 shadow-lg ring-2 ring-primary/20" style={{ background: 'linear-gradient(135deg, #B8654A, #C8846A)' }}>
-                      {typeof sp === 'object' && sp.photoURL ? (
-                        <img src={sp.photoURL} alt={sp.name} className="w-24 h-24 rounded-full object-cover border-3 border-[#0F172A]" />
+              <div className="relative flex items-center gap-10">
+                <div className="flex flex-col items-center gap-3">
+                  <div className="relative">
+                    <div className="absolute -inset-2 bg-gradient-to-br from-accent/20 to-transparent rounded-full blur-md" />
+                    <div className="relative rounded-full p-1.5 ring-1 ring-white/10" style={{
+                      background: 'linear-gradient(135deg, rgba(184, 151, 106, 0.4), rgba(184, 151, 106, 0.2))',
+                      boxShadow: '0 8px 32px rgba(184, 151, 106, 0.3)'
+                    }}>
+                      {member.photoURL ? (
+                        <img src={member.photoURL} alt={member.name} className="w-28 h-28 rounded-full object-cover border-2 border-base/80" />
                       ) : (
-                        <div className="w-24 h-24 rounded-full flex items-center justify-center bg-[#1E293B] border-3 border-[#0F172A]">
-                          <User className="w-10 h-10 text-white/40" />
+                        <div className="w-28 h-28 rounded-full flex items-center justify-center bg-base/60 backdrop-blur-sm border-2 border-base/80">
+                          <User className="w-12 h-12 text-accent/60" />
                         </div>
                       )}
                     </div>
-                    <p className="elegant-heading text-base text-white text-center leading-tight max-w-[140px]">{typeof sp === 'object' ? sp.name : sp}</p>
-                    {typeof sp === 'object' && sp.nickname && <p className="text-xs text-primary italic font-medium">"{sp.nickname}"</p>}
-                    {typeof sp === 'object' && <AgeBadge birthDate={sp.birthDate} deathDate={sp.deathDate} />}
                   </div>
-                </>
-              )}
+                  <div className="text-center max-w-[160px]">
+                    <p className="elegant-heading text-lg text-white leading-tight mb-1">{member.name}</p>
+                    {member.nickname && <p className="text-xs text-accent/80 italic font-medium mb-2">"{member.nickname}"</p>}
+                    <AgeBadge birthDate={member.birthDate} deathDate={member.deathDate} />
+                  </div>
+                </div>
+
+                {hasSp && (
+                  <>
+                    <div className="flex flex-col items-center gap-3 px-4">
+                      <div className="relative">
+                        <div className="absolute -inset-2 bg-accent/10 rounded-full blur-lg" />
+                        <Heart className="relative w-9 h-9 text-accent fill-accent/80" style={{
+                          filter: 'drop-shadow(0 4px 12px rgba(184, 151, 106, 0.6))',
+                        }} />
+                      </div>
+                      {wy && (
+                        <span className="elegant-caps text-accent/90 bg-accent/5 px-3 py-1 rounded-full border border-accent/10">{wy}</span>
+                      )}
+                    </div>
+                    <div className="flex flex-col items-center gap-3">
+                      <div className="relative">
+                        <div className="absolute -inset-2 bg-gradient-to-br from-accent/20 to-transparent rounded-full blur-md" />
+                        <div className="relative rounded-full p-1.5 ring-1 ring-white/10" style={{
+                          background: 'linear-gradient(135deg, rgba(184, 151, 106, 0.4), rgba(184, 151, 106, 0.2))',
+                          boxShadow: '0 8px 32px rgba(184, 151, 106, 0.3)'
+                        }}>
+                          {typeof sp === 'object' && sp.photoURL ? (
+                            <img src={sp.photoURL} alt={sp.name} className="w-28 h-28 rounded-full object-cover border-2 border-base/80" />
+                          ) : (
+                            <div className="w-28 h-28 rounded-full flex items-center justify-center bg-base/60 backdrop-blur-sm border-2 border-base/80">
+                              <User className="w-12 h-12 text-accent/60" />
+                            </div>
+                          )}
+                        </div>
+                      </div>
+                      <div className="text-center max-w-[160px]">
+                        <p className="elegant-heading text-lg text-white leading-tight mb-1">{typeof sp === 'object' ? sp.name : sp}</p>
+                        {typeof sp === 'object' && sp.nickname && <p className="text-xs text-accent/80 italic font-medium mb-2">"{sp.nickname}"</p>}
+                        {typeof sp === 'object' && <AgeBadge birthDate={sp.birthDate} deathDate={sp.deathDate} />}
+                      </div>
+                    </div>
+                  </>
+                )}
+              </div>
             </div>
           </motion.div>
 
@@ -711,19 +761,32 @@ function NucleusCardTree({ member, onClose }) {
             return (
               <div key={genIndex} className="flex flex-col items-center w-full">
 
-                {/* Glowing connector line */}
-                <div className="w-px h-10" style={{ background: `linear-gradient(to bottom, ${theme.line}60, ${theme.line})` }} />
+                {/* Elegant connector line */}
+                <div className="w-px h-12" style={{ background: `linear-gradient(to bottom, transparent, ${theme.line}, transparent)` }} />
 
-                {/* Generation pill */}
+                {/* Generation pill - Ultra Premium */}
                 <motion.div
                   initial={{ opacity: 0, scale: 0.9 }}
                   animate={{ opacity: 1, scale: 1 }}
                   transition={{ delay: genIndex * 0.1 }}
-                  className="glass-panel inline-flex items-center gap-2 px-6 py-3 rounded-2xl text-white elegant-caps mb-6"
-                  style={{ background: theme.pillBg, boxShadow: `0 0 20px ${theme.glow}, 0 4px 15px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255, 255, 255, 0.1)` }}
+                  className="relative mb-8"
                 >
-                  <Users className="w-4 h-4" />
-                  <span className="elegant-heading text-sm">{labels.plural} ({totalPeople})</span>
+                  {/* Pill glow */}
+                  <div className="absolute -inset-2 bg-gradient-to-b from-accent/10 to-transparent rounded-2xl blur-xl" />
+
+                  <div className="glass-panel relative inline-flex items-center gap-3 px-8 py-3.5 rounded-2xl text-white" style={{
+                    background: 'linear-gradient(145deg, rgba(184, 151, 106, 0.08), rgba(184, 151, 106, 0.02))',
+                    boxShadow: `0 0 30px ${theme.glow}, 0 8px 24px rgba(0,0,0,0.3), inset 0 1px 2px rgba(255, 255, 255, 0.1)`,
+                    border: '1px solid rgba(184, 151, 106, 0.15)'
+                  }}>
+                    <div className="w-8 h-8 rounded-full flex items-center justify-center bg-accent/10 border border-accent/20">
+                      <Users className="w-4 h-4 text-accent" />
+                    </div>
+                    <div>
+                      <p className="elegant-heading text-base text-white leading-none">{labels.plural}</p>
+                      <p className="elegant-caps text-accent/60 text-[10px] mt-0.5">{totalPeople} {totalPeople === 1 ? 'persona' : 'personas'}</p>
+                    </div>
+                  </div>
                 </motion.div>
 
                 {/* Groups */}
@@ -734,11 +797,17 @@ function NucleusCardTree({ member, onClose }) {
                       <div key={gi} className="flex flex-col items-center">
                         {/* Group parent label */}
                         {groups.length > 1 && (
-                          <div className="glass-panel mb-4 px-4 py-2 rounded-xl border border-accent/10">
-                            <p className="elegant-caps text-white/50 flex items-center gap-2">
-                              <Users className="w-3 h-3 text-accent/60" />
-                              Hijos de {group.parent.name?.split(' ')[0]}
-                            </p>
+                          <div className="relative mb-6">
+                            <div className="absolute -inset-1 bg-accent/5 rounded-xl blur-sm" />
+                            <div className="glass-panel relative px-5 py-2.5 rounded-xl" style={{
+                              background: 'linear-gradient(145deg, rgba(184, 151, 106, 0.05), rgba(184, 151, 106, 0.01))',
+                              border: '1px solid rgba(184, 151, 106, 0.1)'
+                            }}>
+                              <p className="elegant-caps text-white/60 flex items-center gap-2">
+                                <div className="w-1 h-1 rounded-full bg-accent/40" />
+                                Familia de {group.parent.name?.split(' ')[0]}
+                              </p>
+                            </div>
                           </div>
                         )}
 
@@ -762,63 +831,90 @@ function NucleusCardTree({ member, onClose }) {
                                 {/* Tick */}
                                 <div className="w-px h-4" style={{ background: `${theme.line}50` }} />
 
-                                {/* Card */}
+                                {/* Card - Ultra Premium Design */}
                                 <motion.div
                                   initial={{ opacity: 0, y: 12 }}
                                   animate={{ opacity: 1, y: 0 }}
                                   transition={{ delay: ci * 0.05 + genIndex * 0.1 }}
-                                  className="glass-panel rounded-2xl overflow-hidden w-full"
-                                  style={{ boxShadow: `0 0 20px ${colorFrom}15, 0 4px 20px rgba(0,0,0,0.2), inset 0 1px 1px rgba(255, 255, 255, 0.05)` }}
+                                  className="relative"
                                 >
-                                  {/* Gradient header */}
-                                  <div className="px-4 py-2 flex items-center justify-between" style={{ background: `linear-gradient(135deg, ${colorFrom}, ${colorTo})` }}>
-                                    <p className="elegant-caps text-white/90">{lbl}</p>
-                                    <div className="w-1.5 h-1.5 rounded-full bg-white/50 shadow-sm" />
-                                  </div>
+                                  {/* Subtle outer glow */}
+                                  <div className="absolute -inset-1 bg-gradient-to-b from-accent/5 to-transparent rounded-2xl blur-sm" />
 
-                                  {/* Person */}
-                                  <div className="px-4 py-4 flex items-center gap-3">
-                                    <div className="rounded-full p-0.5 flex-shrink-0 shadow-md ring-1 ring-white/10" style={{ background: `linear-gradient(135deg, ${colorFrom}, ${colorTo})` }}>
-                                      {child.photoURL ? (
-                                        <img src={child.photoURL} alt={child.name} className="w-12 h-12 rounded-full object-cover border-2 border-[#1E293B]" />
-                                      ) : (
-                                        <div className="w-12 h-12 rounded-full flex items-center justify-center bg-[#1E293B] border-2 border-[#1E293B]">
-                                          <User className="w-5 h-5 text-white/30" />
+                                  <div className="glass-panel relative rounded-2xl overflow-hidden w-full" style={{
+                                    background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%)',
+                                    boxShadow: `0 0 24px ${colorFrom}, 0 8px 32px rgba(0,0,0,0.3), inset 0 1px 1px rgba(255, 255, 255, 0.08)`,
+                                    border: '1px solid rgba(184, 151, 106, 0.1)'
+                                  }}>
+                                    {/* Minimal accent bar at top */}
+                                    <div className="h-0.5" style={{ background: `linear-gradient(90deg, ${colorFrom}, ${colorTo})`, opacity: 0.4 }} />
+
+                                    {/* Header label */}
+                                    <div className="px-4 py-2.5 border-b border-white/5">
+                                      <p className="elegant-caps text-accent/70 text-center">{lbl}</p>
+                                    </div>
+
+                                    {/* Person */}
+                                    <div className="px-5 py-5 flex items-center gap-3.5">
+                                      <div className="relative flex-shrink-0">
+                                        <div className="absolute -inset-1 bg-gradient-to-br from-accent/15 to-transparent rounded-full blur-sm" />
+                                        <div className="relative rounded-full p-0.5 ring-1 ring-accent/10" style={{
+                                          background: `linear-gradient(135deg, ${colorFrom}, ${colorTo})`,
+                                          boxShadow: '0 4px 16px rgba(0,0,0,0.2)'
+                                        }}>
+                                          {child.photoURL ? (
+                                            <img src={child.photoURL} alt={child.name} className="w-14 h-14 rounded-full object-cover border-2 border-base/70" />
+                                          ) : (
+                                            <div className="w-14 h-14 rounded-full flex items-center justify-center bg-base/50 backdrop-blur-sm border-2 border-base/70">
+                                              <User className="w-6 h-6 text-accent/50" />
+                                            </div>
+                                          )}
                                         </div>
-                                      )}
+                                      </div>
+                                      <div className="flex-1 min-w-0">
+                                        <p className="elegant-heading text-sm text-white truncate leading-tight mb-1">{child.name}</p>
+                                        {child.nickname && <p className="text-xs italic truncate font-medium text-accent/70 mb-1">"{child.nickname}"</p>}
+                                        <AgeBadge birthDate={child.birthDate} deathDate={child.deathDate} />
+                                      </div>
                                     </div>
-                                    <div className="flex-1 min-w-0">
-                                      <p className="text-sm elegant-heading text-white truncate leading-tight">{child.name}</p>
-                                      {child.nickname && <p className="text-xs italic truncate font-medium" style={{ color: colorTo }}>"{child.nickname}"</p>}
-                                      <AgeBadge birthDate={child.birthDate} deathDate={child.deathDate} />
-                                    </div>
-                                  </div>
 
-                                  {/* Spouse */}
-                                  {childHasSp && (
-                                    <div className="px-4 pb-4 flex items-center gap-2.5 border-t border-white/10 pt-3">
-                                      <Heart className="w-3.5 h-3.5 flex-shrink-0" style={{ color: colorTo, fill: colorTo, filter: `drop-shadow(0 0 4px ${colorTo}60)` }} />
-                                      {typeof childSp === 'object' ? (
-                                        <>
-                                          <div className="rounded-full p-0.5 flex-shrink-0 shadow-sm ring-1 ring-white/10" style={{ background: `linear-gradient(135deg, ${colorFrom}80, ${colorTo}80)` }}>
-                                            {childSp.photoURL ? (
-                                              <img src={childSp.photoURL} alt={childSp.name} className="w-9 h-9 rounded-full object-cover border border-[#1E293B]" />
-                                            ) : (
-                                              <div className="w-9 h-9 rounded-full flex items-center justify-center bg-[#1E293B] border border-[#1E293B]">
-                                                <User className="w-3.5 h-3.5 text-white/30" />
+                                    {/* Spouse */}
+                                    {childHasSp && (
+                                      <div className="px-5 pb-5 flex items-center gap-3 border-t border-white/5 pt-4">
+                                        <div className="relative flex-shrink-0">
+                                          <div className="absolute -inset-1 bg-accent/10 rounded-full blur-md" />
+                                          <Heart className="relative w-4 h-4 text-accent fill-accent/70" style={{
+                                            filter: 'drop-shadow(0 2px 6px rgba(184, 151, 106, 0.4))',
+                                          }} />
+                                        </div>
+                                        {typeof childSp === 'object' ? (
+                                          <>
+                                            <div className="relative flex-shrink-0">
+                                              <div className="absolute -inset-0.5 bg-gradient-to-br from-accent/10 to-transparent rounded-full blur-sm" />
+                                              <div className="relative rounded-full p-0.5 ring-1 ring-accent/10" style={{
+                                                background: `linear-gradient(135deg, ${colorFrom}60, ${colorTo}60)`,
+                                                boxShadow: '0 2px 12px rgba(0,0,0,0.15)'
+                                              }}>
+                                                {childSp.photoURL ? (
+                                                  <img src={childSp.photoURL} alt={childSp.name} className="w-10 h-10 rounded-full object-cover border border-base/60" />
+                                                ) : (
+                                                  <div className="w-10 h-10 rounded-full flex items-center justify-center bg-base/40 backdrop-blur-sm border border-base/60">
+                                                    <User className="w-4 h-4 text-accent/40" />
+                                                  </div>
+                                                )}
                                               </div>
-                                            )}
-                                          </div>
-                                          <div className="flex-1 min-w-0">
-                                            <p className="text-xs elegant-heading text-white truncate">{childSp.name}</p>
-                                            <AgeBadge birthDate={childSp.birthDate} deathDate={childSp.deathDate} />
-                                          </div>
-                                        </>
-                                      ) : (
-                                        <p className="text-xs truncate text-white/70 font-medium">{childSp}</p>
-                                      )}
-                                    </div>
-                                  )}
+                                            </div>
+                                            <div className="flex-1 min-w-0">
+                                              <p className="elegant-heading text-xs text-white/90 truncate mb-0.5">{childSp.name}</p>
+                                              <AgeBadge birthDate={childSp.birthDate} deathDate={childSp.deathDate} />
+                                            </div>
+                                          </>
+                                        ) : (
+                                          <p className="text-xs truncate text-white/60 font-medium">{childSp}</p>
+                                        )}
+                                      </div>
+                                    )}
+                                  </div>
                                 </motion.div>
                               </div>
                             )
