@@ -146,9 +146,9 @@ function ChildCard({ child, onEdit, onDelete, onView }) {
       <div className="flex items-start justify-center gap-4">
         {/* Main person */}
         <div className="flex flex-col items-center text-center min-w-0 flex-1">
-          <PersonCircle name={child.name} photo={child.photoURL || child.photo} size="xl" />
+          <PersonCircle name={child.name || child.fullName} photo={child.photoURL || child.photo} size="xl" />
           <p className="text-sm font-serif font-bold text-white leading-tight mt-3 line-clamp-2">
-            {child.name}
+            {child.name || child.fullName || 'Miembro'}
           </p>
           {child.nickname && (
             <p className="text-xs text-white/40 italic mt-0.5">"{child.nickname}"</p>
@@ -1107,7 +1107,12 @@ export default function FamilyTree() {
                     child={child}
                     onEdit={() => setEditingMember(child)}
                     onDelete={() => setDeletingMember(child)}
-                    onView={() => { setModalTab('familia'); setFamiliaView('tarjetas'); setSelectedMember(child); }}
+                    onView={() => {
+                      console.log('Opening family nucleus for:', child.name || child.fullName, 'Full object:', child);
+                      setModalTab('familia');
+                      setFamiliaView('tarjetas');
+                      setSelectedMember(child);
+                    }}
                   />
                 </motion.div>
               ))}
@@ -1175,12 +1180,12 @@ export default function FamilyTree() {
                   const spouseName = sp ? (typeof sp === 'object' ? sp.name : sp) : null
                   const spouseGender = sp && typeof sp === 'object' ? sp.gender : null
                   const getLastName = (fullName) => {
-                    if (!fullName) return ''
+                    if (!fullName) return 'Familia'
                     const parts = fullName.trim().split(' ')
                     if (parts.length >= 2) return parts.length >= 3 ? parts[parts.length - 2] : parts[parts.length - 1]
                     return parts[0]
                   }
-                  const memberLastName = selectedMember.lastName || getLastName(selectedMember.name)
+                  const memberLastName = selectedMember.lastName || getLastName(selectedMember.name || selectedMember.fullName)
                   const spouseLastName = sp && typeof sp === 'object' && sp.lastName ? sp.lastName : (spouseName ? getLastName(spouseName) : null)
 
                   let familyTitle
@@ -1258,9 +1263,9 @@ export default function FamilyTree() {
                                 <div className="absolute -inset-1 bg-gradient-to-r from-white/20 to-white/5 rounded-full blur-xl opacity-75 group-hover:opacity-100 transition" />
                                 <div className="relative rounded-full p-3 bg-white/10 ring-4 ring-white/20 backdrop-blur-xl">
                                   {selectedMember.photoURL ? (
-                                    <img src={selectedMember.photoURL} alt={selectedMember.name}
+                                    <img src={selectedMember.photoURL} alt={selectedMember.name || selectedMember.fullName || 'Miembro'}
                                       className="w-40 h-40 sm:w-48 sm:h-48 rounded-full object-cover cursor-pointer transform group-hover:scale-105 transition-transform duration-500"
-                                      onClick={() => setLightboxPhoto({ photoURL: selectedMember.photoURL, caption: selectedMember.name })}
+                                      onClick={() => setLightboxPhoto({ photoURL: selectedMember.photoURL, caption: selectedMember.name || selectedMember.fullName })}
                                     />
                                   ) : (
                                     <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-full flex items-center justify-center bg-gradient-to-br from-white/10 to-white/5">
@@ -1305,7 +1310,7 @@ export default function FamilyTree() {
                               <div className="space-y-3">
                                 <div>
                                   <h2 className="text-4xl sm:text-5xl font-serif font-bold text-white leading-tight tracking-tight">
-                                    {selectedMember.name}
+                                    {selectedMember.name || selectedMember.fullName || 'Miembro Familiar'}
                                   </h2>
                                   {selectedMember.nickname && (
                                     <p className="text-lg text-white/70 italic mt-2">"{selectedMember.nickname}"</p>
