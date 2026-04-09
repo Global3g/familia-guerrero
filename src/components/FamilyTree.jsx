@@ -1706,31 +1706,66 @@ export default function FamilyTree() {
                                           )}
 
                                           {/* Bio */}
-                                          {child.bio && (
-                                            <div className="pt-6 border-t border-white/10">
-                                              <p className="text-sm text-white/60 italic leading-relaxed">{child.bio}</p>
+                                          {(child.bio || (typeof child.spouse === 'object' && child.spouse.bio)) && (
+                                            <div className="pt-6 border-t border-white/10 space-y-4">
+                                              {child.bio && (
+                                                <div>
+                                                  <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">{child.name.split(' ')[0]}</p>
+                                                  <p className="text-sm text-white/60 italic leading-relaxed">{child.bio}</p>
+                                                </div>
+                                              )}
+                                              {typeof child.spouse === 'object' && child.spouse.bio && (
+                                                <div>
+                                                  <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">{child.spouse.name.split(' ')[0]}</p>
+                                                  <p className="text-sm text-white/60 italic leading-relaxed">{child.spouse.bio}</p>
+                                                </div>
+                                              )}
                                             </div>
                                           )}
 
                                           {/* Hobbies */}
-                                          {child.hobbies && child.hobbies.length > 0 && (
-                                            <div className="pt-6 border-t border-white/10">
-                                              <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-3">Hobbies</p>
-                                              <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
-                                                {child.hobbies.map((hobby, hi) => {
-                                                  const colors = ['#B8654A', '#B8976A', '#6B9080']
-                                                  const color = colors[hi % colors.length]
-                                                  return (
-                                                    <span key={hi} className="px-3 py-1.5 rounded-full text-white/80 text-sm" style={{
-                                                      background: `${color}15`,
-                                                      border: `1px solid ${color}30`,
-                                                      boxShadow: `0 2px 8px ${color}10`
-                                                    }}>
-                                                      {hobby}
-                                                    </span>
-                                                  )
-                                                })}
-                                              </div>
+                                          {((child.hobbies && child.hobbies.length > 0) || (typeof child.spouse === 'object' && child.spouse.hobbies && child.spouse.hobbies.length > 0)) && (
+                                            <div className="pt-6 border-t border-white/10 space-y-4">
+                                              {child.hobbies && child.hobbies.length > 0 && (
+                                                <div>
+                                                  <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-3">Hobbies - {child.name.split(' ')[0]}</p>
+                                                  <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
+                                                    {child.hobbies.map((hobby, hi) => {
+                                                      const colors = ['#B8654A', '#B8976A', '#6B9080']
+                                                      const color = colors[hi % colors.length]
+                                                      return (
+                                                        <span key={hi} className="px-3 py-1.5 rounded-full text-white/80 text-sm" style={{
+                                                          background: `${color}15`,
+                                                          border: `1px solid ${color}30`,
+                                                          boxShadow: `0 2px 8px ${color}10`
+                                                        }}>
+                                                          {hobby}
+                                                        </span>
+                                                      )
+                                                    })}
+                                                  </div>
+                                                </div>
+                                              )}
+                                              {typeof child.spouse === 'object' && child.spouse.hobbies && child.spouse.hobbies.length > 0 && (
+                                                <div>
+                                                  <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-3">Hobbies - {child.spouse.name.split(' ')[0]}</p>
+                                                  <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
+                                                    {child.spouse.hobbies.map((hobby, hi) => {
+                                                      const colors = ['#B8654A', '#B8976A', '#6B9080']
+                                                      const color = colors[hi % colors.length]
+                                                      return (
+                                                        <span key={hi} className="px-3 py-1.5 rounded-full text-white/80 text-sm" style={{
+                                                          background: `${color}15`,
+                                                          border: `1px solid ${color}30`,
+                                                          boxShadow: `0 2px 8px ${color}10`
+                                                        }}>
+                                                          {hobby}
+                                                        </span>
+                                                      )
+                                                    })}
+                                                  </div>
+                                                </div>
+                                              )}
                                             </div>
                                           )}
 
@@ -1934,31 +1969,66 @@ export default function FamilyTree() {
                                                     )}
 
                                                     {/* Bio */}
-                                                    {ggc.bio && (
-                                                      <div className="pt-4 border-t border-white/10">
-                                                        <p className="text-xs text-white/60 italic leading-relaxed">{ggc.bio}</p>
+                                                    {(ggc.bio || (typeof ggc.spouse === 'object' && ggc.spouse.bio)) && (
+                                                      <div className="pt-4 border-t border-white/10 space-y-3">
+                                                        {ggc.bio && (
+                                                          <div>
+                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1.5">{ggc.name.split(' ')[0]}</p>
+                                                            <p className="text-xs text-white/60 italic leading-relaxed">{ggc.bio}</p>
+                                                          </div>
+                                                        )}
+                                                        {typeof ggc.spouse === 'object' && ggc.spouse.bio && (
+                                                          <div>
+                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1.5">{ggc.spouse.name.split(' ')[0]}</p>
+                                                            <p className="text-xs text-white/60 italic leading-relaxed">{ggc.spouse.bio}</p>
+                                                          </div>
+                                                        )}
                                                       </div>
                                                     )}
 
                                                     {/* Hobbies */}
-                                                    {ggc.hobbies && ggc.hobbies.length > 0 && (
-                                                      <div className="pt-4 border-t border-white/10">
-                                                        <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">Hobbies</p>
-                                                        <div className="flex flex-wrap gap-2 justify-center">
-                                                          {ggc.hobbies.map((hobby, hi) => {
-                                                            const colors = ['#B8654A', '#B8976A', '#6B9080']
-                                                            const color = colors[hi % colors.length]
-                                                            return (
-                                                              <span key={hi} className="px-2 py-1 rounded-full text-white/75 text-xs" style={{
-                                                                background: `${color}12`,
-                                                                border: `1px solid ${color}25`,
-                                                                boxShadow: `0 1px 4px ${color}08`
-                                                              }}>
-                                                                {hobby}
-                                                              </span>
-                                                            )
-                                                          })}
-                                                        </div>
+                                                    {((ggc.hobbies && ggc.hobbies.length > 0) || (typeof ggc.spouse === 'object' && ggc.spouse.hobbies && ggc.spouse.hobbies.length > 0)) && (
+                                                      <div className="pt-4 border-t border-white/10 space-y-3">
+                                                        {ggc.hobbies && ggc.hobbies.length > 0 && (
+                                                          <div>
+                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">Hobbies - {ggc.name.split(' ')[0]}</p>
+                                                            <div className="flex flex-wrap gap-2 justify-center">
+                                                              {ggc.hobbies.map((hobby, hi) => {
+                                                                const colors = ['#B8654A', '#B8976A', '#6B9080']
+                                                                const color = colors[hi % colors.length]
+                                                                return (
+                                                                  <span key={hi} className="px-2 py-1 rounded-full text-white/75 text-xs" style={{
+                                                                    background: `${color}12`,
+                                                                    border: `1px solid ${color}25`,
+                                                                    boxShadow: `0 1px 4px ${color}08`
+                                                                  }}>
+                                                                    {hobby}
+                                                                  </span>
+                                                                )
+                                                              })}
+                                                            </div>
+                                                          </div>
+                                                        )}
+                                                        {typeof ggc.spouse === 'object' && ggc.spouse.hobbies && ggc.spouse.hobbies.length > 0 && (
+                                                          <div>
+                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">Hobbies - {ggc.spouse.name.split(' ')[0]}</p>
+                                                            <div className="flex flex-wrap gap-2 justify-center">
+                                                              {ggc.spouse.hobbies.map((hobby, hi) => {
+                                                                const colors = ['#B8654A', '#B8976A', '#6B9080']
+                                                                const color = colors[hi % colors.length]
+                                                                return (
+                                                                  <span key={hi} className="px-2 py-1 rounded-full text-white/75 text-xs" style={{
+                                                                    background: `${color}12`,
+                                                                    border: `1px solid ${color}25`,
+                                                                    boxShadow: `0 1px 4px ${color}08`
+                                                                  }}>
+                                                                    {hobby}
+                                                                  </span>
+                                                                )
+                                                              })}
+                                                            </div>
+                                                          </div>
+                                                        )}
                                                       </div>
                                                     )}
                                                   </div>
@@ -2058,16 +2128,83 @@ export default function FamilyTree() {
                                               </p>
                                               <div className="space-y-3">
                                                 {ggc.children.map((bn, bi) => (
-                                                  <div key={bi} className="flex items-center gap-3 p-3 rounded-xl border bg-white/5 border-white/10">
-                                                    <PersonCircle name={bn.name} photo={bn.photoURL} size="md" onClick={() => setLightboxPhoto({ photoURL: bn.photoURL, caption: bn.name })} />
-                                                    <div className="flex-1 min-w-0">
-                                                      <p className="text-sm font-bold text-white truncate">{bn.name}</p>
-                                                      <AgeBadge birthDate={bn.birthDate} deathDate={bn.deathDate} />
+                                                  <div key={bi} className="p-4 rounded-xl border bg-white/5 border-white/10 space-y-3">
+                                                    <div className="flex items-center gap-3">
+                                                      <PersonCircle name={bn.name} photo={bn.photoURL} size="md" onClick={() => setLightboxPhoto({ photoURL: bn.photoURL, caption: bn.name })} />
+                                                      <div className="flex-1 min-w-0">
+                                                        <p className="text-sm font-bold text-white truncate">{bn.name}</p>
+                                                        {bn.nickname && <p className="text-xs text-white/60 italic">"{bn.nickname}"</p>}
+                                                        <AgeBadge birthDate={bn.birthDate} deathDate={bn.deathDate} />
+                                                      </div>
+                                                      {bn.spouse && (
+                                                        <div className="flex items-center gap-2 flex-shrink-0">
+                                                          <Heart className="w-3 h-3" style={{ color: '#B8654A', opacity: 0.7 }} />
+                                                          <span className="text-xs text-white/60 truncate max-w-[100px]">{typeof bn.spouse === 'object' ? bn.spouse.name : bn.spouse}</span>
+                                                        </div>
+                                                      )}
                                                     </div>
-                                                    {bn.spouse && (
-                                                      <div className="flex items-center gap-2 flex-shrink-0">
-                                                        <Heart className="w-3 h-3" style={{ color: '#B8654A', opacity: 0.7 }} />
-                                                        <span className="text-xs text-white/60 truncate max-w-[100px]">{typeof bn.spouse === 'object' ? bn.spouse.name : bn.spouse}</span>
+
+                                                    {/* Bio del bisnieto y cónyuge */}
+                                                    {(bn.bio || (typeof bn.spouse === 'object' && bn.spouse.bio)) && (
+                                                      <div className="pt-3 border-t border-white/10 space-y-2">
+                                                        {bn.bio && (
+                                                          <div>
+                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1">{bn.name.split(' ')[0]}</p>
+                                                            <p className="text-xs text-white/60 italic leading-relaxed">{bn.bio}</p>
+                                                          </div>
+                                                        )}
+                                                        {typeof bn.spouse === 'object' && bn.spouse.bio && (
+                                                          <div>
+                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1">{bn.spouse.name.split(' ')[0]}</p>
+                                                            <p className="text-xs text-white/60 italic leading-relaxed">{bn.spouse.bio}</p>
+                                                          </div>
+                                                        )}
+                                                      </div>
+                                                    )}
+
+                                                    {/* Hobbies del bisnieto y cónyuge */}
+                                                    {((bn.hobbies && bn.hobbies.length > 0) || (typeof bn.spouse === 'object' && bn.spouse.hobbies && bn.spouse.hobbies.length > 0)) && (
+                                                      <div className="pt-3 border-t border-white/10 space-y-2">
+                                                        {bn.hobbies && bn.hobbies.length > 0 && (
+                                                          <div>
+                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1.5">Hobbies - {bn.name.split(' ')[0]}</p>
+                                                            <div className="flex flex-wrap gap-1.5">
+                                                              {bn.hobbies.map((hobby, hi) => {
+                                                                const colors = ['#B8654A', '#B8976A', '#6B9080']
+                                                                const color = colors[hi % colors.length]
+                                                                return (
+                                                                  <span key={hi} className="px-2 py-0.5 rounded-full text-white/75 text-xs" style={{
+                                                                    background: `${color}10`,
+                                                                    border: `1px solid ${color}20`,
+                                                                    boxShadow: `0 1px 3px ${color}05`
+                                                                  }}>
+                                                                    {hobby}
+                                                                  </span>
+                                                                )
+                                                              })}
+                                                            </div>
+                                                          </div>
+                                                        )}
+                                                        {typeof bn.spouse === 'object' && bn.spouse.hobbies && bn.spouse.hobbies.length > 0 && (
+                                                          <div>
+                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1.5">Hobbies - {bn.spouse.name.split(' ')[0]}</p>
+                                                            <div className="flex flex-wrap gap-1.5">
+                                                              {bn.spouse.hobbies.map((hobby, hi) => {
+                                                                const colors = ['#B8654A', '#B8976A', '#6B9080']
+                                                                const color = colors[hi % colors.length]
+                                                                return (
+                                                                  <span key={hi} className="px-2 py-0.5 rounded-full text-white/75 text-xs" style={{
+                                                                    background: `${color}10`,
+                                                                    border: `1px solid ${color}20`,
+                                                                    boxShadow: `0 1px 3px ${color}05`
+                                                                  }}>
+                                                                    {hobby}
+                                                                  </span>
+                                                                )
+                                                              })}
+                                                            </div>
+                                                          </div>
+                                                        )}
                                                       </div>
                                                     )}
                                                   </div>
