@@ -950,15 +950,15 @@ export default function FamilyTree() {
       if (!b.birthDate) return -1
       return a.birthDate.localeCompare(b.birthDate)
     })
-    filtered.forEach(p => { if (p.children) sortByBirth(p.children) })
+    filtered.forEach(p => { if (p.children) p.children = sortByBirth(p.children) })
     return filtered
   }
 
   const loadMembers = async () => {
     const data = await getFamilyMembers()
     // Sort all levels by birthDate (oldest first)
-    sortByBirth(data)
-    setMembers(data)
+    const sorted = sortByBirth(data)
+    setMembers(sorted)
   }
 
   const handleSaveMember = async (formData) => {
