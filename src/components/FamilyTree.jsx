@@ -279,7 +279,7 @@ function MoveModal({ person, members, currentParentId, isDeepNested, onMove, onC
       destinations.push({ id: m.id, name: m.name, level: 'hijo', parentId: null })
     }
     // Also show children of each member as destinations
-    (m.children || []).forEach((c, ci) => {
+    (m.children || []).filter(c => c && c !== null).forEach((c, ci) => {
       // Don't show the person itself as a destination
       if (c.name === person.name) return
       destinations.push({ id: `${m.id}__${ci}`, name: `${c.name} (hijo de ${m.name?.split(' ')[0]})`, level: 'nieto', parentId: m.id, childIndex: ci })
@@ -409,7 +409,7 @@ function buildNucleusTree(member) {
   const getId = () => `nn${nodeId++}`
 
   const subtreeW = (person) => {
-    const kids = person.children || []
+    const kids = (person.children || []).filter(c => c && c !== null)
     if (kids.length === 0) return NODE_W + H_GAP
     return kids.reduce((sum, c) => sum + subtreeW(c), 0)
   }
@@ -446,7 +446,7 @@ function buildNucleusTree(member) {
       })
     }
 
-    const kids = person.children || []
+    const kids = (person.children || []).filter(c => c && c !== null)
     if (kids.length > 0) {
       const totalW = kids.reduce((s, c) => s + subtreeW(c), 0)
       let cx = x - totalW / 2 + NODE_W / 2
@@ -614,14 +614,17 @@ function NucleusCardTree({ member, onClose }) {
   // ── Build generation rows ──
   const generations = []
   if (member.children?.length > 0) {
-    generations.push([{ parent: member, children: member.children }])
+    const filteredChildren = member.children.filter(c => c && c !== null)
+    if (filteredChildren.length > 0) {
+      generations.push([{ parent: member, children: filteredChildren }])
+    }
   }
-  let prevGen = member.children || []
+  let prevGen = (member.children || []).filter(c => c && c !== null)
   while (true) {
     const groups = []
     prevGen.forEach(person => {
       if (person.children?.length > 0) {
-        groups.push({ parent: person, children: person.children })
+        groups.push({ parent: person, children: person.children.filter(c => c && c !== null) })
       }
     })
     if (groups.length === 0) break
@@ -940,14 +943,15 @@ export default function FamilyTree() {
 
   const sortByBirth = (arr) => {
     if (!arr) return arr
-    arr.sort((a, b) => {
+    const filtered = arr.filter(item => item && item !== null)
+    filtered.sort((a, b) => {
       if (!a.birthDate && !b.birthDate) return 0
       if (!a.birthDate) return 1
       if (!b.birthDate) return -1
       return a.birthDate.localeCompare(b.birthDate)
     })
-    arr.forEach(p => { if (p.children) sortByBirth(p.children) })
-    return arr
+    filtered.forEach(p => { if (p.children) sortByBirth(p.children) })
+    return filtered
   }
 
   const loadMembers = async () => {
@@ -2277,13 +2281,15 @@ export default function FamilyTree() {
                           addPhotos(selectedMember.spouse, selectedMember.spouse.name?.split(' ')[0])
                         }
                         const walkPhotos = (children) => {
-                          (children || []).forEach(child => {
+                          (children || []).filter(c => c && c !== null).forEach(child => {
                             addPhotos(child, child.name?.split(' ')[0])
                             if (child.spouse && typeof child.spouse === 'object') addPhotos(child.spouse, child.spouse.name?.split(' ')[0])
                             if (child.children) walkPhotos(child.children)
                           })
                         }
-                        walkPhotos(selectedMember.children)
+                        if (selectedMember.children) {
+                          walkPhotos(selectedMember.children)
+                        }
 
                         if (allPhotos.length === 0) return (
                           <p className="text-sm text-white/40 text-center py-8">No hay fotos en la galeria.</p>
