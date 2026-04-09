@@ -773,7 +773,7 @@ function NucleusCardTree({ member, onClose }) {
                 {/* Groups */}
                 <div className="flex justify-center gap-14 flex-wrap">
                   {groups.map((group, gi) => {
-                    const kids = group.children
+                    const kids = (group.children || []).filter(c => c && c !== null)
                     return (
                       <div key={gi} className="flex flex-col items-center">
                         {/* Group parent label */}
