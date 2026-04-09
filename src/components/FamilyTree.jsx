@@ -1516,15 +1516,15 @@ export default function FamilyTree() {
                                 Familia & Descendencia
                               </h4>
                               <p className="text-sm text-white/60">
-                                {selectedMember.children.length} {selectedMember.children.length === 1 ? 'hijo' : 'hijos'} •
-                                {' '}{selectedMember.children.reduce((acc, child) => acc + (child.children ? child.children.length : 0), 0)} nietos
+                                {selectedMember.children.filter(c => c && c !== null).length} {selectedMember.children.filter(c => c && c !== null).length === 1 ? 'hijo' : 'hijos'} •
+                                {' '}{selectedMember.children.filter(c => c && c !== null).reduce((acc, child) => acc + (child.children ? child.children.filter(gc => gc && gc !== null).length : 0), 0)} nietos
                               </p>
                             </div>
                           </div>
 
                           {/* Each child gets their own hero section */}
                           <div className="space-y-16">
-                            {selectedMember.children.map((child, i) => {
+                            {selectedMember.children.filter(c => c && c !== null).map((child, i) => {
                               const hasChildren = child.children && child.children.length > 0
                               const hasSpouse = child.spouse && (typeof child.spouse === 'object' ? child.spouse.name : child.spouse)
 
@@ -1821,10 +1821,10 @@ export default function FamilyTree() {
                                   <div className="px-6 pb-6 pt-4">
                                     <p className="text-xs font-semibold text-white/70 uppercase tracking-wider mb-4 flex items-center gap-1.5">
                                       <Users className="w-4 h-4" style={{ color: '#B8976A' }} />
-                                      Hijos de {child.name?.split(' ')[0]} ({child.children.length})
+                                      Hijos de {child.name?.split(' ')[0]} ({child.children.filter(c => c && c !== null).length})
                                     </p>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
-                                      {child.children.map((ggc, gi) => {
+                                      {child.children.filter(c => c && c !== null).map((ggc, gi) => {
                                         const nietoHasSpouse = ggc.spouse && (typeof ggc.spouse === 'object' ? ggc.spouse.name : ggc.spouse)
 
                                         return (
@@ -2129,10 +2129,10 @@ export default function FamilyTree() {
                                             }}>
                                               <p className="text-xs font-bold uppercase tracking-wider mb-4 text-white/70 flex items-center gap-1.5">
                                                 <Users className="w-3.5 h-3.5" style={{ color: '#B8976A' }} />
-                                                Hijos de {ggc.name?.split(' ')[0]} ({ggc.children.length})
+                                                Hijos de {ggc.name?.split(' ')[0]} ({ggc.children.filter(c => c && c !== null).length})
                                               </p>
                                               <div className="space-y-3">
-                                                {ggc.children.map((bn, bi) => (
+                                                {ggc.children.filter(c => c && c !== null).map((bn, bi) => (
                                                   <div key={bi} className="p-4 rounded-xl border bg-white/5 border-white/10 space-y-3">
                                                     <div className="flex items-center gap-3">
                                                       <PersonCircle name={bn.name} photo={bn.photoURL} size="md" onClick={() => setLightboxPhoto({ photoURL: bn.photoURL, caption: bn.name })} />
