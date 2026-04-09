@@ -1710,13 +1710,13 @@ export default function FamilyTree() {
                                             <div className="pt-6 border-t border-white/10 space-y-4">
                                               {child.bio && (
                                                 <div>
-                                                  <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">{child.name.split(' ')[0]}</p>
+                                                  <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">{child.name?.split(' ')[0]}</p>
                                                   <p className="text-sm text-white/60 italic leading-relaxed">{child.bio}</p>
                                                 </div>
                                               )}
                                               {typeof child.spouse === 'object' && child.spouse.bio && (
                                                 <div>
-                                                  <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">{child.spouse.name.split(' ')[0]}</p>
+                                                  <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">{child.spouse.name?.split(' ')[0]}</p>
                                                   <p className="text-sm text-white/60 italic leading-relaxed">{child.spouse.bio}</p>
                                                 </div>
                                               )}
@@ -1728,7 +1728,7 @@ export default function FamilyTree() {
                                             <div className="pt-6 border-t border-white/10 space-y-4">
                                               {child.hobbies && child.hobbies.length > 0 && (
                                                 <div>
-                                                  <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-3">Hobbies - {child.name.split(' ')[0]}</p>
+                                                  <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-3">Hobbies - {child.name?.split(' ')[0]}</p>
                                                   <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
                                                     {child.hobbies.map((hobby, hi) => {
                                                       const colors = ['#B8654A', '#B8976A', '#6B9080']
@@ -1748,7 +1748,7 @@ export default function FamilyTree() {
                                               )}
                                               {typeof child.spouse === 'object' && child.spouse.hobbies && child.spouse.hobbies.length > 0 && (
                                                 <div>
-                                                  <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-3">Hobbies - {child.spouse.name.split(' ')[0]}</p>
+                                                  <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-3">Hobbies - {child.spouse.name?.split(' ')[0]}</p>
                                                   <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
                                                     {child.spouse.hobbies.map((hobby, hi) => {
                                                       const colors = ['#B8654A', '#B8976A', '#6B9080']
@@ -1816,7 +1816,7 @@ export default function FamilyTree() {
                                   <div className="px-6 pb-6 pt-4">
                                     <p className="text-xs font-semibold text-white/70 uppercase tracking-wider mb-4 flex items-center gap-1.5">
                                       <Users className="w-4 h-4" style={{ color: '#B8976A' }} />
-                                      Hijos de {child.name.split(' ')[0]} ({child.children.length})
+                                      Hijos de {child.name?.split(' ')[0]} ({child.children.length})
                                     </p>
                                     <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                                       {child.children.map((ggc, gi) => {
@@ -1973,13 +1973,13 @@ export default function FamilyTree() {
                                                       <div className="pt-4 border-t border-white/10 space-y-3">
                                                         {ggc.bio && (
                                                           <div>
-                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1.5">{ggc.name.split(' ')[0]}</p>
+                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1.5">{ggc.name?.split(' ')[0]}</p>
                                                             <p className="text-xs text-white/60 italic leading-relaxed">{ggc.bio}</p>
                                                           </div>
                                                         )}
                                                         {typeof ggc.spouse === 'object' && ggc.spouse.bio && (
                                                           <div>
-                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1.5">{ggc.spouse.name.split(' ')[0]}</p>
+                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1.5">{ggc.spouse.name?.split(' ')[0]}</p>
                                                             <p className="text-xs text-white/60 italic leading-relaxed">{ggc.spouse.bio}</p>
                                                           </div>
                                                         )}
@@ -1991,7 +1991,7 @@ export default function FamilyTree() {
                                                       <div className="pt-4 border-t border-white/10 space-y-3">
                                                         {ggc.hobbies && ggc.hobbies.length > 0 && (
                                                           <div>
-                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">Hobbies - {ggc.name.split(' ')[0]}</p>
+                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">Hobbies - {ggc.name?.split(' ')[0]}</p>
                                                             <div className="flex flex-wrap gap-2 justify-center">
                                                               {ggc.hobbies.map((hobby, hi) => {
                                                                 const colors = ['#B8654A', '#B8976A', '#6B9080']
@@ -2011,7 +2011,7 @@ export default function FamilyTree() {
                                                         )}
                                                         {typeof ggc.spouse === 'object' && ggc.spouse.hobbies && ggc.spouse.hobbies.length > 0 && (
                                                           <div>
-                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">Hobbies - {ggc.spouse.name.split(' ')[0]}</p>
+                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">Hobbies - {ggc.spouse.name?.split(' ')[0]}</p>
                                                             <div className="flex flex-wrap gap-2 justify-center">
                                                               {ggc.spouse.hobbies.map((hobby, hi) => {
                                                                 const colors = ['#B8654A', '#B8976A', '#6B9080']
@@ -2124,7 +2124,7 @@ export default function FamilyTree() {
                                             }}>
                                               <p className="text-xs font-bold uppercase tracking-wider mb-4 text-white/70 flex items-center gap-1.5">
                                                 <Users className="w-3.5 h-3.5" style={{ color: '#B8976A' }} />
-                                                Hijos de {ggc.name.split(' ')[0]} ({ggc.children.length})
+                                                Hijos de {ggc.name?.split(' ')[0]} ({ggc.children.length})
                                               </p>
                                               <div className="space-y-3">
                                                 {ggc.children.map((bn, bi) => (
@@ -2149,13 +2149,13 @@ export default function FamilyTree() {
                                                       <div className="pt-3 border-t border-white/10 space-y-2">
                                                         {bn.bio && (
                                                           <div>
-                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1">{bn.name.split(' ')[0]}</p>
+                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1">{bn.name?.split(' ')[0]}</p>
                                                             <p className="text-xs text-white/60 italic leading-relaxed">{bn.bio}</p>
                                                           </div>
                                                         )}
                                                         {typeof bn.spouse === 'object' && bn.spouse.bio && (
                                                           <div>
-                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1">{bn.spouse.name.split(' ')[0]}</p>
+                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1">{bn.spouse.name?.split(' ')[0]}</p>
                                                             <p className="text-xs text-white/60 italic leading-relaxed">{bn.spouse.bio}</p>
                                                           </div>
                                                         )}
@@ -2167,7 +2167,7 @@ export default function FamilyTree() {
                                                       <div className="pt-3 border-t border-white/10 space-y-2">
                                                         {bn.hobbies && bn.hobbies.length > 0 && (
                                                           <div>
-                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1.5">Hobbies - {bn.name.split(' ')[0]}</p>
+                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1.5">Hobbies - {bn.name?.split(' ')[0]}</p>
                                                             <div className="flex flex-wrap gap-1.5">
                                                               {bn.hobbies.map((hobby, hi) => {
                                                                 const colors = ['#B8654A', '#B8976A', '#6B9080']
@@ -2187,7 +2187,7 @@ export default function FamilyTree() {
                                                         )}
                                                         {typeof bn.spouse === 'object' && bn.spouse.hobbies && bn.spouse.hobbies.length > 0 && (
                                                           <div>
-                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1.5">Hobbies - {bn.spouse.name.split(' ')[0]}</p>
+                                                            <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1.5">Hobbies - {bn.spouse.name?.split(' ')[0]}</p>
                                                             <div className="flex flex-wrap gap-1.5">
                                                               {bn.spouse.hobbies.map((hobby, hi) => {
                                                                 const colors = ['#B8654A', '#B8976A', '#6B9080']
