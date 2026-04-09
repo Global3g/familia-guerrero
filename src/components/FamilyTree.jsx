@@ -1715,7 +1715,7 @@ export default function FamilyTree() {
                                           )}
 
                                           {/* Bio */}
-                                          {(child.bio || (typeof child.spouse === 'object' && child.spouse.bio)) && (
+                                          {(child.bio || (typeof child.spouse === 'object' && child.spouse !== null && child.spouse.bio)) && (
                                             <div className="pt-6 border-t border-white/10 space-y-4">
                                               {child.bio && (
                                                 <div>
@@ -1723,7 +1723,7 @@ export default function FamilyTree() {
                                                   <p className="text-sm text-white/60 italic leading-relaxed">{child.bio}</p>
                                                 </div>
                                               )}
-                                              {typeof child.spouse === 'object' && child.spouse.bio && (
+                                              {typeof child.spouse === 'object' && child.spouse !== null && child.spouse.bio && (
                                                 <div>
                                                   <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">{child.spouse.name?.split(' ')[0]}</p>
                                                   <p className="text-sm text-white/60 italic leading-relaxed">{child.spouse.bio}</p>
@@ -1733,7 +1733,7 @@ export default function FamilyTree() {
                                           )}
 
                                           {/* Hobbies */}
-                                          {((child.hobbies && child.hobbies.length > 0) || (typeof child.spouse === 'object' && child.spouse.hobbies && child.spouse.hobbies.length > 0)) && (
+                                          {((child.hobbies && child.hobbies.length > 0) || (typeof child.spouse === 'object' && child.spouse !== null && child.spouse.hobbies && child.spouse.hobbies.length > 0)) && (
                                             <div className="pt-6 border-t border-white/10 space-y-4">
                                               {child.hobbies && child.hobbies.length > 0 && (
                                                 <div>
@@ -1755,7 +1755,7 @@ export default function FamilyTree() {
                                                   </div>
                                                 </div>
                                               )}
-                                              {typeof child.spouse === 'object' && child.spouse.hobbies && child.spouse.hobbies.length > 0 && (
+                                              {typeof child.spouse === 'object' && child.spouse !== null && child.spouse.hobbies && child.spouse.hobbies.length > 0 && (
                                                 <div>
                                                   <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-3">Hobbies - {child.spouse.name?.split(' ')[0]}</p>
                                                   <div className="flex flex-wrap gap-2 justify-center lg:justify-start">
@@ -1978,7 +1978,7 @@ export default function FamilyTree() {
                                                     )}
 
                                                     {/* Bio */}
-                                                    {(ggc.bio || (typeof ggc.spouse === 'object' && ggc.spouse.bio)) && (
+                                                    {(ggc.bio || (typeof ggc.spouse === 'object' && ggc.spouse !== null && ggc.spouse.bio)) && (
                                                       <div className="pt-4 border-t border-white/10 space-y-3">
                                                         {ggc.bio && (
                                                           <div>
@@ -1986,7 +1986,7 @@ export default function FamilyTree() {
                                                             <p className="text-xs text-white/60 italic leading-relaxed">{ggc.bio}</p>
                                                           </div>
                                                         )}
-                                                        {typeof ggc.spouse === 'object' && ggc.spouse.bio && (
+                                                        {typeof ggc.spouse === 'object' && ggc.spouse !== null && ggc.spouse.bio && (
                                                           <div>
                                                             <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1.5">{ggc.spouse.name?.split(' ')[0]}</p>
                                                             <p className="text-xs text-white/60 italic leading-relaxed">{ggc.spouse.bio}</p>
@@ -1996,7 +1996,7 @@ export default function FamilyTree() {
                                                     )}
 
                                                     {/* Hobbies */}
-                                                    {((ggc.hobbies && ggc.hobbies.length > 0) || (typeof ggc.spouse === 'object' && ggc.spouse.hobbies && ggc.spouse.hobbies.length > 0)) && (
+                                                    {((ggc.hobbies && ggc.hobbies.length > 0) || (typeof ggc.spouse === 'object' && ggc.spouse !== null && ggc.spouse.hobbies && ggc.spouse.hobbies.length > 0)) && (
                                                       <div className="pt-4 border-t border-white/10 space-y-3">
                                                         {ggc.hobbies && ggc.hobbies.length > 0 && (
                                                           <div>
@@ -2018,7 +2018,7 @@ export default function FamilyTree() {
                                                             </div>
                                                           </div>
                                                         )}
-                                                        {typeof ggc.spouse === 'object' && ggc.spouse.hobbies && ggc.spouse.hobbies.length > 0 && (
+                                                        {typeof ggc.spouse === 'object' && ggc.spouse !== null && ggc.spouse.hobbies && ggc.spouse.hobbies.length > 0 && (
                                                           <div>
                                                             <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">Hobbies - {ggc.spouse.name?.split(' ')[0]}</p>
                                                             <div className="flex flex-wrap gap-2 justify-center">
@@ -2154,7 +2154,7 @@ export default function FamilyTree() {
                                                     </div>
 
                                                     {/* Bio del bisnieto y cónyuge */}
-                                                    {(bn.bio || (typeof bn.spouse === 'object' && bn.spouse.bio)) && (
+                                                    {(bn.bio || (typeof bn.spouse === 'object' && bn.spouse !== null && bn.spouse.bio)) && (
                                                       <div className="pt-3 border-t border-white/10 space-y-2">
                                                         {bn.bio && (
                                                           <div>
@@ -2162,7 +2162,7 @@ export default function FamilyTree() {
                                                             <p className="text-xs text-white/60 italic leading-relaxed">{bn.bio}</p>
                                                           </div>
                                                         )}
-                                                        {typeof bn.spouse === 'object' && bn.spouse.bio && (
+                                                        {typeof bn.spouse === 'object' && bn.spouse !== null && bn.spouse.bio && (
                                                           <div>
                                                             <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1">{bn.spouse.name?.split(' ')[0]}</p>
                                                             <p className="text-xs text-white/60 italic leading-relaxed">{bn.spouse.bio}</p>
@@ -2172,7 +2172,7 @@ export default function FamilyTree() {
                                                     )}
 
                                                     {/* Hobbies del bisnieto y cónyuge */}
-                                                    {((bn.hobbies && bn.hobbies.length > 0) || (typeof bn.spouse === 'object' && bn.spouse.hobbies && bn.spouse.hobbies.length > 0)) && (
+                                                    {((bn.hobbies && bn.hobbies.length > 0) || (typeof bn.spouse === 'object' && bn.spouse !== null && bn.spouse.hobbies && bn.spouse.hobbies.length > 0)) && (
                                                       <div className="pt-3 border-t border-white/10 space-y-2">
                                                         {bn.hobbies && bn.hobbies.length > 0 && (
                                                           <div>
@@ -2194,7 +2194,7 @@ export default function FamilyTree() {
                                                             </div>
                                                           </div>
                                                         )}
-                                                        {typeof bn.spouse === 'object' && bn.spouse.hobbies && bn.spouse.hobbies.length > 0 && (
+                                                        {typeof bn.spouse === 'object' && bn.spouse !== null && bn.spouse.hobbies && bn.spouse.hobbies.length > 0 && (
                                                           <div>
                                                             <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1.5">Hobbies - {bn.spouse.name?.split(' ')[0]}</p>
                                                             <div className="flex flex-wrap gap-1.5">
