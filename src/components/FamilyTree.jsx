@@ -1488,7 +1488,7 @@ export default function FamilyTree() {
                           )}
 
                           {selectedMember.bio && (
-                            <p className="text-sm text-white/70 leading-relaxed mb-4 italic text-center">{selectedMember.bio}</p>
+                            <p className="text-base text-white/70 leading-relaxed mb-4 italic text-center">{selectedMember.bio}</p>
                           )}
 
                           {!selectedMember.weddingDate && !selectedMember.location && !selectedMember.bio && (
@@ -1720,13 +1720,13 @@ export default function FamilyTree() {
                                               {child.bio && (
                                                 <div>
                                                   <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">{child.name?.split(' ')[0]}</p>
-                                                  <p className="text-sm text-white/60 italic leading-relaxed">{child.bio}</p>
+                                                  <p className="text-base text-white/60 italic leading-relaxed">{child.bio}</p>
                                                 </div>
                                               )}
                                               {typeof child.spouse === 'object' && child.spouse !== null && child.spouse.bio && (
                                                 <div>
                                                   <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-2">{child.spouse.name?.split(' ')[0]}</p>
-                                                  <p className="text-sm text-white/60 italic leading-relaxed">{child.spouse.bio}</p>
+                                                  <p className="text-base text-white/60 italic leading-relaxed">{child.spouse.bio}</p>
                                                 </div>
                                               )}
                                             </div>
@@ -1983,13 +1983,13 @@ export default function FamilyTree() {
                                                         {ggc.bio && (
                                                           <div>
                                                             <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1.5">{ggc.name?.split(' ')[0]}</p>
-                                                            <p className="text-xs text-white/60 italic leading-relaxed">{ggc.bio}</p>
+                                                            <p className="text-base text-white/60 italic leading-relaxed">{ggc.bio}</p>
                                                           </div>
                                                         )}
                                                         {typeof ggc.spouse === 'object' && ggc.spouse !== null && ggc.spouse.bio && (
                                                           <div>
                                                             <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1.5">{ggc.spouse.name?.split(' ')[0]}</p>
-                                                            <p className="text-xs text-white/60 italic leading-relaxed">{ggc.spouse.bio}</p>
+                                                            <p className="text-base text-white/60 italic leading-relaxed">{ggc.spouse.bio}</p>
                                                           </div>
                                                         )}
                                                       </div>
@@ -2095,7 +2095,7 @@ export default function FamilyTree() {
                                                 {/* Bio */}
                                                 {ggc.bio && (
                                                   <div className="mt-4 pt-4 border-t border-white/10">
-                                                    <p className="text-xs text-white/60 italic leading-relaxed">{ggc.bio}</p>
+                                                    <p className="text-base text-white/60 italic leading-relaxed">{ggc.bio}</p>
                                                   </div>
                                                 )}
 
@@ -2159,13 +2159,13 @@ export default function FamilyTree() {
                                                         {bn.bio && (
                                                           <div>
                                                             <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1">{bn.name?.split(' ')[0]}</p>
-                                                            <p className="text-xs text-white/60 italic leading-relaxed">{bn.bio}</p>
+                                                            <p className="text-base text-white/60 italic leading-relaxed">{bn.bio}</p>
                                                           </div>
                                                         )}
                                                         {typeof bn.spouse === 'object' && bn.spouse !== null && bn.spouse.bio && (
                                                           <div>
                                                             <p className="text-xs font-semibold text-white/50 uppercase tracking-wider mb-1">{bn.spouse.name?.split(' ')[0]}</p>
-                                                            <p className="text-xs text-white/60 italic leading-relaxed">{bn.spouse.bio}</p>
+                                                            <p className="text-base text-white/60 italic leading-relaxed">{bn.spouse.bio}</p>
                                                           </div>
                                                         )}
                                                       </div>
