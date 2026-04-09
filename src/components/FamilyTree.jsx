@@ -1743,7 +1743,7 @@ export default function FamilyTree() {
                                                       const colors = ['#B8654A', '#B8976A', '#6B9080']
                                                       const color = colors[hi % colors.length]
                                                       return (
-                                                        <span key={hi} className="px-3 py-1.5 rounded-full text-white/80 text-sm" style={{
+                                                        <span key={hi} className="px-3 py-1.5 rounded-full text-white/80 text-base" style={{
                                                           background: `${color}15`,
                                                           border: `1px solid ${color}30`,
                                                           boxShadow: `0 2px 8px ${color}10`
@@ -1763,7 +1763,7 @@ export default function FamilyTree() {
                                                       const colors = ['#B8654A', '#B8976A', '#6B9080']
                                                       const color = colors[hi % colors.length]
                                                       return (
-                                                        <span key={hi} className="px-3 py-1.5 rounded-full text-white/80 text-sm" style={{
+                                                        <span key={hi} className="px-3 py-1.5 rounded-full text-white/80 text-base" style={{
                                                           background: `${color}15`,
                                                           border: `1px solid ${color}30`,
                                                           boxShadow: `0 2px 8px ${color}10`
@@ -2006,7 +2006,7 @@ export default function FamilyTree() {
                                                                 const colors = ['#B8654A', '#B8976A', '#6B9080']
                                                                 const color = colors[hi % colors.length]
                                                                 return (
-                                                                  <span key={hi} className="px-2 py-1 rounded-full text-white/75 text-xs" style={{
+                                                                  <span key={hi} className="px-3 py-1.5 rounded-full text-white/80 text-base" style={{
                                                                     background: `${color}12`,
                                                                     border: `1px solid ${color}25`,
                                                                     boxShadow: `0 1px 4px ${color}08`
@@ -2026,7 +2026,7 @@ export default function FamilyTree() {
                                                                 const colors = ['#B8654A', '#B8976A', '#6B9080']
                                                                 const color = colors[hi % colors.length]
                                                                 return (
-                                                                  <span key={hi} className="px-2 py-1 rounded-full text-white/75 text-xs" style={{
+                                                                  <span key={hi} className="px-3 py-1.5 rounded-full text-white/80 text-base" style={{
                                                                     background: `${color}12`,
                                                                     border: `1px solid ${color}25`,
                                                                     boxShadow: `0 1px 4px ${color}08`
@@ -2108,7 +2108,7 @@ export default function FamilyTree() {
                                                         const colors = ['#B8654A', '#B8976A', '#6B9080']
                                                         const color = colors[hi % colors.length]
                                                         return (
-                                                          <span key={hi} className="px-2 py-1 rounded-full text-white/75 text-xs" style={{
+                                                          <span key={hi} className="px-3 py-1.5 rounded-full text-white/80 text-base" style={{
                                                             background: `${color}12`,
                                                             border: `1px solid ${color}25`,
                                                             boxShadow: `0 1px 4px ${color}08`
@@ -2182,7 +2182,7 @@ export default function FamilyTree() {
                                                                 const colors = ['#B8654A', '#B8976A', '#6B9080']
                                                                 const color = colors[hi % colors.length]
                                                                 return (
-                                                                  <span key={hi} className="px-2 py-0.5 rounded-full text-white/75 text-xs" style={{
+                                                                  <span key={hi} className="px-3 py-1.5 rounded-full text-white/80 text-base" style={{
                                                                     background: `${color}10`,
                                                                     border: `1px solid ${color}20`,
                                                                     boxShadow: `0 1px 3px ${color}05`
@@ -2202,7 +2202,7 @@ export default function FamilyTree() {
                                                                 const colors = ['#B8654A', '#B8976A', '#6B9080']
                                                                 const color = colors[hi % colors.length]
                                                                 return (
-                                                                  <span key={hi} className="px-2 py-0.5 rounded-full text-white/75 text-xs" style={{
+                                                                  <span key={hi} className="px-3 py-1.5 rounded-full text-white/80 text-base" style={{
                                                                     background: `${color}10`,
                                                                     border: `1px solid ${color}20`,
                                                                     boxShadow: `0 1px 3px ${color}05`
