@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Users, TreePine, Calendar, TrendingUp, MapPin, Globe } from 'lucide-react'
+import { Users, TreePine, Calendar, TrendingUp, MapPin, Globe, Download } from 'lucide-react'
 import { getFamilyMembers, getGrandparents } from '../firebase/familyService'
+import { backupFirestore } from '../utils/backupFirestore'
 
 function collectStats(members, grandparents) {
   let total = 0
@@ -44,6 +45,7 @@ function collectStats(members, grandparents) {
 
 export default function Dashboard() {
   const [stats, setStats] = useState(null)
+  const [backingUp, setBackingUp] = useState(false)
 
   useEffect(() => {
     async function load() {
@@ -60,6 +62,19 @@ export default function Dashboard() {
     }
     load()
   }, [])
+
+  const handleBackup = async () => {
+    setBackingUp(true)
+    try {
+      await backupFirestore()
+      alert('✅ Backup descargado exitosamente!')
+    } catch (error) {
+      console.error('Error en backup:', error)
+      alert('❌ Error al crear backup. Revisa la consola.')
+    } finally {
+      setBackingUp(false)
+    }
+  }
 
   return (
     <section id="dashboard" className="pt-20 scroll-mt-24 max-w-7xl mx-auto px-6 pb-32">
@@ -203,6 +218,44 @@ export default function Dashboard() {
             <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
             </svg>
+          </button>
+        </motion.div>
+
+        {/* Backup Database Card */}
+        <motion.div
+          initial={{ opacity: 0, y: 30 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6, delay: 0.6 }}
+          className="glass-panel rounded-2xl p-6 lg:col-span-2 relative border-l-4 border-l-accent flex flex-col sm:flex-row items-center gap-6"
+        >
+          <div className="w-16 h-16 rounded-xl bg-accent/20 border border-accent/30 flex items-center justify-center shrink-0">
+            <Download className="w-8 h-8 text-accent" />
+          </div>
+          <div className="flex-1 text-center sm:text-left">
+            <div className="text-[10px] text-accent uppercase tracking-widest mb-1">Seguridad de Datos</div>
+            <h3 className="text-xl font-serif text-white mb-2">Backup de Base de Datos</h3>
+            <p className="text-sm text-white/60 font-sans">
+              Descarga una copia de seguridad completa de toda la información familiar.
+              Incluye todos los miembros, eventos y datos almacenados.
+            </p>
+          </div>
+          <button
+            onClick={handleBackup}
+            disabled={backingUp}
+            className="shrink-0 px-6 py-3 rounded-full bg-accent/20 hover:bg-accent/30 border border-accent/40 transition flex items-center gap-2 text-accent font-medium disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {backingUp ? (
+              <>
+                <div className="w-4 h-4 border-2 border-accent/30 border-t-accent rounded-full animate-spin" />
+                <span className="text-sm">Descargando...</span>
+              </>
+            ) : (
+              <>
+                <Download className="w-4 h-4" />
+                <span className="text-sm">Descargar Backup</span>
+              </>
+            )}
           </button>
         </motion.div>
       </div>
