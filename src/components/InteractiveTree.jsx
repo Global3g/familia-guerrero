@@ -50,7 +50,7 @@ function PersonNode({ data, selected }) {
           </div>
         )}
         <div className="flex-1 min-w-0 text-left">
-          <p className="text-xs font-bold leading-tight truncate" style={{ color: '#0F172A' }}>{name}</p>
+          <p className="text-xs font-bold leading-tight truncate" style={{ color: '#0F172A' }}>{name}{isDeceased && <span className="ml-0.5 text-sm font-bold" style={{ color: '#D4A843' }}>✝</span>}</p>
           {role && <p className="text-[11px] text-[#6B9080] font-medium">{role}</p>}
           {isDeceased && <p className="text-[11px] text-[#B8976A] italic">En memoria</p>}
         </div>

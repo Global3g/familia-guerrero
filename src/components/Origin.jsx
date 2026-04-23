@@ -16,6 +16,7 @@ import { getGrandparents, saveGrandparents } from '../firebase/familyService'
 import GrandparentForm from './GrandparentForm'
 
 import formatDate from '../utils/formatDate'
+import DeceasedCross from '../utils/DeceasedCross'
 
 const ProfileCard = ({ person, index, onEdit }) => {
   const isGrandfather = index === 0
@@ -68,7 +69,7 @@ const ProfileCard = ({ person, index, onEdit }) => {
             className="text-3xl font-serif font-bold mb-1"
             style={{ color: '#FFFFFF' }}
           >
-            {person.name}
+            {person.name}<DeceasedCross deathDate={person.deathDate} />
             {(() => {
               const r = calcAge(person.birthDate, person.deathDate)
               if (!r) return null

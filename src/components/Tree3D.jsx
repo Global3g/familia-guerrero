@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react'
 import { motion } from 'framer-motion'
 import { User, Heart, RotateCcw, Maximize2, X, ChevronDown, ZoomIn, ZoomOut } from 'lucide-react'
 import { getFamilyMembers, getGrandparents } from '../firebase/familyService'
+import DeceasedCross from '../utils/DeceasedCross'
 
 // ── Tiny Person Card ────────────────────────────────────────
 function PersonCard({ name, photoURL, isDeceased, isGrandparent, size = 'md' }) {
@@ -46,7 +47,7 @@ function PersonCard({ name, photoURL, isDeceased, isGrandparent, size = 'md' }) 
         className={`${isSmall ? 'text-[9px]' : 'text-[10px]'} font-semibold leading-tight text-center line-clamp-2`}
         style={{ color: '#0F172A' }}
       >
-        {name}
+        {name}{isDeceased && <span className="ml-0.5 text-sm font-bold" style={{ color: '#D4A843' }}>✝</span>}
       </p>
       {isDeceased && (
         <span className="text-[8px] italic" style={{ color: '#B8976A' }}>

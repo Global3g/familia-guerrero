@@ -322,13 +322,13 @@ export default function Memorial() {
           photoURL: person.spouse.photoURL,
           birthDate: person.spouse.birthDate,
           deathDate: person.spouse.deathDate,
-          relationship: `Esposo(a) de ${person.name?.split(' ')[0] || ''}`,
+          relationship: `Esposo(a) de ${person.name || ''}`,
           tribute: person.spouse.bio || '',
           legacy: '',
           _source: 'tree',
         })
       }
-      if (person.children) person.children.forEach(c => walk(c, person.name?.split(' ')[0]))
+      if (person.children) person.children.forEach(c => walk(c, person.name || ''))
     }
     if (gp) {
       const gf = gp.grandfather
@@ -486,7 +486,7 @@ export default function Memorial() {
 
               {/* Name */}
               <h3 className="font-serif text-2xl font-bold text-white">
-                {person.name}
+                {person.name}<span className="ml-1 text-2xl font-bold" style={{ color: '#D4A843' }}>✝</span>
               </h3>
 
               {/* Dates + age */}
@@ -562,38 +562,111 @@ export default function Memorial() {
 
               {/* Leave a memory */}
               <div className="mt-3 pt-3 border-t border-white/80">
-                <details className="group">
-                  <summary className="text-[11px] text-white/40 font-medium cursor-pointer flex items-center gap-1 justify-center">
-                    <MessageCircle className="w-3 h-3" />
-                    Dejar un recuerdo ({(person.memories || []).length})
-                  </summary>
-                  <div className="mt-2 space-y-2">
+                <div className="flex items-center gap-1 justify-center mb-3">
+                  <MessageCircle className="w-3.5 h-3.5 text-[#B8976A]" />
+                  <span className="text-[11px] text-white/40 font-medium">
+                    Recuerdos ({(person.memories || []).length})
+                  </span>
+                </div>
+
+                {/* Show existing memories */}
+                {(person.memories || []).length > 0 && (
+                  <div className="space-y-2 mb-3">
                     {(person.memories || []).map((mem, mi) => (
-                      <p key={mi} className="text-[11px] text-white/70 italic bg-white/5 rounded-lg p-2">
-                        "{mem.text}" — <span className="font-semibold not-italic">{mem.author}</span>
-                      </p>
+                      <div key={mi} className="bg-white/5 rounded-lg p-3 text-left group/mem relative">
+                        <p className="text-xs text-white/70 italic leading-relaxed">"{mem.text}"</p>
+                        <div className="flex items-center justify-between mt-1.5">
+                          <span className="text-[10px] font-semibold text-[#B8976A]">{mem.author}</span>
+                          <div className="flex items-center gap-2">
+                            {mem.date && <span className="text-[10px] text-white/30">{new Date(mem.date).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' })}</span>}
+                            <div className="flex gap-1 sm:opacity-0 sm:group-hover/mem:opacity-100 transition-opacity">
+                              <button
+                                onClick={() => {
+                                  const textInput = document.getElementById(`mem-text-${person.id || index}`)
+                                  const authorInput = document.getElementById(`mem-author-${person.id || index}`)
+                                  if (textInput) textInput.value = mem.text
+                                  if (authorInput) authorInput.value = mem.author || ''
+                                  textInput?.focus()
+                                  // Mark editing index
+                                  textInput?.setAttribute('data-editing', mi)
+                                }}
+                                className="w-5 h-5 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 text-white/50 hover:text-white transition"
+                                title="Editar"
+                              >
+                                <Pencil className="w-2.5 h-2.5" />
+                              </button>
+                              <button
+                                onClick={async () => {
+                                  if (!confirm('¿Eliminar este recuerdo?')) return
+                                  const updatedMemories = (person.memories || []).filter((_, i) => i !== mi)
+                                  if (person.id) {
+                                    await saveMemorial(person.id, { memories: updatedMemories })
+                                    await loadMemorials()
+                                  }
+                                }}
+                                className="w-5 h-5 rounded-full flex items-center justify-center bg-white/10 hover:bg-red-500/20 text-white/50 hover:text-red-400 transition"
+                                title="Eliminar"
+                              >
+                                <Trash2 className="w-2.5 h-2.5" />
+                              </button>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
                     ))}
-                    <div className="flex gap-2">
-                      <input type="text" id={`mem-text-${person.id || index}`} placeholder="Tu recuerdo..." className="flex-1 text-[11px] px-2 py-1.5 rounded-lg border-4 border-white/80 bg-white/5 text-white focus:outline-none placeholder:text-white/30" />
-                      <button
-                        onClick={async () => {
-                          const input = document.getElementById(`mem-text-${person.id || index}`)
-                          if (!input?.value.trim()) return
-                          const newMemory = { text: input.value.trim(), author: 'Anonimo', date: new Date().toISOString() }
-                          if (person.id) {
-                            const updatedMemories = [...(person.memories || []), newMemory]
-                            await saveMemorial(person.id, { memories: updatedMemories })
-                            await loadMemorials()
-                          }
-                          input.value = ''
-                        }}
-                        className="px-3 py-1.5 rounded-lg bg-[#B8976A] text-white text-[11px] font-medium hover:bg-[#B8976A]/90 transition"
-                      >
-                        Enviar
-                      </button>
-                    </div>
                   </div>
-                </details>
+                )}
+
+                {/* Input form */}
+                <div className="space-y-2">
+                  <input type="text" id={`mem-author-${person.id || index}`} placeholder="Tu nombre" className="w-full text-[11px] px-2.5 py-1.5 rounded-lg border border-white/10 bg-white/5 text-white focus:outline-none focus:ring-1 focus:ring-[#B8976A]/30 placeholder:text-white/30" />
+                  <div className="flex gap-2">
+                    <input type="text" id={`mem-text-${person.id || index}`} placeholder="Escribe un recuerdo..." className="flex-1 text-[11px] px-2.5 py-1.5 rounded-lg border border-white/10 bg-white/5 text-white focus:outline-none focus:ring-1 focus:ring-[#B8976A]/30 placeholder:text-white/30" />
+                    <button
+                      onClick={async () => {
+                        const textInput = document.getElementById(`mem-text-${person.id || index}`)
+                        const authorInput = document.getElementById(`mem-author-${person.id || index}`)
+                        if (!textInput?.value.trim()) return
+                        const editingIdx = textInput.getAttribute('data-editing')
+                        let updatedMemories
+
+                        if (editingIdx !== null && editingIdx !== '') {
+                          // Editing existing memory
+                          const idx = parseInt(editingIdx)
+                          updatedMemories = (person.memories || []).map((m, i) =>
+                            i === idx ? { ...m, text: textInput.value.trim(), author: authorInput?.value.trim() || m.author } : m
+                          )
+                          textInput.removeAttribute('data-editing')
+                        } else {
+                          // New memory
+                          const newMemory = { text: textInput.value.trim(), author: authorInput?.value.trim() || 'Anonimo', date: new Date().toISOString() }
+                          updatedMemories = [...(person.memories || []), newMemory]
+                        }
+
+                        if (person.id) {
+                          await saveMemorial(person.id, { memories: updatedMemories })
+                        } else {
+                          await saveMemorial(null, {
+                            name: person.name,
+                            photoURL: person.photoURL || null,
+                            birthDate: person.birthDate || '',
+                            deathDate: person.deathDate || '',
+                            relationship: person.relationship || '',
+                            tribute: person.tribute || '',
+                            legacy: person.legacy || '',
+                            memories: updatedMemories,
+                          })
+                        }
+                        textInput.value = ''
+                        authorInput.value = ''
+                        await loadMemorials()
+                      }}
+                      className="px-3 py-1.5 rounded-lg bg-[#B8976A] text-white text-[11px] font-medium hover:bg-[#B8976A]/90 transition"
+                    >
+                      Enviar
+                    </button>
+                  </div>
+                </div>
               </div>
             </motion.article>
           ))}

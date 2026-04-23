@@ -1,10 +1,11 @@
 import { useState, useEffect, useMemo, useCallback, lazy, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Heart, Users, User, Plus, Pencil, Trash2, Eye, AlertTriangle, ArrowRightLeft, Calendar, Home, MapPin, Star, Camera, MessageCircle, GitBranch, LayoutGrid } from 'lucide-react'
+import { Heart, Users, User, Plus, Pencil, Trash2, Eye, AlertTriangle, ArrowRightLeft, Calendar, Home, MapPin, Star, MessageCircle, GitBranch, LayoutGrid } from 'lucide-react'
 import { grandparents as defaultGrandparents } from '../data/familyData'
 import { getFamilyMembers, saveFamilyMember, deleteFamilyMember, getGrandparents } from '../firebase/familyService'
 import FamilyMemberForm from './FamilyMemberForm'
 import sounds from '../utils/sounds'
+import DeceasedCross from '../utils/DeceasedCross'
 
 const ReactFlowLazy = lazy(() => import('reactflow').then(mod => ({ default: mod.default })))
 const ControlsLazy = lazy(() => import('reactflow').then(mod => ({ default: mod.Controls })))
@@ -85,7 +86,7 @@ function GrandparentsPair({ grandparentsData }) {
       <div className="flex items-center gap-6 sm:gap-10 p-6 rounded-2xl border-4 border-white/80" style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}>
         <div className="flex flex-col items-center gap-1.5">
           <PersonCircle name={grandfather.fullName || grandfather.name} photo={grandfather.photoURL || grandfather.photo} size="lg" />
-          <p className="text-lg font-serif font-bold text-white text-center leading-tight">{grandfather.fullName || grandfather.name}</p>
+          <p className="text-lg font-serif font-bold text-white text-center leading-tight">{grandfather.fullName || grandfather.name}<DeceasedCross deathDate={grandfather.deathDate} /></p>
           {grandfather.nickname && <p className="text-xs text-white/70 font-medium italic">"{grandfather.nickname}"</p>}
           <p className="text-xs text-white/50 font-medium">{grandfather.role}</p>
           <AgeBadge birthDate={grandfather.birthDate} deathDate={grandfather.deathDate} />
@@ -96,7 +97,7 @@ function GrandparentsPair({ grandparentsData }) {
         </div>
         <div className="flex flex-col items-center gap-1.5">
           <PersonCircle name={grandmother.fullName || grandmother.name} photo={grandmother.photoURL || grandmother.photo} size="lg" />
-          <p className="text-lg font-serif font-bold text-white text-center leading-tight">{grandmother.fullName || grandmother.name}</p>
+          <p className="text-lg font-serif font-bold text-white text-center leading-tight">{grandmother.fullName || grandmother.name}<DeceasedCross deathDate={grandmother.deathDate} /></p>
           {grandmother.nickname && <p className="text-xs text-white/70 font-medium italic">"{grandmother.nickname}"</p>}
           <p className="text-xs text-white/50 font-medium">{grandmother.role}</p>
           <AgeBadge birthDate={grandmother.birthDate} deathDate={grandmother.deathDate} />
@@ -115,7 +116,7 @@ function ChildCard({ child, onEdit, onDelete, onView }) {
     <motion.div
       layout
       className="bg-white/5 rounded-2xl p-6 sm:p-7 border-4 border-white/80 hover:border-white/20 hover:bg-white/10 transition-all duration-300 relative group cursor-pointer"
-      style={{ width: hasSpouse ? '340px' : '200px', maxWidth: '100%' }}
+      style={{ width: hasSpouse ? '400px' : '220px', maxWidth: '100%' }}
       onClick={onView}
     >
       {/* Action buttons */}
@@ -147,8 +148,8 @@ function ChildCard({ child, onEdit, onDelete, onView }) {
         {/* Main person */}
         <div className="flex flex-col items-center text-center min-w-0 flex-1">
           <PersonCircle name={child.name || child.fullName} photo={child.photoURL || child.photo} size="xl" />
-          <p className="text-sm font-serif font-bold text-white leading-tight mt-3 line-clamp-2">
-            {child.name || child.fullName || 'Miembro'}
+          <p className="text-sm font-serif font-bold text-white leading-tight mt-3">
+            {child.name || child.fullName || 'Miembro'}<DeceasedCross deathDate={child.deathDate} />
           </p>
           {child.nickname && (
             <p className="text-xs text-white/40 italic mt-0.5">"{child.nickname}"</p>
@@ -170,8 +171,8 @@ function ChildCard({ child, onEdit, onDelete, onView }) {
               {typeof spouse === 'object' ? (
                 <>
                   <PersonCircle name={spouse.name} photo={spouse.photoURL} size="xl" />
-                  <p className="text-sm font-serif font-bold text-white leading-tight mt-3 line-clamp-2">
-                    {spouse.name}
+                  <p className="text-sm font-serif font-bold text-white leading-tight mt-3">
+                    {spouse.name}<DeceasedCross deathDate={spouse.deathDate} />
                   </p>
                   {spouse.nickname && (
                     <p className="text-xs text-white/40 italic mt-0.5">"{spouse.nickname}"</p>
@@ -183,7 +184,7 @@ function ChildCard({ child, onEdit, onDelete, onView }) {
               ) : (
                 <>
                   <PersonCircle name={spouse} photo={null} size="xl" />
-                  <p className="text-sm font-serif font-bold text-white leading-tight mt-3 line-clamp-2">
+                  <p className="text-sm font-serif font-bold text-white leading-tight mt-3">
                     {spouse}
                   </p>
                 </>
@@ -701,7 +702,7 @@ function NucleusCardTree({ member, onClose }) {
                     </div>
                   </div>
                   <div className="text-center max-w-[180px]">
-                    <p className="elegant-heading text-xl text-white leading-tight mb-2">{member.name}</p>
+                    <p className="elegant-heading text-xl text-white leading-tight mb-2">{member.name}<DeceasedCross deathDate={member.deathDate} /></p>
                     {member.nickname && <p className="text-sm text-white/50 italic font-light mb-2">"{member.nickname}"</p>}
                     <AgeBadge birthDate={member.birthDate} deathDate={member.deathDate} />
                   </div>
@@ -728,7 +729,7 @@ function NucleusCardTree({ member, onClose }) {
                         </div>
                       </div>
                       <div className="text-center max-w-[180px]">
-                        <p className="elegant-heading text-xl text-white leading-tight mb-2">{typeof sp === 'object' ? sp.name : sp}</p>
+                        <p className="elegant-heading text-xl text-white leading-tight mb-2">{typeof sp === 'object' ? sp.name : sp}{typeof sp === 'object' && <DeceasedCross deathDate={sp.deathDate} />}</p>
                         {typeof sp === 'object' && sp.nickname && <p className="text-sm text-white/50 italic font-light mb-2">"{sp.nickname}"</p>}
                         {typeof sp === 'object' && <AgeBadge birthDate={sp.birthDate} deathDate={sp.deathDate} />}
                       </div>
@@ -844,7 +845,7 @@ function NucleusCardTree({ member, onClose }) {
                                           )}
                                         </div>
                                         <div className="text-center w-full">
-                                          <p className="elegant-heading text-base text-white leading-tight mb-1 px-2">{child.name}</p>
+                                          <p className="elegant-heading text-base text-white leading-tight mb-1 px-2">{child.name}<DeceasedCross deathDate={child.deathDate} /></p>
                                           {child.nickname && <p className="text-xs italic text-white/50 font-light mb-2">"{child.nickname}"</p>}
                                           <AgeBadge birthDate={child.birthDate} deathDate={child.deathDate} />
                                         </div>
@@ -868,7 +869,7 @@ function NucleusCardTree({ member, onClose }) {
                                                 )}
                                               </div>
                                               <div className="flex-1 min-w-0">
-                                                <p className="elegant-heading text-sm text-white/90 truncate mb-1">{childSp.name}</p>
+                                                <p className="elegant-heading text-sm text-white/90 truncate mb-1">{childSp.name}<DeceasedCross deathDate={childSp.deathDate} /></p>
                                                 <AgeBadge birthDate={childSp.birthDate} deathDate={childSp.deathDate} />
                                               </div>
                                             </>
@@ -1314,7 +1315,7 @@ export default function FamilyTree() {
                               <div className="space-y-3">
                                 <div>
                                   <h2 className="text-4xl sm:text-5xl font-serif font-bold text-white leading-tight tracking-tight">
-                                    {selectedMember.name || selectedMember.fullName || 'Miembro Familiar'}
+                                    {selectedMember.name || selectedMember.fullName || 'Miembro Familiar'}<DeceasedCross deathDate={selectedMember.deathDate} />
                                   </h2>
                                   {selectedMember.nickname && (
                                     <p className="text-lg text-white/70 italic mt-2">"{selectedMember.nickname}"</p>
@@ -1335,7 +1336,7 @@ export default function FamilyTree() {
                                 <div className="pt-6 border-t border-white/10 space-y-3">
                                   <div>
                                     <h3 className="text-3xl sm:text-4xl font-serif font-bold text-white/90 leading-tight">
-                                      {typeof selectedMember.spouse === 'object' ? selectedMember.spouse.name : selectedMember.spouse}
+                                      {typeof selectedMember.spouse === 'object' ? selectedMember.spouse.name : selectedMember.spouse}{typeof selectedMember.spouse === 'object' && <DeceasedCross deathDate={selectedMember.spouse.deathDate} />}
                                     </h3>
                                     {typeof selectedMember.spouse === 'object' && selectedMember.spouse.nickname && (
                                       <p className="text-base text-white/60 italic mt-2">"{selectedMember.spouse.nickname}"</p>
@@ -1361,7 +1362,6 @@ export default function FamilyTree() {
                             { key: 'familia', label: 'Familia', icon: Users },
                             { key: 'datos', label: 'Datos', icon: Heart },
                             { key: 'momentos', label: 'Momentos', icon: Star },
-                            { key: 'galeria', label: 'Galeria', icon: Camera },
                             { key: 'mensajes', label: 'Mensajes', icon: MessageCircle },
                           ].map((tab) => {
                             const TabIcon = tab.icon
@@ -1660,7 +1660,7 @@ export default function FamilyTree() {
                                           <div className="space-y-3">
                                             <div>
                                               <h2 className="text-4xl sm:text-5xl font-serif font-bold text-white leading-tight tracking-tight">
-                                                {child.name}
+                                                {child.name}<DeceasedCross deathDate={child.deathDate} />
                                               </h2>
                                               {child.nickname && (
                                                 <p className="text-lg text-white/70 italic mt-2">"{child.nickname}"</p>
@@ -1681,7 +1681,7 @@ export default function FamilyTree() {
                                             <div className="pt-6 border-t border-white/10 space-y-3">
                                               <div>
                                                 <h3 className="text-3xl sm:text-4xl font-serif font-bold text-white/90 leading-tight">
-                                                  {typeof child.spouse === 'object' ? child.spouse.name : child.spouse}
+                                                  {typeof child.spouse === 'object' ? child.spouse.name : child.spouse}{typeof child.spouse === 'object' && <DeceasedCross deathDate={child.spouse.deathDate} />}
                                                 </h3>
                                                 {typeof child.spouse === 'object' && child.spouse.nickname && (
                                                   <p className="text-base text-white/60 italic mt-2">"{child.spouse.nickname}"</p>
@@ -1811,7 +1811,7 @@ export default function FamilyTree() {
                                       </div>
                                       <div>
                                         <p className="text-xs uppercase tracking-widest text-white/50 mb-1">{child.role || (child.gender === 'F' ? 'Hija' : child.gender === 'M' ? 'Hijo' : 'Hijo(a)')}</p>
-                                        <h3 className="text-2xl font-serif font-bold text-white mb-1">{child.name}</h3>
+                                        <h3 className="text-2xl font-serif font-bold text-white mb-1">{child.name}<DeceasedCross deathDate={child.deathDate} /></h3>
                                         {child.nickname && <p className="text-sm text-white/60 italic mb-2">"{child.nickname}"</p>}
                                         <AgeBadge birthDate={child.birthDate} deathDate={child.deathDate} />
                                         {child.location && <p className="text-xs text-white/50 mt-2 flex items-center gap-1"><MapPin className="w-3 h-3" /> {child.location}</p>}
@@ -1921,7 +1921,7 @@ export default function FamilyTree() {
                                                           {ggc.gender === 'F' ? 'Nieta' : ggc.gender === 'M' ? 'Nieto' : 'Nieto(a)'}
                                                         </p>
                                                         <h3 className="text-2xl sm:text-3xl font-serif font-bold text-white leading-tight">
-                                                          {ggc.name}
+                                                          {ggc.name}<DeceasedCross deathDate={ggc.deathDate} />
                                                         </h3>
                                                         {ggc.nickname && (
                                                           <p className="text-sm text-white/70 italic mt-1">"{ggc.nickname}"</p>
@@ -1945,7 +1945,7 @@ export default function FamilyTree() {
                                                       <div>
                                                         <p className="text-xs uppercase tracking-widest text-white/50 mb-1">Cónyuge</p>
                                                         <h4 className="text-xl sm:text-2xl font-serif font-bold text-white/90 leading-tight">
-                                                          {typeof ggc.spouse === 'object' ? ggc.spouse.name : ggc.spouse}
+                                                          {typeof ggc.spouse === 'object' ? ggc.spouse.name : ggc.spouse}{typeof ggc.spouse === 'object' && <DeceasedCross deathDate={ggc.spouse.deathDate} />}
                                                         </h4>
                                                         {typeof ggc.spouse === 'object' && ggc.spouse.nickname && (
                                                           <p className="text-sm text-white/60 italic mt-1">"{ggc.spouse.nickname}"</p>
@@ -2083,7 +2083,7 @@ export default function FamilyTree() {
                                                     )}
                                                   </div>
                                                   <div className="flex-1 min-w-0">
-                                                    <p className="text-lg font-serif font-bold text-white truncate">{ggc.name}</p>
+                                                    <p className="text-lg font-serif font-bold text-white truncate">{ggc.name}<DeceasedCross deathDate={ggc.deathDate} /></p>
                                                     {ggc.nickname && <p className="text-sm text-white/70 italic mt-0.5">"{ggc.nickname}"</p>}
                                                     <AgeBadge birthDate={ggc.birthDate} deathDate={ggc.deathDate} />
                                                     {ggc.location && (
@@ -2141,7 +2141,7 @@ export default function FamilyTree() {
                                                     <div className="flex items-center gap-3">
                                                       <PersonCircle name={bn.name} photo={bn.photoURL} size="md" onClick={() => setLightboxPhoto({ photoURL: bn.photoURL, caption: bn.name })} />
                                                       <div className="flex-1 min-w-0">
-                                                        <p className="text-sm font-bold text-white truncate">{bn.name}</p>
+                                                        <p className="text-sm font-bold text-white truncate">{bn.name}<DeceasedCross deathDate={bn.deathDate} /></p>
                                                         {bn.nickname && <p className="text-xs text-white/60 italic">"{bn.nickname}"</p>}
                                                         <AgeBadge birthDate={bn.birthDate} deathDate={bn.deathDate} />
                                                       </div>
@@ -2266,69 +2266,6 @@ export default function FamilyTree() {
                       {modalTab === 'momentos' && (!selectedMember.moments || selectedMember.moments.length === 0) && (
                         <p className="text-sm text-white/40 text-center py-8">No hay momentos registrados.</p>
                       )}
-
-                      {/* TAB: Galeria - shows ALL photos from entire family nucleus */}
-                      {modalTab === 'galeria' && (() => {
-                        // Collect all photos from the entire nucleus
-                        const allPhotos = []
-                        const addPhotos = (person, label) => {
-                          if (person.gallery && person.gallery.length > 0) {
-                            person.gallery.forEach(g => allPhotos.push({ ...g, owner: label || person.name?.split(' ')[0] }))
-                          }
-                        }
-                        addPhotos(selectedMember, selectedMember.name?.split(' ')[0])
-                        if (selectedMember.spouse && typeof selectedMember.spouse === 'object') {
-                          addPhotos(selectedMember.spouse, selectedMember.spouse.name?.split(' ')[0])
-                        }
-                        const walkPhotos = (children) => {
-                          (children || []).filter(c => c && c !== null).forEach(child => {
-                            addPhotos(child, child.name?.split(' ')[0])
-                            if (child.spouse && typeof child.spouse === 'object') addPhotos(child.spouse, child.spouse.name?.split(' ')[0])
-                            if (child.children) walkPhotos(child.children)
-                          })
-                        }
-                        if (selectedMember.children) {
-                          walkPhotos(selectedMember.children)
-                        }
-
-                        if (allPhotos.length === 0) return (
-                          <p className="text-sm text-white/40 text-center py-8">No hay fotos en la galeria.</p>
-                        )
-
-                        // Group by owner
-                        const grouped = {}
-                        allPhotos.forEach(p => {
-                          if (!grouped[p.owner]) grouped[p.owner] = []
-                          grouped[p.owner].push(p)
-                        })
-
-                        return (
-                          <div className="mb-8 space-y-6">
-                            {Object.entries(grouped).map(([owner, photos]) => (
-                              <div key={owner}>
-                                <h4 className="text-xs font-bold text-white/70 uppercase tracking-wider mb-3 flex items-center gap-1.5">
-                                  <Camera className="w-3.5 h-3.5" />
-                                  Fotos de {owner} ({photos.length})
-                                </h4>
-                                <div className="grid grid-cols-2 sm:grid-cols-3 gap-3">
-                                  {photos.map((g, i) => (
-                                    <div key={i} className="rounded-xl overflow-hidden border-4 border-white/80 shadow-sm bg-[#0F172A] cursor-pointer hover:shadow-lg hover:-translate-y-0.5 transition-all" onClick={() => g.photoURL && setLightboxPhoto(g)}>
-                                      {g.photoURL ? (
-                                        <img src={g.photoURL} alt={g.caption} className="w-full h-40 object-cover" />
-                                      ) : (
-                                        <div className="w-full h-40 bg-gradient-to-br from-white/10/20 to-white/5/20 flex items-center justify-center">
-                                          <Camera className="w-8 h-8 text-white/70/40" />
-                                        </div>
-                                      )}
-                                      {g.caption && <p className="text-[11px] text-white/70 p-2 text-center">{g.caption}</p>}
-                                    </div>
-                                  ))}
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        )
-                      })()}
 
                       {/* TAB: Mensajes */}
                       {modalTab === 'mensajes' && selectedMember.messages && selectedMember.messages.length > 0 && (

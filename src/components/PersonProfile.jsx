@@ -1,6 +1,7 @@
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, Heart, MapPin, Calendar, Star, User } from 'lucide-react'
 import formatDate from '../utils/formatDate'
+import DeceasedCross from '../utils/DeceasedCross'
 
 function calcAge(birthDate, deathDate) {
   if (!birthDate) return null
@@ -39,7 +40,7 @@ export default function PersonProfile({ person, isOpen, onClose }) {
             </div>
 
             <div className="pt-16 pb-6 px-6 text-center">
-              <h2 className="text-xl font-serif font-bold text-white">{person.name}</h2>
+              <h2 className="text-xl font-serif font-bold text-white">{person.name}<DeceasedCross deathDate={person.deathDate} /></h2>
               {person.nickname && <p className="text-sm text-[#B8654A] italic">"{person.nickname}"</p>}
               {ageData && <span className="inline-block mt-1 text-xs px-2 py-0.5 rounded-full bg-[#6B9080]/15 text-[#6B9080] font-medium">{ageData.age} años{ageData.deceased ? ' (†)' : ''}</span>}
 

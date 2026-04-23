@@ -529,7 +529,9 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
   }
 
   // Gallery handlers
+  const MAX_GALLERY_PHOTOS = 10
   const handleAddGalleryItem = () => {
+    if (form.gallery.length >= MAX_GALLERY_PHOTOS) return
     setForm((prev) => ({
       ...prev,
       gallery: [...prev.gallery, { caption: '', photoURL: '' }],
@@ -785,10 +787,11 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
           <button
             type="button"
             onClick={handleAddGalleryItem}
-            className="flex w-full items-center justify-center gap-2 rounded-lg border-dashed border-2 border-[#6B9080]/30 py-2.5 text-sm text-[#6B9080] hover:bg-[#6B9080]/5 transition"
+            disabled={form.gallery.length >= MAX_GALLERY_PHOTOS}
+            className="flex w-full items-center justify-center gap-2 rounded-lg border-dashed border-2 border-[#6B9080]/30 py-2.5 text-sm text-[#6B9080] hover:bg-[#6B9080]/5 transition disabled:opacity-40 disabled:cursor-not-allowed"
           >
             <Image className="h-4 w-4" />
-            Agregar foto
+            {form.gallery.length >= MAX_GALLERY_PHOTOS ? `Maximo ${MAX_GALLERY_PHOTOS} fotos` : 'Agregar foto'}
           </button>
         </div>
 
