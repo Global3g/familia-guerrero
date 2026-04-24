@@ -1354,38 +1354,52 @@ export default function FamilyTree() {
                         </div>
                       </div>
 
-                      {/* Tab bar */}
-                      <div className="sticky top-0 z-20 -mx-6 sm:-mx-8 px-4 sm:px-6 py-2 bg-white/5 border-y border-white/80 mb-6 shadow-sm">
-                        <div className="flex overflow-x-auto gap-2" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
-                          <style>{`.modal-tabs::-webkit-scrollbar { display: none; }`}</style>
-                          {[
-                            { key: 'familia', label: 'Familia', icon: Users },
-                            { key: 'datos', label: 'Datos', icon: Heart },
-                            { key: 'momentos', label: 'Momentos', icon: Star },
-                            { key: 'mensajes', label: 'Mensajes', icon: MessageCircle },
-                          ].map((tab) => {
-                            const TabIcon = tab.icon
-                            return (
-                            <button
-                              key={tab.key}
-                              onClick={() => setModalTab(tab.key)}
-                              className={`flex items-center gap-1.5 text-sm font-medium py-2.5 px-4 rounded-xl whitespace-nowrap transition-all ${
-                                modalTab === tab.key
-                                  ? 'bg-white/15 text-white shadow-md'
-                                  : 'bg-[#0F172A] text-white/60 hover:text-white hover:bg-[#0F172A]/80 border-4 border-white/80'
-                              }`}
-                            >
-                              <TabIcon className="w-4 h-4" />
-                              {tab.label}
-                            </button>
-                            )
-                          })}
+                      {/* ── Datos inline (boda, ubicación, bio) ── */}
+                      {(selectedMember.weddingDate || selectedMember.location || selectedMember.bio) && (
+                        <div className="mb-6 space-y-3">
+                          {(selectedMember.weddingDate || selectedMember.weddingPlace || selectedMember.location) && (
+                            <div className="flex flex-wrap items-center justify-center gap-x-5 gap-y-2 py-3 px-4 rounded-xl bg-[#0F172A]/80 border border-white/10">
+                              {selectedMember.weddingDate && (
+                                <div className="flex items-center gap-1.5 text-sm text-white">
+                                  <Calendar className="w-3.5 h-3.5 text-[#B8976A]" />
+                                  <span className="font-medium">{formatDate(selectedMember.weddingDate)}</span>
+                                </div>
+                              )}
+                              {selectedMember.weddingPlace && (
+                                <div className="flex items-center gap-1.5 text-sm text-white">
+                                  <Home className="w-3.5 h-3.5 text-[#B8976A]" />
+                                  <span className="font-medium">{selectedMember.weddingPlace}</span>
+                                </div>
+                              )}
+                              {selectedMember.location && (
+                                <div className="flex items-center gap-1.5 text-sm text-white/70">
+                                  <MapPin className="w-3.5 h-3.5 text-[#B8976A]" />
+                                  <span className="font-medium">{selectedMember.location}</span>
+                                </div>
+                              )}
+                              {(() => {
+                                if (!selectedMember.weddingDate) return null
+                                const wd = new Date(selectedMember.weddingDate)
+                                const now = new Date()
+                                let y = now.getFullYear() - wd.getFullYear()
+                                if (now.getMonth() < wd.getMonth() || (now.getMonth() === wd.getMonth() && now.getDate() < wd.getDate())) y--
+                                return y > 0 ? (
+                                  <div className="flex items-center gap-1.5 text-sm font-bold text-[#B8976A]">
+                                    <Heart className="w-3.5 h-3.5" />
+                                    <span>{y} años de casados</span>
+                                  </div>
+                                ) : null
+                              })()}
+                            </div>
+                          )}
+                          {selectedMember.bio && (
+                            <p className="text-sm text-white/60 leading-relaxed italic text-center">{selectedMember.bio}</p>
+                          )}
                         </div>
-                      </div>
+                      )}
 
-                      {/* TAB: Familia */}
-                      {modalTab === 'familia' && (
-                        <>
+                      {/* Familia content */}
+                      <div>
                           {/* Quick stats pills + view toggle */}
                           <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
                             {selectedMember.children?.length > 0 && (
@@ -1445,70 +1459,18 @@ export default function FamilyTree() {
                               </div>
                             </div>
                           )}
-                        </>
-                      )}
-
-                      {/* TAB: Datos */}
-                      {modalTab === 'datos' && (
-                        <>
-                          {(selectedMember.weddingDate || selectedMember.location) && (
-                            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 mb-6 py-3 px-4 rounded-xl bg-[#0F172A]/80 border-4 border-white/80">
-                              {selectedMember.weddingDate && (
-                                <div className="flex items-center gap-1.5 text-sm text-white">
-                                  <Calendar className="w-3.5 h-3.5" />
-                                  <span className="font-medium">{formatDate(selectedMember.weddingDate)}</span>
-                                </div>
-                              )}
-                              {selectedMember.weddingPlace && (
-                                <div className="flex items-center gap-1.5 text-sm text-white">
-                                  <Home className="w-3.5 h-3.5" />
-                                  <span className="font-medium">{selectedMember.weddingPlace}</span>
-                                </div>
-                              )}
-                              {selectedMember.location && (
-                                <div className="flex items-center gap-1.5 text-sm text-white/70">
-                                  <MapPin className="w-3.5 h-3.5" />
-                                  <span className="font-medium">{selectedMember.location}</span>
-                                </div>
-                              )}
-                              {(() => {
-                                if (!selectedMember.weddingDate) return null
-                                const wd = new Date(selectedMember.weddingDate)
-                                const now = new Date()
-                                let y = now.getFullYear() - wd.getFullYear()
-                                if (now.getMonth() < wd.getMonth() || (now.getMonth() === wd.getMonth() && now.getDate() < wd.getDate())) y--
-                                return y > 0 ? (
-                                  <div className="flex items-center gap-1.5 text-sm font-bold text-white/70">
-                                    <Heart className="w-3.5 h-3.5" />
-                                    <span>{y} años de casados</span>
-                                  </div>
-                                ) : null
-                              })()}
-                            </div>
-                          )}
-
-                          {selectedMember.bio && (
-                            <p className="text-base text-white/70 leading-relaxed mb-4 italic text-center">{selectedMember.bio}</p>
-                          )}
-
-                          {!selectedMember.weddingDate && !selectedMember.location && !selectedMember.bio && (
-                            <p className="text-sm text-white/40 text-center py-8">No hay datos adicionales registrados.</p>
-                          )}
-                        </>
-                      )}
-
                       {/* TAB: Familia - Card Tree View (fullscreen) */}
-                      {modalTab === 'familia' && familiaView === 'arbol-visual' && selectedMember.children?.length > 0 && (
+                      {familiaView === 'arbol-visual' && selectedMember.children?.length > 0 && (
                         <NucleusCardTree member={selectedMember} onClose={() => setFamiliaView('tarjetas')} />
                       )}
 
                       {/* TAB: Familia - Interactive Tree View */}
-                      {modalTab === 'familia' && familiaView === 'arbol' && selectedMember.children?.length > 0 && (
+                      {familiaView === 'arbol' && selectedMember.children?.length > 0 && (
                         <NucleusTreeView member={selectedMember} />
                       )}
 
                       {/* TAB: Familia - Cards View */}
-                      {modalTab === 'familia' && familiaView === 'tarjetas' && (
+                      {familiaView === 'tarjetas' && (
                         <>
                       {/* BENTO GRID: Premium Dashboard Style */}
                       {selectedMember.children && selectedMember.children.length > 0 && (
@@ -2234,70 +2196,10 @@ export default function FamilyTree() {
                           </div>
                         </div>
                       )}
-
                         </>
                       )}
 
-                      {/* TAB: Momentos */}
-                      {modalTab === 'momentos' && selectedMember.moments && selectedMember.moments.length > 0 && (
-                        <div className="mb-8">
-                          <h4 className="text-sm font-serif font-semibold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
-                            <Star className="w-4 h-4 text-white/70" />
-                            Momentos Importantes
-                          </h4>
-                          <div className="space-y-3">
-                            {selectedMember.moments.map((m, i) => (
-                              <div key={i} className="flex gap-3 p-3 rounded-xl bg-[#0F172A] border-4 border-white/80 shadow-sm relative overflow-hidden">
-                                <div className="absolute left-0 top-0 bottom-0 w-1 rounded-l-xl" style={{ background: 'linear-gradient(to bottom, rgba(255, 255, 255, 0.15), rgba(255, 255, 255, 0.10))' }} />
-                                <div className="w-10 h-10 rounded-full bg-white/10 flex items-center justify-center flex-shrink-0 ml-1">
-                                  <Star className="w-5 h-5 text-white/70" />
-                                </div>
-                                <div>
-                                  <p className="text-sm font-bold text-white">{m.title}</p>
-                                  {m.date && <p className="text-[11px] text-white/70 font-medium">{formatDate(m.date)}</p>}
-                                  {m.description && <p className="text-xs text-white/70 mt-0.5">{m.description}</p>}
-                                </div>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {modalTab === 'momentos' && (!selectedMember.moments || selectedMember.moments.length === 0) && (
-                        <p className="text-sm text-white/40 text-center py-8">No hay momentos registrados.</p>
-                      )}
-
-                      {/* TAB: Mensajes */}
-                      {modalTab === 'mensajes' && selectedMember.messages && selectedMember.messages.length > 0 && (
-                        <div className="mb-8">
-                          <h4 className="text-sm font-serif font-semibold text-white uppercase tracking-wider mb-4 flex items-center gap-2">
-                            <MessageCircle className="w-4 h-4 text-white/70" />
-                            Voces de la Familia
-                          </h4>
-                          <div className="space-y-3">
-                            {selectedMember.messages.map((msg, i) => (
-                              <div key={i} className="p-4 rounded-xl bg-[#0F172A] border-4 border-white/80 shadow-sm relative">
-                                <span className="absolute top-2 left-3 text-4xl font-serif text-white/70/15 leading-none select-none">"</span>
-                                <div className="flex items-center gap-2 mb-2 relative">
-                                  <div className="w-8 h-8 rounded-full bg-gradient-to-br from-white/10 to-white/5 flex items-center justify-center shadow-sm">
-                                    <span className="text-white text-[11px] font-bold">{(msg.author || '?')[0].toUpperCase()}</span>
-                                  </div>
-                                  <div>
-                                    <p className="text-xs font-bold text-white">{msg.author}</p>
-                                    {msg.date && <p className="text-[11px] text-white/40">{formatDate(msg.date)}</p>}
-                                  </div>
-                                </div>
-                                <p className="text-sm text-white/80 italic ml-10 relative">"{msg.message}"</p>
-                                <span className="absolute bottom-1 right-4 text-4xl font-serif text-white/70/15 leading-none select-none rotate-180">"</span>
-                              </div>
-                            ))}
-                          </div>
-                        </div>
-                      )}
-
-                      {modalTab === 'mensajes' && (!selectedMember.messages || selectedMember.messages.length === 0) && (
-                        <p className="text-sm text-white/40 text-center py-8">No hay mensajes registrados.</p>
-                      )}
+                      </div>
 
                       {/* Actions footer - sticky frosted glass */}
                       <div className="sticky bottom-0 -mx-6 sm:-mx-8 -mb-6 sm:-mb-8 px-6 sm:px-8 py-4 bg-[#1E293B]/90 backdrop-blur-md border-t border-white/80">

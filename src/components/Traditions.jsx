@@ -191,7 +191,7 @@ export default function Traditions() {
                   className="group relative bg-white/5 backdrop-blur-sm rounded-2xl border-4 border-white/80 p-6 hover:shadow-lg hover:shadow-[#6B9080]/10 hover:border-white/20 transition-all duration-500"
                 >
                   {/* Edit/Delete */}
-                  <div className="absolute top-3 right-3 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10">
+                  <div className="absolute top-3 right-3 flex gap-1.5 z-10">
                     <button onClick={() => openTradForm(tradition)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/5 hover:bg-[#B8976A]/10 shadow text-[#B8976A] transition">
                       <Pencil className="w-3.5 h-3.5" />
                     </button>
@@ -205,6 +205,9 @@ export default function Traditions() {
                   </div>
                   <h3 className="font-serif text-xl font-bold text-white mb-2">{tradition.title}</h3>
                   <p className="font-sans text-sm text-white/50 leading-relaxed">{tradition.description}</p>
+                  {tradition.submittedBy && (
+                    <p className="font-sans text-xs text-[#B8976A] mt-3 font-medium">— {tradition.submittedBy}</p>
+                  )}
                 </motion.article>
               );
             })}

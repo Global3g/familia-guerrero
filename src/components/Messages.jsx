@@ -223,7 +223,7 @@ export default function Messages() {
                   className="group relative rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow bg-white/5 border-4 border-white/80"
                 >
                   {/* Edit / Delete buttons */}
-                  <div className="absolute top-3 right-3 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity">
+                  <div className="absolute top-3 right-3 flex gap-1.5 z-10">
                     <button
                       onClick={() => openEdit(msg)}
                       className="p-1.5 rounded-full hover:bg-[#B8976A]/15 text-[#B8976A] transition-colors"

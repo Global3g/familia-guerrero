@@ -59,7 +59,9 @@ export default function FamilyQuotes() {
   const loadQuotes = async () => {
     setLoading(true)
     const data = await getQuotes()
-    setQuotes(data)
+    // Normalize: formulario saves as "quote", component uses "phrase"
+    const normalized = data.map(q => ({ ...q, phrase: q.phrase || q.quote || '' }))
+    setQuotes(normalized)
     setLoading(false)
   }
 
@@ -133,13 +135,13 @@ export default function FamilyQuotes() {
           custom={0}
           className="text-center mb-16"
         >
-          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Frases que nos definen</p>
+          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Lo que guardamos en el corazon</p>
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
-            Frases de la Familia
+            Recuerdos de los Abuelos
           </h2>
           <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
           <p className="text-base text-white/50 max-w-md mx-auto leading-relaxed">
-            Las palabras que nos han marcado, las frases que se repiten de generacion en generacion
+            Momentos y recuerdos que la familia atesora de los abuelos Guerrero
           </p>
         </motion.div>
 
@@ -158,7 +160,7 @@ export default function FamilyQuotes() {
             style={{ backgroundColor: '#B8654A' }}
           >
             <Plus size={20} />
-            Agregar frase
+            Agregar recuerdo
           </button>
         </motion.div>
 
@@ -178,7 +180,7 @@ export default function FamilyQuotes() {
           >
             <Quote className="w-16 h-16 mx-auto mb-4 text-white/20" />
             <p className="text-lg text-white/40">
-              Aun no hay frases registradas. Agrega la primera.
+              Aun no hay recuerdos registrados. Agrega el primero.
             </p>
           </motion.div>
         )}
@@ -209,8 +211,8 @@ export default function FamilyQuotes() {
                   >
                     {/* Big decorative quote mark */}
                     <Quote
-                      className="absolute top-4 right-4 w-10 h-10"
-                      style={{ color: 'rgba(255,255,255,0.1)' }}
+                      className="absolute bottom-4 right-4 w-10 h-10"
+                      style={{ color: 'rgba(255,255,255,0.06)' }}
                     />
 
                     {/* Phrase */}
@@ -255,23 +257,23 @@ export default function FamilyQuotes() {
                       </p>
                     )}
 
-                    {/* Hover action buttons */}
-                    <div className="absolute top-3 left-3 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-200">
+                    {/* Action buttons */}
+                    <div className="absolute top-3 right-3 flex gap-1.5 z-10">
                       <button
                         onClick={() => openEdit(q)}
-                        className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 shadow-sm transition-colors"
+                        className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 transition-colors"
                         style={{ color: '#B8976A' }}
                         title="Editar"
                       >
-                        <Pencil size={14} />
+                        <Pencil size={13} />
                       </button>
                       <button
                         onClick={() => setDeleteTarget(q)}
-                        className="p-1.5 rounded-full bg-white/10 hover:bg-white/20 shadow-sm transition-colors"
+                        className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-red-500/20 transition-colors"
                         style={{ color: '#B8654A' }}
                         title="Eliminar"
                       >
-                        <Trash2 size={14} />
+                        <Trash2 size={13} />
                       </button>
                     </div>
                   </motion.div>
@@ -286,20 +288,20 @@ export default function FamilyQuotes() {
       <Modal
         isOpen={modalOpen}
         onClose={() => setModalOpen(false)}
-        title={editingQuote ? 'Editar Frase' : 'Nueva Frase'}
+        title={editingQuote ? 'Editar Recuerdo' : 'Nuevo Recuerdo'}
       >
         <div className="space-y-5">
           {/* Phrase */}
           <div>
             <label className="block text-sm font-semibold text-white mb-1">
-              Frase *
+              Recuerdo *
             </label>
             <textarea
               value={form.phrase}
               onChange={(e) => onFieldChange('phrase', e.target.value)}
               rows={3}
               className="w-full rounded-xl border-4 border-white/80 bg-white px-4 py-3 text-white placeholder-[#C4A882] focus:outline-none focus:ring-2 focus:ring-[#B8654A]/30 focus:border-[#B8654A] transition-all resize-none"
-              placeholder="Escribe la frase familiar..."
+              placeholder="Escribe tu recuerdo de los abuelos..."
               style={{ fontFamily: "'Playfair Display', serif", fontStyle: 'italic' }}
             />
           </div>
@@ -314,7 +316,7 @@ export default function FamilyQuotes() {
               value={form.author}
               onChange={(e) => onFieldChange('author', e.target.value)}
               className="w-full rounded-xl border-4 border-white/80 bg-white px-4 py-3 text-white placeholder-[#C4A882] focus:outline-none focus:ring-2 focus:ring-[#B8654A]/30 focus:border-[#B8654A] transition-all"
-              placeholder="Quien decia esta frase?"
+              placeholder="Tu nombre"
             />
           </div>
 
@@ -342,7 +344,7 @@ export default function FamilyQuotes() {
               value={form.context}
               onChange={(e) => onFieldChange('context', e.target.value)}
               className="w-full rounded-xl border-4 border-white/80 bg-white px-4 py-3 text-white placeholder-[#C4A882] focus:outline-none focus:ring-2 focus:ring-[#B8654A]/30 focus:border-[#B8654A] transition-all"
-              placeholder="Siempre lo decia en la cena..."
+              placeholder="Cuando fue, donde, con quien..."
             />
           </div>
 
@@ -361,7 +363,7 @@ export default function FamilyQuotes() {
             ) : (
               <>
                 <Save size={18} />
-                {editingQuote ? 'Guardar Cambios' : 'Agregar Frase'}
+                {editingQuote ? 'Guardar Cambios' : 'Agregar Recuerdo'}
               </>
             )}
           </button>
@@ -372,11 +374,11 @@ export default function FamilyQuotes() {
       <Modal
         isOpen={!!deleteTarget}
         onClose={() => setDeleteTarget(null)}
-        title="Eliminar Frase"
+        title="Eliminar Recuerdo"
       >
         <div className="space-y-5">
           <p className="text-white">
-            Estas seguro de eliminar esta frase?
+            Estas seguro de eliminar este recuerdo?
           </p>
           {deleteTarget && (
             <div

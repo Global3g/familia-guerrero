@@ -252,13 +252,13 @@ function FilmStripMarquee({ photos }) {
   return (
     <div className="mb-14 relative overflow-hidden">
       {/* Film perforations top */}
-      <div className="h-3 bg-[#1a1a2e] flex items-center justify-around px-2">
+      <div className="h-5 bg-[#1a1a2e] flex items-center justify-around px-3">
         {Array.from({ length: 30 }).map((_, i) => (
-          <div key={i} className="w-2 h-1.5 rounded-sm bg-white/10" />
+          <div key={i} className="w-3 h-2 rounded-sm bg-white/10" />
         ))}
       </div>
 
-      <div className="relative bg-[#1a1a2e] py-3 overflow-hidden">
+      <div className="relative bg-[#1a1a2e] py-4 overflow-hidden">
         <motion.div
           className="flex gap-3"
           animate={{ x: ['0%', '-50%'] }}
@@ -268,7 +268,7 @@ function FilmStripMarquee({ photos }) {
           {strip.map((photo, i) => (
             <div
               key={`strip-${i}`}
-              className="flex-shrink-0 w-32 h-24 sm:w-44 sm:h-32 rounded-lg overflow-hidden relative group"
+              className="flex-shrink-0 w-64 h-48 sm:w-80 sm:h-60 rounded-xl overflow-hidden relative group"
             >
               <img src={photo.photoURL} alt={photo.caption || ''} className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
@@ -280,9 +280,9 @@ function FilmStripMarquee({ photos }) {
       </div>
 
       {/* Film perforations bottom */}
-      <div className="h-3 bg-[#1a1a2e] flex items-center justify-around px-2">
+      <div className="h-5 bg-[#1a1a2e] flex items-center justify-around px-3">
         {Array.from({ length: 30 }).map((_, i) => (
-          <div key={i} className="w-2 h-1.5 rounded-sm bg-white/10" />
+          <div key={i} className="w-3 h-2 rounded-sm bg-white/10" />
         ))}
       </div>
 

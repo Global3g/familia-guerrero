@@ -712,47 +712,7 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
           </div>
         </div>
 
-        {/* SECTION 2: Momentos importantes */}
-        <div className="rounded-xl border border-[#B8654A]/20 bg-[#B8654A08] p-4 space-y-3">
-          <h3 className="text-sm font-bold text-white flex items-center gap-1.5">
-            <Star className="w-4 h-4 text-[#B8654A]" />
-            Momentos importantes
-          </h3>
-          {form.moments.map((moment, index) => (
-            <div key={index} className="rounded-lg border border-[#B8654A]/15 bg-white p-3 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-medium text-[#B8654A]">Momento {index + 1}</span>
-                <button type="button" onClick={() => handleRemoveMoment(index)} className="p-1 rounded text-red-300 hover:text-red-600 transition">
-                  <Trash2 className="h-3.5 w-3.5" />
-                </button>
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className={labelClass}>Titulo</label>
-                  <input type="text" value={moment.title} onChange={(e) => handleMomentChange(index, 'title', e.target.value)} className={inputClass} placeholder="Titulo del momento" />
-                </div>
-                <div>
-                  <label className={labelClass}>Fecha</label>
-                  <input type="date" value={moment.date} onChange={(e) => handleMomentChange(index, 'date', e.target.value)} className={inputClass} />
-                </div>
-                <div className="col-span-2">
-                  <label className={labelClass}>Descripcion</label>
-                  <textarea value={moment.description} onChange={(e) => handleMomentChange(index, 'description', e.target.value)} rows={1} className={inputClass + ' resize-none'} placeholder="Describe este momento..." />
-                </div>
-              </div>
-            </div>
-          ))}
-          <button
-            type="button"
-            onClick={handleAddMoment}
-            className="flex w-full items-center justify-center gap-2 rounded-lg border-dashed border-2 border-[#B8654A]/30 py-2.5 text-sm text-[#B8654A] hover:bg-[#B8654A]/5 transition"
-          >
-            <Star className="h-4 w-4" />
-            Agregar momento
-          </button>
-        </div>
-
-        {/* SECTION 3: Galeria familiar */}
+        {/* SECTION 2: Galeria familiar */}
         <div className="rounded-xl border border-[#6B9080]/20 bg-[#6B908008] p-4 space-y-3">
           <h3 className="text-sm font-bold text-white flex items-center gap-1.5">
             <Image className="w-4 h-4 text-[#6B9080]" />
@@ -792,46 +752,6 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
           >
             <Image className="h-4 w-4" />
             {form.gallery.length >= MAX_GALLERY_PHOTOS ? `Maximo ${MAX_GALLERY_PHOTOS} fotos` : 'Agregar foto'}
-          </button>
-        </div>
-
-        {/* SECTION 4: Mensajes y recuerdos */}
-        <div className="rounded-xl border border-[#B8976A]/20 bg-[#B8976A08] p-4 space-y-3">
-          <h3 className="text-sm font-bold text-white flex items-center gap-1.5">
-            <MessageCircle className="w-4 h-4 text-[#B8976A]" />
-            Mensajes y recuerdos
-          </h3>
-          {form.messages.map((msg, index) => (
-            <div key={index} className="rounded-lg border border-[#B8976A]/15 bg-white p-3 space-y-2">
-              <div className="flex items-center justify-between">
-                <span className="text-xs font-medium text-[#B8976A]">Mensaje {index + 1}</span>
-                <button type="button" onClick={() => handleRemoveMessage(index)} className="p-1 rounded text-red-300 hover:text-red-600 transition">
-                  <Trash2 className="h-3.5 w-3.5" />
-                </button>
-              </div>
-              <div className="grid grid-cols-2 gap-2">
-                <div>
-                  <label className={labelClass}>Autor</label>
-                  <input type="text" value={msg.author} onChange={(e) => handleMessageChange(index, 'author', e.target.value)} className={inputClass} placeholder="Quien escribe" />
-                </div>
-                <div>
-                  <label className={labelClass}>Fecha</label>
-                  <input type="date" value={msg.date} onChange={(e) => handleMessageChange(index, 'date', e.target.value)} className={inputClass} />
-                </div>
-                <div className="col-span-2">
-                  <label className={labelClass}>Mensaje</label>
-                  <textarea value={msg.message} onChange={(e) => handleMessageChange(index, 'message', e.target.value)} rows={1} className={inputClass + ' resize-none'} placeholder="Escribe un mensaje o recuerdo..." />
-                </div>
-              </div>
-            </div>
-          ))}
-          <button
-            type="button"
-            onClick={handleAddMessage}
-            className="flex w-full items-center justify-center gap-2 rounded-lg border-dashed border-2 border-[#B8976A]/30 py-2.5 text-sm text-[#B8976A] hover:bg-[#B8976A]/5 transition"
-          >
-            <MessageCircle className="h-4 w-4" />
-            Agregar mensaje
           </button>
         </div>
 
