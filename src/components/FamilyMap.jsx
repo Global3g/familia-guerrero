@@ -174,7 +174,7 @@ export default function FamilyMap() {
       className="py-32 px-4"
       style={{ backgroundColor: '#0F172A' }}
     >
-      <div className="max-w-6xl mx-auto">
+      <div className="max-w-[1600px] mx-auto">
         {/* Header */}
         <motion.div
           className="text-center mb-24"

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Camera, ChevronDown } from "lucide-react";
-import { getFamilyMembers, getGrandparents, saveGrandparents, uploadPhoto } from "../firebase/familyService";
+import { getFamilyMembers, getGrandparents, saveGrandparents, uploadPhoto, getGalleryPhotos } from "../firebase/familyService";
 
 function collectCount(members, grandparents) {
   let total = 0;
@@ -42,9 +42,22 @@ function collectCount(members, grandparents) {
   return { total, generations: maxGen, since: oldestYear < 9999 ? oldestYear : null };
 }
 
+// Shuffle array deterministically
+function shuffle(arr) {
+  const a = [...arr]
+  for (let i = a.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [a[i], a[j]] = [a[j], a[i]]
+  }
+  return a
+}
+
 export default function Hero() {
   const [stats, setStats] = useState(null);
   const [heroPhoto, setHeroPhoto] = useState(null);
+  const [collagePhotos, setCollagePhotos] = useState([]);
+  const [allPhotos, setAllPhotos] = useState([]);
+  const [collageKey, setCollageKey] = useState(0);
 
   useEffect(() => {
     async function load() {
@@ -56,12 +69,49 @@ export default function Hero() {
         const { total, generations, since } = collectCount(members, grandparents);
         setStats({ total, generations, since });
         if (grandparents?.heroPhoto) setHeroPhoto(grandparents.heroPhoto);
+
+        // Load gallery separately to not block stats
+        let gallery = []
+        try {
+          gallery = await getGalleryPhotos()
+        } catch (e) {
+          console.warn('Hero: gallery load failed', e)
+        }
+
+        // Collect photos for collage: gallery + member profile photos
+        const photos = []
+        gallery.forEach(p => { if (p.photoURL) photos.push(p.photoURL) })
+
+        // Also grab profile photos from members
+        const walkPhotos = (person) => {
+          if (person.photoURL) photos.push(person.photoURL)
+          if (person.spouse?.photoURL) photos.push(person.spouse.photoURL)
+          if (person.children) person.children.forEach(walkPhotos)
+        }
+        members.forEach(walkPhotos)
+        if (grandparents?.grandfather?.photoURL) photos.push(grandparents.grandfather.photoURL)
+        if (grandparents?.grandmother?.photoURL) photos.push(grandparents.grandmother.photoURL)
+
+        // Store all unique photos, pick 20 for display
+        const unique = [...new Set(photos)]
+        setAllPhotos(unique)
+        setCollagePhotos(shuffle(unique).slice(0, 20))
       } catch (err) {
         console.error("Hero: could not load family stats", err);
       }
     }
     load();
   }, []);
+
+  // Rotate collage photos every 5 minutes
+  useEffect(() => {
+    if (allPhotos.length === 0) return
+    const interval = setInterval(() => {
+      setCollagePhotos(shuffle(allPhotos).slice(0, 20))
+      setCollageKey(k => k + 1)
+    }, 5 * 60 * 1000)
+    return () => clearInterval(interval)
+  }, [allPhotos]);
 
   const handleHeroPhoto = async (e) => {
     const file = e.target.files[0];
@@ -73,8 +123,6 @@ export default function Hero() {
     }
   };
 
-  const hasPhoto = !!heroPhoto;
-
   return (
     <header className="relative min-h-[90vh] flex flex-col items-center justify-center pt-20 px-6 overflow-hidden">
       {/* Ambient Orbs */}
@@ -82,8 +130,32 @@ export default function Hero() {
       <div className="ambient-orb orb-2" />
       <div className="ambient-orb orb-3" />
 
-      {/* Custom photo background if available */}
-      {hasPhoto && (
+      {/* Photo Collage Background */}
+      {collagePhotos.length > 0 && (
+        <div key={collageKey} className="absolute inset-0 z-[1] overflow-hidden" style={{ pointerEvents: 'none' }}>
+          <div
+            className="absolute inset-0 grid grid-cols-4 md:grid-cols-5 gap-2 p-2"
+            style={{ gridAutoRows: '1fr' }}
+          >
+            {collagePhotos.map((url, i) => (
+              <motion.img
+                key={url}
+                src={url}
+                alt=""
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 0.6 }}
+                transition={{ delay: 0.12 * i, duration: 1.2 }}
+                className="w-full h-full object-cover rounded-xl"
+              />
+            ))}
+          </div>
+          {/* Dark overlay so text is readable */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0F172A]/50 via-[#0F172A]/60 to-[#0F172A]/85" />
+        </div>
+      )}
+
+      {/* Fallback: single hero photo */}
+      {collagePhotos.length === 0 && heroPhoto && (
         <div className="absolute inset-0 z-0">
           <motion.img
             src={heroPhoto}
@@ -101,7 +173,7 @@ export default function Hero() {
         initial={{ opacity: 0, y: -20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        className="relative w-36 h-44 mb-12 mx-auto animate-float flex items-center justify-center z-10"
+        className="relative w-44 h-52 md:w-52 md:h-64 mb-12 mx-auto animate-float flex items-center justify-center z-10"
         style={{ filter: 'drop-shadow(0 0 40px rgba(184, 151, 106, 0.15))' }}
       >
         {/* Outermost Shield line */}
@@ -120,7 +192,7 @@ export default function Hero() {
         </svg>
         {/* Glow effect */}
         <div className="absolute inset-0 bg-accent/5 blur-2xl rounded-full" />
-        <span className="font-serif text-6xl text-accent z-10 relative tracking-tight" style={{ fontWeight: 300 }}>G</span>
+        <span className="font-serif text-7xl md:text-8xl text-accent z-10 relative tracking-tight" style={{ fontWeight: 300 }}>G</span>
       </motion.div>
 
       {/* Hero Content */}
@@ -128,7 +200,7 @@ export default function Hero() {
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4, duration: 1 }}
-        className="text-center z-10 max-w-4xl mx-auto space-y-8"
+        className="text-center z-10 w-full mx-auto space-y-8"
       >
         {/* Decorative line above */}
         <motion.div
@@ -151,7 +223,7 @@ export default function Hero() {
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.8, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="elegant-heading text-7xl md:text-9xl text-gradient-gold px-4"
+          className="elegant-heading text-8xl md:text-[11rem] lg:text-[13rem] text-gradient-gold px-4"
           style={{ letterSpacing: '-0.03em' }}
         >
           Familia <br /> Guerrero
@@ -175,7 +247,7 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2, duration: 0.8 }}
-          className="elegant-subheading text-2xl md:text-3xl text-white/50 max-w-2xl mx-auto px-6 leading-relaxed"
+          className="elegant-subheading text-2xl md:text-4xl text-white/50 max-w-4xl mx-auto px-6 leading-relaxed"
         >
           {stats?.generations > 0 ? `${stats.generations} generaciones` : 'Generaciones'} unidas por el amor, la fe y la memoria. Un legado que trasciende el tiempo.
         </motion.p>

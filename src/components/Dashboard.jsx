@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
-import { Users, TreePine, Calendar, TrendingUp, MapPin, Globe, Download } from 'lucide-react'
+import { Users, TreePine, Calendar, TrendingUp, MapPin, Download } from 'lucide-react'
 import { getFamilyMembers, getGrandparents } from '../firebase/familyService'
 import { backupFirestore } from '../utils/backupFirestore'
 
@@ -77,7 +77,7 @@ export default function Dashboard() {
   }
 
   return (
-    <section id="dashboard" className="pt-20 scroll-mt-24 max-w-7xl mx-auto px-6 pb-32">
+    <section id="dashboard" className="pt-20 scroll-mt-24 mx-auto px-8 lg:px-16 pb-32">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -108,19 +108,19 @@ export default function Dashboard() {
           className="glass-panel rounded-3xl p-10 lg:col-span-2 relative overflow-hidden group"
         >
           <div className="absolute inset-0 opacity-[0.07] bg-[url('https://images.unsplash.com/photo-1502472584811-0a2f2feb8968?auto=format&fit=crop&q=80')] bg-cover bg-center mix-blend-overlay" />
-          <div className="relative z-10 h-full flex flex-col justify-between min-h-[280px]">
-            <svg className="w-10 h-10 text-accent/40 mb-6" fill="currentColor" viewBox="0 0 24 24">
+          <div className="relative z-10 h-full flex flex-col justify-between min-h-[360px]">
+            <svg className="w-12 h-12 text-accent/50 mb-6" fill="currentColor" viewBox="0 0 24 24">
               <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10h-9.983zm-14.017 0v-7.391c0-5.704 3.748-9.57 9-10.609l.996 2.151c-2.433.917-3.996 3.638-3.996 5.849h3.983v10h-9.983z"/>
             </svg>
             <div className="flex-1">
-              <h3 className="elegant-heading text-3xl text-white mb-4">Bienvenidos al Archivo Digital</h3>
-              <p className="elegant-subheading text-base text-white/50 leading-loose">
-                Este espacio fue creado para preservar la memoria, conectar ramas dispersas de la familia y celebrar los hitos que definen el nombre Guerrero. Desde las montañas de Andalucía hasta América, nuestra historia continúa escribiéndose.
+              <h3 className="elegant-heading text-4xl md:text-5xl text-white mb-6" style={{ textShadow: '0 0 40px rgba(184, 151, 106, 0.3)' }}>Bienvenidos al Archivo Digital</h3>
+              <p className="elegant-subheading text-lg md:text-xl text-white/70 leading-loose">
+                Este es el santuario digital de la familia Guerrero — un lugar donde las raíces cobran vida y las historias nunca se olvidan. Aquí se guardan los rostros, las voces y los momentos que nos hacen quienes somos. Desde los abuelos que sembraron los valores que hoy nos definen, hasta los más pequeños que llevan el apellido con orgullo hacia el futuro. Cada fotografía, cada fecha, cada anécdota compartida es un hilo que fortalece el tejido de nuestra familia. Este archivo es testimonio vivo de que el amor, la fe y la unión trascienden el tiempo, la distancia y las generaciones.
               </p>
             </div>
-            <div className="flex items-center space-x-3 text-xs font-sans text-accent/60 mt-6">
+            <div className="flex items-center space-x-3 text-sm font-sans text-accent/70 mt-8">
               <span className="flex items-center">
-                <span className="w-1.5 h-1.5 rounded-full bg-secondary mr-2 animate-pulse" />
+                <span className="w-2 h-2 rounded-full bg-secondary mr-2 animate-pulse" />
                 Sistema Actualizado
               </span>
             </div>
@@ -168,28 +168,6 @@ export default function Dashboard() {
             <p className="text-xs text-white/30 font-medium">
               {stats?.since ? `Datan desde ${stats.since}` : 'Historia familiar'}
             </p>
-          </div>
-        </motion.div>
-
-        {/* Origins Map Module */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="glass-panel rounded-2xl p-6 lg:col-span-2 flex flex-col justify-between bg-[url('https://images.unsplash.com/photo-1524661135-423995f22d0b?auto=format&fit=crop&q=80')] bg-cover bg-center bg-no-repeat relative"
-        >
-          <div className="absolute inset-0 bg-[#0F172A]/80 backdrop-blur-sm rounded-2xl" />
-          <div className="relative z-10 flex flex-col w-full h-full text-center items-center justify-center space-y-3">
-            <Globe className="w-8 h-8 text-secondary" />
-            <h3 className="font-serif text-xl">Expansión Territorial</h3>
-            <p className="text-sm font-sans text-white/70 max-w-md">
-              Raíces en <span className="text-white font-medium">Sevilla, España</span> con ramas
-              significativas en <span className="text-white font-medium">México, Argentina y Canadá</span>.
-            </p>
-            <button className="mt-4 px-4 py-2 rounded-full border border-secondary/40 text-xs font-sans hover:bg-secondary/20 transition-colors uppercase tracking-widest text-secondary">
-              Ver Orígenes
-            </button>
           </div>
         </motion.div>
 

@@ -179,7 +179,7 @@ export default function Bloodline() {
   if (loading) {
     return (
       <section id="linea-de-sangre" className="py-20" style={{ backgroundColor: PALETTE.bg }}>
-        <div className="max-w-6xl mx-auto px-4 text-center">
+        <div className="max-w-[1600px] mx-auto px-4 text-center">
           <div className="animate-pulse space-y-4">
             <div className="h-8 bg-white/10 rounded w-64 mx-auto" />
             <div className="h-4 bg-white/10 rounded w-96 mx-auto" />
@@ -192,7 +192,7 @@ export default function Bloodline() {
 
   return (
     <section id="linea-de-sangre" className="py-32" style={{ backgroundColor: PALETTE.bg }}>
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="max-w-[1600px] mx-auto px-4">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}

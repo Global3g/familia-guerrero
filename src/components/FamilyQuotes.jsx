@@ -125,7 +125,7 @@ export default function FamilyQuotes() {
       <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-white opacity-[0.02] blur-[100px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-96 h-96 rounded-full bg-white opacity-[0.02] blur-[100px] pointer-events-none" />
 
-      <div className="relative z-10 max-w-6xl mx-auto px-6">
+      <div className="relative z-10 max-w-[1600px] mx-auto px-6">
         {/* ── Section Header ── */}
         <motion.div
           variants={fadeIn}

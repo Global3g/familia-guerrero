@@ -128,7 +128,7 @@ export default function YourBranch() {
   if (loading) {
     return (
       <section className="py-16 px-4 bg-gradient-to-b from-[#F8FAFC] to-[#F1F5F9]">
-        <div className="max-w-2xl mx-auto text-center">
+        <div className="max-w-[1600px] mx-auto text-center">
           <div className="animate-pulse space-y-4">
             <div className="h-8 bg-[#B8654A]/10 rounded-lg w-48 mx-auto" />
             <div className="h-32 bg-[#B8654A]/10 rounded-2xl" />
@@ -141,7 +141,7 @@ export default function YourBranch() {
   if (!userName) {
     return (
       <section className="py-16 px-4 bg-gradient-to-b from-[#F8FAFC] to-[#F1F5F9]">
-        <div className="max-w-2xl mx-auto text-center">
+        <div className="max-w-[1600px] mx-auto text-center">
           <p className="text-white/60 text-lg">Inicia sesion para ver tu rama familiar.</p>
         </div>
       </section>
@@ -151,7 +151,7 @@ export default function YourBranch() {
   if (!result) {
     return (
       <section className="py-16 px-4 bg-gradient-to-b from-[#F8FAFC] to-[#F1F5F9]">
-        <div className="max-w-2xl mx-auto text-center space-y-4">
+        <div className="max-w-[1600px] mx-auto text-center space-y-4">
           <h2 className="font-serif text-3xl text-white">Tu Rama</h2>
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -195,7 +195,7 @@ export default function YourBranch() {
 
   return (
     <section className="py-16 px-4 bg-gradient-to-b from-[#F8FAFC] to-[#F1F5F9]">
-      <div className="max-w-2xl mx-auto space-y-6">
+      <div className="max-w-[1600px] mx-auto space-y-6">
         {/* Title */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}

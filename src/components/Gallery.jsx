@@ -400,7 +400,7 @@ function FeaturedPhoto({ photos, onPhotoClick }) {
           animate={{ opacity: 1, scale: 1 }}
           exit={{ opacity: 0, scale: 0.97 }}
           transition={{ duration: 0.6 }}
-          className="relative max-w-3xl mx-auto rounded-2xl overflow-hidden cursor-pointer group"
+          className="relative max-w-5xl mx-auto rounded-2xl overflow-hidden cursor-pointer group"
           onClick={() => onPhotoClick(featured)}
         >
           <div className="h-64 sm:h-96 w-full relative">
@@ -691,7 +691,7 @@ export default function Gallery() {
       className="py-24 px-4"
       style={{ backgroundColor: '#0F172A' }}
     >
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1600px] mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}

@@ -100,7 +100,7 @@ export default function FamilyProfiles() {
       id="perfiles"
       className="py-20 px-4 sm:px-6 lg:px-8 bg-transparent"
     >
-      <div className="max-w-5xl mx-auto">
+      <div className="max-w-[1600px] mx-auto">
         {/* Section title */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}

@@ -184,7 +184,7 @@ function BirthdayHighlight() {
   if (loading) {
     return (
       <section id="cumpleanos" className="py-16" style={{ backgroundColor: '#0F172A' }}>
-        <div className="max-w-6xl mx-auto px-4 text-center">
+        <div className="max-w-[1600px] mx-auto px-4 text-center">
           <div className="animate-pulse flex flex-col items-center gap-4">
             <div className="h-10 w-64 bg-white/10 rounded-lg" />
             <div className="h-48 w-full max-w-md bg-white/5 rounded-2xl" />
@@ -196,7 +196,7 @@ function BirthdayHighlight() {
 
   return (
     <section id="cumpleanos" className="py-32" style={{ backgroundColor: '#0F172A' }}>
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="max-w-[1600px] mx-auto px-4">
         {/* Title */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}

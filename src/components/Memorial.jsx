@@ -415,7 +415,7 @@ export default function Memorial() {
         />
       ))}
 
-      <div className="relative z-10 max-w-5xl mx-auto px-6">
+      <div className="relative z-10 max-w-[1600px] mx-auto px-6">
         {/* Section header */}
         <motion.div
           variants={fadeIn}

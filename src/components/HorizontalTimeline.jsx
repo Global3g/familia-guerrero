@@ -211,7 +211,7 @@ export default function HorizontalTimeline() {
 
   return (
     <section className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#0F172A' }}>
-      <div className="max-w-7xl mx-auto">
+      <div className="max-w-[1600px] mx-auto">
         {/* Section title */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}

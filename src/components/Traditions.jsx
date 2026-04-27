@@ -155,7 +155,7 @@ export default function Traditions() {
       <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-[#B8654A] opacity-[0.04] blur-[100px] pointer-events-none" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30rem] h-[30rem] rounded-full bg-[#B8976A] opacity-[0.03] blur-[120px] pointer-events-none" />
 
-      <div className="relative z-10 max-w-6xl mx-auto px-6">
+      <div className="relative z-10 max-w-[1600px] mx-auto px-6">
         {/* Section header */}
         <motion.div
           variants={fadeIn}

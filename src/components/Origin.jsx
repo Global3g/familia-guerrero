@@ -27,7 +27,7 @@ const ProfileCard = ({ person, index, onEdit }) => {
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: '-80px' }}
       transition={{ duration: 0.8, delay: index * 0.3 }}
-      className="flex-1 min-w-[300px] max-w-md relative"
+      className="flex-1 min-w-[300px] max-w-lg relative"
     >
       <div className="glass-panel rounded-2xl overflow-hidden">
         {/* Edit button */}
@@ -213,7 +213,7 @@ export default function Origin() {
       className="py-32 px-4"
       style={{ backgroundColor: '#0F172A' }}
     >
-      <div className="max-w-6xl mx-auto">
+      <div className="mx-auto px-4 lg:px-12">
         {/* Section title */}
         <motion.div
           initial={{ opacity: 0, y: 40 }}
@@ -276,7 +276,7 @@ export default function Origin() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true, margin: '-60px' }}
           transition={{ duration: 0.8, delay: 0.2 }}
-          className="max-w-3xl mx-auto"
+          className="max-w-5xl mx-auto"
         >
           <div className="glass-panel rounded-2xl p-8 md:p-10 text-center">
             {/* Wedding heart icon */}

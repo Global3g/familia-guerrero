@@ -233,7 +233,7 @@ export default function Reminders() {
 
   return (
     <section id="recordatorios" className="py-32 px-4" style={{ backgroundColor: '#0F172A' }}>
-      <div className="max-w-3xl mx-auto">
+      <div className="max-w-5xl mx-auto">
         {/* Title */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}

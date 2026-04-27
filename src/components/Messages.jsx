@@ -141,7 +141,7 @@ export default function Messages() {
       <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-[#B8654A] opacity-[0.04] blur-[100px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-[#B8976A] opacity-[0.04] blur-[80px] pointer-events-none" />
 
-      <div className="relative z-10 max-w-5xl mx-auto px-6">
+      <div className="relative z-10 max-w-[1600px] mx-auto px-6">
         {/* Section header */}
         <motion.div
           variants={fadeIn}

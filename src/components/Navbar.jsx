@@ -29,7 +29,7 @@ export default function Navbar({ user, isAdmin, onLogout }) {
           : 'bg-transparent'
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center h-14 sm:h-16">
           {/* Logo / Title */}
           <a

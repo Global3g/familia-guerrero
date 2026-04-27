@@ -14,18 +14,19 @@ import { motion } from 'framer-motion'
 import {
   GitBranch, Users, Heart, User, Maximize2, RotateCcw,
   Grid3X3, LayoutGrid, BoxSelect, AlignCenterHorizontal,
-  AlignCenterVertical, ChevronDown, FoldVertical, UnfoldVertical,
+  AlignCenterVertical, ChevronDown, ChevronRight, FoldVertical, UnfoldVertical,
+  Expand, Shrink,
 } from 'lucide-react'
 import { getFamilyMembers, getGrandparents } from '../firebase/familyService'
 
 const NODE_W = 180
-const V_GAP = 130
+const V_GAP = 300
 const H_GAP = 25
 const SNAP_GRID = [20, 20]
 
 // ── Person Node ─────────────────────────────────────────────
 function PersonNode({ data, selected }) {
-  const { name, photoURL, gender, isDeceased, role, spouse, isGrandparent, isGrouped } = data
+  const { name, photoURL, gender, isDeceased, role, spouse, isGrandparent, isGrouped, hasChildren, isExpanded, onToggle } = data
   const borderColor = isGrandparent ? '#B8976A' : gender === 'F' ? '#B8654A' : '#6B9080'
   const bgColor = isGrandparent ? '#FFFFFF' : '#F1F5F9'
 
@@ -68,6 +69,16 @@ function PersonNode({ data, selected }) {
           <p className="text-[11px] truncate" style={{ color: '#0F172A' }}>{typeof spouse === 'object' ? spouse.name : spouse}</p>
         </div>
       )}
+      {/* Expand/collapse button */}
+      {hasChildren && (
+        <button
+          onClick={(e) => { e.stopPropagation(); onToggle?.() }}
+          className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full flex items-center justify-center text-white z-10 shadow-md hover:scale-110 transition-transform"
+          style={{ backgroundColor: isExpanded ? '#B8654A' : '#6B9080' }}
+        >
+          {isExpanded ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
+        </button>
+      )}
       <Handle type="target" position={Position.Top} style={{ background: selected ? '#3B82F6' : borderColor, width: 8, height: 8, border: '2px solid white' }} />
       <Handle type="source" position={Position.Bottom} style={{ background: selected ? '#3B82F6' : borderColor, width: 8, height: 8, border: '2px solid white' }} />
       {isGrouped && (
@@ -85,28 +96,33 @@ function PersonNode({ data, selected }) {
 const nodeTypes = { person: PersonNode }
 
 // ── Tree layout helpers ─────────────────────────────────────
-function subtreeWidth(person) {
+function subtreeWidth(person, expandedSet) {
   const kids = person.children || []
-  if (kids.length === 0) return NODE_W + H_GAP
-  return kids.reduce((sum, c) => sum + subtreeWidth(c), 0)
+  const personKey = person.fullName || person.name
+  if (kids.length === 0 || !expandedSet.has(personKey)) return NODE_W + H_GAP
+  return kids.reduce((sum, c) => sum + subtreeWidth(c, expandedSet), 0)
 }
 
-function buildTree(members, grandparentsData) {
+function buildTree(members, grandparentsData, expandedSet, onToggleNode) {
   const nodes = []
   const edges = []
   let nodeId = 0
   const getId = () => `n${nodeId++}`
 
   const edgeStyles = [
-    { stroke: '#B8654A', strokeWidth: 2.5 },
-    { stroke: '#6B9080', strokeWidth: 2 },
-    { stroke: '#B8976A', strokeWidth: 1.5 },
-    { stroke: '#0F172A', strokeWidth: 1 },
+    { stroke: '#B8654A', strokeWidth: 3 },
+    { stroke: '#6B9080', strokeWidth: 2.5 },
+    { stroke: '#B8976A', strokeWidth: 2.5 },
+    { stroke: '#94A3B8', strokeWidth: 2 },
+    { stroke: '#CBD5E1', strokeWidth: 2 },
   ]
 
   function placeSubtree(person, x, y, depth, parentId) {
     const id = getId()
     const style = edgeStyles[Math.min(depth, edgeStyles.length - 1)]
+    const personKey = person.fullName || person.name
+    const hasChildren = (person.children || []).length > 0
+    const isExpanded = expandedSet.has(personKey)
 
     nodes.push({
       id,
@@ -120,6 +136,9 @@ function buildTree(members, grandparentsData) {
         role: person.role,
         isGrandparent: depth === 0,
         spouse: person.spouse && typeof person.spouse === 'object' ? person.spouse : null,
+        hasChildren,
+        isExpanded,
+        onToggle: hasChildren ? () => onToggleNode(personKey) : undefined,
       },
     })
 
@@ -129,16 +148,16 @@ function buildTree(members, grandparentsData) {
         source: parentId,
         target: id,
         type: 'smoothstep',
-        style: { stroke: `${style.stroke}90`, strokeWidth: style.strokeWidth },
+        style: { stroke: style.stroke, strokeWidth: style.strokeWidth },
       })
     }
 
     const kids = person.children || []
-    if (kids.length > 0) {
-      const totalW = kids.reduce((s, c) => s + subtreeWidth(c), 0)
+    if (kids.length > 0 && isExpanded) {
+      const totalW = kids.reduce((s, c) => s + subtreeWidth(c, expandedSet), 0)
       let cx = x - totalW / 2 + NODE_W / 2
       kids.forEach((child) => {
-        const childW = subtreeWidth(child)
+        const childW = subtreeWidth(child, expandedSet)
         const childX = cx + childW / 2 - NODE_W / 2
         placeSubtree(child, childX, y + V_GAP, depth + 1, id)
         cx += childW
@@ -148,8 +167,12 @@ function buildTree(members, grandparentsData) {
 
   const gf = grandparentsData?.grandfather
   const gm = grandparentsData?.grandmother
-  const totalWidth = members.reduce((s, m) => s + subtreeWidth(m), 0)
+  const totalWidth = members.reduce((s, m) => s + subtreeWidth(m, expandedSet), 0)
   const childrenY = V_GAP
+
+  const gpKey = gf?.fullName || gf?.name || 'Abuelos'
+  const gpHasChildren = members.length > 0
+  const gpExpanded = expandedSet.has(gpKey)
 
   const gpId = getId()
   nodes.push({
@@ -157,31 +180,61 @@ function buildTree(members, grandparentsData) {
     type: 'person',
     position: { x: 0, y: 0 },
     data: {
-      name: gf?.fullName || gf?.name || 'Abuelos',
+      name: gpKey,
       photoURL: gf?.photoURL,
       gender: 'M',
       isGrandparent: true,
       role: gf?.role || 'Patriarca',
       spouse: gm ? { name: gm.fullName || gm.name, photoURL: gm.photoURL } : null,
+      hasChildren: gpHasChildren,
+      isExpanded: gpExpanded,
+      onToggle: gpHasChildren ? () => onToggleNode(gpKey) : undefined,
     },
   })
 
-  let curX = -totalWidth / 2 + NODE_W / 2
-  members.forEach((member) => {
-    const mWidth = subtreeWidth(member)
-    const mX = curX + mWidth / 2 - NODE_W / 2
-    placeSubtree(member, mX, childrenY, 1, gpId)
-    curX += mWidth
-  })
+  if (gpExpanded) {
+    let curX = -totalWidth / 2 + NODE_W / 2
+    members.forEach((member) => {
+      const mWidth = subtreeWidth(member, expandedSet)
+      const mX = curX + mWidth / 2 - NODE_W / 2
+      placeSubtree(member, mX, childrenY, 1, gpId)
+      curX += mWidth
+    })
 
-  const level1 = nodes.filter(n => n.position.y === childrenY)
-  if (level1.length > 0) {
-    const minX = Math.min(...level1.map(n => n.position.x))
-    const maxX = Math.max(...level1.map(n => n.position.x))
-    nodes[0].position.x = (minX + maxX) / 2
+    const level1 = nodes.filter(n => n.position.y === childrenY)
+    if (level1.length > 0) {
+      const minX = Math.min(...level1.map(n => n.position.x))
+      const maxX = Math.max(...level1.map(n => n.position.x))
+      nodes[0].position.x = (minX + maxX) / 2
+    }
   }
 
   return { nodes, edges }
+}
+
+// ── Collect all person keys for "expand all" ────────────────
+function collectAllKeys(members, grandparentsData) {
+  const keys = new Set()
+  const gf = grandparentsData?.grandfather
+  keys.add(gf?.fullName || gf?.name || 'Abuelos')
+
+  function walk(person) {
+    const key = person.fullName || person.name
+    if ((person.children || []).length > 0) {
+      keys.add(key)
+      person.children.forEach(walk)
+    }
+  }
+  members.forEach(walk)
+  return keys
+}
+
+// ── Collect first-level keys (abuelos + hijos directos) ─────
+function collectFirstLevel(members, grandparentsData) {
+  const keys = new Set()
+  const gf = grandparentsData?.grandfather
+  keys.add(gf?.fullName || gf?.name || 'Abuelos')
+  return keys
 }
 
 // ── Toolbar Button ──────────────────────────────────────────
@@ -209,16 +262,18 @@ export default function InteractiveTree() {
   const [isFullscreen, setIsFullscreen] = useState(false)
   const [snapToGrid, setSnapToGrid] = useState(false)
   const [showGrid, setShowGrid] = useState(true)
-  const [tool, setTool] = useState('move') // 'move' | 'select'
-  const [groups, setGroups] = useState([]) // array of Set<nodeId>
+  const [tool, setTool] = useState('move')
+  const [groups, setGroups] = useState([])
+  const [expandedNodes, setExpandedNodes] = useState(new Set())
+  const [allExpanded, setAllExpanded] = useState(false)
+  const membersRef = useRef([])
+  const gpRef = useRef(null)
   const edgesRef = useRef(edges)
   edgesRef.current = edges
   const nodesRef = useRef(nodes)
   nodesRef.current = nodes
   const groupsRef = useRef(groups)
   groupsRef.current = groups
-
-  useEffect(() => { loadTree() }, [])
 
   const sortByBirth = (arr) => {
     if (!arr) return arr
@@ -232,47 +287,62 @@ export default function InteractiveTree() {
     return arr
   }
 
-  const POSITIONS_KEY = 'interactive-tree-positions'
+  const rebuildFromExpanded = useCallback((expanded) => {
+    if (membersRef.current.length === 0 && !gpRef.current) return
+    const onToggle = (key) => {
+      setExpandedNodes(prev => {
+        const next = new Set(prev)
+        if (next.has(key)) {
+          next.delete(key)
+        } else {
+          next.add(key)
+        }
+        return next
+      })
+    }
+    const { nodes: n, edges: e } = buildTree(membersRef.current, gpRef.current, expanded, onToggle)
+    setNodes(n)
+    setEdges(e)
+  }, [setNodes, setEdges])
 
-  const savePositions = useCallback((nds) => {
-    try {
-      const pos = {}
-      nds.forEach(n => { pos[n.id] = n.position })
-      localStorage.setItem(POSITIONS_KEY, JSON.stringify(pos))
-    } catch (e) {}
-  }, [])
+  useEffect(() => {
+    if (!loading) {
+      rebuildFromExpanded(expandedNodes)
+    }
+  }, [expandedNodes, loading, rebuildFromExpanded])
 
-  const loadTree = async (reset) => {
+  useEffect(() => { loadTree() }, [])
+
+  const loadTree = async () => {
     const [members, gp] = await Promise.all([getFamilyMembers(), getGrandparents()])
     sortByBirth(members)
-    if (members.length > 0 || gp) {
-      const { nodes: n, edges: e } = buildTree(members, gp)
-      // Restore saved positions unless reset
-      if (!reset) {
-        try {
-          const saved = JSON.parse(localStorage.getItem(POSITIONS_KEY) || '{}')
-          if (Object.keys(saved).length > 0) {
-            n.forEach(node => {
-              if (saved[node.id]) node.position = saved[node.id]
-            })
-          }
-        } catch (e) {}
-      } else {
-        localStorage.removeItem(POSITIONS_KEY)
-      }
-      setNodes(n)
-      setEdges(e)
-    }
+    membersRef.current = members
+    gpRef.current = gp
+
+    // Start with only grandparents expanded (showing their direct children)
+    const initial = collectFirstLevel(members, gp)
+    setExpandedNodes(initial)
     setGroups([])
     setLoading(false)
   }
+
+  const expandAll = useCallback(() => {
+    const all = collectAllKeys(membersRef.current, gpRef.current)
+    setExpandedNodes(all)
+    setAllExpanded(true)
+  }, [])
+
+  const collapseAll = useCallback(() => {
+    const initial = collectFirstLevel(membersRef.current, gpRef.current)
+    setExpandedNodes(initial)
+    setAllExpanded(false)
+  }, [])
 
   // ── Group: selected nodes become a group that moves together ─
   const groupSelected = useCallback(() => {
     const selectedIds = nodes.filter(n => n.selected).map(n => n.id)
     if (selectedIds.length < 2) return
     const newGroup = new Set(selectedIds)
-    // Remove any existing groups that overlap with this new one
     setGroups(prev => {
       const filtered = prev.filter(g => {
         for (const id of selectedIds) { if (g.has(id)) return false }
@@ -280,7 +350,6 @@ export default function InteractiveTree() {
       })
       return [...filtered, newGroup]
     })
-    // Mark grouped nodes visually
     setNodes(nds => nds.map(n => ({
       ...n,
       data: { ...n.data, isGrouped: newGroup.has(n.id) || groups.some(g => g.has(n.id)) },
@@ -291,7 +360,6 @@ export default function InteractiveTree() {
   const ungroupSelected = useCallback(() => {
     const selectedIds = new Set(nodes.filter(n => n.selected).map(n => n.id))
     if (selectedIds.size === 0) {
-      // Ungroup all
       setGroups([])
       setNodes(nds => nds.map(n => ({ ...n, data: { ...n.data, isGrouped: false } })))
       return
@@ -301,7 +369,6 @@ export default function InteractiveTree() {
         for (const id of selectedIds) { if (g.has(id)) return false }
         return true
       })
-      // Update visual
       const stillGrouped = new Set()
       next.forEach(g => g.forEach(id => stillGrouped.add(id)))
       setNodes(nds => nds.map(n => ({
@@ -320,12 +387,6 @@ export default function InteractiveTree() {
     const posChanges = changes.filter(c => c.type === 'position' && c.position)
     if (posChanges.length === 0) return
 
-    // Save positions after drag ends
-    const dragEnd = changes.some(c => c.type === 'position' && c.dragging === false)
-    if (dragEnd) {
-      setTimeout(() => savePositions(nodesRef.current), 100)
-    }
-
     // Group movement
     if (groupsRef.current.length === 0) return
     posChanges.forEach(change => {
@@ -343,7 +404,7 @@ export default function InteractiveTree() {
         return n
       }))
     })
-  }, [onNodesChange, setNodes, savePositions])
+  }, [onNodesChange, setNodes])
 
   // ── Select entire branch (node + all descendants) ───────
   const selectBranch = useCallback((nodeId) => {
@@ -394,10 +455,6 @@ export default function InteractiveTree() {
   }, [nodes, setNodes])
 
   // ── Select all ──────────────────────────────────────────
-  const selectAll = useCallback(() => {
-    setNodes(nds => nds.map(n => ({ ...n, selected: true })))
-  }, [setNodes])
-
   const deselectAll = useCallback(() => {
     setNodes(nds => nds.map(n => ({ ...n, selected: false })))
   }, [setNodes])
@@ -411,7 +468,7 @@ export default function InteractiveTree() {
 
   return (
     <section id="arbol-visual" className="py-20 px-4 sm:px-6 lg:px-10" style={{ backgroundColor: '#0F172A' }}>
-      <div className="max-w-[1400px] mx-auto">
+      <div className="max-w-[1600px] mx-auto">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: 30 }}
@@ -428,10 +485,7 @@ export default function InteractiveTree() {
             Arbol Genealogico Visual
           </h2>
           <p className="text-base max-w-2xl mx-auto mb-2" style={{ color: '#64748B' }}>
-            Arrastra tarjetas para moverlas. Doble clic en un nodo para seleccionar toda su rama.
-          </p>
-          <p className="text-xs mt-1" style={{ color: '#B8976A' }}>
-            Activa la cuadricula para alinear tarjetas con precision
+            Haz clic en el boton de cada nodo para expandir o colapsar sus hijos. Doble clic para seleccionar toda una rama.
           </p>
           <div className="flex items-center justify-center gap-6 text-xs text-white/50 mt-3">
             <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-[#B8976A]" /> Abuelos</span>
@@ -465,7 +519,7 @@ export default function InteractiveTree() {
               nodeTypes={nodeTypes}
               onNodeDoubleClick={onNodeDoubleClick}
               fitView
-              fitViewOptions={{ padding: 0.2 }}
+              fitViewOptions={{ padding: 0.3 }}
               minZoom={0.1}
               maxZoom={2.5}
               attributionPosition="bottom-left"
@@ -504,6 +558,13 @@ export default function InteractiveTree() {
               <Panel position="top-left" className="flex flex-col gap-1.5">
                 {/* Row 1: Main tools */}
                 <div className="flex flex-wrap gap-1.5">
+                  <ToolBtn
+                    icon={allExpanded ? Shrink : Expand}
+                    label={allExpanded ? 'Colapsar' : 'Expandir Todo'}
+                    color="#B8976A"
+                    onClick={allExpanded ? collapseAll : expandAll}
+                    tip={allExpanded ? 'Colapsar al primer nivel' : 'Expandir todas las ramas'}
+                  />
                   <ToolBtn
                     icon={Maximize2}
                     label={isFullscreen ? 'Salir' : 'Completa'}
@@ -544,17 +605,10 @@ export default function InteractiveTree() {
                     tip="Desagrupar para que se muevan independiente"
                   />
                   <ToolBtn
-                    icon={LayoutGrid}
-                    label="Reorganizar"
-                    color="#B8976A"
-                    onClick={() => loadTree(true)}
-                    tip="Restablecer posiciones originales (borra tu acomodo)"
-                  />
-                  <ToolBtn
                     icon={RotateCcw}
                     label="Restablecer"
-                    onClick={() => { deselectAll(); loadTree(true) }}
-                    tip="Recargar arbol desde datos"
+                    onClick={() => { deselectAll(); collapseAll() }}
+                    tip="Recargar arbol al estado inicial"
                   />
                 </div>
 
@@ -600,7 +654,7 @@ export default function InteractiveTree() {
               {/* ── Info Panel ────────────────────────────── */}
               <Panel position="bottom-left">
                 <div className="flex items-center gap-3 px-2.5 py-1 rounded-lg bg-white/5 shadow text-[11px] text-white/60">
-                  <span>{nodes.length} nodos</span>
+                  <span>{nodes.length} nodos visibles</span>
                   <span>{edges.length} conexiones</span>
                   {snapToGrid && <span className="text-[#6B9080] font-medium">Snap activo</span>}
                   {tool === 'select' && <span className="text-blue-500 font-medium">Modo seleccion</span>}

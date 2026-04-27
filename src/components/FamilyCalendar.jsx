@@ -200,7 +200,7 @@ export default function FamilyCalendar() {
   if (loading) {
     return (
       <section className="py-12 px-4">
-        <div className="max-w-lg mx-auto text-center">
+        <div className="max-w-4xl mx-auto text-center">
           <div className="animate-pulse space-y-4">
             <div className="h-8 bg-white/10 rounded w-48 mx-auto" />
             <div className="h-64 bg-white/5 rounded-2xl" />
@@ -217,7 +217,7 @@ export default function FamilyCalendar() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true }}
         transition={{ duration: 0.6 }}
-        className="max-w-lg mx-auto"
+        className="max-w-4xl mx-auto"
       >
         {/* Title */}
         <div className="text-center mb-6">

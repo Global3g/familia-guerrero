@@ -110,7 +110,7 @@ function ShareExport() {
     <section
       style={{
         padding: '3rem 1rem',
-        maxWidth: '900px',
+        maxWidth: '1600px',
         margin: '0 auto',
       }}
     >

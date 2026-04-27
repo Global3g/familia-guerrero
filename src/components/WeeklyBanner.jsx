@@ -84,12 +84,12 @@ export default function WeeklyBanner() {
 
   return (
     <section className="py-16" style={{ backgroundColor: '#0F172A' }}>
-      <div className="max-w-6xl mx-auto px-4">
+      <div className="mx-auto px-8 lg:px-16">
         {/* Title */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <p className="text-[16px] font-sans font-semibold uppercase tracking-[5px] text-white mb-2">Calendario</p>
-            <h3 className="text-2xl font-serif font-bold text-white">Proximos Eventos</h3>
+            <p className="text-lg font-sans font-semibold uppercase tracking-[5px] text-white mb-2">Calendario</p>
+            <h3 className="text-3xl md:text-4xl font-serif font-bold text-white">Proximos Eventos</h3>
           </div>
           <Calendar className="w-5 h-5 text-white/20" />
         </div>
@@ -114,23 +114,23 @@ export default function WeeklyBanner() {
                 className="flex-shrink-0 rounded-2xl overflow-hidden"
                 style={{
                   backgroundColor: isToday ? '#B8654A' : 'rgba(255,255,255,0.05)',
-                  width: 220,
+                  width: 260,
                   border: '6px solid rgba(255,255,255,0.8)',
                 }}
               >
-                {/* Date */}
-                <div className="text-center pt-8 pb-3 px-5">
-                  <p className={`text-4xl font-serif font-bold leading-none ${isToday ? 'text-white' : 'text-white/90'}`}>
-                    {e.day}
-                  </p>
-                  <p className={`text-[11px] font-medium uppercase tracking-wider mt-1 ${isToday ? 'text-white/70' : 'text-white/30'}`}>
-                    {MESES[e.month]}
-                  </p>
-                </div>
+                <div className="flex flex-col h-full">
+                  {/* Date - fixed height */}
+                  <div className="text-center pt-10 pb-4 px-5 h-[110px] flex flex-col items-center justify-center">
+                    <p className={`text-5xl font-serif font-bold leading-none ${isToday ? 'text-white' : 'text-white/90'}`}>
+                      {e.day}
+                    </p>
+                    <p className={`text-sm font-medium uppercase tracking-wider mt-1 ${isToday ? 'text-white/70' : 'text-white/30'}`}>
+                      {MESES[e.month]}
+                    </p>
+                  </div>
 
-                {/* Body */}
-                <div className="px-5 py-6 text-center">
-                  <div className="flex justify-center mb-4">
+                  {/* Photo - fixed height */}
+                  <div className="flex justify-center h-[110px] items-center">
                     {e.photoURL ? (
                       <img
                         src={e.photoURL}
@@ -145,23 +145,30 @@ export default function WeeklyBanner() {
                     )}
                   </div>
 
-                  <p className={`text-sm font-semibold leading-tight mb-1 truncate ${isToday ? 'text-white' : 'text-white/80'}`}>
-                    {e.name}
-                  </p>
+                  {/* Name - fixed height */}
+                  <div className="h-[56px] flex items-center justify-center px-4">
+                    <p className={`text-base font-bold leading-tight text-center ${isToday ? 'text-white' : 'text-white/90'}`}>
+                      {e.fullName}
+                    </p>
+                  </div>
 
-                  <div className="flex items-center justify-center gap-1 mb-2">
-                    <Icon className={`w-3 h-3 ${isToday ? 'text-white/60' : 'text-white/30'}`} />
-                    <span className={`text-[10px] ${isToday ? 'text-white/60' : 'text-white/30'}`}>
-                      {e.type === 'birthday' ? 'Cumple' : 'Aniversario'}
+                  {/* Type - fixed height */}
+                  <div className="h-[36px] flex items-center justify-center gap-1.5">
+                    <Icon className={`w-4 h-4 ${isToday ? 'text-white/60' : 'text-white/40'}`} />
+                    <span className={`text-xs ${isToday ? 'text-white/60' : 'text-white/40'}`}>
+                      {e.type === 'birthday' ? 'Cumpleaños' : 'Aniversario'}
                     </span>
                   </div>
 
-                  <span className={`inline-block text-[10px] font-semibold px-2.5 py-1 rounded-full ${
-                    isToday ? 'bg-white/20 text-white' : isSoon ? 'bg-[#B8654A]/20 text-[#B8654A]' : 'bg-white/5 text-white/40'
-                  }`}>
-                    {isToday && <PartyPopper className="w-3 h-3 inline mr-0.5 -mt-0.5" />}
-                    {formatDiff(e.diffDays)}
-                  </span>
+                  {/* Days remaining - fixed height, always at bottom */}
+                  <div className="h-[64px] flex items-center justify-center pb-6">
+                    <span className={`inline-block text-xs font-semibold px-3 py-1.5 rounded-full ${
+                      isToday ? 'bg-white/20 text-white' : isSoon ? 'bg-[#B8654A]/20 text-[#B8654A]' : 'bg-white/5 text-white/40'
+                    }`}>
+                      {isToday && <PartyPopper className="w-3 h-3 inline mr-0.5 -mt-0.5" />}
+                      {formatDiff(e.diffDays)}
+                    </span>
+                  </div>
                 </div>
               </motion.div>
             )

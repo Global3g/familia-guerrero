@@ -118,7 +118,7 @@ function App() {
 
       {/* Tab Bar - Floating pill V2 */}
       <div className="sticky top-14 sm:top-16 z-40 flex justify-center py-4" style={{ background: 'linear-gradient(to bottom, #0F172A 60%, transparent)' }}>
-        <nav className="inline-flex overflow-x-auto rounded-full px-2 py-2 md:px-4 md:py-3 glass-panel-static shadow-[0_10px_40px_rgba(0,0,0,0.5)]" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
+        <nav className="inline-flex overflow-x-auto rounded-full px-3 py-3 md:px-6 md:py-4 glass-panel-static shadow-[0_10px_40px_rgba(0,0,0,0.5)]" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           <style>{`nav::-webkit-scrollbar { display: none; }`}</style>
           {tabs.map((tab) => {
             const Icon = tab.icon
@@ -130,10 +130,10 @@ function App() {
                   setActiveTab(tab.id)
                   window.scrollTo({ top: 0, behavior: 'smooth' })
                 }}
-                className={`relative group px-4 py-2 text-sm font-sans tracking-wide whitespace-nowrap transition-all duration-200 flex-shrink-0 rounded-full ${
+                className={`relative group px-5 py-3 md:px-6 md:py-3 text-base font-sans tracking-wide whitespace-nowrap transition-all duration-200 flex-shrink-0 rounded-full ${
                   isActive
-                    ? 'text-white'
-                    : 'text-white/70 hover:text-white'
+                    ? 'text-white font-semibold'
+                    : 'text-white/90 hover:text-white'
                 }`}
               >
                 {isActive && (
@@ -146,8 +146,8 @@ function App() {
                 {!isActive && (
                   <span className="absolute inset-0 bg-white/5 rounded-full scale-50 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all" />
                 )}
-                <span className="relative z-10 flex items-center gap-2 font-medium">
-                  <Icon size={18} />
+                <span className="relative z-10 flex items-center gap-2.5 font-medium">
+                  <Icon size={22} />
                   {tab.label}
                 </span>
               </button>
@@ -157,7 +157,7 @@ function App() {
       </div>
 
       {/* Onboarding */}
-      <div className="max-w-4xl mx-auto px-4 pt-2">
+      <div className="max-w-[1600px] mx-auto px-4 pt-2">
         <Onboarding />
       </div>
 
@@ -235,7 +235,7 @@ function App() {
           transition={{ duration: 0.3 }}
         >
           <Events />
-          <div className="max-w-6xl mx-auto px-4 py-8">
+          <div className="max-w-[1600px] mx-auto px-4 py-8">
             <FamilyCalendar />
           </div>
           <DigitalInvitation />
@@ -255,7 +255,7 @@ function App() {
             <Reminders />
             <FamilyMap />
             <Bloodline />
-            <div className="max-w-6xl mx-auto px-4">
+            <div className="max-w-[1600px] mx-auto px-4">
               <Gamification />
             </div>
           </Suspense>

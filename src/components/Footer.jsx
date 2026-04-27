@@ -6,7 +6,7 @@ export default function Footer() {
       className="border-t border-white/5 bg-[#0F172A] relative z-20 py-12"
       aria-label="Pie de pagina"
     >
-      <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
+      <div className="max-w-[1600px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">
         {/* Logo & Title */}
         <div className="flex flex-col items-center md:items-start">
           <div className="font-serif text-2xl text-white mb-1 flex items-center space-x-2">
