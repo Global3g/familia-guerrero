@@ -1276,12 +1276,12 @@ export default function FamilyTree() {
                                 <div className="relative rounded-full p-3 bg-white/10 ring-4 ring-white/20 backdrop-blur-xl">
                                   {selectedMember.photoURL ? (
                                     <img src={selectedMember.photoURL} alt={selectedMember.name || selectedMember.fullName || 'Miembro'}
-                                      className="w-40 h-40 sm:w-48 sm:h-48 rounded-full object-cover cursor-pointer transform group-hover:scale-105 transition-transform duration-500"
+                                      className="w-24 h-24 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full object-cover cursor-pointer transform group-hover:scale-105 transition-transform duration-500"
                                       onClick={() => setLightboxPhoto({ photoURL: selectedMember.photoURL, caption: selectedMember.name || selectedMember.fullName })}
                                     />
                                   ) : (
-                                    <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-full flex items-center justify-center bg-gradient-to-br from-white/10 to-white/5">
-                                      <User className="w-20 h-20 text-white/30" />
+                                    <div className="w-24 h-24 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full flex items-center justify-center bg-gradient-to-br from-white/10 to-white/5">
+                                      <User className="w-12 h-12 sm:w-20 sm:h-20 text-white/30" />
                                     </div>
                                   )}
                                 </div>
@@ -1290,8 +1290,8 @@ export default function FamilyTree() {
                               {/* Heart connector - Elegant */}
                               {selectedMember.spouse && (
                                 <div className="flex flex-col items-center">
-                                  <div className="w-16 h-16 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex items-center justify-center shadow-2xl backdrop-blur-xl ring-2 ring-white/10">
-                                    <Heart className="w-8 h-8 text-white/90 fill-white/70 animate-pulse" style={{ animationDuration: '2s' }} />
+                                  <div className="w-10 h-10 sm:w-16 sm:h-16 rounded-full bg-gradient-to-br from-white/20 to-white/5 flex items-center justify-center shadow-2xl backdrop-blur-xl ring-2 ring-white/10">
+                                    <Heart className="w-5 h-5 sm:w-8 sm:h-8 text-white/90 fill-white/70 animate-pulse" style={{ animationDuration: '2s' }} />
                                   </div>
                                 </div>
                               )}
@@ -1303,12 +1303,12 @@ export default function FamilyTree() {
                                   <div className="relative rounded-full p-3 bg-white/10 ring-4 ring-white/20 backdrop-blur-xl">
                                     {typeof selectedMember.spouse === 'object' && selectedMember.spouse.photoURL ? (
                                       <img src={selectedMember.spouse.photoURL} alt={selectedMember.spouse.name}
-                                        className="w-40 h-40 sm:w-48 sm:h-48 rounded-full object-cover cursor-pointer transform group-hover:scale-105 transition-transform duration-500"
+                                        className="w-24 h-24 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full object-cover cursor-pointer transform group-hover:scale-105 transition-transform duration-500"
                                         onClick={() => setLightboxPhoto({ photoURL: selectedMember.spouse.photoURL, caption: selectedMember.spouse.name })}
                                       />
                                     ) : (
-                                      <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-full flex items-center justify-center bg-gradient-to-br from-white/10 to-white/5">
-                                        <User className="w-20 h-20 text-white/30" />
+                                      <div className="w-24 h-24 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full flex items-center justify-center bg-gradient-to-br from-white/10 to-white/5">
+                                        <User className="w-12 h-12 sm:w-20 sm:h-20 text-white/30" />
                                       </div>
                                     )}
                                   </div>
@@ -1570,12 +1570,12 @@ export default function FamilyTree() {
                                             }}>
                                               {child.photoURL ? (
                                                 <img src={child.photoURL} alt={child.name}
-                                                  className="w-40 h-40 sm:w-48 sm:h-48 rounded-full object-cover cursor-pointer transform group-hover:scale-105 transition-transform duration-500"
+                                                  className="w-24 h-24 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full object-cover cursor-pointer transform group-hover:scale-105 transition-transform duration-500"
                                                   onClick={() => setLightboxPhoto({ photoURL: child.photoURL, caption: child.name })}
                                                 />
                                               ) : (
-                                                <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-full flex items-center justify-center bg-gradient-to-br from-white/10 to-white/5">
-                                                  <User className="w-20 h-20 text-white/30" />
+                                                <div className="w-24 h-24 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full flex items-center justify-center bg-gradient-to-br from-white/10 to-white/5">
+                                                  <User className="w-12 h-12 sm:w-20 sm:h-20 text-white/30" />
                                                 </div>
                                               )}
                                             </div>
@@ -1584,11 +1584,11 @@ export default function FamilyTree() {
                                           {/* Heart connector - Elegant */}
                                           {child.spouse && (
                                             <div className="flex flex-col items-center">
-                                              <div className="w-16 h-16 rounded-full flex items-center justify-center shadow-2xl backdrop-blur-xl" style={{
+                                              <div className="w-10 h-10 sm:w-16 sm:h-16 rounded-full flex items-center justify-center shadow-2xl backdrop-blur-xl" style={{
                                                 background: 'linear-gradient(135deg, rgba(184, 101, 74, 0.2), rgba(184, 151, 106, 0.15))',
                                                 boxShadow: '0 0 0 2px rgba(184, 101, 74, 0.3), 0 10px 30px rgba(0,0,0,0.3)'
                                               }}>
-                                                <Heart className="w-8 h-8 animate-pulse" style={{
+                                                <Heart className="w-5 h-5 sm:w-8 sm:h-8 animate-pulse" style={{
                                                   color: '#B8654A',
                                                   fill: '#B8654A',
                                                   opacity: 0.9,
@@ -1610,12 +1610,12 @@ export default function FamilyTree() {
                                               }}>
                                                 {typeof child.spouse === 'object' && child.spouse.photoURL ? (
                                                   <img src={child.spouse.photoURL} alt={child.spouse.name}
-                                                    className="w-40 h-40 sm:w-48 sm:h-48 rounded-full object-cover cursor-pointer transform group-hover:scale-105 transition-transform duration-500"
+                                                    className="w-24 h-24 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full object-cover cursor-pointer transform group-hover:scale-105 transition-transform duration-500"
                                                     onClick={() => setLightboxPhoto({ photoURL: child.spouse.photoURL, caption: child.spouse.name })}
                                                   />
                                                 ) : (
-                                                  <div className="w-40 h-40 sm:w-48 sm:h-48 rounded-full flex items-center justify-center bg-gradient-to-br from-white/10 to-white/5">
-                                                    <User className="w-20 h-20 text-white/30" />
+                                                  <div className="w-24 h-24 sm:w-40 sm:h-40 md:w-48 md:h-48 rounded-full flex items-center justify-center bg-gradient-to-br from-white/10 to-white/5">
+                                                    <User className="w-12 h-12 sm:w-20 sm:h-20 text-white/30" />
                                                   </div>
                                                 )}
                                               </div>
