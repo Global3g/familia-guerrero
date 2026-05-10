@@ -94,10 +94,12 @@ export default function Hero() {
         if (grandparents?.grandfather?.photoURL) photos.push(grandparents.grandfather.photoURL)
         if (grandparents?.grandmother?.photoURL) photos.push(grandparents.grandmother.photoURL)
 
-        // Store all unique photos, pick 20 for display
+        // Store all unique photos. Mostramos menos en mobile para que cargue rápido.
         const unique = [...new Set(photos)]
+        const isMobile = typeof window !== 'undefined' && window.innerWidth < 640
+        const limit = isMobile ? 9 : 15
         setAllPhotos(unique)
-        setCollagePhotos(shuffle(unique).slice(0, 20))
+        setCollagePhotos(shuffle(unique).slice(0, limit))
       } catch (err) {
         console.error("Hero: could not load family stats", err);
       }
@@ -108,8 +110,10 @@ export default function Hero() {
   // Rotate collage photos every 5 minutes
   useEffect(() => {
     if (allPhotos.length === 0) return
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 640
+    const limit = isMobile ? 9 : 15
     const interval = setInterval(() => {
-      setCollagePhotos(shuffle(allPhotos).slice(0, 20))
+      setCollagePhotos(shuffle(allPhotos).slice(0, limit))
       setCollageKey(k => k + 1)
     }, 5 * 60 * 1000)
     return () => clearInterval(interval)
@@ -141,6 +145,9 @@ export default function Hero() {
                 key={url}
                 src={url}
                 alt=""
+                loading="lazy"
+                decoding="async"
+                fetchpriority="low"
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 0.9 }}
                 transition={{ delay: 0.12 * i, duration: 1.2 }}
