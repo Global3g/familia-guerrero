@@ -135,10 +135,7 @@ export default function Hero() {
       {/* Photo Collage Background */}
       {collagePhotos.length > 0 && (
         <div key={collageKey} className="absolute inset-0 z-[1] overflow-hidden" style={{ pointerEvents: 'none' }}>
-          <div
-            className="absolute inset-0 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 p-2"
-            style={{ gridAutoRows: '1fr' }}
-          >
+          <div className="absolute inset-0 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 p-2 content-start">
             {collagePhotos.map((url, i) => (
               <motion.img
                 key={url}
@@ -147,7 +144,7 @@ export default function Hero() {
                 initial={{ opacity: 0 }}
                 animate={{ opacity: 0.9 }}
                 transition={{ delay: 0.12 * i, duration: 1.2 }}
-                className="w-full h-full object-cover rounded-xl"
+                className="w-full aspect-square object-cover rounded-xl"
                 style={{ opacity: 0.9 }}
               />
             ))}
