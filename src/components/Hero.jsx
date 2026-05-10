@@ -136,7 +136,7 @@ export default function Hero() {
       {collagePhotos.length > 0 && (
         <div key={collageKey} className="absolute inset-0 z-[1] overflow-hidden" style={{ pointerEvents: 'none' }}>
           <div
-            className="absolute inset-0 grid grid-cols-4 md:grid-cols-5 gap-2 p-2"
+            className="absolute inset-0 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 p-2"
             style={{ gridAutoRows: '1fr' }}
           >
             {collagePhotos.map((url, i) => (
@@ -145,14 +145,15 @@ export default function Hero() {
                 src={url}
                 alt=""
                 initial={{ opacity: 0 }}
-                animate={{ opacity: 0.6 }}
+                animate={{ opacity: 0.9 }}
                 transition={{ delay: 0.12 * i, duration: 1.2 }}
                 className="w-full h-full object-cover rounded-xl"
+                style={{ opacity: 0.9 }}
               />
             ))}
           </div>
-          {/* Dark overlay so text is readable */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0F172A]/50 via-[#0F172A]/60 to-[#0F172A]/85" />
+          {/* Dark overlay so text is readable - mas suave en mobile */}
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0F172A]/20 via-[#0F172A]/30 to-[#0F172A]/65 sm:from-[#0F172A]/35 sm:via-[#0F172A]/45 sm:to-[#0F172A]/75" />
         </div>
       )}
 

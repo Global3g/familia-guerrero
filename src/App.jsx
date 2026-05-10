@@ -174,13 +174,17 @@ function App() {
           <WeeklyBanner />
           <Origin />
           <YourBranch />
-          <div className="py-16 bg-white/5">
-            <ShareExport />
-          </div>
-          <div className="flex justify-center gap-3 py-8">
-            <PresentationButton onClick={() => setShowPresentation(true)} />
-            <ProgressReport />
-          </div>
+          {isAdmin && (
+            <>
+              <div className="py-16 bg-white/5">
+                <ShareExport />
+              </div>
+              <div className="flex justify-center gap-3 py-8">
+                <PresentationButton onClick={() => setShowPresentation(true)} />
+                <ProgressReport />
+              </div>
+            </>
+          )}
         </motion.div>
       )}
 

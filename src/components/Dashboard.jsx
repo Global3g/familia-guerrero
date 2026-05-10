@@ -173,34 +173,6 @@ export default function Dashboard() {
           </div>
         </motion.div>
 
-        {/* Upcoming Event Mini-Card */}
-        <motion.div
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6, delay: 0.5 }}
-          id="eventos"
-          className="glass-panel rounded-2xl p-6 lg:col-span-2 relative border-l-4 border-l-primary flex flex-col sm:flex-row items-center gap-6"
-        >
-          <div className="w-16 h-16 rounded-xl bg-primary/20 border border-primary/30 flex flex-col items-center justify-center shrink-0">
-            <span className="text-xs uppercase tracking-wider text-primary font-bold">Oct</span>
-            <span className="text-2xl font-serif text-white">24</span>
-          </div>
-          <div className="flex-1 text-center sm:text-left">
-            <div className="text-[10px] text-accent uppercase tracking-widest mb-1">Próximo Evento Oficial</div>
-            <h3 className="text-xl font-serif text-white mb-2">Reunión Anual G-2024</h3>
-            <p className="text-sm text-white/60 font-sans line-clamp-2">
-              Nuestra tradicional junta de otoño. Este año organizada por la rama de los Guerrero-Méndez
-              en Valle de Bravo. Se ruega confirmación de asistencia.
-            </p>
-          </div>
-          <button className="shrink-0 p-3 rounded-full bg-white/5 hover:bg-white/10 border border-white/10 transition flex items-center justify-center">
-            <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-            </svg>
-          </button>
-        </motion.div>
-
         {/* Backup Database Card */}
         {isAdmin && (
         <motion.div
