@@ -13,12 +13,13 @@ function calcAge(birthDate, deathDate) {
 }
 import { grandparents as defaultGrandparents } from '../data/familyData'
 import { getGrandparents, saveGrandparents } from '../firebase/familyService'
+import { useAuth } from '../firebase/useAuth'
 import GrandparentForm from './GrandparentForm'
 
 import formatDate from '../utils/formatDate'
 import DeceasedCross from '../utils/DeceasedCross'
 
-const ProfileCard = ({ person, index, onEdit }) => {
+const ProfileCard = ({ person, index, onEdit, isAdmin }) => {
   const isGrandfather = index === 0
 
   return (
@@ -31,13 +32,15 @@ const ProfileCard = ({ person, index, onEdit }) => {
     >
       <div className="glass-panel rounded-2xl overflow-hidden">
         {/* Edit button */}
-        <button
-          onClick={onEdit}
-          className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 shadow-md transition"
-          style={{ color: isGrandfather ? '#B8654A' : '#6B9080' }}
-        >
-          <Pencil className="w-4 h-4" />
-        </button>
+        {isAdmin && (
+          <button
+            onClick={onEdit}
+            className="absolute top-3 right-3 z-10 w-9 h-9 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 shadow-md transition"
+            style={{ color: isGrandfather ? '#B8654A' : '#6B9080' }}
+          >
+            <Pencil className="w-4 h-4" />
+          </button>
+        )}
 
         {/* Photo */}
         <div className="flex justify-center pt-6 pb-3">
@@ -173,6 +176,7 @@ const ProfileCard = ({ person, index, onEdit }) => {
 }
 
 export default function Origin() {
+  const { isAdmin } = useAuth()
   const [data, setData] = useState(null)
   const [editingType, setEditingType] = useState(null)
 
@@ -247,7 +251,7 @@ export default function Origin() {
 
         {/* Profile cards */}
         <div className="flex flex-col md:flex-row items-center md:items-start justify-center gap-8 mb-16">
-          <ProfileCard person={grandfather} index={0} onEdit={() => setEditingType('grandfather')} />
+          <ProfileCard person={grandfather} index={0} onEdit={() => setEditingType('grandfather')} isAdmin={isAdmin} />
 
           {/* Heart connector (visible on md+) */}
           <motion.div
@@ -267,7 +271,7 @@ export default function Origin() {
             </div>
           </motion.div>
 
-          <ProfileCard person={grandmother} index={1} onEdit={() => setEditingType('grandmother')} />
+          <ProfileCard person={grandmother} index={1} onEdit={() => setEditingType('grandmother')} isAdmin={isAdmin} />
         </div>
 
         {/* Wedding & family story */}

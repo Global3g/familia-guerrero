@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { X, ArrowRight, Users, Camera, Heart, MapPin } from 'lucide-react'
 import { getFamilyMembers } from '../firebase/familyService'
+import { useAuth } from '../firebase/useAuth'
 
 const STORAGE_KEY = 'familia-guerrero-onboarding-dismissed'
 
@@ -13,10 +14,12 @@ const steps = [
 ]
 
 export default function Onboarding() {
+  const { isAdmin } = useAuth()
   const [visible, setVisible] = useState(false)
   const [copied, setCopied] = useState(false)
 
   useEffect(() => {
+    if (!isAdmin) return
     if (localStorage.getItem(STORAGE_KEY) === 'true') return
 
     getFamilyMembers()
@@ -24,7 +27,7 @@ export default function Onboarding() {
         if (members.length < 3) setVisible(true)
       })
       .catch(() => {})
-  }, [])
+  }, [isAdmin])
 
   function dismiss() {
     localStorage.setItem(STORAGE_KEY, 'true')

@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Star, Heart, Sun, Camera, Plus, Pencil, Trash2, Save, Loader2, MessageCircle } from "lucide-react";
 import { memorials as defaultMemorials } from "../data/familyData";
 import { getMemorials, saveMemorial, deleteMemorial, uploadPhoto, getFamilyMembers, getGrandparents } from "../firebase/familyService";
+import { useAuth } from '../firebase/useAuth';
 import { SkeletonGrid } from './Skeleton';
 import Modal from './Modal';
 import sounds from '../utils/sounds';
@@ -273,6 +274,7 @@ function MemorialForm({ isOpen, onClose, data, onSave }) {
 }
 
 export default function Memorial() {
+  const { isAdmin } = useAuth()
   const [memorials, setMemorials] = useState([])
   const [loading, setLoading] = useState(true)
   const [editingMemorial, setEditingMemorial] = useState(null)
@@ -457,14 +459,16 @@ export default function Memorial() {
               className="relative bg-white/5 backdrop-blur-sm rounded-3xl border-4 border-white/80 shadow-lg shadow-black/10 p-8 text-center group hover:shadow-xl hover:shadow-black/20 transition-shadow duration-500"
             >
               {/* Edit/Delete buttons */}
-              <div className="absolute top-3 right-3 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10">
-                <button onClick={() => setEditingMemorial(person)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 shadow text-white/50 transition">
-                  <Pencil className="w-3.5 h-3.5" />
-                </button>
-                <button onClick={() => setDeletingMemorial(person)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-red-500/20 shadow text-red-400 hover:text-red-400 transition">
-                  <Trash2 className="w-3.5 h-3.5" />
-                </button>
-              </div>
+              {isAdmin && (
+                <div className="absolute top-3 right-3 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10">
+                  <button onClick={() => setEditingMemorial(person)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 shadow text-white/50 transition">
+                    <Pencil className="w-3.5 h-3.5" />
+                  </button>
+                  <button onClick={() => setDeletingMemorial(person)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-red-500/20 shadow text-red-400 hover:text-red-400 transition">
+                    <Trash2 className="w-3.5 h-3.5" />
+                  </button>
+                </div>
+              )}
 
               {/* Decorative star */}
               <Star
@@ -673,15 +677,17 @@ export default function Memorial() {
         </div>}
 
         {/* Add memorial button */}
-        <div className="flex justify-center mt-12">
-          <button
-            onClick={() => setShowCreateForm(true)}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-[#B8976A]/40 text-[#B8976A] hover:bg-[#B8976A]/5 hover:border-[#B8976A] transition font-medium"
-          >
-            <Plus className="w-5 h-5" />
-            Agregar homenaje
-          </button>
-        </div>
+        {isAdmin && (
+          <div className="flex justify-center mt-12">
+            <button
+              onClick={() => setShowCreateForm(true)}
+              className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-[#B8976A]/40 text-[#B8976A] hover:bg-[#B8976A]/5 hover:border-[#B8976A] transition font-medium"
+            >
+              <Plus className="w-5 h-5" />
+              Agregar homenaje
+            </button>
+          </div>
+        )}
 
         {/* Closing message */}
         <motion.p

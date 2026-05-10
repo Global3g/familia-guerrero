@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { Calendar, MapPin, Gift, Heart, Users, PartyPopper, Star, Plus, Pencil, Trash2, Save, Loader2, Camera } from 'lucide-react'
 import { getUpcomingEvents, saveUpcomingEvent, deleteUpcomingEvent, getGalleryPhotos } from '../firebase/familyService'
+import { useAuth } from '../firebase/useAuth'
 import Modal from './Modal'
 import { SkeletonGrid } from './Skeleton'
 
@@ -161,6 +162,7 @@ function EventForm({ isOpen, onClose, eventData, onSave }) {
 }
 
 export default function Events() {
+  const { isAdmin } = useAuth()
   const [events, setEvents] = useState([])
   const [loading, setLoading] = useState(true)
   const [galleryPhotos, setGalleryPhotos] = useState([])
@@ -281,7 +283,7 @@ export default function Events() {
               <p className="text-sm text-white/40 mb-6">
                 {tab === 'proximos' ? 'Agrega un evento familiar para que todos esten informados' : 'Los eventos pasados apareceran aqui automaticamente'}
               </p>
-              {tab === 'proximos' && (
+              {tab === 'proximos' && isAdmin && (
                 <button
                   onClick={() => setShowCreateForm(true)}
                   className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#B8654A] text-white hover:bg-[#B8654A]/90 transition font-medium shadow-md"
@@ -311,14 +313,16 @@ export default function Events() {
                 }}
               >
                 {/* Edit/Delete buttons */}
-                <div className="absolute top-2 right-2 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10">
-                  <button onClick={() => setEditingEvent(event)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 shadow text-[#B8976A] transition">
-                    <Pencil className="w-3.5 h-3.5" />
-                  </button>
-                  <button onClick={() => setDeletingEvent(event)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 shadow text-red-400 hover:text-red-500 transition">
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-                </div>
+                {isAdmin && (
+                  <div className="absolute top-2 right-2 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10">
+                    <button onClick={() => setEditingEvent(event)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 shadow text-[#B8976A] transition">
+                      <Pencil className="w-3.5 h-3.5" />
+                    </button>
+                    <button onClick={() => setDeletingEvent(event)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 shadow text-red-400 hover:text-red-500 transition">
+                      <Trash2 className="w-3.5 h-3.5" />
+                    </button>
+                  </div>
+                )}
 
                 {/* Card top: date + type badge */}
                 <div
@@ -450,15 +454,17 @@ export default function Events() {
         )}
 
         {/* Add event button */}
-        <div className="flex justify-center mt-12">
-          <button
-            onClick={() => setShowCreateForm(true)}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-white/20 text-white/50 hover:bg-white/5 hover:border-white/30 transition font-medium"
-          >
-            <Plus className="w-5 h-5" />
-            Agregar evento
-          </button>
-        </div>
+        {isAdmin && (
+          <div className="flex justify-center mt-12">
+            <button
+              onClick={() => setShowCreateForm(true)}
+              className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-white/20 text-white/50 hover:bg-white/5 hover:border-white/30 transition font-medium"
+            >
+              <Plus className="w-5 h-5" />
+              Agregar evento
+            </button>
+          </div>
+        )}
 
         {/* Bottom note */}
         <motion.div

@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { Users, TreePine, Calendar, TrendingUp, MapPin, Download } from 'lucide-react'
 import { getFamilyMembers, getGrandparents } from '../firebase/familyService'
+import { useAuth } from '../firebase/useAuth'
 import { backupFirestore } from '../utils/backupFirestore'
 
 function collectStats(members, grandparents) {
@@ -44,6 +45,7 @@ function collectStats(members, grandparents) {
 }
 
 export default function Dashboard() {
+  const { isAdmin } = useAuth()
   const [stats, setStats] = useState(null)
   const [backingUp, setBackingUp] = useState(false)
 
@@ -200,6 +202,7 @@ export default function Dashboard() {
         </motion.div>
 
         {/* Backup Database Card */}
+        {isAdmin && (
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -236,6 +239,7 @@ export default function Dashboard() {
             )}
           </button>
         </motion.div>
+        )}
       </div>
     </section>
   )

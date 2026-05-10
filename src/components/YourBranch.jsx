@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { motion } from 'framer-motion'
 import { User, Users, Heart, MapPin, Camera, ChevronRight } from 'lucide-react'
 import { auth } from '../firebase/config'
+import { useAuth } from '../firebase/useAuth'
 import { getFamilyMembers, getGrandparents } from '../firebase/familyService'
 
 function normalize(str) {
@@ -92,6 +93,7 @@ function PhotoAvatar({ photoURL, name, size = 'md', borderColor = '#B8654A' }) {
 }
 
 export default function YourBranch() {
+  const { isAdmin } = useAuth()
   const [loading, setLoading] = useState(true)
   const [result, setResult] = useState(null)
   const [userName, setUserName] = useState('')
@@ -324,7 +326,7 @@ export default function YourBranch() {
         </motion.div>
 
         {/* CTA: complete profile */}
-        {missingProfile && (
+        {missingProfile && isAdmin && (
           <motion.div
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}

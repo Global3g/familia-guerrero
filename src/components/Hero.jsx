@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { Camera, ChevronDown } from "lucide-react";
 import { getFamilyMembers, getGrandparents, saveGrandparents, uploadPhoto, getGalleryPhotos } from "../firebase/familyService";
+import { useAuth } from "../firebase/useAuth";
 
 function collectCount(members, grandparents) {
   let total = 0;
@@ -53,6 +54,7 @@ function shuffle(arr) {
 }
 
 export default function Hero() {
+  const { isAdmin } = useAuth();
   const [stats, setStats] = useState(null);
   const [heroPhoto, setHeroPhoto] = useState(null);
   const [collagePhotos, setCollagePhotos] = useState([]);
@@ -292,11 +294,13 @@ export default function Hero() {
       </motion.a>
 
       {/* Photo upload */}
-      <label className="absolute bottom-6 right-6 z-20 cursor-pointer flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all glass-panel-static text-white/60 hover:text-white border border-white/10 hover:border-accent/40">
-        <Camera className="w-3.5 h-3.5" />
-        <span className="hidden sm:inline">Cambiar foto</span>
-        <input type="file" accept="image/*" onChange={handleHeroPhoto} className="hidden" />
-      </label>
+      {isAdmin && (
+        <label className="absolute bottom-6 right-6 z-20 cursor-pointer flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all glass-panel-static text-white/60 hover:text-white border border-white/10 hover:border-accent/40">
+          <Camera className="w-3.5 h-3.5" />
+          <span className="hidden sm:inline">Cambiar foto</span>
+          <input type="file" accept="image/*" onChange={handleHeroPhoto} className="hidden" />
+        </label>
+      )}
     </header>
   );
 }

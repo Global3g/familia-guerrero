@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Heart, Users, User, Plus, Pencil, Trash2, Eye, AlertTriangle, ArrowRightLeft, Calendar, Home, MapPin, Star, MessageCircle, GitBranch, LayoutGrid } from 'lucide-react'
 import { grandparents as defaultGrandparents } from '../data/familyData'
 import { getFamilyMembers, saveFamilyMember, deleteFamilyMember, getGrandparents } from '../firebase/familyService'
+import { useAuth } from '../firebase/useAuth'
 import FamilyMemberForm from './FamilyMemberForm'
 import sounds from '../utils/sounds'
 import DeceasedCross from '../utils/DeceasedCross'
@@ -108,7 +109,7 @@ function GrandparentsPair({ grandparentsData }) {
   )
 }
 
-function ChildCard({ child, onEdit, onDelete, onView }) {
+function ChildCard({ child, onEdit, onDelete, onView, canEdit = false }) {
   const spouse = child.spouse
   const hasSpouse = spouse && (typeof spouse === 'object' ? spouse.name : spouse)
 
@@ -119,23 +120,25 @@ function ChildCard({ child, onEdit, onDelete, onView }) {
       style={{ width: hasSpouse ? '400px' : '220px', maxWidth: '100%' }}
       onClick={onView}
     >
-      {/* Action buttons */}
-      <div className="absolute top-3 right-3 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10">
-        <button
-          onClick={(e) => { e.stopPropagation(); onEdit(); }}
-          className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 text-white/50 hover:text-white transition"
-          title="Editar"
-        >
-          <Pencil className="w-3.5 h-3.5" />
-        </button>
-        <button
-          onClick={(e) => { e.stopPropagation(); onDelete(); }}
-          className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-red-500/20 text-white/50 hover:text-red-400 transition"
-          title="Eliminar"
-        >
-          <Trash2 className="w-3.5 h-3.5" />
-        </button>
-      </div>
+      {/* Action buttons - solo admin */}
+      {canEdit && (
+        <div className="absolute top-3 right-3 flex gap-1.5 opacity-0 group-hover:opacity-100 transition-opacity z-10">
+          <button
+            onClick={(e) => { e.stopPropagation(); onEdit(); }}
+            className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 text-white/50 hover:text-white transition"
+            title="Editar"
+          >
+            <Pencil className="w-3.5 h-3.5" />
+          </button>
+          <button
+            onClick={(e) => { e.stopPropagation(); onDelete(); }}
+            className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-red-500/20 text-white/50 hover:text-red-400 transition"
+            title="Eliminar"
+          >
+            <Trash2 className="w-3.5 h-3.5" />
+          </button>
+        </div>
+      )}
 
       {child.role && (
         <span className="absolute -top-2.5 left-4 text-[10px] font-semibold uppercase tracking-[2px] px-2.5 py-0.5 rounded-full bg-white/10 text-white/50 border-4 border-white/80">
@@ -900,6 +903,7 @@ function NucleusCardTree({ member, onClose }) {
 }
 
 export default function FamilyTree() {
+  const { isAdmin } = useAuth()
   const [members, setMembers] = useState([])
   const [grandparentsData, setGrandparentsData] = useState(null)
   const [editingMember, setEditingMember] = useState(null)
@@ -1110,6 +1114,7 @@ export default function FamilyTree() {
                 >
                   <ChildCard
                     child={child}
+                    canEdit={isAdmin}
                     onEdit={() => setEditingMember(child)}
                     onDelete={() => setDeletingMember(child)}
                     onView={() => {
@@ -1130,16 +1135,18 @@ export default function FamilyTree() {
           )}
         </motion.div>
 
-        {/* Add member button */}
-        <div className="flex justify-center mt-10">
-          <button
-            onClick={() => setShowCreateForm(true)}
-            className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-white/20 text-white/50 hover:bg-white/5 hover:border-white/30 transition font-medium"
-          >
-            <Plus className="w-5 h-5" />
-            Agregar hijo/a
-          </button>
-        </div>
+        {/* Add member button - solo admin */}
+        {isAdmin && (
+          <div className="flex justify-center mt-10">
+            <button
+              onClick={() => setShowCreateForm(true)}
+              className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-white/20 text-white/50 hover:bg-white/5 hover:border-white/30 transition font-medium"
+            >
+              <Plus className="w-5 h-5" />
+              Agregar hijo/a
+            </button>
+          </div>
+        )}
 
         {/* Stats bar */}
         {members.length > 0 && (

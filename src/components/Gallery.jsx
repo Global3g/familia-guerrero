@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion'
 import { Camera, X, ZoomIn, Filter, Plus, Pencil, Trash2, Save, Loader2, Users, Calendar, MapPin, Tag, RefreshCw, ChevronLeft, ChevronRight, Image, Clock, Heart } from 'lucide-react'
 import { galleryCategories } from '../data/familyData'
 import { getGalleryPhotos, saveGalleryPhoto, deleteGalleryPhoto, uploadPhoto, getUpcomingEvents, getFamilyMembers, getGrandparents } from '../firebase/familyService'
+import { useAuth } from '../firebase/useAuth'
 import Modal from './Modal'
 import sounds from '../utils/sounds'
 import { SkeletonGallery } from './Skeleton'
@@ -574,6 +575,7 @@ function FilterPill({ label, active, onClick, icon: Icon }) {
 
 // ── Main Gallery Component ──
 export default function Gallery() {
+  const { isAdmin } = useAuth()
   const [selectedPhoto, setSelectedPhoto] = useState(null)
   const [galleryPhotos, setGalleryPhotos] = useState([])
   const [members, setMembers] = useState([])
@@ -833,25 +835,27 @@ export default function Gallery() {
         </motion.div>
 
         {/* Drag and drop zone */}
-        <div
-          onDragOver={(e) => { e.preventDefault(); e.currentTarget.classList.add('border-[#6B9080]', 'bg-[#6B9080]/5') }}
-          onDragLeave={(e) => { e.currentTarget.classList.remove('border-[#6B9080]', 'bg-[#6B9080]/5') }}
-          onDrop={async (e) => {
-            e.preventDefault()
-            e.currentTarget.classList.remove('border-[#6B9080]', 'bg-[#6B9080]/5')
-            const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'))
-            for (const file of files) {
-              const url = await uploadPhoto(file, `gallery/drop-${Date.now()}`)
-              if (url) await saveGalleryPhoto(null, { photoURL: url, caption: file.name, category: 'recuerdos', year: new Date().getFullYear() })
-            }
-            await loadAll()
-          }}
-          className="mb-6 border-2 border-dashed border-white/20 bg-white/5 rounded-2xl p-8 text-center transition-colors cursor-pointer"
-          onClick={() => setShowCreateForm(true)}
-        >
-          <Camera className="w-8 h-8 mx-auto mb-2 text-white/20" />
-          <p className="text-sm text-white/40">Arrastra fotos aqui o haz clic para agregar</p>
-        </div>
+        {isAdmin && (
+          <div
+            onDragOver={(e) => { e.preventDefault(); e.currentTarget.classList.add('border-[#6B9080]', 'bg-[#6B9080]/5') }}
+            onDragLeave={(e) => { e.currentTarget.classList.remove('border-[#6B9080]', 'bg-[#6B9080]/5') }}
+            onDrop={async (e) => {
+              e.preventDefault()
+              e.currentTarget.classList.remove('border-[#6B9080]', 'bg-[#6B9080]/5')
+              const files = Array.from(e.dataTransfer.files).filter(f => f.type.startsWith('image/'))
+              for (const file of files) {
+                const url = await uploadPhoto(file, `gallery/drop-${Date.now()}`)
+                if (url) await saveGalleryPhoto(null, { photoURL: url, caption: file.name, category: 'recuerdos', year: new Date().getFullYear() })
+              }
+              await loadAll()
+            }}
+            className="mb-6 border-2 border-dashed border-white/20 bg-white/5 rounded-2xl p-8 text-center transition-colors cursor-pointer"
+            onClick={() => setShowCreateForm(true)}
+          >
+            <Camera className="w-8 h-8 mx-auto mb-2 text-white/20" />
+            <p className="text-sm text-white/40">Arrastra fotos aqui o haz clic para agregar</p>
+          </div>
+        )}
 
         {/* Masonry grid grouped by year */}
         {loading ? (
@@ -881,7 +885,7 @@ export default function Gallery() {
                         className="glass-panel group relative rounded-xl overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1"
                       >
                         {/* Edit/Delete buttons (only for firestore photos) */}
-                        {!isMemberPhoto && (
+                        {!isMemberPhoto && isAdmin && (
                           <div className="absolute top-2 left-2 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-20">
                             <button onClick={(e) => { e.stopPropagation(); setEditingPhoto(photo); }} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-[#B8976A]/10 shadow text-[#B8976A] transition">
                               <Pencil className="w-3.5 h-3.5" />
@@ -972,7 +976,7 @@ export default function Gallery() {
               <button onClick={clearFilters} className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/20 text-white/60 hover:bg-white/5 transition font-medium">
                 <X className="w-4 h-4" /> Limpiar filtros
               </button>
-            ) : (
+            ) : isAdmin ? (
               <button
                 onClick={() => setShowCreateForm(true)}
                 className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#B8654A] text-white hover:bg-[#B8654A]/90 transition font-medium shadow-md"
@@ -980,12 +984,12 @@ export default function Gallery() {
                 <Plus className="w-5 h-5" />
                 Subir primera foto
               </button>
-            )}
+            ) : null}
           </motion.div>
         )}
 
         {/* Add photo button */}
-        {filteredPhotos.length > 0 && (
+        {filteredPhotos.length > 0 && isAdmin && (
           <div className="flex justify-center mt-12">
             <button
               onClick={() => setShowCreateForm(true)}
