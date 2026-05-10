@@ -79,19 +79,33 @@ export default function Navbar({ user, isAdmin, onLogout }) {
             </div>
           )}
 
-          {/* Mobile Hamburger */}
+          {/* Mobile: Salir directo + Hamburguesa */}
           {user && (
-            <button
-              onClick={() => setMobileOpen(!mobileOpen)}
-              className={`md:hidden p-2 rounded-lg transition-colors duration-300 ${
-                scrolled
-                  ? 'text-white hover:bg-[#0F172A]/10'
-                  : 'text-[#F8FAFC] hover:bg-white/10'
-              }`}
-              aria-label={mobileOpen ? 'Cerrar menu' : 'Abrir menu'}
-            >
-              {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
-            </button>
+            <div className="md:hidden flex items-center gap-1">
+              <button
+                onClick={onLogout}
+                className={`flex items-center gap-1.5 font-sans text-sm font-medium px-3 py-2 rounded-lg transition-colors duration-300 ${
+                  scrolled
+                    ? 'text-[#B8654A] hover:bg-[#B8654A]/10'
+                    : 'text-[#F8FAFC] hover:bg-white/10'
+                }`}
+                aria-label="Salir"
+              >
+                <LogOut className="w-5 h-5" />
+                <span>Salir</span>
+              </button>
+              <button
+                onClick={() => setMobileOpen(!mobileOpen)}
+                className={`p-2 rounded-lg transition-colors duration-300 ${
+                  scrolled
+                    ? 'text-white hover:bg-[#0F172A]/10'
+                    : 'text-[#F8FAFC] hover:bg-white/10'
+                }`}
+                aria-label={mobileOpen ? 'Cerrar menu' : 'Abrir menu'}
+              >
+                {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
           )}
         </div>
       </div>
