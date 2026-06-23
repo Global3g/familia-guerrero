@@ -8,6 +8,7 @@ import FamilyMemberForm from './FamilyMemberForm'
 import sounds from '../utils/sounds'
 import DeceasedCross from '../utils/DeceasedCross'
 import FamilyNucleoCapitulos from './FamilyNucleoCapitulos'
+import NucleusSwimLanes from './NucleusSwimLanes'
 
 const ReactFlowLazy = lazy(() => import('reactflow').then(mod => ({ default: mod.default })))
 const ControlsLazy = lazy(() => import('reactflow').then(mod => ({ default: mod.Controls })))
@@ -1486,9 +1487,9 @@ export default function FamilyTree() {
                               </div>
                             </div>
                           )}
-                      {/* TAB: Familia - Card Tree View (fullscreen) */}
+                      {/* TAB: Familia - Swim Lanes Tree View (fullscreen) */}
                       {familiaView === 'arbol-visual' && selectedMember.children?.length > 0 && (
-                        <NucleusCardTree member={selectedMember} onClose={() => setFamiliaView('capitulos')} />
+                        <NucleusSwimLanes member={selectedMember} onClose={() => setFamiliaView('capitulos')} onClickPhoto={setLightboxPhoto} />
                       )}
 
                       {/* TAB: Familia - Interactive Tree View */}
