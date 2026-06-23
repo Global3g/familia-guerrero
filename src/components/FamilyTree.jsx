@@ -586,36 +586,36 @@ function NucleusCardTree({ member, onClose }) {
     { M: 'Bisnieto', F: 'Bisnieta', default: 'Bisnieto(a)', plural: 'Bisnietos' },
   ]
 
-  // Elegant minimalist design - neutral tones only
+  // Navy cards on ivory/parchment background
   const genThemes = [
     {
-      gradient: 'linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01))',
-      glow: 'rgba(255, 255, 255, 0.05)',
+      gradient: 'linear-gradient(135deg, #152238, #1E293B)',
+      glow: 'rgba(21,34,56,0.2)',
       accent: 'rgba(255, 255, 255, 0.9)',
-      pillBg: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03))',
-      line: 'rgba(255, 255, 255, 0.15)'
+      pillBg: 'linear-gradient(135deg, #152238, #1E293B)',
+      line: 'rgba(184,150,62,0.4)'
     },
     {
-      gradient: 'linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01))',
-      glow: 'rgba(255, 255, 255, 0.05)',
+      gradient: 'linear-gradient(135deg, #152238, #1E293B)',
+      glow: 'rgba(21,34,56,0.2)',
       accent: 'rgba(255, 255, 255, 0.9)',
-      pillBg: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03))',
-      line: 'rgba(255, 255, 255, 0.15)'
+      pillBg: 'linear-gradient(135deg, #152238, #1E293B)',
+      line: 'rgba(184,150,62,0.4)'
     },
     {
-      gradient: 'linear-gradient(135deg, rgba(255, 255, 255, 0.03), rgba(255, 255, 255, 0.01))',
-      glow: 'rgba(255, 255, 255, 0.05)',
+      gradient: 'linear-gradient(135deg, #152238, #1E293B)',
+      glow: 'rgba(21,34,56,0.2)',
       accent: 'rgba(255, 255, 255, 0.9)',
-      pillBg: 'linear-gradient(135deg, rgba(255, 255, 255, 0.08), rgba(255, 255, 255, 0.03))',
-      line: 'rgba(255, 255, 255, 0.15)'
+      pillBg: 'linear-gradient(135deg, #152238, #1E293B)',
+      line: 'rgba(184,150,62,0.4)'
     },
   ]
 
-  // Elegant neutral card colors - white/gray only
+  // Navy card colors
   const cardColors = [
-    ['rgba(255, 255, 255, 0.08)', 'rgba(255, 255, 255, 0.03)'],
-    ['rgba(255, 255, 255, 0.08)', 'rgba(255, 255, 255, 0.03)'],
-    ['rgba(255, 255, 255, 0.08)', 'rgba(255, 255, 255, 0.03)'],
+    ['#152238', '#1E293B'],
+    ['#152238', '#1E293B'],
+    ['#152238', '#1E293B'],
   ]
 
   // ── Build generation rows ──
@@ -652,27 +652,28 @@ function NucleusCardTree({ member, onClose }) {
   const familyTitle = `Familia ${getLastName(member.name)}`
 
   return (
-    <div className="fixed inset-0 z-[70] flex flex-col" style={{ background: 'linear-gradient(160deg, #152238 0%, #1E293B 40%, #152238 100%)' }}>
+    <div className="fixed inset-0 z-[70] flex flex-col" style={{ background: '#F5F0E8' }}>
       {/* Subtle pattern overlay */}
-      <div className="absolute inset-0 opacity-[0.03]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, white 1px, transparent 0)', backgroundSize: '40px 40px' }} />
+      <div className="absolute inset-0 opacity-[0.015]" style={{ backgroundImage: 'radial-gradient(circle at 1px 1px, #152238 1px, transparent 0)', backgroundSize: '40px 40px' }} />
 
       {/* Header bar - minimalist elegant */}
-      <div className="relative flex items-center justify-between px-8 py-6 border-b border-white/5 flex-shrink-0" style={{
-        background: 'rgba(255, 255, 255, 0.02)',
-        backdropFilter: 'blur(20px)'
+      <div className="relative flex items-center justify-between px-8 py-6 border-b flex-shrink-0" style={{
+        background: '#152238',
+        borderColor: 'rgba(184,150,62,0.2)'
       }}>
         <div className="flex items-center gap-4">
-          <div className="w-12 h-12 rounded-2xl flex items-center justify-center bg-white/5 border border-white/10">
-            <GitBranch className="w-6 h-6 text-white/80" />
+          <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ background: 'rgba(184,150,62,0.15)', border: '1px solid rgba(184,150,62,0.3)' }}>
+            <GitBranch className="w-6 h-6" style={{ color: '#B8963E' }} />
           </div>
           <div>
             <h3 className="elegant-heading text-2xl text-white">{familyTitle}</h3>
-            <p className="text-xs text-white/40 font-light tracking-wider uppercase mt-1">Árbol Genealógico</p>
+            <p className="text-xs font-light tracking-wider uppercase mt-1" style={{ color: '#B8963E' }}>Árbol Genealógico</p>
           </div>
         </div>
         <button
           onClick={onClose}
-          className="w-12 h-12 rounded-2xl flex items-center justify-center text-white/50 hover:text-white hover:bg-white/5 transition-all"
+          className="w-12 h-12 rounded-2xl flex items-center justify-center transition-all"
+          style={{ color: 'rgba(255,255,255,0.7)' }}
         >
           <span className="text-3xl font-light">&times;</span>
         </button>
@@ -689,10 +690,9 @@ function NucleusCardTree({ member, onClose }) {
             className="relative mb-16"
           >
             <div className="relative rounded-3xl px-16 py-14" style={{
-              background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.06) 0%, rgba(255, 255, 255, 0.02) 100%)',
-              backdropFilter: 'blur(20px)',
-              boxShadow: '0 20px 80px rgba(0,0,0,0.5), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
-              border: '1px solid rgba(255, 255, 255, 0.08)'
+              background: 'linear-gradient(145deg, #152238 0%, #1E293B 100%)',
+              boxShadow: '0 20px 60px rgba(0,0,0,0.3), 0 0 0 1px rgba(184,150,62,0.2)',
+              border: '2px solid rgba(184,150,62,0.3)'
             }}>
               <div className="relative flex items-center justify-center gap-16">
                 <div className="flex flex-col items-center gap-4">
@@ -756,7 +756,7 @@ function NucleusCardTree({ member, onClose }) {
               <div key={genIndex} className="flex flex-col items-center w-full">
 
                 {/* Elegant connector line */}
-                <div className="w-px h-12" style={{ background: `linear-gradient(to bottom, transparent, ${theme.line}, transparent)` }} />
+                <div className="w-[3px] h-12" style={{ background: `linear-gradient(to bottom, transparent, #B8963E, transparent)` }} />
 
                 {/* Generation label - Minimalist */}
                 <motion.div
@@ -766,16 +766,16 @@ function NucleusCardTree({ member, onClose }) {
                   className="mb-12"
                 >
                   <div className="inline-flex items-center gap-4 px-10 py-4 rounded-2xl" style={{
-                    background: 'rgba(255, 255, 255, 0.04)',
-                    backdropFilter: 'blur(20px)',
-                    border: '1px solid rgba(255, 255, 255, 0.08)'
+                    background: '#152238',
+                    border: '1.5px solid rgba(184,150,62,0.3)',
+                    boxShadow: '0 4px 20px rgba(0,0,0,0.15)'
                   }}>
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center bg-white/5">
-                      <Users className="w-5 h-5 text-white/70" />
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center" style={{ background: 'rgba(184,150,62,0.15)' }}>
+                      <Users className="w-5 h-5" style={{ color: '#B8963E' }} />
                     </div>
                     <div>
                       <p className="elegant-heading text-lg text-white leading-none">{labels.plural}</p>
-                      <p className="text-xs text-white/40 font-light mt-1">{totalPeople} {totalPeople === 1 ? 'persona' : 'personas'}</p>
+                      <p className="text-xs font-light mt-1" style={{ color: '#B8963E' }}>{totalPeople} {totalPeople === 1 ? 'persona' : 'personas'}</p>
                     </div>
                   </div>
                 </motion.div>
@@ -803,7 +803,7 @@ function NucleusCardTree({ member, onClose }) {
                         {/* Horizontal connector bar */}
                         {kids.length > 1 && (
                           <div className="relative flex justify-center mb-0" style={{ width: `${kids.length * 280}px` }}>
-                            <div className="absolute top-0 left-[140px] right-[140px] h-px bg-white/5" />
+                            <div className="absolute top-0 left-[140px] right-[140px] h-[3px]" style={{ background: '#B8963E' }} />
                           </div>
                         )}
 
@@ -818,7 +818,7 @@ function NucleusCardTree({ member, onClose }) {
                             return (
                               <div key={ci} className="flex flex-col items-center" style={{ width: '280px' }}>
                                 {/* Tick */}
-                                <div className="w-px h-6 bg-white/5" />
+                                <div className="w-[3px] h-6" style={{ background: '#B8963E' }} />
 
                                 {/* Card - LARGER & MINIMALIST */}
                                 <motion.div
@@ -828,10 +828,9 @@ function NucleusCardTree({ member, onClose }) {
                                   className="w-full"
                                 >
                                   <div className="relative rounded-2xl overflow-hidden" style={{
-                                    background: 'linear-gradient(145deg, rgba(255, 255, 255, 0.05) 0%, rgba(255, 255, 255, 0.02) 100%)',
-                                    backdropFilter: 'blur(20px)',
-                                    boxShadow: '0 10px 40px rgba(0,0,0,0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1)',
-                                    border: '1px solid rgba(255, 255, 255, 0.08)'
+                                    background: 'linear-gradient(145deg, #152238 0%, #1E293B 100%)',
+                                    boxShadow: '0 10px 40px rgba(0,0,0,0.2), 0 0 0 1px rgba(184,150,62,0.15)',
+                                    border: '1.5px solid rgba(184,150,62,0.25)'
                                   }}>
                                     {/* Header label */}
                                     <div className="px-6 py-3 border-b border-white/5" style={{ background: 'rgba(255, 255, 255, 0.02)' }}>
@@ -1444,14 +1443,18 @@ export default function FamilyTree() {
                           {/* View toggle: Tarjetas / Arbol Visual / Arbol Interactivo */}
                           {selectedMember.children?.length > 0 && (
                             <div className="flex items-center justify-center gap-1 mb-6">
-                              <div className="inline-flex rounded-xl bg-white/5 border-4 border-white/80 p-1 shadow-sm">
+                              <div className="inline-flex rounded-xl p-1 shadow-sm" style={{
+                                background: familiaView === 'capitulos' || familiaView === 'tarjetas' ? '#152238' : 'rgba(255,255,255,0.05)',
+                                border: '2px solid rgba(184,150,62,0.3)'
+                              }}>
                                 <button
                                   onClick={() => setFamiliaView('capitulos')}
                                   className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
-                                    familiaView === 'capitulos'
-                                      ? 'bg-white/15 text-white shadow-md'
+                                    familiaView === 'capitulos' || familiaView === 'tarjetas'
+                                      ? 'text-white shadow-md'
                                       : 'text-white/60 hover:text-white'
                                   }`}
+                                  style={familiaView === 'capitulos' || familiaView === 'tarjetas' ? { background: 'rgba(184,150,62,0.3)' } : {}}
                                 >
                                   <BookOpen className="w-4 h-4" />
                                   <span className="hidden sm:inline">Capítulos</span>
@@ -1460,9 +1463,10 @@ export default function FamilyTree() {
                                   onClick={() => setFamiliaView('arbol-visual')}
                                   className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
                                     familiaView === 'arbol-visual'
-                                      ? 'bg-white/15 text-white shadow-md'
+                                      ? 'text-white shadow-md'
                                       : 'text-white/60 hover:text-white'
                                   }`}
+                                  style={familiaView === 'arbol-visual' ? { background: 'rgba(184,150,62,0.3)' } : {}}
                                 >
                                   <GitBranch className="w-4 h-4" />
                                   <span className="hidden sm:inline">Árbol</span>
@@ -1471,9 +1475,10 @@ export default function FamilyTree() {
                                   onClick={() => setFamiliaView('arbol')}
                                   className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
                                     familiaView === 'arbol'
-                                      ? 'bg-white/15 text-white shadow-md'
+                                      ? 'text-white shadow-md'
                                       : 'text-white/60 hover:text-white'
                                   }`}
+                                  style={familiaView === 'arbol' ? { background: 'rgba(184,150,62,0.3)' } : {}}
                                 >
                                   <GitBranch className="w-4 h-4" />
                                   <span className="hidden sm:inline">Interactivo</span>
