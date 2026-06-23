@@ -1,12 +1,13 @@
 import { useState, useEffect, useMemo, useCallback, lazy, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
-import { Heart, Users, User, Plus, Pencil, Trash2, Eye, AlertTriangle, ArrowRightLeft, Calendar, Home, MapPin, Star, MessageCircle, GitBranch, LayoutGrid } from 'lucide-react'
+import { Heart, Users, User, Plus, Pencil, Trash2, Eye, AlertTriangle, ArrowRightLeft, Calendar, Home, MapPin, Star, MessageCircle, GitBranch, LayoutGrid, X, BookOpen } from 'lucide-react'
 import { grandparents as defaultGrandparents } from '../data/familyData'
 import { getFamilyMembers, saveFamilyMember, deleteFamilyMember, getGrandparents } from '../firebase/familyService'
 import { useAuth } from '../firebase/useAuth'
 import FamilyMemberForm from './FamilyMemberForm'
 import sounds from '../utils/sounds'
 import DeceasedCross from '../utils/DeceasedCross'
+import FamilyNucleoCapitulos from './FamilyNucleoCapitulos'
 
 const ReactFlowLazy = lazy(() => import('reactflow').then(mod => ({ default: mod.default })))
 const ControlsLazy = lazy(() => import('reactflow').then(mod => ({ default: mod.Controls })))
@@ -914,7 +915,7 @@ export default function FamilyTree() {
   const [selectedMember, setSelectedMember] = useState(null)
   const [movingPerson, setMovingPerson] = useState(null) // { person, parentId, childIndex }
   const [modalTab, setModalTab] = useState('familia')
-  const [familiaView, setFamiliaView] = useState('tarjetas') // 'tarjetas' | 'arbol'
+  const [familiaView, setFamiliaView] = useState('capitulos') // 'capitulos' | 'arbol' | 'arbol-visual'
   const [lightboxPhoto, setLightboxPhoto] = useState(null)
 
   useEffect(() => {
@@ -1126,6 +1127,7 @@ export default function FamilyTree() {
                       setModalTab('familia');
                       setFamiliaView('tarjetas');
                       setSelectedMember(child);
+                      document.body.style.overflow = 'hidden';
                     }}
                   />
                 </motion.div>
@@ -1177,20 +1179,24 @@ export default function FamilyTree() {
       <AnimatePresence>
         {selectedMember && (
           <motion.div
-            className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4"
+            className="fixed inset-0 z-50 overflow-y-auto"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
-            <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setSelectedMember(null)} />
-            <motion.div
-              className="relative bg-[#1E293B] rounded-2xl shadow-2xl w-full max-h-[96vh] overflow-y-auto mx-2"
-              style={{ maxWidth: '1600px' }}
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-            >
-              <div className="p-6 sm:p-8">
+            <div className="min-h-screen" style={{ backgroundColor: familiaView === 'capitulos' ? '#FFFDF7' : '#152238' }}>
+              {/* Close button */}
+              <button
+                onClick={() => { setSelectedMember(null); document.body.style.overflow = ''; }}
+                className="fixed top-6 right-6 z-[60] w-12 h-12 rounded-full flex items-center justify-center transition-all hover:scale-110"
+                style={{
+                  backgroundColor: familiaView === 'capitulos' ? 'rgba(21,34,56,0.1)' : 'rgba(255,255,255,0.1)',
+                  border: '1px solid rgba(184,150,62,0.3)'
+                }}
+              >
+                <X className="w-6 h-6" style={{ color: familiaView === 'capitulos' ? '#152238' : 'white' }} />
+              </button>
+              <div className={familiaView === 'capitulos' ? '' : 'max-w-[1600px] mx-auto p-6 sm:p-10'}>
                 {/* Premium hero banner */}
                 {(() => {
                   const sp = selectedMember.spouse
@@ -1240,6 +1246,7 @@ export default function FamilyTree() {
 
                   return (
                     <>
+                      {familiaView !== 'capitulos' && familiaView !== 'tarjetas' && (<>
                       <div className="relative -mx-6 sm:-mx-8 -mt-6 sm:-mt-8 mb-6 rounded-t-2xl overflow-hidden" style={{ background: 'linear-gradient(135deg, #1E293B 0%, #334155 50%, #475569 100%)' }}>
                         <div className="absolute inset-0 opacity-10" style={{ backgroundImage: 'radial-gradient(circle at 20% 50%, white 1px, transparent 1px), radial-gradient(circle at 80% 50%, white 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
                         <div className="relative px-6 sm:px-8 pt-10 pb-8 text-center">
@@ -1409,10 +1416,12 @@ export default function FamilyTree() {
                           )}
                         </div>
                       )}
+                      </>)}
 
                       {/* Familia content */}
                       <div>
-                          {/* Quick stats pills + view toggle */}
+                          {/* Quick stats pills (hidden in capitulos) */}
+                          {familiaView !== 'capitulos' && familiaView !== 'tarjetas' && (
                           <div className="flex flex-wrap items-center justify-center gap-2 mb-6">
                             {selectedMember.children?.length > 0 && (
                               <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full bg-white/10 text-white/80 text-xs font-semibold">
@@ -1430,21 +1439,22 @@ export default function FamilyTree() {
                               </span>
                             )}
                           </div>
+                          )}
 
                           {/* View toggle: Tarjetas / Arbol Visual / Arbol Interactivo */}
                           {selectedMember.children?.length > 0 && (
                             <div className="flex items-center justify-center gap-1 mb-6">
                               <div className="inline-flex rounded-xl bg-white/5 border-4 border-white/80 p-1 shadow-sm">
                                 <button
-                                  onClick={() => setFamiliaView('tarjetas')}
+                                  onClick={() => setFamiliaView('capitulos')}
                                   className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
-                                    familiaView === 'tarjetas'
+                                    familiaView === 'capitulos'
                                       ? 'bg-white/15 text-white shadow-md'
                                       : 'text-white/60 hover:text-white'
                                   }`}
                                 >
-                                  <LayoutGrid className="w-4 h-4" />
-                                  <span className="hidden sm:inline">Tarjetas</span>
+                                  <BookOpen className="w-4 h-4" />
+                                  <span className="hidden sm:inline">Capítulos</span>
                                 </button>
                                 <button
                                   onClick={() => setFamiliaView('arbol-visual')}
@@ -1455,7 +1465,7 @@ export default function FamilyTree() {
                                   }`}
                                 >
                                   <GitBranch className="w-4 h-4" />
-                                  <span className="hidden sm:inline">Arbol</span>
+                                  <span className="hidden sm:inline">Árbol</span>
                                 </button>
                                 <button
                                   onClick={() => setFamiliaView('arbol')}
@@ -1473,7 +1483,7 @@ export default function FamilyTree() {
                           )}
                       {/* TAB: Familia - Card Tree View (fullscreen) */}
                       {familiaView === 'arbol-visual' && selectedMember.children?.length > 0 && (
-                        <NucleusCardTree member={selectedMember} onClose={() => setFamiliaView('tarjetas')} />
+                        <NucleusCardTree member={selectedMember} onClose={() => setFamiliaView('capitulos')} />
                       )}
 
                       {/* TAB: Familia - Interactive Tree View */}
@@ -1481,8 +1491,13 @@ export default function FamilyTree() {
                         <NucleusTreeView member={selectedMember} />
                       )}
 
-                      {/* TAB: Familia - Cards View */}
-                      {familiaView === 'tarjetas' && (
+                      {/* TAB: Familia - Capítulos View (also default for legacy 'tarjetas' state) */}
+                      {(familiaView === 'capitulos' || familiaView === 'tarjetas') && (
+                        <FamilyNucleoCapitulos selectedMember={selectedMember} onClickPhoto={setLightboxPhoto} />
+                      )}
+
+                      {/* TAB: Familia - Cards View (legacy, hidden) */}
+                      {false && (
                         <>
                       {/* BENTO GRID: Premium Dashboard Style */}
                       {selectedMember.children && selectedMember.children.length > 0 && (
@@ -2235,7 +2250,7 @@ export default function FamilyTree() {
                   )
                 })()}
               </div>
-            </motion.div>
+            </div>
           </motion.div>
         )}
       </AnimatePresence>
