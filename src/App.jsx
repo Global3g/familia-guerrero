@@ -44,7 +44,7 @@ const tabs = [
   { id: 'inicio', label: 'Inicio', icon: Home },
   { id: 'arbol', label: 'Arbol', icon: GitBranch },
   { id: 'historia', label: 'Historia', icon: Clock },
-  { id: 'eventos', label: 'Eventos', icon: Calendar },
+  // { id: 'eventos', label: 'Eventos', icon: Calendar }, // ponytail: hidden per user request
   { id: 'galeria', label: 'Galeria', icon: Image },
   { id: 'familia', label: 'Familia', icon: Users },
   { id: 'homenaje', label: 'Homenaje', icon: Star },
@@ -93,8 +93,8 @@ function App() {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.3, duration: 0.6 }}
-            className="text-2xl font-serif font-bold"
-            style={{ color: '#FFFFFF' }}
+            className="text-2xl font-serif font-bold italic"
+            style={{ color: '#1C1C1C' }}
           >
             Familia Guerrero
           </motion.h1>
@@ -103,7 +103,7 @@ function App() {
             animate={{ width: 120 }}
             transition={{ delay: 0.6, duration: 1, ease: 'easeInOut' }}
             className="h-0.5 rounded-full mx-auto mt-3"
-            style={{ backgroundColor: '#B8654A' }}
+            style={{ backgroundColor: '#B8963E' }}
           />
         </motion.div>
       </div>
@@ -117,7 +117,7 @@ function App() {
       <Navbar user={user} isAdmin={isAdmin} onLogout={() => signOut(auth)} />
 
       {/* Tab Bar - Floating pill V2 */}
-      <div className="sticky top-14 sm:top-16 z-40 flex justify-center py-4" style={{ background: 'linear-gradient(to bottom, #0F172A 60%, transparent)' }}>
+      <div className="sticky top-14 sm:top-16 z-40 flex justify-center py-4" style={{ background: 'linear-gradient(to bottom, #152238 60%, transparent)' }}>
         <nav className="inline-flex overflow-x-auto rounded-full px-3 py-3 md:px-6 md:py-4 glass-panel-static shadow-[0_10px_40px_rgba(0,0,0,0.5)]" style={{ scrollbarWidth: 'none', msOverflowStyle: 'none' }}>
           <style>{`nav::-webkit-scrollbar { display: none; }`}</style>
           {tabs.map((tab) => {
@@ -200,10 +200,10 @@ function App() {
             <PresentationButton onClick={() => setShowPresentation(true)} />
             <ExportTree />
           </div>
-          <Suspense fallback={<div className="flex justify-center py-20"><div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#B8654A', borderTopColor: 'transparent' }} /></div>}>
+          <Suspense fallback={<div className="flex justify-center py-20"><div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#B8963E', borderTopColor: 'transparent' }} /></div>}>
             <InteractiveTree />
           </Suspense>
-          <Suspense fallback={<div className="flex justify-center py-10"><div className="w-8 h-8 border-4 rounded-full animate-spin" style={{ borderColor: '#B8654A', borderTopColor: 'transparent' }} /></div>}>
+          <Suspense fallback={<div className="flex justify-center py-10"><div className="w-8 h-8 border-4 rounded-full animate-spin" style={{ borderColor: '#B8963E', borderTopColor: 'transparent' }} /></div>}>
             <Tree3D />
           </Suspense>
         </motion.div>
@@ -253,14 +253,13 @@ function App() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <Suspense fallback={<div className="flex justify-center py-20"><div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#B8654A', borderTopColor: 'transparent' }} /></div>}>
+          <Suspense fallback={<div className="flex justify-center py-20"><div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#B8963E', borderTopColor: 'transparent' }} /></div>}>
             <Stats />
-            <BirthdayHighlight />
-            <Reminders />
+            {/* ponytail: BirthdayHighlight + Reminders removed, WeeklyBanner in Inicio covers this */}
             <FamilyMap />
             <Bloodline />
             <div className="max-w-[1600px] mx-auto px-4">
-              <Gamification />
+              {/* ponytail: Gamification removed per user request */}
             </div>
           </Suspense>
         </motion.div>
@@ -284,7 +283,7 @@ function App() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.3 }}
         >
-          <Suspense fallback={<div className="flex justify-center py-20"><div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#B8654A', borderTopColor: 'transparent' }} /></div>}>
+          <Suspense fallback={<div className="flex justify-center py-20"><div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#B8963E', borderTopColor: 'transparent' }} /></div>}>
             <FamilyQuotes />
           </Suspense>
           <Traditions />

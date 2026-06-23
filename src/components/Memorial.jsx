@@ -90,8 +90,8 @@ function calcAge(birthDate, deathDate) {
   return age
 }
 
-const inputClass = 'w-full rounded-lg border-4 border-white/80 bg-white/5 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#B8976A]/30'
-const labelClass = 'block text-xs font-medium text-white mb-1'
+const inputClass = 'w-full rounded-lg border border-[#B8963E]/30 bg-[#F5F0E8] px-3 py-2 text-sm text-[#1C1C1C] focus:outline-none focus:ring-2 focus:ring-[#B8976A]/30'
+const labelClass = 'block text-xs font-medium text-[#B8963E] mb-1'
 
 function MemorialForm({ isOpen, onClose, data, onSave }) {
   const [form, setForm] = useState({ name: '', birthDate: '', deathDate: '', relationship: '', tribute: '', legacy: '', gallery: [] })
@@ -246,7 +246,7 @@ function MemorialForm({ isOpen, onClose, data, onSave }) {
                     type="text"
                     value={g.caption}
                     onChange={(e) => handleGalleryCaption(i, e.target.value)}
-                    className="w-full mt-1 text-[11px] px-2 py-1 rounded border border-[#C8A87A]/20 bg-white text-white focus:outline-none"
+                    className="w-full mt-1 text-[11px] px-2 py-1 rounded border border-[#C8A87A]/20 bg-white text-gray-800 focus:outline-none"
                     placeholder="Descripcion..."
                   />
                 </div>
@@ -335,8 +335,8 @@ export default function Memorial() {
     if (gp) {
       const gf = gp.grandfather
       const gm = gp.grandmother
-      if (gf?.deathDate) fromTree.push({ name: gf.fullName || gf.name, photoURL: gf.photoURL || gf.photo, birthDate: gf.birthDate, deathDate: gf.deathDate, relationship: gf.role || 'Abuelo', tribute: gf.bio || '', legacy: gf.values?.[0] || '', _source: 'tree' })
-      if (gm?.deathDate) fromTree.push({ name: gm.fullName || gm.name, photoURL: gm.photoURL || gm.photo, birthDate: gm.birthDate, deathDate: gm.deathDate, relationship: gm.role || 'Abuela', tribute: gm.bio || '', legacy: gm.values?.[0] || '', _source: 'tree' })
+      if (gf?.deathDate) fromTree.push({ name: gf.fullName || gf.name, photoURL: gf.photoURL || gf.photo, birthDate: gf.birthDate, deathDate: gf.deathDate, relationship: gf.role || 'Abuelo', tribute: gf.quote || 'Patriarca de la familia. Su legado vive en cada uno de nosotros.', legacy: gf.values?.[0] || '', _source: 'tree' })
+      if (gm?.deathDate) fromTree.push({ name: gm.fullName || gm.name, photoURL: gm.photoURL || gm.photo, birthDate: gm.birthDate, deathDate: gm.deathDate, relationship: gm.role || 'Abuela', tribute: gm.quote || 'Matriarca de la familia. Su amor y fe nos guían por siempre.', legacy: gm.values?.[0] || '', _source: 'tree' })
     }
     members.forEach(m => walk(m, null))
 
@@ -383,7 +383,7 @@ export default function Memorial() {
     <section
       id="homenaje"
       className="relative py-24 overflow-hidden"
-      style={{ backgroundColor: "#0F172A" }}
+      style={{ backgroundColor: "#F5F0E8" }}
     >
       {/* Warm glow background */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[40rem] h-[40rem] rounded-full opacity-[0.07] blur-[120px] pointer-events-none bg-[#B8976A]" />
@@ -427,17 +427,21 @@ export default function Memorial() {
           custom={0}
           className="text-center mb-16"
         >
-          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">En su memoria</p>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
+          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] mb-4" style={{ color: '#B8963E' }}>En su memoria</p>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold italic mb-5" style={{ color: '#1C1C1C' }}>
             Siempre Con Nosotros
           </h2>
-          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
-          <p className="text-base text-white/50 max-w-md mx-auto leading-relaxed">
-            Su luz sigue brillando en cada uno de nosotros.
+          <div className="flex items-center justify-center gap-3 mb-5">
+            <div className="w-12 h-px" style={{ background: 'linear-gradient(90deg, transparent, #B8963E, transparent)' }} />
+            <span style={{ color: '#B8963E', fontSize: '18px' }}>✝</span>
+            <div className="w-12 h-px" style={{ background: 'linear-gradient(90deg, transparent, #B8963E, transparent)' }} />
+          </div>
+          <p className="font-serif italic text-xl max-w-lg mx-auto leading-relaxed" style={{ color: '#4A4A4A' }}>
+            "Los que amamos nunca mueren, solo se adelantan en el camino"
           </p>
           <button
             onClick={() => setPlaying(!playing)}
-            className="mx-auto mt-2 flex items-center gap-2 px-4 py-2 rounded-full bg-white/5 border border-white/20 text-white/50 text-xs font-medium hover:bg-white/10 transition"
+            className="mx-auto mt-2 flex items-center gap-2 px-4 py-2 rounded-full bg-black/5 border border-black/15 text-xs font-medium hover:bg-black/10 transition" style={{ color: '#4A4A4A' }}
           >
             {playing ? '⏸ Pausar musica' : '🎵 Musica ambiental'}
           </button>
@@ -447,8 +451,25 @@ export default function Memorial() {
         {loading && <SkeletonGrid count={4} />}
 
         {/* Memorial cards */}
-        {!loading && <div className="grid gap-10 md:grid-cols-2">
-          {displayMemorials.map((person, index) => (
+        {!loading && <div className="max-w-[90rem] mx-auto">
+          {(() => {
+            const pairs = []
+            for (let i = 0; i < displayMemorials.length; i += 2) {
+              pairs.push(displayMemorials.slice(i, i + 2))
+            }
+            return pairs.map((pair, pairIdx) => (
+              <div key={pairIdx}>
+                {pairIdx > 0 && (
+                  <div className="flex items-center justify-center gap-4 my-16">
+                    <div className="w-24 h-px" style={{ background: 'linear-gradient(90deg, transparent, #B8963E)' }} />
+                    <span style={{ color: '#B8963E', fontSize: '16px' }}>✝</span>
+                    <div className="w-24 h-px" style={{ background: 'linear-gradient(90deg, #B8963E, transparent)' }} />
+                  </div>
+                )}
+                <div className="grid gap-x-32 gap-y-20 md:grid-cols-2">
+                  {pair.map((person, idx) => {
+                    const index = pairIdx * 2 + idx
+                    return (
             <motion.article
               key={person.id || index}
               variants={fadeIn}
@@ -456,27 +477,27 @@ export default function Memorial() {
               whileInView="visible"
               viewport={{ once: true, margin: "-50px" }}
               custom={index * 0.3 + 0.2}
-              className="relative bg-white/5 backdrop-blur-sm rounded-3xl border-4 border-white/80 shadow-lg shadow-black/10 p-8 text-center group hover:shadow-xl hover:shadow-black/20 transition-shadow duration-500"
+              className="relative rounded-3xl shadow-lg p-10 text-center group hover:shadow-xl transition-all duration-500 overflow-hidden"
+              style={{ background: 'linear-gradient(180deg, #FFFDF7 0%, #F5F0E8 100%)', border: '3px solid rgba(184,150,62,0.5)' }}
             >
+              {/* Subtle golden corner accents */}
+              <div className="absolute top-0 left-0 w-16 h-16 opacity-20 pointer-events-none" style={{ borderTop: '2px solid #B8963E', borderLeft: '2px solid #B8963E' }} />
+              <div className="absolute bottom-0 right-0 w-16 h-16 opacity-20 pointer-events-none" style={{ borderBottom: '2px solid #B8963E', borderRight: '2px solid #B8963E' }} />
+
               {/* Edit/Delete buttons */}
               {isAdmin && (
                 <div className="absolute top-3 right-3 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10">
-                  <button onClick={() => setEditingMemorial(person)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 shadow text-white/50 transition">
+                  <button onClick={() => setEditingMemorial(person)} className="w-7 h-7 rounded-full flex items-center justify-center bg-black/10 hover:bg-black/20 shadow transition" style={{ color: '#4A4A4A' }}>
                     <Pencil className="w-3.5 h-3.5" />
                   </button>
-                  <button onClick={() => setDeletingMemorial(person)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-red-500/20 shadow text-red-400 hover:text-red-400 transition">
+                  <button onClick={() => setDeletingMemorial(person)} className="w-7 h-7 rounded-full flex items-center justify-center bg-black/10 hover:bg-red-500/20 shadow text-red-500 hover:text-red-600 transition">
                     <Trash2 className="w-3.5 h-3.5" />
                   </button>
                 </div>
               )}
 
-              {/* Decorative star */}
-              <Star
-                className="absolute top-4 left-4 w-5 h-5 text-white/20 group-hover:text-white/30 transition-colors"
-              />
-
               {/* Photo */}
-              <div className="mx-auto mb-6 w-[120px] h-[120px] rounded-full bg-gradient-to-br from-[#C8A87A]/20 via-[#B8976A]/15 to-[#9BBAA8]/10 border-4 border-white/80 shadow-md flex items-center justify-center">
+              <div className="mx-auto mb-6 w-[175px] h-[175px] rounded-full shadow-lg flex items-center justify-center relative" style={{ border: '3px solid #B8963E' }}>
                 {(person.photo || person.photoURL) ? (
                   <img
                     src={person.photoURL || person.photo}
@@ -484,36 +505,42 @@ export default function Memorial() {
                     className="w-full h-full rounded-full object-cover"
                   />
                 ) : (
-                  <Camera className="w-10 h-10 text-white/25" />
+                  <Camera className="w-10 h-10" style={{ color: 'rgba(184,150,62,0.3)' }} />
                 )}
+                {/* Golden glow behind photo */}
+                <div className="absolute inset-0 rounded-full" style={{ boxShadow: '0 0 30px rgba(184,150,62,0.15)' }} />
               </div>
 
               {/* Name */}
-              <h3 className="font-serif text-2xl font-bold text-white">
-                {person.name}<span className="ml-1 text-2xl font-bold" style={{ color: '#D4A843' }}>✝</span>
+              <h3 className="font-serif text-3xl font-bold italic" style={{ color: '#1C1C1C' }}>
+                {person.name}
               </h3>
+              <span className="text-2xl" style={{ color: '#B8963E' }}>✝</span>
 
               {/* Dates + age */}
-              <p className="font-sans mt-1 text-sm text-[#B8976A] font-medium tracking-wide">
-                {formatYear(person.birthDate)} &ndash;{" "}
-                {formatYear(person.deathDate)}
+              <p className="font-serif mt-2 text-base tracking-wide italic" style={{ color: '#B8963E' }}>
+                ★ {formatYear(person.birthDate)} — ✝ {formatYear(person.deathDate)}
                 {(() => {
                   const age = calcAge(person.birthDate, person.deathDate)
-                  return age ? <span className="ml-2 text-xs opacity-70">({age} años)</span> : null
+                  return age ? <span className="ml-2 text-sm not-italic opacity-70">({age} años)</span> : null
                 })()}
               </p>
 
               {/* Relationship */}
-              <p className="font-sans mt-2 text-sm text-white/50 italic">
+              <p className="font-sans mt-2 text-sm font-medium uppercase tracking-wider" style={{ color: '#B8963E' }}>
                 {person.relationship}
               </p>
 
-              {/* Divider */}
-              <div className="mx-auto my-5 w-16 h-px bg-gradient-to-r from-transparent via-[#C8A87A]/40 to-transparent" />
+              {/* Ornamental divider */}
+              <div className="flex items-center justify-center gap-3 my-6">
+                <div className="w-10 h-px" style={{ background: 'linear-gradient(90deg, transparent, #B8963E)' }} />
+                <span style={{ color: '#B8963E', fontSize: '12px' }}>❦</span>
+                <div className="w-10 h-px" style={{ background: 'linear-gradient(90deg, #B8963E, transparent)' }} />
+              </div>
 
               {/* Tribute / Bio */}
               {(person.tribute || person.bio) && (
-                <p className="font-sans text-white/70 leading-relaxed">
+                <p className="font-serif italic text-base leading-[1.8]" style={{ color: '#2A2A2A' }}>
                   {person.tribute || person.bio}
                 </p>
               )}
@@ -522,7 +549,7 @@ export default function Memorial() {
               {person.legacy && (
                 <div className="mt-5 inline-flex items-center gap-2 px-4 py-2 rounded-full bg-[#9BBAA8]/10 border border-[#9BBAA8]/15">
                   <Heart className="w-4 h-4 text-[#9BBAA8]" fill="#9BBAA8" />
-                  <span className="font-sans text-sm text-white/70 italic">
+                  <span className="font-sans text-sm italic" style={{ color: '#2A2A2A' }}>
                     {person.legacy}
                   </span>
                 </div>
@@ -531,16 +558,16 @@ export default function Memorial() {
               {/* Gallery */}
               {person.gallery && person.gallery.length > 0 && (
                 <div className="mt-6 pt-5 border-t border-white/80">
-                  <p className="text-[11px] font-semibold text-white/40 uppercase tracking-wider mb-3 flex items-center justify-center gap-1.5">
+                  <p className="text-[11px] font-semibold uppercase tracking-wider mb-3 flex items-center justify-center gap-1.5" style={{ color: '#8A8A8A' }}>
                     <Camera className="w-3.5 h-3.5" />
                     Recuerdos en imagenes
                   </p>
                   <div className="grid grid-cols-3 gap-2">
                     {person.gallery.map((g, gi) => (
-                      <div key={gi} className="rounded-lg overflow-hidden border-4 border-white/80 shadow-sm">
+                      <div key={gi} className="rounded-lg overflow-hidden shadow-sm" style={{ border: '2px solid rgba(184,150,62,0.3)' }}>
                         <img src={g.photoURL} alt={g.caption || 'Recuerdo'} className="w-full h-20 object-cover" />
                         {g.caption && (
-                          <p className="text-[11px] text-white/50 p-1.5 text-center leading-tight">{g.caption}</p>
+                          <p className="text-[11px] p-1.5 text-center leading-tight" style={{ color: '#4A4A4A' }}>{g.caption}</p>
                         )}
                       </div>
                     ))}
@@ -557,7 +584,7 @@ export default function Memorial() {
                     btn.innerHTML = '<span style="font-size:24px;filter:drop-shadow(0 0 8px #C8A87A);">🕯️</span><p style="font-size:11px;color:#B8976A;margin-top:4px;">Vela encendida</p>'
                     btn.disabled = true
                   }}
-                  className="inline-flex flex-col items-center gap-1 px-4 py-2 rounded-xl hover:bg-white/5 transition text-white/40 text-xs font-medium"
+                  className="inline-flex flex-col items-center gap-1 px-4 py-2 rounded-xl hover:bg-black/5 transition text-xs font-medium" style={{ color: '#8A8A8A' }}
                 >
                   <span style={{fontSize:'20px'}}>🕯️</span>
                   Encender una vela
@@ -568,7 +595,7 @@ export default function Memorial() {
               <div className="mt-3 pt-3 border-t border-white/80">
                 <div className="flex items-center gap-1 justify-center mb-3">
                   <MessageCircle className="w-3.5 h-3.5 text-[#B8976A]" />
-                  <span className="text-[11px] text-white/40 font-medium">
+                  <span className="text-[11px] font-medium" style={{ color: '#8A8A8A' }}>
                     Recuerdos ({(person.memories || []).length})
                   </span>
                 </div>
@@ -577,12 +604,12 @@ export default function Memorial() {
                 {(person.memories || []).length > 0 && (
                   <div className="space-y-2 mb-3">
                     {(person.memories || []).map((mem, mi) => (
-                      <div key={mi} className="bg-white/5 rounded-lg p-3 text-left group/mem relative">
-                        <p className="text-xs text-white/70 italic leading-relaxed">"{mem.text}"</p>
+                      <div key={mi} className="bg-black/5 rounded-lg p-3 text-left group/mem relative">
+                        <p className="text-xs italic leading-relaxed" style={{ color: '#2A2A2A' }}>"{mem.text}"</p>
                         <div className="flex items-center justify-between mt-1.5">
                           <span className="text-[10px] font-semibold text-[#B8976A]">{mem.author}</span>
                           <div className="flex items-center gap-2">
-                            {mem.date && <span className="text-[10px] text-white/30">{new Date(mem.date).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' })}</span>}
+                            {mem.date && <span className="text-[10px]" style={{ color: '#8A8A8A' }}>{new Date(mem.date).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' })}</span>}
                             <div className="flex gap-1 sm:opacity-0 sm:group-hover/mem:opacity-100 transition-opacity">
                               <button
                                 onClick={() => {
@@ -594,7 +621,8 @@ export default function Memorial() {
                                   // Mark editing index
                                   textInput?.setAttribute('data-editing', mi)
                                 }}
-                                className="w-5 h-5 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 text-white/50 hover:text-white transition"
+                                className="w-5 h-5 rounded-full flex items-center justify-center bg-black/10 hover:bg-black/20 transition"
+                                style={{ color: '#4A4A4A' }}
                                 title="Editar"
                               >
                                 <Pencil className="w-2.5 h-2.5" />
@@ -608,7 +636,7 @@ export default function Memorial() {
                                     await loadMemorials()
                                   }
                                 }}
-                                className="w-5 h-5 rounded-full flex items-center justify-center bg-white/10 hover:bg-red-500/20 text-white/50 hover:text-red-400 transition"
+                                className="w-5 h-5 rounded-full flex items-center justify-center bg-black/10 hover:bg-red-500/20 text-red-500 hover:text-red-600 transition"
                                 title="Eliminar"
                               >
                                 <Trash2 className="w-2.5 h-2.5" />
@@ -623,9 +651,9 @@ export default function Memorial() {
 
                 {/* Input form */}
                 <div className="space-y-2">
-                  <input type="text" id={`mem-author-${person.id || index}`} placeholder="Tu nombre" className="w-full text-[11px] px-2.5 py-1.5 rounded-lg border border-white/10 bg-white/5 text-white focus:outline-none focus:ring-1 focus:ring-[#B8976A]/30 placeholder:text-white/30" />
+                  <input type="text" id={`mem-author-${person.id || index}`} placeholder="Tu nombre" className="w-full text-[11px] px-2.5 py-1.5 rounded-lg border border-black/10 bg-white/40 focus:outline-none focus:ring-1 focus:ring-[#B8976A]/30 placeholder:text-black/30" style={{ color: '#1C1C1C' }} />
                   <div className="flex gap-2">
-                    <input type="text" id={`mem-text-${person.id || index}`} placeholder="Escribe un recuerdo..." className="flex-1 text-[11px] px-2.5 py-1.5 rounded-lg border border-white/10 bg-white/5 text-white focus:outline-none focus:ring-1 focus:ring-[#B8976A]/30 placeholder:text-white/30" />
+                    <input type="text" id={`mem-text-${person.id || index}`} placeholder="Escribe un recuerdo..." className="flex-1 text-[11px] px-2.5 py-1.5 rounded-lg border border-black/10 bg-white/40 focus:outline-none focus:ring-1 focus:ring-[#B8976A]/30 placeholder:text-black/30" style={{ color: '#1C1C1C' }} />
                     <button
                       onClick={async () => {
                         const textInput = document.getElementById(`mem-text-${person.id || index}`)
@@ -673,7 +701,12 @@ export default function Memorial() {
                 </div>
               </div>
             </motion.article>
-          ))}
+                    )
+                  })}
+                </div>
+              </div>
+            ))
+          })()}
         </div>}
 
         {/* Add memorial button */}
@@ -696,7 +729,7 @@ export default function Memorial() {
           whileInView="visible"
           viewport={{ once: true, margin: "-50px" }}
           custom={1}
-          className="mt-14 text-center font-serif text-xl text-white/50 italic max-w-lg mx-auto"
+          className="mt-14 text-center font-serif text-xl italic max-w-lg mx-auto" style={{ color: '#4A4A4A' }}
         >
           &ldquo;No se van del todo quienes dejan huella en el
           coraz&oacute;n.&rdquo;

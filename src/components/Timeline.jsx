@@ -3,6 +3,7 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { Heart, Baby, Star, Users, Award, Calendar, Plus, Pencil, Trash2, Save, Loader2, X } from 'lucide-react';
 
 import { getTimelineEvents, saveTimelineEvent, deleteTimelineEvent, getFamilyMembers, getGrandparents } from '../firebase/familyService';
+import formatDate from '../utils/formatDate';
 import { SkeletonTimeline } from './Skeleton';
 import Modal from './Modal';
 import sounds from '../utils/sounds';
@@ -53,7 +54,7 @@ const defaultConfig = {
   label: 'Evento',
 };
 
-function TimelineEvent({ event, index, onEdit, onDelete }) {
+function TimelineEvent({ event, index, onEdit, onDelete, onPhotoClick }) {
   const isLeft = index % 2 === 0;
   const config = typeConfig[event.type] || defaultConfig;
   const IconComponent = config.icon;
@@ -62,25 +63,34 @@ function TimelineEvent({ event, index, onEdit, onDelete }) {
     <div className="relative flex items-start md:items-center w-full mb-12 last:mb-0">
       {/* Desktop: alternating layout */}
       {/* Left content area */}
-      <div
-        className={`hidden md:block w-[calc(50%-28px)] ${
-          isLeft ? '' : 'order-3'
-        }`}
-      >
-        {isLeft && (
+      <div className="hidden md:flex w-[calc(50%-28px)] items-center">
+        {isLeft ? (
           <motion.div
             initial={{ opacity: 0, x: -50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5, delay: 0.1 }}
+            className="w-full"
           >
             <EventCard event={event} config={config} IconComponent={IconComponent} align="right" onEdit={onEdit} onDelete={onDelete} />
           </motion.div>
+        ) : (
+          event.personPhoto && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="flex justify-end w-full"
+            >
+              <img src={event.personPhoto} alt="" className="w-24 h-24 rounded-full object-cover shadow-lg cursor-pointer hover:scale-110 transition-transform" style={{ border: `3px solid ${config.color}` }} onClick={() => onPhotoClick?.(event.personPhoto)} />
+            </motion.div>
+          )
         )}
       </div>
 
       {/* Center dot */}
-      <div className="hidden md:flex w-14 justify-center order-2 relative z-10">
+      <div className="hidden md:flex w-14 justify-center relative z-10">
         <motion.div
           initial={{ scale: 0 }}
           whileInView={{ scale: 1 }}
@@ -96,20 +106,29 @@ function TimelineEvent({ event, index, onEdit, onDelete }) {
       </div>
 
       {/* Right content area */}
-      <div
-        className={`hidden md:block w-[calc(50%-28px)] ${
-          isLeft ? 'order-3' : ''
-        }`}
-      >
-        {!isLeft && (
+      <div className="hidden md:flex w-[calc(50%-28px)] items-center">
+        {!isLeft ? (
           <motion.div
             initial={{ opacity: 0, x: 50 }}
             whileInView={{ opacity: 1, x: 0 }}
             viewport={{ once: true, margin: '-60px' }}
             transition={{ duration: 0.5, delay: 0.1 }}
+            className="w-full"
           >
             <EventCard event={event} config={config} IconComponent={IconComponent} align="left" onEdit={onEdit} onDelete={onDelete} />
           </motion.div>
+        ) : (
+          event.personPhoto && (
+            <motion.div
+              initial={{ opacity: 0, scale: 0.8 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: '-60px' }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="flex justify-start w-full"
+            >
+              <img src={event.personPhoto} alt="" className="w-24 h-24 rounded-full object-cover shadow-lg cursor-pointer hover:scale-110 transition-transform" style={{ border: `3px solid ${config.color}` }} onClick={() => onPhotoClick?.(event.personPhoto)} />
+            </motion.div>
+          )
         )}
       </div>
 
@@ -148,25 +167,27 @@ function TimelineEvent({ event, index, onEdit, onDelete }) {
 function EventCard({ event, config, IconComponent, align, onEdit, onDelete }) {
   return (
     <div
-      className={`glass-panel rounded-2xl p-5 transition-all relative group ${
+      className={`rounded-2xl p-5 transition-all relative group ${
         align === 'right' ? 'text-right' : 'text-left'
       }`}
       style={{
+        backgroundColor: '#152238',
+        border: '2px solid rgba(184,150,62,0.3)',
         boxShadow: `0 4px 20px ${config.color}20`
       }}
       onMouseEnter={(e) => {
         e.currentTarget.style.boxShadow = `0 8px 30px ${config.color}50, 0 0 40px ${config.color}15`;
-        e.currentTarget.style.borderColor = `${config.color}60`;
+        e.currentTarget.style.borderColor = 'rgba(184,150,62,0.6)';
       }}
       onMouseLeave={(e) => {
         e.currentTarget.style.boxShadow = `0 4px 20px ${config.color}20`;
-        e.currentTarget.style.borderColor = 'rgba(184, 151, 106, 0.15)';
+        e.currentTarget.style.borderColor = 'rgba(184,150,62,0.3)';
       }}
     >
       {/* Edit/Delete buttons (hidden for auto-generated events) */}
       {!event._auto && (
         <div className={`absolute top-2 ${align === 'right' ? 'left-2' : 'right-2'} flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10`}>
-          <button onClick={onEdit} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 shadow text-white/60 transition">
+          <button onClick={onEdit} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 shadow transition text-white/60">
             <Pencil className="w-3.5 h-3.5" />
           </button>
           <button onClick={onDelete} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-red-500/20 shadow text-red-400 hover:text-red-300 transition">
@@ -209,25 +230,25 @@ function EventCard({ event, config, IconComponent, align, onEdit, onDelete }) {
           </span>
         )}
         {event._auto && (
-          <span className="text-[11px] px-2 py-0.5 rounded-full bg-white/10 text-white/40 font-medium">Auto</span>
+          <span className="text-[11px] px-2 py-0.5 rounded-full bg-white/10 font-medium text-white/40">Auto</span>
         )}
       </div>
 
       {/* Date */}
       {event.date && (
-        <p className="text-xs text-white/50 mb-1 tracking-wide uppercase">
-          {event.date}
+        <p className="text-xs mb-1 tracking-wide uppercase text-white/40">
+          {formatDate(event.date)}
         </p>
       )}
 
       {/* Title */}
-      <h3 className="font-serif text-lg font-bold text-white leading-snug mb-1">
+      <h3 className="font-sans text-xl font-semibold leading-snug mb-1 text-white tracking-wide">
         {event.title}
       </h3>
 
       {/* Description */}
       {event.description && (
-        <p className="text-sm text-white/50 leading-relaxed">
+        <p className="text-sm leading-relaxed text-white/60">
           {event.description}
         </p>
       )}
@@ -338,7 +359,7 @@ function EventForm({ isOpen, onClose, eventData, onSave }) {
             if (!file) return
             setForm(p => ({ ...p, photoFile: file, photoPreview: URL.createObjectURL(file) }))
           }} className="text-sm text-white" />
-          {form.photoPreview && <img src={form.photoPreview} className="mt-2 h-20 rounded-lg object-cover" />}
+          {form.photoPreview && <img src={form.photoPreview} alt="Vista previa de la foto del evento" className="mt-2 h-20 rounded-lg object-cover" />}
         </div>
         <div className="flex justify-end pt-2">
           <button type="submit" disabled={loading} className="flex items-center gap-2 rounded-lg bg-[#6B9080] px-6 py-2.5 text-white hover:bg-[#6B9080]/90 transition disabled:opacity-60">
@@ -356,6 +377,7 @@ export default function Timeline() {
   const [loading, setLoading] = useState(true)
   const [editingEvent, setEditingEvent] = useState(null)
   const [showCreateForm, setShowCreateForm] = useState(false)
+  const [lightboxPhoto, setLightboxPhoto] = useState(null)
   const [deletingEvent, setDeletingEvent] = useState(null)
   const [filterType, setFilterType] = useState('todos')
 
@@ -373,27 +395,27 @@ export default function Timeline() {
     if (gp) {
       const gf = gp.grandfather
       const gm = gp.grandmother
-      if (gf?.birthDate) auto.push({ year: parseInt(gf.birthDate.split('-')[0]), date: gf.birthDate, title: `Nace ${gf.fullName || gf.name}`, description: gf.role || 'Patriarca', type: 'nacimiento', _auto: true })
-      if (gm?.birthDate) auto.push({ year: parseInt(gm.birthDate.split('-')[0]), date: gm.birthDate, title: `Nace ${gm.fullName || gm.name}`, description: gm.role || 'Matriarca', type: 'nacimiento', _auto: true })
-      if (gp.weddingDate) auto.push({ year: parseInt(gp.weddingDate.split('-')[0]), date: gp.weddingDate, title: `Boda de ${(gf?.name || 'Abuelo').split(' ')[0]} y ${(gm?.name || 'Abuela').split(' ')[0]}`, description: gp.weddingPlace || '', type: 'boda', _auto: true })
-      if (gf?.deathDate) auto.push({ year: parseInt(gf.deathDate.split('-')[0]), date: gf.deathDate, title: `Partida de ${gf.fullName || gf.name}`, description: '', type: 'memorial', _auto: true })
-      if (gm?.deathDate) auto.push({ year: parseInt(gm.deathDate.split('-')[0]), date: gm.deathDate, title: `Partida de ${gm.fullName || gm.name}`, description: '', type: 'memorial', _auto: true })
+      if (gf?.birthDate) auto.push({ year: parseInt(gf.birthDate.split('-')[0]), date: gf.birthDate, title: `Nace ${gf.fullName || gf.name}`, description: gf.role || 'Patriarca', type: 'nacimiento', _auto: true, personPhoto: gf.photoURL })
+      if (gm?.birthDate) auto.push({ year: parseInt(gm.birthDate.split('-')[0]), date: gm.birthDate, title: `Nace ${gm.fullName || gm.name}`, description: gm.role || 'Matriarca', type: 'nacimiento', _auto: true, personPhoto: gm.photoURL })
+      if (gp.weddingDate) auto.push({ year: parseInt(gp.weddingDate.split('-')[0]), date: gp.weddingDate, title: `Boda de ${(gf?.name || 'Abuelo').split(' ')[0]} y ${(gm?.name || 'Abuela').split(' ')[0]}`, description: gp.weddingPlace || '', type: 'boda', _auto: true, personPhoto: gf?.photoURL })
+      if (gf?.deathDate) auto.push({ year: parseInt(gf.deathDate.split('-')[0]), date: gf.deathDate, title: `Partida de ${gf.fullName || gf.name}`, description: '', type: 'memorial', _auto: true, personPhoto: gf.photoURL })
+      if (gm?.deathDate) auto.push({ year: parseInt(gm.deathDate.split('-')[0]), date: gm.deathDate, title: `Partida de ${gm.fullName || gm.name}`, description: '', type: 'memorial', _auto: true, personPhoto: gm.photoURL })
     }
 
     // Walk all members recursively
     const walk = (person, depth) => {
       if (person.birthDate) {
-        auto.push({ year: parseInt(person.birthDate.split('-')[0]), date: person.birthDate, title: `Nace ${person.name}`, description: '', type: 'nacimiento', _auto: true })
+        auto.push({ year: parseInt(person.birthDate.split('-')[0]), date: person.birthDate, title: `Nace ${person.name}`, description: '', type: 'nacimiento', _auto: true, personPhoto: person.photoURL || person.photo })
       }
       if (person.deathDate) {
-        auto.push({ year: parseInt(person.deathDate.split('-')[0]), date: person.deathDate, title: `Partida de ${person.name}`, description: '', type: 'memorial', _auto: true })
+        auto.push({ year: parseInt(person.deathDate.split('-')[0]), date: person.deathDate, title: `Partida de ${person.name}`, description: '', type: 'memorial', _auto: true, personPhoto: person.photoURL || person.photo })
       }
       if (person.weddingDate && person.spouse) {
         const spouseName = typeof person.spouse === 'object' ? person.spouse.name : person.spouse
-        auto.push({ year: parseInt(person.weddingDate.split('-')[0]), date: person.weddingDate, title: `Boda de ${person.name?.split(' ')[0]} y ${spouseName?.split(' ')[0]}`, description: person.weddingPlace || '', type: 'boda', _auto: true })
+        auto.push({ year: parseInt(person.weddingDate.split('-')[0]), date: person.weddingDate, title: `Boda de ${person.name?.split(' ')[0]} y ${spouseName?.split(' ')[0]}`, description: person.weddingPlace || '', type: 'boda', _auto: true, personPhoto: person.photoURL || person.photo })
       }
       if (person.spouse && typeof person.spouse === 'object' && person.spouse.birthDate) {
-        auto.push({ year: parseInt(person.spouse.birthDate.split('-')[0]), date: person.spouse.birthDate, title: `Nace ${person.spouse.name}`, description: '', type: 'nacimiento', _auto: true })
+        auto.push({ year: parseInt(person.spouse.birthDate.split('-')[0]), date: person.spouse.birthDate, title: `Nace ${person.spouse.name}`, description: '', type: 'nacimiento', _auto: true, personPhoto: person.spouse.photoURL || person.spouse.photo })
       }
       if (person.children) person.children.forEach(c => walk(c, depth + 1))
     }
@@ -404,7 +426,30 @@ export default function Timeline() {
     const manualTitles = new Set(manual.map(m => normalize(m.title)))
     const uniqueAuto = auto.filter(a => !manualTitles.has(normalize(a.title)))
 
-    const all = [...manual, ...uniqueAuto].sort((a, b) => (a.year || 0) - (b.year || 0))
+    // Build a name→photo lookup from all people
+    const photoLookup = {}
+    if (gp?.grandfather) photoLookup[(gp.grandfather.fullName || gp.grandfather.name || '').toLowerCase()] = gp.grandfather.photoURL
+    if (gp?.grandmother) photoLookup[(gp.grandmother.fullName || gp.grandmother.name || '').toLowerCase()] = gp.grandmother.photoURL
+    const walkPhotos = (p) => {
+      if (p.name) photoLookup[p.name.toLowerCase()] = p.photoURL || p.photo
+      if (p.spouse && typeof p.spouse === 'object' && p.spouse.name) photoLookup[p.spouse.name.toLowerCase()] = p.spouse.photoURL || p.spouse.photo
+      if (p.children) p.children.forEach(walkPhotos)
+    }
+    members.forEach(walkPhotos)
+
+    // Enrich manual events: if no personPhoto, try to match by name in title
+    const enriched = manual.map(e => {
+      if (e.personPhoto) return e
+      const titleLower = (e.title || '').toLowerCase()
+      for (const [name, photo] of Object.entries(photoLookup)) {
+        if (photo && titleLower.includes(name.split(' ')[0].toLowerCase()) && titleLower.includes(name.split(' ').slice(-1)[0].toLowerCase())) {
+          return { ...e, personPhoto: photo }
+        }
+      }
+      return e
+    })
+
+    const all = [...enriched, ...uniqueAuto].sort((a, b) => (a.year || 0) - (b.year || 0))
     setEvents(all)
     setLoading(false)
   }
@@ -431,7 +476,7 @@ export default function Timeline() {
   }
 
   return (
-    <section id="timeline" className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#0F172A' }}>
+    <section id="timeline" className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#F5F0E8' }}>
       <div className="max-w-[1600px] mx-auto">
         {/* Section title */}
         <motion.div
@@ -441,12 +486,12 @@ export default function Timeline() {
           transition={{ duration: 0.6 }}
           className="text-center mb-16"
         >
-          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Nuestra historia</p>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
+          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] mb-4" style={{ color: '#8A8A8A' }}>Nuestra historia</p>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold italic mb-5" style={{ color: '#1C1C1C' }}>
             Nuestra Historia
           </h2>
-          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
-          <p className="text-base text-white/50 max-w-md mx-auto leading-relaxed">
+          <div className="w-8 h-[1px] bg-[#B8963E] mx-auto mb-5" />
+          <p className="text-base max-w-md mx-auto leading-relaxed text-white/60">
             Los momentos que han marcado nuestra familia a traves del tiempo.
           </p>
         </motion.div>
@@ -460,9 +505,11 @@ export default function Timeline() {
               className={`px-3 py-1.5 rounded-full text-xs font-medium transition ${
                 filterType === type
                   ? 'text-white shadow-md'
-                  : 'bg-white/5 text-white/60 border-4 border-white/80 hover:bg-white/10'
+                  : 'bg-black/5 border border-black/10 hover:bg-black/10'
               }`}
-              style={filterType === type ? { backgroundColor: type === 'todos' ? '#0F172A' : (typeConfig[type]?.color || '#0F172A') } : {}}
+              style={filterType === type
+                ? { backgroundColor: type === 'todos' ? '#B8963E' : (typeConfig[type]?.color || '#B8963E') }
+                : { color: '#4A4A4A' }}
             >
               {type === 'todos' ? 'Todos' : (typeConfig[type]?.label || type)}
             </button>
@@ -476,10 +523,10 @@ export default function Timeline() {
         {!loading && filteredEvents.length > 0 ? (
           <div className="relative">
             {/* Desktop center line */}
-            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-white/20 via-white/10 to-transparent -translate-x-1/2" />
+            <div className="hidden md:block absolute left-1/2 top-0 bottom-0 w-[2px] -translate-x-1/2" style={{ background: 'linear-gradient(to bottom, rgba(184,150,62,0.5), rgba(184,150,62,0.2), transparent)' }} />
 
             {/* Mobile left line */}
-            <div className="md:hidden absolute left-[7px] top-0 bottom-0 w-px bg-gradient-to-b from-white/20 via-white/10 to-transparent" />
+            <div className="md:hidden absolute left-[7px] top-0 bottom-0 w-[2px]" style={{ background: 'linear-gradient(to bottom, rgba(184,150,62,0.5), rgba(184,150,62,0.2), transparent)' }} />
 
             {/* Events */}
             {filteredEvents.map((event, index) => (
@@ -489,19 +536,20 @@ export default function Timeline() {
                 index={index}
                 onEdit={() => setEditingEvent(event)}
                 onDelete={() => setDeletingEvent(event)}
+                onPhotoClick={setLightboxPhoto}
               />
             ))}
           </div>
         ) : !loading ? (
           <div className="text-center py-16">
-            <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-4">
-              <Calendar className="w-8 h-8 text-white/30" />
+            <div className="w-16 h-16 rounded-full bg-black/5 flex items-center justify-center mx-auto mb-4">
+              <Calendar className="w-8 h-8" style={{ color: '#8A8A8A' }} />
             </div>
-            <p className="text-lg font-serif font-bold text-white/60 mb-2">Sin eventos todavia</p>
-            <p className="text-sm text-white/40 mb-6">Agrega el primer evento de tu historia familiar</p>
+            <p className="text-lg font-serif font-bold mb-2" style={{ color: '#4A4A4A' }}>Sin eventos todavia</p>
+            <p className="text-sm mb-6" style={{ color: '#8A8A8A' }}>Agrega el primer evento de tu historia familiar</p>
             <button
               onClick={() => setShowCreateForm(true)}
-              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#B8654A] text-white hover:bg-[#B8654A]/90 transition font-medium shadow-md"
+              className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#B8963E] text-white hover:bg-[#B8963E]/90 transition font-medium shadow-md"
             >
               <Plus className="w-5 h-5" />
               Agregar primer evento
@@ -514,7 +562,7 @@ export default function Timeline() {
           <div className="flex justify-center mt-12">
             <button
               onClick={() => setShowCreateForm(true)}
-              className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-white/20 text-white/50 hover:bg-white/5 hover:border-white/40 transition font-medium"
+              className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-black/15 hover:bg-black/5 hover:border-black/25 transition font-medium" style={{ color: '#4A4A4A' }}
             >
               <Plus className="w-5 h-5" />
               Agregar evento
@@ -566,6 +614,36 @@ export default function Timeline() {
                 </button>
               </div>
             </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Photo Lightbox */}
+      <AnimatePresence>
+        {lightboxPhoto && (
+          <motion.div
+            className="fixed inset-0 z-50 flex items-center justify-center p-4"
+            style={{ backgroundColor: 'rgba(0,0,0,0.8)' }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            onClick={() => setLightboxPhoto(null)}
+          >
+            <motion.img
+              src={lightboxPhoto}
+              alt=""
+              className="max-w-full max-h-[85vh] rounded-2xl shadow-2xl object-contain"
+              initial={{ scale: 0.8 }}
+              animate={{ scale: 1 }}
+              exit={{ scale: 0.8 }}
+              onClick={(e) => e.stopPropagation()}
+            />
+            <button
+              onClick={() => setLightboxPhoto(null)}
+              className="absolute top-6 right-6 w-12 h-12 rounded-full bg-white/10 flex items-center justify-center hover:bg-white/20 transition"
+            >
+              <X className="w-6 h-6 text-white" />
+            </button>
           </motion.div>
         )}
       </AnimatePresence>

@@ -4,7 +4,7 @@ import { BarChart3, Users, Heart, Baby, Calendar, MapPin, Crown, Star } from 'lu
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell, LineChart, Line, CartesianGrid } from 'recharts'
 import { getFamilyMembers, getGrandparents } from '../firebase/familyService'
 
-const COLORS = ['#B8654A', '#6B9080', '#B8976A', '#C8846A', '#0F172A', '#C8A87A', '#9BBAA8', '#64748B']
+const COLORS = ['#B8963E', '#6B9080', '#B8976A', '#C8846A', '#152238', '#C8A87A', '#9BBAA8', '#64748B']
 
 function calcAge(birthDate, deathDate) {
   if (!birthDate) return null
@@ -79,9 +79,9 @@ function StatCard({ icon: Icon, label, value, color, sub }) {
         <Icon className="w-8 h-8 text-accent" />
       </div>
       <div>
-        <p className="elegant-heading text-4xl text-white mb-2"><AnimatedNumber value={value} /></p>
-        <p className="elegant-caps text-white/40">{label}</p>
-        {sub && <p className="text-xs text-white/30 mt-2 font-medium">{sub}</p>}
+        <p className="elegant-heading text-4xl mb-2" style={{ color: '#1C1C1C' }}><AnimatedNumber value={value} /></p>
+        <p className="elegant-caps" style={{ color: '#8A8A8A' }}>{label}</p>
+        {sub && <p className="text-xs mt-2 font-medium" style={{ color: '#8A8A8A' }}>{sub}</p>}
       </div>
     </motion.div>
   )
@@ -96,7 +96,7 @@ function ChartCard({ title, children }) {
       transition={{ duration: 0.6 }}
       className="glass-panel rounded-3xl p-8"
     >
-      <h4 className="elegant-caps text-white/50 mb-6">{title}</h4>
+      <h4 className="elegant-caps mb-6" style={{ color: '#8A8A8A' }}>{title}</h4>
       {children}
     </motion.div>
   )
@@ -171,7 +171,7 @@ export default function Stats() {
     ...(females.length > 0 ? [{ name: 'Mujeres', value: females.length }] : []),
     ...(unknown.length > 0 ? [{ name: 'Sin especificar', value: unknown.length }] : []),
   ]
-  const genderColors = ['#94A3B8', '#B8654A', '#ccc']
+  const genderColors = ['#94A3B8', '#B8963E', '#ccc']
 
   // Births by decade
   const decadeCounts = {}
@@ -190,7 +190,7 @@ export default function Stats() {
   const familyData = members.map(m => {
     const totalDesc = (p) => (p.children || []).reduce((s, c) => s + 1 + totalDesc(c), 0)
     return {
-      name: m.name?.split(' ')[0] || 'Sin nombre',
+      name: m.name?.split(' ').slice(0, 2).join(' ') || 'Sin nombre',
       descendientes: totalDesc(m),
     }
   }).sort((a, b) => b.descendientes - a.descendientes).slice(0, 8)
@@ -219,7 +219,7 @@ export default function Stats() {
   const monthNames = ['Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre']
 
   return (
-    <section id="estadisticas" className="py-32 px-4 sm:px-6 lg:px-10" style={{ backgroundColor: '#0F172A' }}>
+    <section id="estadisticas" className="py-32 px-4 sm:px-6 lg:px-10" style={{ backgroundColor: '#F5F0E8' }}>
       <div className="max-w-[1600px] mx-auto">
         {/* Header */}
         <motion.div
@@ -236,8 +236,8 @@ export default function Stats() {
             transition={{ delay: 0.2, duration: 1.2 }}
             className="decorative-line mx-auto mb-8"
           />
-          <p className="elegant-caps text-white/60 mb-6">Estadísticas</p>
-          <h2 className="elegant-heading text-5xl sm:text-6xl md:text-7xl text-white mb-6" style={{ letterSpacing: '-0.02em' }}>
+          <p className="elegant-caps mb-6" style={{ color: '#8A8A8A' }}>Estadísticas</p>
+          <h2 className="elegant-heading text-5xl sm:text-6xl md:text-7xl italic mb-6" style={{ letterSpacing: '-0.02em', color: '#1C1C1C' }}>
             Nuestra Familia en Números
           </h2>
           <div className="flex items-center justify-center gap-3 mb-8">
@@ -247,57 +247,30 @@ export default function Stats() {
             </svg>
             <div className="w-12 h-px bg-gradient-to-l from-transparent to-accent/30" />
           </div>
-          <p className="elegant-subheading text-xl text-white/40 max-w-2xl mx-auto leading-relaxed">
+          <p className="elegant-subheading text-xl max-w-2xl mx-auto leading-relaxed" style={{ color: '#4A4A4A' }}>
             Cada número cuenta una historia. Así crece el legado Guerrero.
           </p>
         </motion.div>
 
         {/* Stat cards */}
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 mb-12">
-          <StatCard icon={Users} label="Total familia" value={people.length} color="#0F172A" />
+          <StatCard icon={Users} label="Total familia" value={people.length} color="#152238" />
           <StatCard icon={Heart} label="Vivos" value={alive.length} color="#6B9080" />
           <StatCard icon={Star} label="En memoria" value={deceased.length} color="#B8976A" />
-          <StatCard icon={Users} label="Hombres" value={males.length} color="#0F172A" />
-          <StatCard icon={Users} label="Mujeres" value={females.length} color="#B8654A" />
+          <StatCard icon={Users} label="Hombres" value={males.length} color="#152238" />
+          <StatCard icon={Users} label="Mujeres" value={females.length} color="#B8963E" />
           <StatCard icon={Calendar} label="Edad promedio" value={avgAge} color="#C8846A" sub="de los vivos" />
         </div>
 
         {/* Second row of stats */}
         <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 mb-12">
-          <StatCard icon={Baby} label="Mas joven" value={`${youngest} a`} color="#6B9080" sub={youngestPerson?.name?.split(' ')[0]} />
-          <StatCard icon={Crown} label="Mayor" value={`${oldest} a`} color="#B8976A" sub={oldestPerson?.name?.split(' ')[0]} />
-          <StatCard icon={Heart} label="Anos de matrimonio" value={totalMarriageYears} color="#B8654A" sub="acumulados" />
+          <StatCard icon={Baby} label="Mas joven" value={`${youngest} a`} color="#6B9080" sub={youngestPerson?.name?.split(' ').slice(0, 2).join(' ')} />
+          <StatCard icon={Crown} label="Mayor" value={`${oldest} a`} color="#B8976A" sub={oldestPerson?.name?.split(' ').slice(0, 2).join(' ')} />
+          <StatCard icon={Heart} label="Anos de matrimonio" value={totalMarriageYears} color="#B8963E" sub="acumulados" />
           <StatCard icon={Calendar} label={`Cumpleanos en ${monthNames[currentMonth - 1]}`} value={birthdaysThisMonth.length} color="#C8846A" />
         </div>
 
-        {/* Birthday list this month */}
-        {birthdaysThisMonth.length > 0 && (
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ duration: 0.6 }}
-            className="glass-panel rounded-3xl p-8 mb-12"
-          >
-            <h4 className="elegant-caps text-white/50 mb-6 flex items-center gap-3">
-              <Calendar className="w-5 h-5 text-accent" />
-              Cumpleanos en {monthNames[currentMonth - 1]}
-            </h4>
-            <div className="flex flex-wrap gap-3">
-              {birthdaysThisMonth.map((p, i) => {
-                const age = calcAge(p.birthDate)
-                const day = parseInt(p.birthDate.split('-')[2])
-                return (
-                  <div key={i} className="flex items-center gap-2 bg-white/10 rounded-full px-4 py-2 shadow-sm">
-                    <span className="text-sm font-bold text-[#B8654A]">{day}</span>
-                    <span className="text-sm text-white">{p.name?.split(' ')[0]}</span>
-                    {age && <span className="text-xs text-white/50 font-medium">cumple {age}</span>}
-                  </div>
-                )
-              })}
-            </div>
-          </motion.div>
-        )}
+        {/* ponytail: birthday list removed, Reminders covers this */}
 
         {/* Charts */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
@@ -305,9 +278,9 @@ export default function Stats() {
           <ChartCard title="Distribucion por Generacion">
             <ResponsiveContainer width="100%" height={250}>
               <BarChart data={genData}>
-                <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                <XAxis dataKey="name" tick={{ fontSize: 11, fill: 'rgba(255,255,255,0.5)' }} />
-                <YAxis tick={{ fontSize: 11, fill: 'rgba(255,255,255,0.5)' }} />
+                <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.08)" />
+                <XAxis dataKey="name" tick={{ fontSize: 11, fill: 'rgba(74,74,74,0.8)' }} />
+                <YAxis tick={{ fontSize: 11, fill: 'rgba(74,74,74,0.8)' }} />
                 <Tooltip content={<CustomTooltip />} />
                 <Bar dataKey="total" name="Personas" radius={[6, 6, 0, 0]}>
                   {genData.map((_, i) => (
@@ -328,7 +301,7 @@ export default function Stats() {
                   <div key={g.name}>
                     <div className="flex items-center justify-between mb-1.5">
                       <span className="text-sm font-bold" style={{ color: genderColors[i] }}>{g.name}</span>
-                      <span className="text-lg font-bold" style={{ color: genderColors[i] }}>{g.value} <span className="text-xs font-normal text-white/40">({pct}%)</span></span>
+                      <span className="text-lg font-bold" style={{ color: genderColors[i] }}>{g.value} <span className="text-xs font-normal" style={{ color: '#8A8A8A' }}>({pct}%)</span></span>
                     </div>
                     <div className="w-full h-6 rounded-full bg-white/10 overflow-hidden">
                       <motion.div
@@ -344,9 +317,9 @@ export default function Stats() {
                 )
               })}
               {/* Total */}
-              <div className="text-center pt-3 border-t border-white/80">
-                <span className="text-2xl font-bold text-white">{people.length}</span>
-                <span className="text-xs text-white/50 ml-1">total de integrantes</span>
+              <div className="text-center pt-3 border-t border-black/10">
+                <span className="text-2xl font-bold" style={{ color: '#1C1C1C' }}>{people.length}</span>
+                <span className="text-xs ml-1" style={{ color: '#8A8A8A' }}>total de integrantes</span>
               </div>
             </div>
           </ChartCard>
@@ -356,9 +329,9 @@ export default function Stats() {
             <ChartCard title="Nacimientos por Decada">
               <ResponsiveContainer width="100%" height={250}>
                 <LineChart data={decadeData}>
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                  <XAxis dataKey="name" tick={{ fontSize: 11, fill: 'rgba(255,255,255,0.5)' }} />
-                  <YAxis tick={{ fontSize: 11, fill: 'rgba(255,255,255,0.5)' }} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.08)" />
+                  <XAxis dataKey="name" tick={{ fontSize: 11, fill: 'rgba(74,74,74,0.8)' }} />
+                  <YAxis tick={{ fontSize: 11, fill: 'rgba(74,74,74,0.8)' }} />
                   <Tooltip content={<CustomTooltip />} />
                   <Line type="monotone" dataKey="nacimientos" name="Nacimientos" stroke="#6B9080" strokeWidth={3} dot={{ fill: '#6B9080', r: 5 }} />
                 </LineChart>
@@ -371,9 +344,9 @@ export default function Stats() {
             <ChartCard title="Ramas Familiares mas Grandes">
               <ResponsiveContainer width="100%" height={250}>
                 <BarChart data={familyData} layout="vertical">
-                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(255,255,255,0.1)" />
-                  <XAxis type="number" tick={{ fontSize: 11, fill: 'rgba(255,255,255,0.5)' }} />
-                  <YAxis type="category" dataKey="name" tick={{ fontSize: 11, fill: 'rgba(255,255,255,0.5)' }} width={80} />
+                  <CartesianGrid strokeDasharray="3 3" stroke="rgba(0,0,0,0.08)" />
+                  <XAxis type="number" tick={{ fontSize: 11, fill: 'rgba(74,74,74,0.8)' }} />
+                  <YAxis type="category" dataKey="name" tick={{ fontSize: 11, fill: 'rgba(74,74,74,0.8)' }} width={80} />
                   <Tooltip content={<CustomTooltip />} />
                   <Bar dataKey="descendientes" name="Descendientes" radius={[0, 6, 6, 0]}>
                     {familyData.map((_, i) => (

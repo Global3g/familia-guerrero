@@ -5,7 +5,7 @@ import { getFamilyMembers, getGrandparents } from '../firebase/familyService'
 
 const COLORS = {
   birthday: '#6B9080',
-  anniversary: '#B8654A',
+  anniversary: '#B8963E',
   memorial: '#B8976A',
   milestone: '#C8846A',
 }
@@ -232,7 +232,7 @@ export default function Reminders() {
   }, [])
 
   return (
-    <section id="recordatorios" className="py-32 px-4" style={{ backgroundColor: '#0F172A' }}>
+    <section id="recordatorios" className="py-32 px-4" style={{ backgroundColor: '#F5F0E8' }}>
       <div className="max-w-5xl mx-auto">
         {/* Title */}
         <motion.div
@@ -249,8 +249,8 @@ export default function Reminders() {
             transition={{ delay: 0.2, duration: 1.2 }}
             className="decorative-line mx-auto mb-8"
           />
-          <p className="elegant-caps text-white/60 mb-6">Recordatorios</p>
-          <h2 className="elegant-heading text-5xl sm:text-6xl md:text-7xl text-white mb-6" style={{ letterSpacing: '-0.02em' }}>
+          <p className="elegant-caps mb-6" style={{ color: '#8A8A8A' }}>Recordatorios</p>
+          <h2 className="elegant-heading text-5xl sm:text-6xl md:text-7xl italic mb-6" style={{ letterSpacing: '-0.02em', color: '#1C1C1C' }}>
             No Olvides Estas Fechas
           </h2>
           <div className="flex items-center justify-center gap-3 mb-8">
@@ -260,7 +260,7 @@ export default function Reminders() {
             </svg>
             <div className="w-12 h-px bg-gradient-to-l from-transparent to-accent/30" />
           </div>
-          <p className="elegant-subheading text-lg text-white/50">
+          <p className="elegant-subheading text-lg" style={{ color: '#4A4A4A' }}>
             Recordatorios automáticos de los próximos 30 días
           </p>
         </motion.div>
@@ -268,7 +268,7 @@ export default function Reminders() {
         {/* Loading */}
         {loading && (
           <div className="flex justify-center py-16">
-            <Clock className="w-8 h-8 animate-spin" style={{ color: '#B8654A' }} />
+            <Clock className="w-8 h-8 animate-spin" style={{ color: '#B8963E' }} />
           </div>
         )}
 
@@ -280,7 +280,7 @@ export default function Reminders() {
             className="text-center py-16"
           >
             <Bell className="w-12 h-12 mx-auto mb-4 text-accent/40" />
-            <p className="elegant-subheading text-xl text-white/40">
+            <p className="elegant-subheading text-xl" style={{ color: '#8A8A8A' }}>
               No hay recordatorios próximos
             </p>
           </motion.div>
@@ -316,12 +316,12 @@ export default function Reminders() {
             >
               {/* Vertical timeline line */}
               <div
-                className="absolute left-6 top-0 bottom-0 w-0.5 bg-white/10"
+                className="absolute left-6 top-0 bottom-0 w-0.5 bg-black/10"
               />
 
               <div className="space-y-4">
                 {orderedTypes.map((type) => {
-                  const groupColor = COLORS[type] || '#0F172A'
+                  const groupColor = COLORS[type] || '#152238'
                   const GroupIcon = ICONS[type] || Bell
 
                   return (
@@ -397,10 +397,10 @@ export default function Reminders() {
                                   >
                                     {reminder.title}
                                   </p>
-                                  <p className="text-sm mb-2 text-white/60 font-medium">
+                                  <p className="text-sm mb-2 font-medium" style={{ color: '#4A4A4A' }}>
                                     {reminder.subtitle}
                                   </p>
-                                  <p className="text-xs flex items-center gap-1 text-white/40">
+                                  <p className="text-xs flex items-center gap-1" style={{ color: '#8A8A8A' }}>
                                     <Calendar className="w-3 h-3" />
                                     {formatDateShort(reminder.date)}
                                   </p>
@@ -408,7 +408,7 @@ export default function Reminders() {
 
                                 {/* Countdown badge */}
                                 <div
-                                  className="flex-shrink-0 rounded-xl px-4 py-2 text-center bg-white/5 border border-white/10"
+                                  className="flex-shrink-0 rounded-xl px-4 py-2 text-center bg-black/5 border border-black/10"
                                 >
                                   {isToday ? (
                                     <motion.div
@@ -424,7 +424,7 @@ export default function Reminders() {
                                       <p className="elegant-heading text-2xl leading-none mb-1" style={{ color }}>
                                         {reminder.daysUntil}
                                       </p>
-                                      <p className="elegant-caps text-white/40">
+                                      <p className="elegant-caps" style={{ color: '#8A8A8A' }}>
                                         {reminder.daysUntil === 1 ? 'día' : 'días'}
                                       </p>
                                     </>

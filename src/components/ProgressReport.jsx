@@ -87,7 +87,7 @@ export default function ProgressReport() {
       }
 
       // ── Header ────────────────────────────────────
-      doc.setFillColor(93, 64, 55) // #0F172A
+      doc.setFillColor(93, 64, 55) // #152238
       doc.rect(0, 0, pageW, 32, 'F')
       doc.setTextColor(255, 255, 255)
       doc.setFontSize(18)
@@ -246,7 +246,7 @@ export default function ProgressReport() {
       disabled={loading}
       className="inline-flex items-center gap-2 text-sm font-medium px-4 py-2 rounded-xl transition-colors"
       style={{
-        backgroundColor: loading ? '#0F172A30' : '#0F172A15',
+        backgroundColor: loading ? '#15223830' : '#15223815',
         color: '#FFFFFF',
       }}
     >

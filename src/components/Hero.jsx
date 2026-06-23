@@ -130,13 +130,15 @@ export default function Hero() {
   };
 
   return (
-    <header className="relative min-h-[90vh] flex flex-col items-center justify-center pt-20 px-6 overflow-hidden">
-      {/* Ambient Orbs */}
+    <header className="relative min-h-[90vh] flex flex-col items-center justify-center pt-20 px-6 overflow-hidden" style={{ backgroundColor: '#FFFDF7' }}>
+      {/* Color bar top */}
+      <div className="absolute top-0 left-0 right-0 h-[6px] z-20" style={{ background: 'linear-gradient(90deg, #152238 25%, #B8963E 25%, #B8963E 50%, #7A2841 50%, #7A2841 75%, #5B7E6B 75%)' }} />
+
+      {/* Ambient Orbs - subtle */}
       <div className="ambient-orb orb-1" />
       <div className="ambient-orb orb-2" />
-      <div className="ambient-orb orb-3" />
 
-      {/* Photo Collage Background */}
+      {/* Photo Collage Background - subtle on light */}
       {collagePhotos.length > 0 && (
         <div key={collageKey} className="absolute inset-0 z-[1] overflow-hidden" style={{ pointerEvents: 'none' }}>
           <div className="absolute inset-0 grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2 p-2 content-start">
@@ -156,8 +158,7 @@ export default function Hero() {
               />
             ))}
           </div>
-          {/* Dark overlay so text is readable - mas suave en mobile */}
-          <div className="absolute inset-0 bg-gradient-to-b from-[#0F172A]/20 via-[#0F172A]/30 to-[#0F172A]/65 sm:from-[#0F172A]/35 sm:via-[#0F172A]/45 sm:to-[#0F172A]/75" />
+          <div className="absolute inset-0 bg-[#FFFDF7]/35" />
         </div>
       )}
 
@@ -167,7 +168,7 @@ export default function Hero() {
           <motion.img
             src={heroPhoto}
             alt=""
-            className="w-full h-full object-cover opacity-20"
+            className="w-full h-full object-cover opacity-10"
             initial={{ scale: 1.1 }}
             animate={{ scale: 1 }}
             transition={{ duration: 8, ease: 'easeOut' }}
@@ -175,110 +176,64 @@ export default function Hero() {
         </div>
       )}
 
-      {/* Family Crest / Shield */}
-      <motion.div
-        initial={{ opacity: 0, y: -20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 1.2, ease: [0.22, 1, 0.36, 1] }}
-        className="relative w-44 h-52 md:w-52 md:h-64 mb-12 mx-auto animate-float flex items-center justify-center z-10"
-        style={{ filter: 'drop-shadow(0 0 40px rgba(184, 151, 106, 0.15))' }}
-      >
-        {/* Outermost Shield line */}
-        <svg className="absolute inset-0 w-full h-full text-accent/30" viewBox="0 0 100 120" fill="none" stroke="currentColor" strokeWidth="0.5">
-          <path d="M50 5 L90 20 L90 60 C90 90, 50 115, 50 115 C50 115, 10 90, 10 60 L10 20 Z" />
-        </svg>
-        {/* Inner Shield shape filled */}
-        <svg className="absolute inset-0 w-full h-full p-2 text-base/70" viewBox="0 0 100 120" fill="currentColor">
-          <path d="M50 10 L85 24 L85 62 C85 88, 50 110, 50 110 C50 110, 15 88, 15 62 L15 24 Z" />
-        </svg>
-        {/* Decorative interior lines */}
-        <svg className="absolute inset-0 w-full h-full p-2 text-accent/40" viewBox="0 0 100 120" fill="none" stroke="currentColor" strokeWidth="0.3">
-          <path d="M50 10 L85 24 L85 62 C85 88, 50 110, 50 110 C50 110, 15 88, 15 62 L15 24 Z" />
-          <line x1="50" y1="10" x2="50" y2="110" />
-          <line x1="15" y1="40" x2="85" y2="40" />
-        </svg>
-        {/* Glow effect */}
-        <div className="absolute inset-0 bg-accent/5 blur-2xl rounded-full" />
-        <span className="font-serif text-7xl md:text-8xl text-accent z-10 relative tracking-tight" style={{ fontWeight: 300 }}>G</span>
-      </motion.div>
-
       {/* Hero Content */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ delay: 0.4, duration: 1 }}
-        className="text-center z-10 w-full mx-auto space-y-8"
+        className="text-center z-10 w-full mx-auto space-y-6"
       >
-        {/* Decorative line above */}
-        <motion.div
-          initial={{ width: 0 }}
-          animate={{ width: '4rem' }}
-          transition={{ delay: 0.6, duration: 1.2 }}
-          className="decorative-line mx-auto"
-        />
-
-        <motion.h3
+        <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.7, duration: 0.8 }}
-          className="elegant-caps text-secondary/80"
+          className="text-[13px] font-sans tracking-[8px] uppercase"
+          style={{ color: '#B8963E' }}
         >
-          Linaje & Herencia
-        </motion.h3>
+          Familia
+        </motion.p>
 
         <motion.h1
           initial={{ opacity: 0, scale: 0.98 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 0.8, duration: 1, ease: [0.22, 1, 0.36, 1] }}
-          className="elegant-heading text-8xl md:text-[11rem] lg:text-[13rem] text-gradient-gold px-4"
-          style={{ letterSpacing: '-0.03em' }}
+          className="font-serif text-7xl md:text-[9rem] lg:text-[11rem] italic px-4"
+          style={{ color: '#1C1C1C', fontWeight: 400, lineHeight: 0.9 }}
         >
-          Familia <br /> Guerrero
+          Guerrero
         </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ delay: 0.9, duration: 0.8 }}
+          className="text-[13px] font-sans tracking-[5px] uppercase"
+          style={{ color: '#8A8A8A' }}
+        >
+          Tres generaciones · Un legado
+        </motion.p>
 
         {/* Decorative ornament */}
         <motion.div
           initial={{ opacity: 0, scale: 0 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ delay: 1.1, duration: 0.6 }}
-          className="flex items-center justify-center gap-3"
+          className="flex items-center justify-center gap-3 py-2"
         >
-          <div className="w-8 h-px bg-gradient-to-r from-transparent to-accent/30" />
-          <svg width="12" height="12" viewBox="0 0 12 12" className="text-accent/40">
-            <circle cx="6" cy="6" r="2" fill="currentColor" />
-          </svg>
-          <div className="w-8 h-px bg-gradient-to-l from-transparent to-accent/30" />
+          <div className="w-12 h-px" style={{ background: 'linear-gradient(90deg, transparent, #B8963E, transparent)' }} />
+          <span style={{ color: '#B8963E', fontSize: '14px' }}>❦</span>
+          <div className="w-12 h-px" style={{ background: 'linear-gradient(90deg, transparent, #B8963E, transparent)' }} />
         </motion.div>
 
         <motion.p
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2, duration: 0.8 }}
-          className="elegant-subheading text-2xl md:text-4xl text-white/50 max-w-4xl mx-auto px-6 leading-relaxed"
+          className="font-serif italic text-xl md:text-2xl max-w-xl mx-auto px-6 leading-relaxed"
+          style={{ color: '#8A8A8A' }}
         >
-          {stats?.generations > 0 ? `${stats.generations} generaciones` : 'Generaciones'} unidas por el amor, la fe y la memoria. Un legado que trasciende el tiempo.
+          {stats?.generations > 0 ? `${stats.generations} generaciones` : 'Generaciones'} unidas por el amor, la fe y la memoria
         </motion.p>
-
-        {/* Stats */}
-        {stats && (
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 1.1, duration: 0.8 }}
-            className="pt-8 flex items-center justify-center gap-8 md:gap-12"
-          >
-            {[
-              { value: stats.total, label: 'Integrantes' },
-              { value: stats.generations, label: 'Generaciones' },
-              ...(stats.since ? [{ value: stats.since, label: 'Desde' }] : []),
-            ].map((item, i) => (
-              <div key={i} className="text-center glass-panel-static rounded-xl px-6 py-4">
-                <p className="text-2xl sm:text-3xl font-serif font-bold text-accent">{item.value}</p>
-                <p className="text-[9px] uppercase tracking-[3px] mt-1 text-white/40">{item.label}</p>
-              </div>
-            ))}
-          </motion.div>
-        )}
       </motion.div>
 
       {/* Scroll indicator */}
@@ -294,13 +249,13 @@ export default function Hero() {
         }}
         className="absolute bottom-10 left-1/2 transform -translate-x-1/2 flex flex-col items-center transition-opacity cursor-pointer z-10"
       >
-        <span className="text-[10px] uppercase tracking-widest mb-2 font-sans text-accent">Explorar</span>
-        <div className="w-px h-12 bg-gradient-to-b from-accent to-transparent" />
+        <span className="text-[10px] uppercase tracking-widest mb-2 font-sans" style={{ color: '#B8963E' }}>Explorar</span>
+        <div className="w-px h-12" style={{ background: 'linear-gradient(to bottom, #B8963E, transparent)' }} />
       </motion.a>
 
       {/* Photo upload */}
       {isAdmin && (
-        <label className="absolute bottom-6 right-6 z-20 cursor-pointer flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all glass-panel-static text-white/60 hover:text-white border border-white/10 hover:border-accent/40">
+        <label className="absolute bottom-6 right-6 z-20 cursor-pointer flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all border" style={{ color: '#8A8A8A', borderColor: '#B8963E30' }}>
           <Camera className="w-3.5 h-3.5" />
           <span className="hidden sm:inline">Cambiar foto</span>
           <input type="file" accept="image/*" onChange={handleHeroPhoto} className="hidden" />

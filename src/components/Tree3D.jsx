@@ -45,7 +45,7 @@ function PersonCard({ name, photoURL, isDeceased, isGrandparent, size = 'md' }) 
       )}
       <p
         className={`${isSmall ? 'text-[9px]' : 'text-[10px]'} font-semibold leading-tight text-center line-clamp-2`}
-        style={{ color: '#0F172A' }}
+        style={{ color: '#152238' }}
       >
         {name}{isDeceased && <span className="ml-0.5 text-sm font-bold" style={{ color: '#D4A843' }}>✝</span>}
       </p>
@@ -253,7 +253,7 @@ export default function Tree3D() {
     .filter(m => (m.children || []).length > 0)
     .map(m => ({
       parentName: (m.name || '').split(' ')[0],
-      parentColor: m.gender === 'F' ? '#B8654A' : '#6B9080',
+      parentColor: m.gender === 'F' ? '#B8963E' : '#6B9080',
       children: (m.children || []).map(c => ({
         id: c.id || c.name,
         name: c.fullName || c.name,
@@ -269,7 +269,7 @@ export default function Tree3D() {
       .filter(c => (c.children || []).length > 0)
       .map(c => ({
         parentName: (c.name || '').split(' ')[0],
-        parentColor: c.gender === 'F' ? '#B8654A' : '#6B9080',
+        parentColor: c.gender === 'F' ? '#B8963E' : '#6B9080',
         children: (c.children || []).map(gc => ({
           id: gc.id || gc.name,
           name: gc.fullName || gc.name,
@@ -286,7 +286,7 @@ export default function Tree3D() {
         .filter(gc => (gc.children || []).length > 0)
         .map(gc => ({
           parentName: (gc.name || '').split(' ')[0],
-          parentColor: gc.gender === 'F' ? '#B8654A' : '#6B9080',
+          parentColor: gc.gender === 'F' ? '#B8963E' : '#6B9080',
           children: (gc.children || []).map(ggc => ({
             id: ggc.id || ggc.name,
             name: ggc.fullName || ggc.name,
@@ -351,7 +351,7 @@ export default function Tree3D() {
               style={{ transform: use3D ? 'translateZ(0px)' : 'none' }}
             >
               {grandparentCards.length === 2 && (
-                <Heart className="w-5 h-5 absolute" style={{ color: '#B8654A', zIndex: 5 }} />
+                <Heart className="w-5 h-5 absolute" style={{ color: '#B8963E', zIndex: 5 }} />
               )}
               {grandparentCards.map((gp, i) => (
                 <PersonCard key={`gp-${i}`} name={gp.name} photoURL={gp.photoURL} isDeceased={gp.isDeceased} isGrandparent size={cardSize} />
@@ -368,7 +368,7 @@ export default function Tree3D() {
         {/* Level 1: Hijos */}
         {childrenCards.length > 0 && (
           <div style={{ transform: use3D ? 'translateZ(-60px)' : 'none' }}>
-            <LevelLabel label="Hijos" color="#B8654A" count={childrenCards.length} />
+            <LevelLabel label="Hijos" color="#B8963E" count={childrenCards.length} />
             <div className="overflow-x-auto pb-2" style={{ scrollbarWidth: 'thin' }}>
               <div className="flex justify-center gap-2 min-w-max px-4">
                 {childrenCards.map((c) => (
@@ -406,13 +406,13 @@ export default function Tree3D() {
 
         {/* Arrow to bisnietos */}
         {totalGrandchildren > 0 && totalGreatGrandchildren > 0 && (
-          <ArrowDown color="#0F172A60" />
+          <ArrowDown color="#15223860" />
         )}
 
         {/* Level 3: Bisnietos (agrupados por nieto) */}
         {totalGreatGrandchildren > 0 && (
           <div style={{ transform: use3D ? 'translateZ(-180px)' : 'none' }}>
-            <LevelLabel label="Bisnietos" color="#0F172A" count={totalGreatGrandchildren} />
+            <LevelLabel label="Bisnietos" color="#152238" count={totalGreatGrandchildren} />
             <div className="overflow-x-auto pb-2" style={{ scrollbarWidth: 'thin' }}>
               <div className="flex justify-center gap-6 min-w-max px-4">
                 {greatGrandchildrenByParent.map((group, gi) => (
@@ -460,26 +460,26 @@ export default function Tree3D() {
 
   // ── Controls bar ──────────────────────────────────────────
   const controlsBar = (
-    <div className="flex items-center justify-center gap-2 py-3 px-4" style={{ backgroundColor: '#0F172A' }}>
+    <div className="flex items-center justify-center gap-2 py-3 px-4" style={{ backgroundColor: '#F5F0E8', borderBottom: '1px solid rgba(184,150,62,0.2)' }}>
       <button
         onClick={() => setZoom(z => Math.min(2.5, z + 0.2))}
         className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors"
-        style={{ backgroundColor: '#0F172A15', color: '#FFFFFF' }}
+        style={{ backgroundColor: 'rgba(184,150,62,0.1)', color: '#1C1C1C' }}
       >
         <ZoomIn className="w-3.5 h-3.5" />
       </button>
-      <span className="text-[10px] font-medium min-w-[36px] text-center" style={{ color: '#FFFFFF' }}>{Math.round(zoom * 100)}%</span>
+      <span className="text-[10px] font-medium min-w-[36px] text-center" style={{ color: '#1C1C1C' }}>{Math.round(zoom * 100)}%</span>
       <button
         onClick={() => setZoom(z => Math.max(0.3, z - 0.2))}
         className="inline-flex items-center gap-1 text-xs font-medium px-2.5 py-1.5 rounded-lg transition-colors"
-        style={{ backgroundColor: '#0F172A15', color: '#FFFFFF' }}
+        style={{ backgroundColor: 'rgba(184,150,62,0.1)', color: '#1C1C1C' }}
       >
         <ZoomOut className="w-3.5 h-3.5" />
       </button>
       <button
         onClick={() => { setTiltX(8); setTiltY(0); setZoom(1); setPanOffset({ x: 0, y: 0 }) }}
         className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors"
-        style={{ backgroundColor: '#6B908020', color: '#6B9080' }}
+        style={{ backgroundColor: 'rgba(107,144,128,0.12)', color: '#6B9080' }}
       >
         <RotateCcw className="w-3.5 h-3.5" />
         Centrar
@@ -487,14 +487,14 @@ export default function Tree3D() {
       <button
         onClick={() => setIs3D((v) => !v)}
         className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors"
-        style={{ backgroundColor: is3D ? '#B8976A20' : '#0F172A15', color: is3D ? '#B8976A' : '#0F172A' }}
+        style={{ backgroundColor: is3D ? 'rgba(184,151,106,0.12)' : 'rgba(184,150,62,0.1)', color: is3D ? '#B8976A' : '#1C1C1C' }}
       >
         {is3D ? 'Plano' : '3D'}
       </button>
       <button
         onClick={() => setIsFullscreen((v) => !v)}
         className="inline-flex items-center gap-1.5 text-xs font-medium px-3 py-1.5 rounded-lg transition-colors"
-        style={{ backgroundColor: isFullscreen ? '#B8654A20' : '#B8654A15', color: '#B8654A' }}
+        style={{ backgroundColor: 'rgba(184,150,62,0.12)', color: '#B8963E' }}
       >
         {isFullscreen ? <X className="w-3.5 h-3.5" /> : <Maximize2 className="w-3.5 h-3.5" />}
         {isFullscreen ? 'Cerrar' : 'Pantalla completa'}
@@ -505,7 +505,7 @@ export default function Tree3D() {
   return (
     <>
       {/* Inline section */}
-      <section className="py-16 px-4 sm:px-6" style={{ backgroundColor: '#0F172A' }}>
+      <section className="py-16 px-4 sm:px-6" style={{ backgroundColor: '#F5F0E8' }}>
         <div className="max-w-[1600px] mx-auto">
           {/* Header */}
           <motion.div
@@ -516,11 +516,11 @@ export default function Tree3D() {
             className="text-center mb-6"
           >
             <div className="inline-flex items-center gap-2 mb-3">
-              <h2 className="text-3xl md:text-4xl font-serif font-bold" style={{ color: '#FFFFFF' }}>
+              <h2 className="text-3xl md:text-4xl font-serif font-bold italic" style={{ color: '#1C1C1C' }}>
                 Vista Familiar
               </h2>
             </div>
-            <p className="text-sm max-w-md mx-auto" style={{ color: '#64748B' }}>
+            <p className="text-sm max-w-md mx-auto" style={{ color: '#6B6B6B' }}>
               Todas las generaciones organizadas por familia. Arrastra para rotar en 3D.
             </p>
           </motion.div>
@@ -528,26 +528,26 @@ export default function Tree3D() {
           {/* Loading */}
           {loading && (
             <div className="flex items-center justify-center h-64">
-              <div className="w-8 h-8 border-3 rounded-full animate-spin" style={{ borderColor: '#B8976A30', borderTopColor: '#B8976A' }} />
+              <div className="w-8 h-8 border-3 rounded-full animate-spin" style={{ borderColor: '#B8963E30', borderTopColor: '#B8963E' }} />
             </div>
           )}
 
           {/* No data */}
           {!loading && !hasData && (
-            <div className="text-center py-16 rounded-2xl" style={{ backgroundColor: '#0F172A' }}>
-              <User className="w-10 h-10 mx-auto mb-3" style={{ color: '#B8976A80' }} />
-              <p className="text-sm font-medium" style={{ color: '#FFFFFF' }}>Aun no hay datos del arbol familiar.</p>
+            <div className="text-center py-16 rounded-2xl" style={{ backgroundColor: '#FFFDF7', border: '2px solid rgba(184,150,62,0.3)' }}>
+              <User className="w-10 h-10 mx-auto mb-3" style={{ color: '#B8963E80' }} />
+              <p className="text-sm font-medium" style={{ color: '#1C1C1C' }}>Aun no hay datos del arbol familiar.</p>
             </div>
           )}
 
           {/* Inline tree (compact) */}
           {!loading && hasData && !isFullscreen && (
-            <div className="rounded-2xl overflow-hidden select-none" style={{ backgroundColor: '#0F172A', maxHeight: 600 }}>
+            <div className="rounded-2xl overflow-hidden select-none" style={{ backgroundColor: '#FFFDF7', border: '2px solid rgba(184,150,62,0.3)', maxHeight: 600 }}>
               {controlsBar}
               <div className="overflow-hidden" style={{ maxHeight: 520 }}>
                 {renderTree(false)}
               </div>
-              <p className="text-center text-[11px] py-2" style={{ color: '#64748B80' }}>
+              <p className="text-center text-[11px] py-2" style={{ color: '#9B9B9B' }}>
                 Usa "Pantalla completa" para ver todas las generaciones con scroll
               </p>
             </div>
@@ -557,10 +557,10 @@ export default function Tree3D() {
 
       {/* Fullscreen overlay */}
       {isFullscreen && hasData && (
-        <div className="fixed inset-0 z-[70] flex flex-col" style={{ backgroundColor: '#0F172A' }}>
+        <div className="fixed inset-0 z-[70] flex flex-col" style={{ backgroundColor: '#F5F0E8' }}>
           {/* Top bar */}
-          <div className="flex items-center justify-between px-4 py-2 border-b" style={{ borderColor: 'rgba(255,255,255,0.8)', backgroundColor: '#0F172A' }}>
-            <h3 className="text-sm font-serif font-bold" style={{ color: '#FFFFFF' }}>
+          <div className="flex items-center justify-between px-4 py-2 border-b" style={{ borderColor: 'rgba(184,150,62,0.2)', backgroundColor: '#F5F0E8' }}>
+            <h3 className="text-sm font-serif font-bold" style={{ color: '#1C1C1C' }}>
               Arbol Familiar Completo
             </h3>
             <div className="flex items-center gap-2">

@@ -33,7 +33,7 @@ export default function Gamification() {
   if (people.length === 0) return null
 
   return (
-    <div className="py-16">
+    <div className="py-16" style={{ backgroundColor: '#152238' }}>
       <div className="text-center mb-12">
         <motion.div
           initial={{ width: 0 }}
@@ -43,7 +43,7 @@ export default function Gamification() {
           className="decorative-line mx-auto mb-8"
         />
         <p className="elegant-caps text-white/60 mb-6">Logros</p>
-        <h2 className="elegant-heading text-5xl sm:text-6xl text-white mb-6" style={{ letterSpacing: '-0.02em' }}>
+        <h2 className="elegant-heading text-5xl sm:text-6xl italic text-white mb-6" style={{ letterSpacing: '-0.02em' }}>
           Logros Familiares
         </h2>
         <div className="flex items-center justify-center gap-3 mb-8">

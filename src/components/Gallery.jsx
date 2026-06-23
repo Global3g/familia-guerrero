@@ -226,7 +226,7 @@ function PhotoCollage({ photos, onPhotoClick }) {
       <div className="flex justify-center mt-4">
         <button
           onClick={pickPhotos}
-          className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium text-white/40 hover:text-white/70 bg-white/5 hover:bg-white/10 border border-white/10 transition-all duration-300"
+          className="flex items-center gap-2 px-4 py-2 rounded-full text-xs font-medium transition-all duration-300" style={{ color: "#4A4A4A", backgroundColor: "rgba(0,0,0,0.04)", border: "1px solid rgba(0,0,0,0.1)" }}
         >
           <RefreshCw className="w-3.5 h-3.5" />
           Mezclar fotos
@@ -269,7 +269,7 @@ function FilmStripMarquee({ photos }) {
           {strip.map((photo, i) => (
             <div
               key={`strip-${i}`}
-              className="flex-shrink-0 w-64 h-48 sm:w-80 sm:h-60 rounded-xl overflow-hidden relative group"
+              className="flex-shrink-0 w-80 h-60 sm:w-96 sm:h-72 rounded-xl overflow-hidden relative group"
             >
               <img src={photo.photoURL} alt={photo.caption || ''} className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
@@ -288,8 +288,8 @@ function FilmStripMarquee({ photos }) {
       </div>
 
       {/* Fade edges */}
-      <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[#0F172A] to-transparent z-10 pointer-events-none" />
-      <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[#0F172A] to-transparent z-10 pointer-events-none" />
+      <div className="absolute inset-y-0 left-0 w-16 bg-gradient-to-r from-[#152238] to-transparent z-10 pointer-events-none" />
+      <div className="absolute inset-y-0 right-0 w-16 bg-gradient-to-l from-[#152238] to-transparent z-10 pointer-events-none" />
     </div>
   )
 }
@@ -326,11 +326,11 @@ function AnimatedCounter({ value, label, icon: Icon, suffix = '' }) {
 
   return (
     <div ref={ref} className="flex flex-col items-center gap-2">
-      <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
-        <Icon className="w-5 h-5 text-[#B8654A]" />
+      <div className="w-12 h-12 rounded-2xl flex items-center justify-center" style={{ backgroundColor: 'rgba(184,150,62,0.1)', border: '1px solid rgba(184,150,62,0.2)' }}>
+        <Icon className="w-5 h-5 text-[#B8963E]" />
       </div>
-      <span className="text-3xl sm:text-4xl font-serif font-bold text-white">{count}{suffix}</span>
-      <span className="text-xs text-white/40 uppercase tracking-wider">{label}</span>
+      <span className="text-3xl sm:text-4xl font-serif font-bold" style={{ color: '#1C1C1C' }}>{count}{suffix}</span>
+      <span className="text-xs uppercase tracking-wider" style={{ color: '#8A8A8A' }}>{label}</span>
     </div>
   )
 }
@@ -391,7 +391,7 @@ function FeaturedPhoto({ photos, onPhotoClick }) {
       className="mb-14"
     >
       <div className="flex items-center gap-2 justify-center mb-4">
-        <Heart className="w-4 h-4 text-[#B8654A]" />
+        <Heart className="w-4 h-4 text-[#B8963E]" />
         <span className="text-xs font-medium uppercase tracking-[3px] text-white/40">Recuerdo del momento</span>
       </div>
       <AnimatePresence mode="wait">
@@ -563,8 +563,8 @@ function FilterPill({ label, active, onClick, icon: Icon }) {
       className="px-3 py-1.5 rounded-full text-xs font-medium transition-all duration-200 flex items-center gap-1.5"
       style={
         active
-          ? { backgroundColor: '#B8654A', color: '#fff', boxShadow: '0 2px 8px rgba(196,112,75,0.3)' }
-          : { backgroundColor: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.6)', border: '1px solid rgba(255,255,255,0.1)' }
+          ? { backgroundColor: '#B8963E', color: '#fff', boxShadow: '0 2px 8px rgba(184,150,62,0.3)' }
+          : { backgroundColor: 'rgba(0,0,0,0.04)', color: '#4A4A4A', border: '1px solid rgba(0,0,0,0.1)' }
       }
     >
       {Icon && <Icon className="w-3 h-3" />}
@@ -691,7 +691,7 @@ export default function Gallery() {
     <section
       id="galeria"
       className="py-24 px-4"
-      style={{ backgroundColor: '#0F172A' }}
+      style={{ backgroundColor: '#F5F0E8' }}
     >
       <div className="max-w-[1600px] mx-auto">
         {/* Header */}
@@ -702,17 +702,17 @@ export default function Gallery() {
           transition={{ duration: 0.7 }}
           className="text-center mb-14"
         >
-          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Galeria</p>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
+          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] mb-4" style={{ color: '#8A8A8A' }}>Galeria</p>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold italic mb-5" style={{ color: '#1C1C1C' }}>
             Nuestros Recuerdos
           </h2>
-          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
-          <p className="text-base text-white/50 max-w-md mx-auto leading-relaxed">
+          <div className="w-8 h-[1px] bg-[#B8963E] mx-auto mb-5" />
+          <p className="text-base max-w-md mx-auto leading-relaxed" style={{ color: '#4A4A4A' }}>
             Momentos que atesoramos para siempre. Cada foto cuenta una historia
             de amor, risas y union.
           </p>
           {!loading && (
-            <p className="text-xs text-white/30 mt-3">{allPhotos.length} fotos en total</p>
+            <p className="text-xs mt-3" style={{ color: "#8A8A8A" }}>{allPhotos.length} fotos en total</p>
           )}
         </motion.div>
 
@@ -723,10 +723,9 @@ export default function Gallery() {
         {!loading && <GalleryStats photos={allPhotos} nucleusCount={nucleusOptions.length} />}
 
         {/* ── Featured Photo ── */}
-        {!loading && <FeaturedPhoto photos={allPhotos} onPhotoClick={setSelectedPhoto} />}
+        {/* ponytail: FeaturedPhoto removed per user request */}
 
-        {/* ── Photo Collage Hero ── */}
-        {!loading && <PhotoCollage photos={allPhotos} onPhotoClick={setSelectedPhoto} />}
+        {/* ponytail: PhotoCollage removed per user request */}
 
         {/* ── Filter Bar ── */}
         <motion.div
@@ -738,7 +737,7 @@ export default function Gallery() {
         >
           {/* Filter type selector */}
           <div className="flex items-center justify-center gap-2 flex-wrap">
-            <span className="text-white/30 mr-1">
+            <span className="mr-1" style={{ color: "#8A8A8A" }}>
               <Filter className="w-4 h-4" />
             </span>
             <FilterPill label="Todos" active={!hasActiveFilter} onClick={clearFilters} />
@@ -760,7 +759,7 @@ export default function Gallery() {
                   className="px-3 py-1 rounded-full text-xs font-medium transition-all"
                   style={filterYear === y
                     ? { backgroundColor: '#B8976A', color: '#fff' }
-                    : { backgroundColor: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.08)' }
+                    : { backgroundColor: 'rgba(0,0,0,0.04)', color: '#4A4A4A', border: '1px solid rgba(0,0,0,0.1)' }
                   }
                 >
                   {y}
@@ -778,7 +777,7 @@ export default function Gallery() {
                   className="px-3 py-1 rounded-full text-xs font-medium transition-all"
                   style={filterNucleus === n
                     ? { backgroundColor: '#6B9080', color: '#fff' }
-                    : { backgroundColor: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.08)' }
+                    : { backgroundColor: 'rgba(0,0,0,0.04)', color: '#4A4A4A', border: '1px solid rgba(0,0,0,0.1)' }
                   }
                 >
                   {n}
@@ -795,8 +794,8 @@ export default function Gallery() {
                   onClick={() => setFilterCategory(filterCategory === cat.id ? null : cat.id)}
                   className="px-3 py-1 rounded-full text-xs font-medium transition-all"
                   style={filterCategory === cat.id
-                    ? { backgroundColor: '#B8654A', color: '#fff' }
-                    : { backgroundColor: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.08)' }
+                    ? { backgroundColor: '#B8963E', color: '#fff' }
+                    : { backgroundColor: 'rgba(0,0,0,0.04)', color: '#4A4A4A', border: '1px solid rgba(0,0,0,0.1)' }
                   }
                 >
                   {cat.label}
@@ -814,7 +813,7 @@ export default function Gallery() {
                   className="px-3 py-1 rounded-full text-xs font-medium transition-all"
                   style={filterEvent === ev
                     ? { backgroundColor: '#B8976A', color: '#fff' }
-                    : { backgroundColor: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.5)', border: '1px solid rgba(255,255,255,0.08)' }
+                    : { backgroundColor: 'rgba(0,0,0,0.04)', color: '#4A4A4A', border: '1px solid rgba(0,0,0,0.1)' }
                   }
                 >
                   {ev}
@@ -826,8 +825,8 @@ export default function Gallery() {
           {/* Active filter indicator */}
           {hasActiveFilter && (
             <div className="flex items-center justify-center gap-2">
-              <span className="text-xs text-white/40">{filteredPhotos.length} de {allPhotos.length} fotos</span>
-              <button onClick={clearFilters} className="text-xs text-[#B8654A] hover:text-[#B8654A]/80 transition flex items-center gap-1">
+              <span className="text-xs " style={{ color: "#8A8A8A" }}>{filteredPhotos.length} de {allPhotos.length} fotos</span>
+              <button onClick={clearFilters} className="text-xs text-[#B8963E] hover:text-[#B8963E]/80 transition flex items-center gap-1">
                 <X className="w-3 h-3" /> Limpiar filtros
               </button>
             </div>
@@ -849,11 +848,11 @@ export default function Gallery() {
               }
               await loadAll()
             }}
-            className="mb-6 border-2 border-dashed border-white/20 bg-white/5 rounded-2xl p-8 text-center transition-colors cursor-pointer"
+            className="mb-6 border-2 border-dashed border-black/15 bg-black/5 rounded-2xl p-8 text-center transition-colors cursor-pointer"
             onClick={() => setShowCreateForm(true)}
           >
-            <Camera className="w-8 h-8 mx-auto mb-2 text-white/20" />
-            <p className="text-sm text-white/40">Arrastra fotos aqui o haz clic para agregar</p>
+            <Camera className="w-8 h-8 mx-auto mb-2 " style={{ color: "rgba(184,150,62,0.25)" }} />
+            <p className="text-sm" style={{ color: "#8A8A8A" }}>Arrastra fotos aqui o haz clic para agregar</p>
           </div>
         )}
 
@@ -863,9 +862,9 @@ export default function Gallery() {
         ) : (
           photosByYear.map(([year, photos]) => (
             <div key={year} className="mb-8">
-              <h3 className="text-lg font-serif font-bold text-white/60 mb-3 flex items-center gap-2">
-                <span className="text-sm px-2 py-0.5 rounded-full bg-[#B8654A] text-white">{year}</span>
-                <span className="text-xs text-white/30">{photos.length} fotos</span>
+              <h3 className="text-lg font-serif font-bold mb-3 flex items-center gap-2" style={{ color: "#1C1C1C" }}>
+                <span className="text-sm px-2 py-0.5 rounded-full bg-[#B8963E] text-white">{year}</span>
+                <span className="text-xs" style={{ color: "#8A8A8A" }}>{photos.length} fotos</span>
               </h3>
               <div className="columns-1 sm:columns-2 lg:columns-3 gap-5 space-y-5">
                 <AnimatePresence mode="popLayout">
@@ -885,7 +884,7 @@ export default function Gallery() {
                         className="glass-panel group relative rounded-xl overflow-hidden cursor-pointer transition-all duration-300 hover:-translate-y-1"
                       >
                         {/* Edit/Delete buttons (only for firestore photos) */}
-                        {!isMemberPhoto && isAdmin && (
+                        {isAdmin && (
                           <div className="absolute top-2 left-2 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-20">
                             <button onClick={(e) => { e.stopPropagation(); setEditingPhoto(photo); }} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/90 hover:bg-[#B8976A]/10 shadow text-[#B8976A] transition">
                               <Pencil className="w-3.5 h-3.5" />
@@ -904,7 +903,7 @@ export default function Gallery() {
                           {photo.photoURL ? (
                             <img src={photo.photoURL} alt={photo.caption} className="w-full h-full object-cover" />
                           ) : (
-                            <Camera className="w-10 h-10 transition-transform duration-300 group-hover:scale-110 text-white/20" />
+                            <Camera className="w-10 h-10 transition-transform duration-300 group-hover:scale-110 " style={{ color: "rgba(184,150,62,0.25)" }} />
                           )}
 
                           <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-300 flex items-center justify-center">
@@ -918,21 +917,17 @@ export default function Gallery() {
                                 {photo.year}
                               </span>
                             )}
-                            {photo.nucleus && (
-                              <span className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-[#6B9080]/20 text-[#6B9080]">
-                                {photo.nucleus}
-                              </span>
-                            )}
+                            {/* ponytail: nucleus badge hidden per user request */}
                           </div>
                         </div>
 
                         {/* Caption */}
                         <div className="p-4" onClick={() => setSelectedPhoto(photo)}>
-                          <p className="text-sm font-medium leading-snug text-white/70">
+                          <p className="text-sm font-medium leading-snug" style={{ color: "#1C1C1C" }}>
                             {photo.caption}
                           </p>
                           <div className="flex flex-wrap gap-1.5 mt-2">
-                            <span className="text-xs font-medium capitalize px-2 py-0.5 rounded-full bg-white/10 text-white/50">
+                            <span className="text-xs font-medium capitalize px-2 py-0.5 rounded-full" style={{ backgroundColor: "rgba(184,150,62,0.1)", color: "#B8963E" }}>
                               {photo.category}
                             </span>
                             {photo.owner && isMemberPhoto && (
@@ -941,7 +936,7 @@ export default function Gallery() {
                               </span>
                             )}
                             {photo.eventTitle && (
-                              <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-[#B8654A]/10 text-[#B8654A]/70">
+                              <span className="text-xs font-medium px-2 py-0.5 rounded-full bg-[#B8963E]/10 text-[#B8963E]/70">
                                 {photo.eventTitle}
                               </span>
                             )}
@@ -963,23 +958,23 @@ export default function Gallery() {
             animate={{ opacity: 1 }}
             className="text-center py-16"
           >
-            <div className="w-16 h-16 rounded-full bg-[#B8654A]/10 flex items-center justify-center mx-auto mb-4">
-              <Camera className="w-8 h-8 text-[#B8654A]/50" />
+            <div className="w-16 h-16 rounded-full bg-[#B8963E]/10 flex items-center justify-center mx-auto mb-4">
+              <Camera className="w-8 h-8 text-[#B8963E]/50" />
             </div>
-            <p className="text-lg font-serif font-bold text-white/50 mb-2">
+            <p className="text-lg font-serif font-bold mb-2" style={{ color: "#4A4A4A" }}>
               {hasActiveFilter ? 'Sin fotos con estos filtros' : (allPhotos.length === 0 ? 'Sin fotos todavia' : 'Sin fotos en esta categoria')}
             </p>
-            <p className="text-sm text-white/50 mb-6">
+            <p className="text-sm mb-6" style={{ color: "#8A8A8A" }}>
               {hasActiveFilter ? 'Intenta con otros filtros o limpia la seleccion' : 'Sube la primera foto de tu familia'}
             </p>
             {hasActiveFilter ? (
-              <button onClick={clearFilters} className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-white/20 text-white/60 hover:bg-white/5 transition font-medium">
+              <button onClick={clearFilters} className="inline-flex items-center gap-2 px-6 py-3 rounded-xl border border-black/15 hover:bg-black/5 transition font-medium" style={{ color: '#4A4A4A' }}>
                 <X className="w-4 h-4" /> Limpiar filtros
               </button>
             ) : isAdmin ? (
               <button
                 onClick={() => setShowCreateForm(true)}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#B8654A] text-white hover:bg-[#B8654A]/90 transition font-medium shadow-md"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#B8963E] text-white hover:bg-[#B8963E]/90 transition font-medium shadow-md"
               >
                 <Plus className="w-5 h-5" />
                 Subir primera foto
@@ -993,7 +988,7 @@ export default function Gallery() {
           <div className="flex justify-center mt-12">
             <button
               onClick={() => setShowCreateForm(true)}
-              className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-white/20 text-white/50 hover:bg-white/5 hover:border-white/40 transition font-medium"
+              className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-black/15 hover:bg-black/5 hover:border-black/25 transition font-medium" style={{ color: '#4A4A4A' }}
             >
               <Plus className="w-5 h-5" />
               Agregar foto
@@ -1123,7 +1118,7 @@ export default function Gallery() {
                 </h3>
                 <div className="flex flex-wrap items-center gap-2">
                   {selectedPhoto.year && (
-                    <span className="text-sm font-semibold px-3 py-1 rounded-full" style={{ backgroundColor: '#B8654A', color: '#fff' }}>
+                    <span className="text-sm font-semibold px-3 py-1 rounded-full" style={{ backgroundColor: '#B8963E', color: '#fff' }}>
                       {selectedPhoto.year}
                     </span>
                   )}
@@ -1136,7 +1131,7 @@ export default function Gallery() {
                     </span>
                   )}
                   {selectedPhoto.eventTitle && (
-                    <span className="text-sm font-medium px-3 py-1 rounded-full" style={{ backgroundColor: '#0F172A', color: '#B8976A' }}>
+                    <span className="text-sm font-medium px-3 py-1 rounded-full" style={{ backgroundColor: '#152238', color: '#B8976A' }}>
                       {selectedPhoto.eventTitle}
                     </span>
                   )}

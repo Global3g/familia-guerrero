@@ -23,13 +23,14 @@ export default function Navbar({ user, isAdmin, onLogout }) {
       initial={{ y: -80 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.6, ease: 'easeOut' }}
-      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-500 ${
-        scrolled
-          ? 'glass-panel-static shadow-[0_4px_20px_rgba(0,0,0,0.4)] border-b border-white/5'
-          : 'bg-transparent'
-      }`}
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500 border-b"
+      style={{
+        backgroundColor: scrolled ? '#152238' : '#152238',
+        borderColor: scrolled ? 'rgba(184,150,62,0.15)' : 'transparent',
+        boxShadow: scrolled ? '0 4px 20px rgba(0,0,0,0.15)' : 'none',
+      }}
     >
-      <div className="max-w-[1600px] mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="px-4 sm:px-6 lg:px-8">
         <div className="flex items-center h-14 sm:h-16">
           {/* Logo / Title */}
           <a
@@ -69,7 +70,7 @@ export default function Navbar({ user, isAdmin, onLogout }) {
                 onClick={onLogout}
                 className={`flex items-center gap-1.5 font-sans text-sm font-medium px-3 py-2 rounded-md transition-colors duration-300 ${
                   scrolled
-                    ? 'text-[#B8654A] hover:bg-[#B8654A]/10'
+                    ? 'text-[#B8963E] hover:bg-[#B8963E]/10'
                     : 'text-[#F8FAFC]/70 hover:text-[#F8FAFC] hover:bg-white/10'
                 }`}
               >
@@ -86,7 +87,7 @@ export default function Navbar({ user, isAdmin, onLogout }) {
                 onClick={onLogout}
                 className={`flex items-center gap-1.5 font-sans text-sm font-medium px-3 py-2 rounded-lg transition-colors duration-300 ${
                   scrolled
-                    ? 'text-[#B8654A] hover:bg-[#B8654A]/10'
+                    ? 'text-[#B8963E] hover:bg-[#B8963E]/10'
                     : 'text-[#F8FAFC] hover:bg-white/10'
                 }`}
                 aria-label="Salir"
@@ -98,7 +99,7 @@ export default function Navbar({ user, isAdmin, onLogout }) {
                 onClick={() => setMobileOpen(!mobileOpen)}
                 className={`p-2 rounded-lg transition-colors duration-300 ${
                   scrolled
-                    ? 'text-white hover:bg-[#0F172A]/10'
+                    ? 'text-white hover:bg-[#152238]/10'
                     : 'text-[#F8FAFC] hover:bg-white/10'
                 }`}
                 aria-label={mobileOpen ? 'Cerrar menu' : 'Abrir menu'}
@@ -123,7 +124,7 @@ export default function Navbar({ user, isAdmin, onLogout }) {
             <SearchBar />
 
             {/* Notification Bell */}
-            <div className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[#0F172A]/5 transition-colors duration-200">
+            <div className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[#152238]/5 transition-colors duration-200">
               <NotificationBell />
               <span className="font-sans text-base font-medium text-white">Notificaciones</span>
             </div>
@@ -134,7 +135,7 @@ export default function Navbar({ user, isAdmin, onLogout }) {
                 setMobileOpen(false)
                 onLogout()
               }}
-              className="flex items-center gap-3 font-sans text-base font-medium text-[#B8654A] hover:bg-[#B8654A]/10 px-4 py-3 rounded-lg transition-colors duration-200"
+              className="flex items-center gap-3 font-sans text-base font-medium text-[#B8963E] hover:bg-[#B8963E]/10 px-4 py-3 rounded-lg transition-colors duration-200"
             >
               <LogOut className="w-5 h-5" />
               Salir

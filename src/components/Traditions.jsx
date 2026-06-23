@@ -150,11 +150,11 @@ export default function Traditions() {
     <section
       id="tradiciones"
       className="relative py-24 overflow-hidden"
-      style={{ backgroundColor: '#0F172A' }}
+      style={{ backgroundColor: '#F5F0E8' }}
     >
       {/* Background accents */}
       <div className="absolute top-0 left-0 w-72 h-72 rounded-full bg-[#6B9080] opacity-[0.04] blur-[100px] pointer-events-none" />
-      <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-[#B8654A] opacity-[0.04] blur-[100px] pointer-events-none" />
+      <div className="absolute bottom-0 right-0 w-96 h-96 rounded-full bg-[#B8963E] opacity-[0.04] blur-[100px] pointer-events-none" />
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[30rem] h-[30rem] rounded-full bg-[#B8976A] opacity-[0.03] blur-[120px] pointer-events-none" />
 
       <div className="relative z-10 max-w-[1600px] mx-auto px-6">
@@ -167,12 +167,12 @@ export default function Traditions() {
           custom={0}
           className="text-center mb-16"
         >
-          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Nuestras raices</p>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
+          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] mb-4" style={{ color: '#8A8A8A' }}>Nuestras raices</p>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold italic mb-5" style={{ color: '#1C1C1C' }}>
             Tradiciones y Valores
           </h2>
-          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
-          <p className="text-base text-white/50 max-w-md mx-auto leading-relaxed">
+          <div className="w-8 h-[1px] bg-[#B8963E] mx-auto mb-5" />
+          <p className="text-base max-w-md mx-auto leading-relaxed" style={{ color: '#4A4A4A' }}>
             Las costumbres que nos unen y los principios que nos gu&iacute;an.
           </p>
         </motion.div>
@@ -190,7 +190,8 @@ export default function Traditions() {
                   whileInView="visible"
                   viewport={{ once: true, margin: "-50px" }}
                   custom={index * 0.15 + 0.2}
-                  className="group relative bg-white/5 backdrop-blur-sm rounded-2xl border-4 border-white/80 p-6 hover:shadow-lg hover:shadow-[#6B9080]/10 hover:border-white/20 transition-all duration-500"
+                  className="group relative rounded-2xl p-6 hover:shadow-lg transition-all duration-500"
+                  style={{ backgroundColor: '#FFFDF7', border: '2px solid rgba(184,150,62,0.3)' }}
                 >
                   {/* Edit/Delete */}
                   {isAdmin && (
@@ -205,12 +206,11 @@ export default function Traditions() {
                   )}
 
                   <div className="mb-4 w-12 h-12 rounded-xl bg-gradient-to-br from-[#6B9080]/15 to-[#B8976A]/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <IconComponent className="w-6 h-6 text-white/40" />
+                    <IconComponent className="w-6 h-6" style={{ color: '#B8963E' }} />
                   </div>
-                  <h3 className="font-serif text-xl font-bold text-white mb-2">{tradition.title}</h3>
-                  <p className="font-sans text-sm text-white/50 leading-relaxed">{tradition.description}</p>
+                  <h3 className="font-serif text-xl font-bold mb-2" style={{ color: '#1C1C1C' }}>{tradition.description || tradition.title}</h3>
                   {tradition.submittedBy && (
-                    <p className="font-sans text-xs text-[#B8976A] mt-3 font-medium">— {tradition.submittedBy}</p>
+                    <p className="font-sans text-sm text-[#B8976A] mt-3 font-medium">— {tradition.submittedBy}</p>
                   )}
                 </motion.article>
               );
@@ -218,15 +218,15 @@ export default function Traditions() {
           </div>
         ) : (
           <div className="text-center py-16 mb-10">
-            <div className="w-16 h-16 rounded-full bg-[#B8654A]/10 flex items-center justify-center mx-auto mb-4">
-              <UtensilsCrossed className="w-8 h-8 text-[#B8654A]/50" />
+            <div className="w-16 h-16 rounded-full bg-[#B8963E]/10 flex items-center justify-center mx-auto mb-4">
+              <UtensilsCrossed className="w-8 h-8 text-[#B8963E]/50" />
             </div>
-            <p className="text-lg font-serif font-bold text-white/60 mb-2">Sin tradiciones todavia</p>
-            <p className="text-sm text-white/40 mb-6">Registra las tradiciones que hacen unica a tu familia</p>
+            <p className="text-lg font-serif font-bold mb-2" style={{ color: '#4A4A4A' }}>Sin tradiciones todavia</p>
+            <p className="text-sm mb-6" style={{ color: '#8A8A8A' }}>Registra las tradiciones que hacen unica a tu familia</p>
             {isAdmin && (
               <button
                 onClick={() => openTradForm()}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#B8654A] text-white hover:bg-[#B8654A]/90 transition font-medium shadow-md"
+                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#B8963E] text-white hover:bg-[#B8963E]/90 transition font-medium shadow-md"
               >
                 <Plus className="w-5 h-5" />
                 Agregar primera tradicion
@@ -253,7 +253,7 @@ export default function Traditions() {
           custom={0}
           className="text-center"
         >
-          <h3 className="font-serif text-2xl sm:text-3xl font-bold text-white mb-8">
+          <h3 className="font-serif text-2xl sm:text-3xl font-bold mb-8" style={{ color: '#1C1C1C' }}>
             Nuestros Valores
           </h3>
 
@@ -269,9 +269,9 @@ export default function Traditions() {
                     whileInView="visible"
                     viewport={{ once: true, margin: "-50px" }}
                     custom={index * 0.1 + 0.1}
-                    className="group/val inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/5 border-4 border-white/80 font-sans text-sm font-medium text-white hover:bg-[#B8976A]/10 hover:border-[#B8976A]/30 transition-colors duration-300 backdrop-blur-sm shadow-sm"
+                    className="group/val inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/60 border border-[#B8963E]/20 font-sans text-sm font-medium hover:bg-[#B8976A]/10 hover:border-[#B8976A]/30 transition-colors duration-300 backdrop-blur-sm shadow-sm" style={{ color: '#1C1C1C' }}
                   >
-                    <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: index % 3 === 0 ? "#6B9080" : index % 3 === 1 ? "#B8654A" : "#B8976A" }} />
+                    <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: index % 3 === 0 ? "#6B9080" : index % 3 === 1 ? "#B8963E" : "#B8976A" }} />
                     {val}
                     {isAdmin && (
                       <button onClick={() => handleDeleteValue(v)} className="opacity-0 group-hover/val:opacity-100 transition ml-1 text-red-400 hover:text-red-600">
@@ -284,7 +284,7 @@ export default function Traditions() {
             </div>
           ) : (
             <div className="mb-6">
-              <p className="text-sm text-white/40 mb-2">Agrega los valores que definen a tu familia</p>
+              <p className="text-sm mb-2" style={{ color: '#8A8A8A' }}>Agrega los valores que definen a tu familia</p>
             </div>
           )}
 
@@ -297,7 +297,7 @@ export default function Traditions() {
                 onChange={(e) => setNewValue(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleAddValue()}
                 placeholder="Nuevo valor..."
-                className="flex-1 px-4 py-2 rounded-full border-4 border-white/80 bg-white/5 text-sm text-white focus:outline-none focus:border-[#B8976A]/50"
+                className="flex-1 px-4 py-2 rounded-full border border-[#B8963E]/30 bg-white/60 text-sm focus:outline-none focus:border-[#B8976A]/50" style={{ color: '#1C1C1C' }}
               />
               <button onClick={handleAddValue} className="w-10 h-10 rounded-full bg-[#B8976A] text-white flex items-center justify-center hover:bg-[#B8976A]/90 transition shadow">
                 <Plus className="w-5 h-5" />

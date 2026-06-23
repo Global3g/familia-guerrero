@@ -20,7 +20,7 @@ const emptyPerson = () => ({
 const levelColors = [
   { border: '#6B9080', bg: '#6B9080', light: '#6B908010', accent: '#6B9080' },
   { border: '#B8976A', bg: '#B8976A', light: '#B8976A10', accent: '#B8976A' },
-  { border: '#B8654A', bg: '#B8654A', light: '#B8654A10', accent: '#B8654A' },
+  { border: '#B8963E', bg: '#B8963E', light: '#B8963E10', accent: '#B8963E' },
 ]
 
 function SpouseBlock({ spouse, onChange, colors }) {
@@ -53,21 +53,21 @@ function SpouseBlock({ spouse, onChange, colors }) {
   }
 
   return (
-    <div className="rounded-lg border p-2.5 space-y-2" style={{ borderColor: '#B8654A25', backgroundColor: '#B8654A08' }}>
+    <div className="rounded-lg border p-2.5 space-y-2" style={{ borderColor: '#B8963E25', backgroundColor: '#B8963E08' }}>
       <div className="flex items-center justify-between">
         <button type="button" onClick={() => setExpanded(!expanded)} className="flex items-center gap-2 text-left flex-1">
           <label className="relative cursor-pointer flex-shrink-0 group" onClick={(e) => e.stopPropagation()}>
             <input type="file" accept="image/*" onChange={handlePhotoSelect} className="hidden" />
             {spouse.photoURL ? (
-              <img src={spouse.photoURL} alt={spouse.name} className="w-8 h-8 rounded-full object-cover border group-hover:opacity-70 transition" style={{ borderColor: '#B8654A40' }} />
+              <img src={spouse.photoURL} alt={spouse.name} className="w-8 h-8 rounded-full object-cover border group-hover:opacity-70 transition" style={{ borderColor: '#B8963E40' }} />
             ) : (
-              <div className="w-8 h-8 rounded-full flex items-center justify-center group-hover:opacity-70 transition" style={{ backgroundColor: '#B8654A15' }}>
-                {uploading ? <Loader2 className="w-3.5 h-3.5 animate-spin text-[#B8654A]" /> : <Camera className="w-3.5 h-3.5 text-[#B8654A]" />}
+              <div className="w-8 h-8 rounded-full flex items-center justify-center group-hover:opacity-70 transition" style={{ backgroundColor: '#B8963E15' }}>
+                {uploading ? <Loader2 className="w-3.5 h-3.5 animate-spin text-[#B8963E]" /> : <Camera className="w-3.5 h-3.5 text-[#B8963E]" />}
               </div>
             )}
           </label>
           <div className="flex-1 min-w-0">
-            <p className="text-xs font-bold text-[#B8654A] flex items-center gap-1">
+            <p className="text-xs font-bold text-[#B8963E] flex items-center gap-1">
               <Heart className="w-3 h-3" /> Esposo(a)
             </p>
             <p className="text-xs text-white truncate">{spouse.name || 'Sin nombre'}</p>
@@ -86,13 +86,13 @@ function SpouseBlock({ spouse, onChange, colors }) {
               <input type="file" accept="image/*" onChange={handlePhotoSelect} className="hidden" />
               {spouse.photoURL ? (
                 <div className="relative">
-                  <img src={spouse.photoURL} alt={spouse.name} className="w-16 h-16 rounded-full object-cover border-2 group-hover:opacity-70 transition" style={{ borderColor: '#B8654A40' }} />
+                  <img src={spouse.photoURL} alt={spouse.name} className="w-16 h-16 rounded-full object-cover border-2 group-hover:opacity-70 transition" style={{ borderColor: '#B8963E40' }} />
                   <div className="absolute inset-0 rounded-full flex items-center justify-center bg-black/30 sm:opacity-0 sm:group-hover:opacity-100 transition">
                     <Camera className="w-4 h-4 text-white" />
                   </div>
                 </div>
               ) : (
-                <div className="w-16 h-16 rounded-full border-2 border-dashed border-[#B8654A]/30 flex flex-col items-center justify-center text-[#B8654A] group-hover:opacity-70 transition">
+                <div className="w-16 h-16 rounded-full border-2 border-dashed border-[#B8963E]/30 flex flex-col items-center justify-center text-[#B8963E] group-hover:opacity-70 transition">
                   {uploading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><Camera className="w-4 h-4 mb-0.5" /><span className="text-[11px]">Foto</span></>}
                 </div>
               )}
@@ -323,7 +323,7 @@ function PersonBlock({ person, index, depth, onChange, onRemove }) {
             </div>
             <div className="col-span-2">
               <label className={labelClass}>
-                <MapPin className="w-3 h-3 inline mr-1 text-[#B8654A]" />
+                <MapPin className="w-3 h-3 inline mr-1 text-[#B8963E]" />
                 Donde vive
               </label>
               <input
@@ -369,7 +369,7 @@ function PersonBlock({ person, index, depth, onChange, onRemove }) {
             <button
               type="button"
               onClick={() => handleFieldChange('spouse', emptySpouse())}
-              className="flex w-full items-center justify-center gap-1.5 rounded-lg border-dashed border border-[#B8654A]/30 py-2 text-xs text-[#B8654A] hover:bg-[#B8654A]/5 transition"
+              className="flex w-full items-center justify-center gap-1.5 rounded-lg border-dashed border border-[#B8963E]/30 py-2 text-xs text-[#B8963E] hover:bg-[#B8963E]/5 transition"
             >
               <Heart className="h-3.5 w-3.5" />
               Agregar esposo(a)
@@ -477,7 +477,6 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
 
   const handleMainCropComplete = (croppedFile) => {
     setMainCropSrc(null)
-    console.log('Crop complete, file:', croppedFile?.name, croppedFile?.size)
     if (croppedFile) {
       setPhoto(croppedFile)
       setPhotoPreview(URL.createObjectURL(croppedFile))
@@ -584,16 +583,13 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
 
   const handleSubmit = async (e) => {
     e.preventDefault()
-    console.log('=== SUBMIT ===', 'photo:', photo, 'photoPreview:', photoPreview ? 'yes' : 'no')
     setLoading(true)
     try {
       let photoURL = memberData?.photoURL || null
       if (photo) {
-        console.log('Uploading main photo...', photo.name, photo.size)
         const uploaded = await uploadPhoto(photo, `members/${Date.now()}-${photo.name}`)
         if (uploaded) {
           photoURL = uploaded
-          console.log('Photo uploaded:', photoURL)
         } else {
           console.error('Photo upload returned null')
         }
@@ -680,7 +676,7 @@ function FamilyMemberForm({ isOpen, onClose, memberData, onSave }) {
           <button
             type="button"
             onClick={() => setForm((prev) => ({ ...prev, spouse: emptySpouse() }))}
-            className="flex w-full items-center justify-center gap-2 rounded-lg border-dashed border-2 border-[#B8654A]/30 py-2.5 text-sm text-[#B8654A] hover:bg-[#B8654A]/5 transition"
+            className="flex w-full items-center justify-center gap-2 rounded-lg border-dashed border-2 border-[#B8963E]/30 py-2.5 text-sm text-[#B8963E] hover:bg-[#B8963E]/5 transition"
           >
             <Heart className="h-4 w-4" />
             Agregar esposo(a)

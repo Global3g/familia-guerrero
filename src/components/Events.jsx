@@ -10,8 +10,8 @@ import { SkeletonGrid } from './Skeleton'
 const typeStyles = {
   'cumpleaños': {
     bg: '#FDF0EB',
-    accent: '#B8654A',
-    iconBg: '#B8654A',
+    accent: '#B8963E',
+    iconBg: '#B8963E',
     border: '#E8C4B4',
     label: 'Cumpleaños',
   },
@@ -216,7 +216,7 @@ export default function Events() {
     <section
       id="eventos"
       className="py-20 px-4"
-      style={{ backgroundColor: '#0F172A' }}
+      style={{ backgroundColor: '#F5F0E8' }}
     >
       <div className="max-w-[1600px] mx-auto">
         {/* Header */}
@@ -227,12 +227,12 @@ export default function Events() {
           transition={{ duration: 0.7 }}
           className="text-center mb-16"
         >
-          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Momentos</p>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
+          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] mb-4" style={{ color: '#8A8A8A' }}>Momentos</p>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif italic font-bold mb-5" style={{ color: '#1C1C1C' }}>
             Agenda Familiar
           </h2>
-          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
-          <p className="text-base text-white/50 max-w-md mx-auto leading-relaxed">
+          <div className="w-8 h-[1px] bg-[#B8963E] mx-auto mb-5" />
+          <p className="text-base max-w-md mx-auto leading-relaxed" style={{ color: '#4A4A4A' }}>
             Las fechas que nos unen. Cada evento es parte de nuestra historia.
           </p>
         </motion.div>
@@ -243,8 +243,8 @@ export default function Events() {
             onClick={() => setTab('proximos')}
             className="px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300"
             style={tab === 'proximos'
-              ? { backgroundColor: '#B8654A', color: '#fff', boxShadow: '0 4px 14px rgba(196,112,75,0.35)' }
-              : { backgroundColor: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.5)', border: '4px solid rgba(255,255,255,0.8)' }
+              ? { backgroundColor: '#B8963E', color: '#fff', boxShadow: '0 4px 14px rgba(184,150,62,0.35)' }
+              : { backgroundColor: 'rgba(21,34,56,0.06)', color: '#4A4A4A', border: '1.5px solid rgba(184,150,62,0.3)' }
             }
           >
             Proximos ({upcoming.length})
@@ -253,8 +253,8 @@ export default function Events() {
             onClick={() => setTab('pasados')}
             className="px-6 py-2.5 rounded-full text-sm font-medium transition-all duration-300"
             style={tab === 'pasados'
-              ? { backgroundColor: '#B8976A', color: '#fff', boxShadow: '0 4px 14px rgba(184,148,62,0.35)' }
-              : { backgroundColor: 'rgba(255,255,255,0.05)', color: 'rgba(255,255,255,0.5)', border: '4px solid rgba(255,255,255,0.8)' }
+              ? { backgroundColor: '#B8963E', color: '#fff', boxShadow: '0 4px 14px rgba(184,150,62,0.35)' }
+              : { backgroundColor: 'rgba(21,34,56,0.06)', color: '#4A4A4A', border: '1.5px solid rgba(184,150,62,0.3)' }
             }
           >
             Pasados ({past.length})
@@ -274,19 +274,19 @@ export default function Events() {
         >
           {displayEvents.length === 0 && (
             <div className="col-span-full text-center py-16">
-              <div className="w-16 h-16 rounded-full bg-white/5 flex items-center justify-center mx-auto mb-4">
-                <Calendar className="w-8 h-8 text-white/30" />
+              <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: 'rgba(184,150,62,0.1)' }}>
+                <Calendar className="w-8 h-8" style={{ color: '#B8963E' }} />
               </div>
-              <p className="text-lg font-serif font-bold text-white/60 mb-2">
+              <p className="text-lg font-serif font-bold mb-2" style={{ color: '#1C1C1C' }}>
                 {tab === 'proximos' ? 'Sin eventos proximos' : 'Sin eventos pasados'}
               </p>
-              <p className="text-sm text-white/40 mb-6">
+              <p className="text-sm mb-6" style={{ color: '#8A8A8A' }}>
                 {tab === 'proximos' ? 'Agrega un evento familiar para que todos esten informados' : 'Los eventos pasados apareceran aqui automaticamente'}
               </p>
               {tab === 'proximos' && isAdmin && (
                 <button
                   onClick={() => setShowCreateForm(true)}
-                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#B8654A] text-white hover:bg-[#B8654A]/90 transition font-medium shadow-md"
+                  className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#B8963E] text-white hover:bg-[#B8963E]/90 transition font-medium shadow-md"
                 >
                   <Plus className="w-5 h-5" />
                   Agregar primer evento
@@ -308,17 +308,17 @@ export default function Events() {
                 whileHover={{ y: -6, transition: { duration: 0.25 } }}
                 className={`rounded-xl overflow-hidden shadow-md hover:shadow-xl transition-shadow duration-300 relative group ${isPast ? 'opacity-80' : ''}`}
                 style={{
-                  backgroundColor: 'rgba(255,255,255,0.05)',
-                  border: '6px solid rgba(255,255,255,0.8)',
+                  backgroundColor: '#FFFDF7',
+                  border: '2px solid rgba(184,150,62,0.3)',
                 }}
               >
                 {/* Edit/Delete buttons */}
                 {isAdmin && (
                   <div className="absolute top-2 right-2 flex gap-1 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity z-10">
-                    <button onClick={() => setEditingEvent(event)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 shadow text-[#B8976A] transition">
+                    <button onClick={() => setEditingEvent(event)} className="w-7 h-7 rounded-full flex items-center justify-center shadow transition" style={{ backgroundColor: 'rgba(184,150,62,0.1)', color: '#B8963E' }}>
                       <Pencil className="w-3.5 h-3.5" />
                     </button>
-                    <button onClick={() => setDeletingEvent(event)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 shadow text-red-400 hover:text-red-500 transition">
+                    <button onClick={() => setDeletingEvent(event)} className="w-7 h-7 rounded-full flex items-center justify-center shadow transition text-red-400 hover:text-red-500" style={{ backgroundColor: 'rgba(239,68,68,0.08)' }}>
                       <Trash2 className="w-3.5 h-3.5" />
                     </button>
                   </div>
@@ -327,12 +327,12 @@ export default function Events() {
                 {/* Card top: date + type badge */}
                 <div
                   className="relative p-8 flex items-center gap-5"
-                  style={{ backgroundColor: 'rgba(255,255,255,0.03)' }}
+                  style={{ backgroundColor: 'rgba(184,150,62,0.04)' }}
                 >
                   {/* Date block */}
                   <div
                     className="flex-shrink-0 w-20 h-20 rounded-xl flex flex-col items-center justify-center shadow-sm"
-                    style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
+                    style={{ backgroundColor: 'rgba(184,150,62,0.08)', border: '1.5px solid rgba(184,150,62,0.2)' }}
                   >
                     <span
                       className="text-3xl font-bold leading-none"
@@ -341,7 +341,8 @@ export default function Events() {
                       {day}
                     </span>
                     <span
-                      className="text-xs font-semibold uppercase tracking-wider mt-1 text-white/50"
+                      className="text-xs font-semibold uppercase tracking-wider mt-1"
+                      style={{ color: '#8A8A8A' }}
                     >
                       {monthNames[month - 1]}
                     </span>
@@ -360,11 +361,8 @@ export default function Events() {
                       {style.label}
                     </span>
                     <h3
-                      className="text-lg font-serif font-bold leading-tight truncate"
-                      style={{
-                        color: '#fff',
-                        fontFamily: "'Playfair Display', serif",
-                      }}
+                      className="text-lg font-serif italic font-bold leading-tight truncate"
+                      style={{ color: '#1C1C1C' }}
                     >
                       {event.title}
                     </h3>
@@ -373,7 +371,7 @@ export default function Events() {
 
                 {/* Card body */}
                 <div className="p-8 space-y-3">
-                  <p className="text-sm leading-relaxed" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                  <p className="text-sm leading-relaxed" style={{ color: '#4A4A4A' }}>
                     {event.description}
                   </p>
 
@@ -383,7 +381,7 @@ export default function Events() {
                       <MapPin className="w-4 h-4" style={{ color: style.accent }} />
                       <span
                         className="text-xs font-medium"
-                        style={{ color: 'rgba(255,255,255,0.5)' }}
+                        style={{ color: '#8A8A8A' }}
                       >
                         {event.location}
                       </span>
@@ -393,7 +391,7 @@ export default function Events() {
                     <span
                       className="text-xs font-semibold px-2 py-0.5 rounded-full"
                       style={{
-                        backgroundColor: 'rgba(255,255,255,0.05)',
+                        backgroundColor: 'rgba(184,150,62,0.1)',
                         color: style.accent,
                       }}
                     >
@@ -404,10 +402,10 @@ export default function Events() {
                   {/* Full date line */}
                   <div
                     className="flex items-center gap-1.5 pt-1 border-t"
-                    style={{ borderColor: 'rgba(255,255,255,0.8)' }}
+                    style={{ borderColor: 'rgba(184,150,62,0.2)' }}
                   >
-                    <Calendar className="w-3.5 h-3.5" style={{ color: 'rgba(255,255,255,0.4)' }} />
-                    <span className="text-xs" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                    <Calendar className="w-3.5 h-3.5" style={{ color: '#8A8A8A' }} />
+                    <span className="text-xs" style={{ color: '#8A8A8A' }}>
                       {day} de {monthNamesFull[month - 1]},{' '}
                       {parseDate(event.date).year}
                     </span>
@@ -418,27 +416,27 @@ export default function Events() {
                     const photos = getEventPhotos(event.id)
                     if (photos.length === 0) return null
                     return (
-                      <div className="pt-2 border-t" style={{ borderColor: 'rgba(255,255,255,0.8)' }}>
+                      <div className="pt-2 border-t" style={{ borderColor: 'rgba(184,150,62,0.2)' }}>
                         <div className="flex items-center gap-1.5 mb-2">
                           <Camera className="w-3.5 h-3.5" style={{ color: style.accent }} />
-                          <span className="text-[11px] font-semibold uppercase tracking-wider" style={{ color: 'rgba(255,255,255,0.5)' }}>
+                          <span className="text-[11px] font-semibold uppercase tracking-wider" style={{ color: '#8A8A8A' }}>
                             {photos.length} foto{photos.length > 1 ? 's' : ''}
                           </span>
                         </div>
                         <div className="flex gap-2 overflow-x-auto">
                           {photos.slice(0, 4).map((p, pi) => (
-                            <div key={pi} className="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0 border-4 border-white/80">
+                            <div key={pi} className="w-24 h-24 rounded-lg overflow-hidden flex-shrink-0" style={{ border: '2px solid rgba(184,150,62,0.3)' }}>
                               {p.photoURL ? (
                                 <img src={p.photoURL} alt={p.caption} className="w-full h-full object-cover" />
                               ) : (
                                 <div className="w-full h-full bg-gradient-to-br from-amber-100 to-orange-200 flex items-center justify-center">
-                                  <Camera className="w-6 h-6 text-white/60" />
+                                  <Camera className="w-6 h-6 text-amber-400/60" />
                                 </div>
                               )}
                             </div>
                           ))}
                           {photos.length > 4 && (
-                            <div className="w-24 h-24 rounded-lg flex-shrink-0 bg-white/5 flex items-center justify-center border-4 border-white/80">
+                            <div className="w-24 h-24 rounded-lg flex-shrink-0 flex items-center justify-center" style={{ backgroundColor: 'rgba(184,150,62,0.08)', border: '2px solid rgba(184,150,62,0.3)' }}>
                               <span className="text-sm font-bold" style={{ color: style.accent }}>+{photos.length - 4}</span>
                             </div>
                           )}
@@ -458,7 +456,8 @@ export default function Events() {
           <div className="flex justify-center mt-12">
             <button
               onClick={() => setShowCreateForm(true)}
-              className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-white/20 text-white/50 hover:bg-white/5 hover:border-white/30 transition font-medium"
+              className="flex items-center gap-2 px-6 py-3 rounded-xl transition font-medium"
+              style={{ border: '2px dashed rgba(184,150,62,0.4)', color: '#8A8A8A', backgroundColor: 'transparent' }}
             >
               <Plus className="w-5 h-5" />
               Agregar evento
@@ -476,13 +475,13 @@ export default function Events() {
         >
           <div
             className="inline-flex items-center gap-2 px-5 py-3 rounded-full"
-            style={{ backgroundColor: 'rgba(255,255,255,0.05)' }}
+            style={{ backgroundColor: 'rgba(184,150,62,0.08)', border: '1.5px solid rgba(184,150,62,0.2)' }}
           >
-            <Star className="w-4 h-4" style={{ color: '#6B9080' }} />
-            <span className="text-sm font-medium" style={{ color: 'rgba(255,255,255,0.5)' }}>
+            <Star className="w-4 h-4" style={{ color: '#B8963E' }} />
+            <span className="text-sm font-medium" style={{ color: '#4A4A4A' }}>
               Cada encuentro es una oportunidad para crear nuevos recuerdos
             </span>
-            <Star className="w-4 h-4" style={{ color: '#6B9080' }} />
+            <Star className="w-4 h-4" style={{ color: '#B8963E' }} />
           </div>
         </motion.div>
       </div>

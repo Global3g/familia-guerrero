@@ -98,18 +98,18 @@ export default function SearchBar() {
   return (
     <div ref={wrapperRef} className="relative max-w-md w-full">
       {/* Search input */}
-      <div className="flex items-center bg-white rounded-xl shadow-lg border-4 border-white/80/60 overflow-hidden px-3 py-2 gap-2 focus-within:ring-2 focus-within:ring-[#6B9080]/40 transition-all">
-        <Search className="w-4 h-4 text-white/40 flex-shrink-0" />
+      <div className="flex items-center rounded-xl overflow-hidden px-3 py-2 gap-2 focus-within:ring-2 focus-within:ring-[#B8963E]/40 transition-all" style={{ backgroundColor: 'rgba(255,255,255,0.1)', border: '1px solid rgba(184,150,62,0.15)' }}>
+        <Search className="w-4 h-4 text-white/50 flex-shrink-0" />
         <input
           type="text"
           value={query}
           onChange={(e) => handleSearch(e.target.value)}
           onFocus={() => { if (results.length > 0) setOpen(true) }}
           placeholder="Buscar familiar..."
-          className="flex-1 text-sm text-white placeholder-[#0F172A]/30 outline-none bg-transparent"
+          className="flex-1 text-sm text-white placeholder-white/40 outline-none bg-transparent"
         />
         {query && (
-          <button onClick={handleClear} className="p-0.5 rounded-full hover:bg-[#E2E8F0]/40 transition-colors">
+          <button onClick={handleClear} className="p-0.5 rounded-full hover:bg-white/10 transition-colors">
             <X className="w-3.5 h-3.5 text-white/50" />
           </button>
         )}
@@ -117,12 +117,12 @@ export default function SearchBar() {
 
       {/* Results dropdown */}
       {open && (
-        <div className="absolute top-full left-0 right-0 mt-1 bg-white rounded-xl shadow-lg border-4 border-white/80/60 overflow-hidden z-50 max-h-80 overflow-y-auto">
+        <div className="absolute top-full left-0 right-0 mt-1 rounded-xl shadow-lg overflow-hidden z-50 max-h-80 overflow-y-auto" style={{ backgroundColor: '#152238', border: '1px solid rgba(184,150,62,0.15)' }}>
           {results.map((person, i) => (
             <button
               key={i}
               onClick={() => handleSelect(person)}
-              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors text-left border-b border-white/80 last:border-b-0"
+              className="w-full flex items-center gap-3 px-4 py-3 hover:bg-white/5 transition-colors text-left border-b border-white/10 last:border-b-0"
             >
               {/* Photo or avatar */}
               {person.photo ? (

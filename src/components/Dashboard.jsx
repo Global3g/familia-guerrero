@@ -79,7 +79,7 @@ export default function Dashboard() {
   }
 
   return (
-    <section id="dashboard" className="pt-20 scroll-mt-24 mx-auto px-8 lg:px-16 pb-32">
+    <section id="dashboard" className="pt-20 scroll-mt-24 mx-auto px-8 lg:px-16 pb-32" style={{ backgroundColor: '#152238' }}>
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -107,7 +107,8 @@ export default function Dashboard() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.1 }}
-          className="glass-panel rounded-3xl p-10 lg:col-span-2 relative overflow-hidden group"
+          className="rounded-3xl p-10 lg:col-span-2 relative overflow-hidden group"
+          style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '2px solid rgba(184,150,62,0.3)' }}
         >
           <div className="absolute inset-0 opacity-[0.07] bg-[url('https://images.unsplash.com/photo-1502472584811-0a2f2feb8968?auto=format&fit=crop&q=80')] bg-cover bg-center mix-blend-overlay" />
           <div className="relative z-10 h-full flex flex-col justify-between min-h-[360px]">
@@ -135,10 +136,11 @@ export default function Dashboard() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.2 }}
-          className="glass-panel rounded-3xl p-8 flex flex-col justify-between min-h-[200px]"
+          className="rounded-3xl p-8 flex flex-col justify-between min-h-[200px]"
+          style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '2px solid rgba(184,150,62,0.3)' }}
         >
           <div className="flex justify-between items-start mb-6">
-            <div className="p-4 rounded-2xl bg-primary/5 border border-primary/10 text-primary">
+            <div className="p-4 rounded-2xl bg-accent/10 border border-accent/20 text-accent">
               <Users className="w-7 h-7" />
             </div>
           </div>
@@ -157,10 +159,11 @@ export default function Dashboard() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.3 }}
-          className="glass-panel rounded-3xl p-8 flex flex-col justify-between min-h-[200px]"
+          className="rounded-3xl p-8 flex flex-col justify-between min-h-[200px]"
+          style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '2px solid rgba(184,150,62,0.3)' }}
         >
           <div className="flex justify-between items-start mb-6">
-            <div className="p-4 rounded-2xl bg-accent/5 border border-accent/10 text-accent">
+            <div className="p-4 rounded-2xl bg-accent/10 border border-accent/20 text-accent">
               <TreePine className="w-7 h-7" />
             </div>
           </div>
@@ -180,7 +183,8 @@ export default function Dashboard() {
           whileInView={{ opacity: 1, y: 0 }}
           viewport={{ once: true }}
           transition={{ duration: 0.6, delay: 0.6 }}
-          className="glass-panel rounded-2xl p-6 lg:col-span-2 relative border-l-4 border-l-accent flex flex-col sm:flex-row items-center gap-6"
+          className="rounded-2xl p-6 lg:col-span-2 relative border-l-4 border-l-accent flex flex-col sm:flex-row items-center gap-6"
+          style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '2px solid rgba(184,150,62,0.3)', borderLeft: '4px solid var(--color-accent)' }}
         >
           <div className="w-16 h-16 rounded-xl bg-accent/20 border border-accent/30 flex items-center justify-center shrink-0">
             <Download className="w-8 h-8 text-accent" />

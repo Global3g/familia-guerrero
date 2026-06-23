@@ -52,6 +52,28 @@ const CITY_COORDS = {
   'atlanta': [33.7490, -84.3880],
   'orlando': [28.5383, -81.3792],
   'tucson': [32.2226, -110.9747],
+  'tucson, arizona': [32.2226, -110.9747],
+  'tucson arizona': [32.2226, -110.9747],
+  'rio rico': [31.4715, -111.0376],
+  'rio rico, arizona': [31.4715, -111.0376],
+  'rio rico arizona': [31.4715, -111.0376],
+  'chesterfield': [38.6631, -90.5771],
+  'chesterfield, missouri': [38.6631, -90.5771],
+  'chesterfield missouri': [38.6631, -90.5771],
+  'celaya': [20.5234, -100.8157],
+  'celaya, guanajuato': [20.5234, -100.8157],
+  'celaya guanajuato': [20.5234, -100.8157],
+  'lake forest': [33.6469, -117.6891],
+  'lake forest, ca': [33.6469, -117.6891],
+  'lake forest ca': [33.6469, -117.6891],
+  'lake forest, california': [33.6469, -117.6891],
+  'ontario': [34.0633, -117.6509],
+  'ontario, california': [34.0633, -117.6509],
+  'ontario california': [34.0633, -117.6509],
+  'ontario, ca': [34.0633, -117.6509],
+  'torreon': [25.5428, -103.4068],
+  'torreon, coahuila': [25.5428, -103.4068],
+  'torreon coahuila': [25.5428, -103.4068],
   'albuquerque': [35.0844, -106.6504],
   'sacramento': [38.5816, -121.4944],
   'oaxaca': [17.0732, -96.7266],
@@ -89,7 +111,7 @@ function createIcon(color, count) {
   });
 }
 
-const locationColors = ['#B8654A', '#6B9080', '#B8976A', '#0F172A'];
+const locationColors = ['#B8963E', '#6B9080', '#B8976A', '#152238'];
 
 function getColorForIndex(index) {
   return locationColors[index % locationColors.length];
@@ -172,7 +194,7 @@ export default function FamilyMap() {
     <section
       id="mapa"
       className="py-32 px-4"
-      style={{ backgroundColor: '#0F172A' }}
+      style={{ backgroundColor: '#152238' }}
     >
       <div className="max-w-[1600px] mx-auto">
         {/* Header */}
@@ -191,7 +213,7 @@ export default function FamilyMap() {
             className="decorative-line mx-auto mb-8"
           />
           <p className="elegant-caps text-white/60 mb-6">Donde estamos</p>
-          <h2 className="elegant-heading text-5xl sm:text-6xl md:text-7xl text-white mb-6" style={{ letterSpacing: '-0.02em' }}>
+          <h2 className="elegant-heading text-5xl sm:text-6xl md:text-7xl italic text-white mb-6" style={{ letterSpacing: '-0.02em' }}>
             Dónde Estamos
           </h2>
           <div className="flex items-center justify-center gap-3 mb-8">
@@ -228,7 +250,7 @@ export default function FamilyMap() {
             </div>
             <div
               className="rounded-2xl p-5 text-center shadow-sm"
-              style={{ backgroundColor: '#B8654A', color: '#fff' }}
+              style={{ backgroundColor: '#B8963E', color: '#fff' }}
             >
               <Users className="mx-auto mb-2" size={28} />
               <p className="text-3xl font-bold">{totalPeople}</p>
@@ -271,12 +293,8 @@ export default function FamilyMap() {
                 {markers.map((m) => (
                   <Marker key={m.name} position={m.coords} icon={createIcon(m.color, m.count)}>
                     <Popup>
-                      <div style={{ minWidth: '150px' }}>
-                        <p style={{ fontWeight: 'bold', fontSize: '14px', color: '#FFFFFF', marginBottom: '4px' }}>{m.name}</p>
-                        <p style={{ fontSize: '12px', color: '#7A6B5D', marginBottom: '6px' }}>{m.count} {m.count === 1 ? 'familiar' : 'familiares'}</p>
-                        {m.people.map((p, i) => (
-                          <p key={i} style={{ fontSize: '11px', color: '#FFFFFF', padding: '1px 0' }}>• {p.name}</p>
-                        ))}
+                      <div>
+                        <p style={{ fontWeight: 'bold', fontSize: '14px', color: '#1C1C1C' }}>{m.name}</p>
                       </div>
                     </Popup>
                   </Marker>
@@ -292,7 +310,7 @@ export default function FamilyMap() {
             <div
               className="inline-block w-10 h-10 border-4 rounded-full animate-spin"
               style={{
-                borderColor: '#B8654A',
+                borderColor: '#B8963E',
                 borderTopColor: 'transparent',
               }}
             />

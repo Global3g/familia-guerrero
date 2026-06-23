@@ -8,7 +8,7 @@ import { Heart, Lock, Mail, Loader2, UserPlus, LogIn, User, Phone, MapPin, X, Us
 const inputStyle = "w-full pl-10 pr-4 py-2.5 rounded-xl border-2 text-sm focus:outline-none transition"
 const labelStyle = "block text-xs font-bold uppercase tracking-wide mb-1.5"
 
-function InputField({ icon: Icon, label, color = '#B8654A', ...props }) {
+function InputField({ icon: Icon, label, color = '#B8963E', ...props }) {
   return (
     <div>
       <label className={labelStyle} style={{ color }}>{label}</label>
@@ -105,19 +105,19 @@ export default function Login() {
 
   return (
     <div className="min-h-screen flex items-center justify-center px-4 relative" style={{ background: 'linear-gradient(135deg, #F8FAFC 0%, #F8FAFC 50%, #F1F5F9 100%)' }}>
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 25% 25%, #B8654A 1px, transparent 1px), radial-gradient(circle at 75% 75%, #B8976A 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
+      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 25% 25%, #B8963E 1px, transparent 1px), radial-gradient(circle at 75% 75%, #B8976A 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
       <div className="w-full max-w-sm">
         {/* Header */}
         <div className="text-center mb-8">
-          <div className="w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg" style={{ background: 'linear-gradient(135deg, #B8654A, #B8976A)' }}>
+          <div className="w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg" style={{ background: 'linear-gradient(135deg, #B8963E, #B8976A)' }}>
             <img src="/logo.svg" alt="Familia Guerrero" className="w-14 h-14" />
           </div>
-          <h1 className="text-3xl font-serif font-bold" style={{ color: '#FFFFFF' }}>Familia Guerrero</h1>
+          <h1 className="text-3xl font-serif font-bold italic" style={{ color: '#152238' }}>Familia Guerrero</h1>
           <p className="text-sm mt-1" style={{ color: '#64748B' }}>Preservando nuestro legado</p>
         </div>
 
         {/* Login Form */}
-        <div className="rounded-2xl shadow-xl p-6" style={{ backgroundColor: '#0F172A', border: '1px solid #E2E8F0' }}>
+        <div className="rounded-2xl shadow-xl p-6" style={{ backgroundColor: '#152238', border: '1px solid #E2E8F0' }}>
           <h2 className="text-lg font-bold text-center mb-5" style={{ color: '#FFFFFF' }}>Iniciar sesion</h2>
 
           <form onSubmit={handleLogin} className="space-y-4">
@@ -128,7 +128,7 @@ export default function Login() {
               <p className="text-xs text-center py-2 px-3 rounded-lg" style={{ backgroundColor: '#FEE2E2', color: '#DC2626' }}>{error}</p>
             )}
 
-            <button type="submit" disabled={loading} className="w-full py-3 rounded-xl font-bold text-white text-sm flex items-center justify-center gap-2 transition hover:opacity-90" style={{ backgroundColor: '#B8654A' }}>
+            <button type="submit" disabled={loading} className="w-full py-3 rounded-xl font-bold text-white text-sm flex items-center justify-center gap-2 transition hover:opacity-90" style={{ backgroundColor: '#B8963E' }}>
               {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><LogIn className="w-4 h-4" /> Entrar</>}
             </button>
           </form>
@@ -186,23 +186,23 @@ export default function Login() {
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               className="w-full max-w-md rounded-2xl shadow-2xl overflow-hidden"
-              style={{ backgroundColor: '#0F172A' }}
+              style={{ backgroundColor: '#152238' }}
             >
               {/* Modal Header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b" style={{ borderColor: 'rgba(255,255,255,0.8)', background: 'linear-gradient(135deg, #B8654A15, #B8976A10)' }}>
+              <div className="flex items-center justify-between px-6 py-4 border-b" style={{ borderColor: 'rgba(255,255,255,0.8)', background: 'linear-gradient(135deg, #B8963E15, #B8976A10)' }}>
                 <div>
                   <h2 className="text-lg font-serif font-bold" style={{ color: '#FFFFFF' }}>Crear cuenta</h2>
                   <p className="text-[11px]" style={{ color: '#64748B' }}>Paso {regStep} de 2</p>
                 </div>
-                <button onClick={() => setShowRegister(false)} className="p-1.5 rounded-full hover:bg-[#0F172A]/10 transition">
+                <button onClick={() => setShowRegister(false)} className="p-1.5 rounded-full hover:bg-[#152238]/10 transition">
                   <X className="w-5 h-5" style={{ color: '#FFFFFF' }} />
                 </button>
               </div>
 
               {/* Progress */}
               <div className="flex gap-2 px-6 pt-4">
-                <div className="flex-1 h-1 rounded-full" style={{ backgroundColor: '#B8654A' }} />
-                <div className="flex-1 h-1 rounded-full" style={{ backgroundColor: regStep >= 2 ? '#B8654A' : '#E2E8F0' }} />
+                <div className="flex-1 h-1 rounded-full" style={{ backgroundColor: '#B8963E' }} />
+                <div className="flex-1 h-1 rounded-full" style={{ backgroundColor: regStep >= 2 ? '#B8963E' : '#E2E8F0' }} />
               </div>
 
               {/* Modal Body */}
@@ -247,8 +247,8 @@ export default function Login() {
                 {regStep === 2 && (
                   <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-4">
                     <div className="text-center mb-2">
-                      <div className="w-14 h-14 rounded-full mx-auto mb-2 flex items-center justify-center" style={{ backgroundColor: '#B8654A15' }}>
-                        <Lock className="w-7 h-7" style={{ color: '#B8654A' }} />
+                      <div className="w-14 h-14 rounded-full mx-auto mb-2 flex items-center justify-center" style={{ backgroundColor: '#B8963E15' }}>
+                        <Lock className="w-7 h-7" style={{ color: '#B8963E' }} />
                       </div>
                       <p className="text-sm font-medium" style={{ color: '#FFFFFF' }}>Datos de acceso</p>
                       <p className="text-[11px]" style={{ color: '#64748B' }}>Para iniciar sesion</p>
@@ -289,7 +289,7 @@ export default function Login() {
                   onClick={handleRegister}
                   disabled={regLoading}
                   className="flex-1 py-2.5 rounded-xl font-bold text-white text-sm flex items-center justify-center gap-2 transition hover:opacity-90"
-                  style={{ backgroundColor: regStep === 1 ? '#6B9080' : '#B8654A' }}
+                  style={{ backgroundColor: regStep === 1 ? '#6B9080' : '#B8963E' }}
                 >
                   {regLoading ? (
                     <Loader2 className="w-5 h-5 animate-spin" />

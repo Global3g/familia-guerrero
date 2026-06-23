@@ -36,7 +36,7 @@ const cardVariant = {
 
 /* ── Card tint palette ── */
 const cardTints = [
-  { bg: '#FFFFFF', border: '#E2E8F0', accent: '#0F172A' },
+  { bg: '#FFFFFF', border: '#E2E8F0', accent: '#152238' },
 ]
 
 const emptyForm = { phrase: '', author: '', authorPhoto: '', context: '' }
@@ -119,7 +119,7 @@ export default function FamilyQuotes() {
     <section
       id="frases"
       className="relative py-24 overflow-hidden"
-      style={{ backgroundColor: '#0F172A' }}
+      style={{ backgroundColor: '#152238' }}
     >
       {/* Background blurs */}
       <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-white opacity-[0.02] blur-[100px] pointer-events-none" />
@@ -136,10 +136,10 @@ export default function FamilyQuotes() {
           className="text-center mb-16"
         >
           <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Lo que guardamos en el corazon</p>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold italic text-white mb-5">
             Recuerdos de los Abuelos
           </h2>
-          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
+          <div className="w-8 h-[1px] bg-[#B8963E] mx-auto mb-5" />
           <p className="text-base text-white/50 max-w-md mx-auto leading-relaxed">
             Momentos y recuerdos que la familia atesora de los abuelos Guerrero
           </p>
@@ -157,7 +157,7 @@ export default function FamilyQuotes() {
           <button
             onClick={openAdd}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full font-semibold text-white shadow-lg transition-all duration-300 hover:shadow-xl hover:scale-105"
-            style={{ backgroundColor: '#B8654A' }}
+            style={{ backgroundColor: '#B8963E' }}
           >
             <Plus size={20} />
             Agregar recuerdo
@@ -167,7 +167,7 @@ export default function FamilyQuotes() {
         {/* ── Loading ── */}
         {loading && (
           <div className="flex justify-center py-20">
-            <Loader2 className="w-8 h-8 animate-spin text-[#B8654A]" />
+            <Loader2 className="w-8 h-8 animate-spin text-[#B8963E]" />
           </div>
         )}
 
@@ -204,9 +204,12 @@ export default function FamilyQuotes() {
                     animate="visible"
                     exit="exit"
                     layout
-                    className="group relative rounded-2xl p-6 border-4 border-white/80 bg-white/5 transition-shadow duration-300 hover:shadow-xl cursor-default"
+                    className="group relative rounded-2xl p-6 transition-shadow duration-300 hover:shadow-xl cursor-default"
+                    data-card-style="true"
                     style={{
-                      borderLeft: '4px solid rgba(255,255,255,0.2)',
+                      backgroundColor: 'rgba(255,255,255,0.05)',
+                      border: '2px solid rgba(184,150,62,0.3)',
+                      borderLeft: '4px solid rgba(184,150,62,0.5)',
                     }}
                   >
                     {/* Big decorative quote mark */}
@@ -270,7 +273,7 @@ export default function FamilyQuotes() {
                       <button
                         onClick={() => setDeleteTarget(q)}
                         className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-red-500/20 transition-colors"
-                        style={{ color: '#B8654A' }}
+                        style={{ color: '#B8963E' }}
                         title="Eliminar"
                       >
                         <Trash2 size={13} />
@@ -300,7 +303,7 @@ export default function FamilyQuotes() {
               value={form.phrase}
               onChange={(e) => onFieldChange('phrase', e.target.value)}
               rows={3}
-              className="w-full rounded-xl border-4 border-white/80 bg-white px-4 py-3 text-white placeholder-[#C4A882] focus:outline-none focus:ring-2 focus:ring-[#B8654A]/30 focus:border-[#B8654A] transition-all resize-none"
+              className="w-full rounded-xl border border-[#B8963E]/30 bg-[#F5F0E8] px-4 py-3 text-[#1C1C1C] placeholder-[#C4A882] focus:outline-none focus:ring-2 focus:ring-[#B8963E]/30 focus:border-[#B8963E] transition-all resize-none"
               placeholder="Escribe tu recuerdo de los abuelos..."
               style={{ fontFamily: "'Playfair Display', serif", fontStyle: 'italic' }}
             />
@@ -315,7 +318,7 @@ export default function FamilyQuotes() {
               type="text"
               value={form.author}
               onChange={(e) => onFieldChange('author', e.target.value)}
-              className="w-full rounded-xl border-4 border-white/80 bg-white px-4 py-3 text-white placeholder-[#C4A882] focus:outline-none focus:ring-2 focus:ring-[#B8654A]/30 focus:border-[#B8654A] transition-all"
+              className="w-full rounded-xl border border-[#B8963E]/30 bg-[#F5F0E8] px-4 py-3 text-[#1C1C1C] placeholder-[#C4A882] focus:outline-none focus:ring-2 focus:ring-[#B8963E]/30 focus:border-[#B8963E] transition-all"
               placeholder="Tu nombre"
             />
           </div>
@@ -329,7 +332,7 @@ export default function FamilyQuotes() {
               type="text"
               value={form.authorPhoto}
               onChange={(e) => onFieldChange('authorPhoto', e.target.value)}
-              className="w-full rounded-xl border-4 border-white/80 bg-white px-4 py-3 text-white placeholder-[#C4A882] focus:outline-none focus:ring-2 focus:ring-[#B8654A]/30 focus:border-[#B8654A] transition-all"
+              className="w-full rounded-xl border border-[#B8963E]/30 bg-[#F5F0E8] px-4 py-3 text-[#1C1C1C] placeholder-[#C4A882] focus:outline-none focus:ring-2 focus:ring-[#B8963E]/30 focus:border-[#B8963E] transition-all"
               placeholder="https://..."
             />
           </div>
@@ -343,7 +346,7 @@ export default function FamilyQuotes() {
               type="text"
               value={form.context}
               onChange={(e) => onFieldChange('context', e.target.value)}
-              className="w-full rounded-xl border-4 border-white/80 bg-white px-4 py-3 text-white placeholder-[#C4A882] focus:outline-none focus:ring-2 focus:ring-[#B8654A]/30 focus:border-[#B8654A] transition-all"
+              className="w-full rounded-xl border border-[#B8963E]/30 bg-[#F5F0E8] px-4 py-3 text-[#1C1C1C] placeholder-[#C4A882] focus:outline-none focus:ring-2 focus:ring-[#B8963E]/30 focus:border-[#B8963E] transition-all"
               placeholder="Cuando fue, donde, con quien..."
             />
           </div>
@@ -391,7 +394,7 @@ export default function FamilyQuotes() {
               >
                 &ldquo;{deleteTarget.phrase}&rdquo;
               </p>
-              <p className="text-sm text-[#B8654A] mt-2 font-semibold">
+              <p className="text-sm text-[#B8963E] mt-2 font-semibold">
                 &mdash; {deleteTarget.author}
               </p>
             </div>
@@ -407,7 +410,7 @@ export default function FamilyQuotes() {
               onClick={handleDelete}
               disabled={deleting}
               className="flex-1 flex items-center justify-center gap-2 py-3 rounded-xl font-semibold text-white transition-all duration-300 disabled:opacity-50 hover:shadow-lg"
-              style={{ backgroundColor: '#B8654A' }}
+              style={{ backgroundColor: '#B8963E' }}
             >
               {deleting ? (
                 <>

@@ -8,7 +8,7 @@ const STORAGE_KEY = 'familia-guerrero-onboarding-dismissed'
 
 const steps = [
   { icon: Users, label: 'Agrega a los hijos de los abuelos', color: '#6B9080' },
-  { icon: Camera, label: 'Sube fotos de cada familiar', color: '#B8654A' },
+  { icon: Camera, label: 'Sube fotos de cada familiar', color: '#B8963E' },
   { icon: Heart, label: 'Agrega esposos y datos de boda', color: '#B8976A' },
   { icon: MapPin, label: 'Completa las ubicaciones', color: '#FFFFFF' },
 ]

@@ -1,29 +1,30 @@
 @import "tailwindcss";
 
 @theme {
-  --font-serif: 'Playfair Display', Georgia, serif;
-  --font-sans: 'Inter', system-ui, sans-serif;
-  --color-cream: #0F172A;
-  --color-ivory: #0F172A;
+  --font-serif: 'Bodoni Moda', Georgia, serif;
+  --font-sans: 'Jost', system-ui, sans-serif;
+  --color-cream: #FFFDF7;
+  --color-ivory: #FFFDF7;
   --color-warm-50: #FFFFFF;
-  --color-warm-100: #F8FAFC;
-  --color-warm-200: #F1F5F9;
-  --color-warm-300: #CBD5E1;
-  --color-terracotta: #B8654A;
-  --color-terracotta-light: #C8846A;
-  --color-sage: #6B9080;
-  --color-sage-light: #9BBAA8;
-  --color-sage-dark: #5A8A78;
-  --color-gold: #B8976A;
-  --color-gold-light: #C8A87A;
-  --color-navy: #0F172A;
-  --color-navy-light: #334155;
-  --color-brown: #0F172A;
-  --color-brown-light: #64748B;
-  --color-primary: #B8654A;
-  --color-secondary: #6B9080;
-  --color-accent: #B8976A;
-  --color-base: #0F172A;
+  --color-warm-100: #F5F0E8;
+  --color-warm-200: #E8E0D4;
+  --color-warm-300: #C8BDB0;
+  --color-terracotta: #7A2841;
+  --color-terracotta-light: #9E3D58;
+  --color-sage: #5B7E6B;
+  --color-sage-light: #7DA08C;
+  --color-sage-dark: #4A6B59;
+  --color-gold: #B8963E;
+  --color-gold-light: #D4B76A;
+  --color-navy: #152238;
+  --color-navy-light: #1E3050;
+  --color-brown: #1C1C1C;
+  --color-brown-light: #8A8A8A;
+  --color-primary: #152238;
+  --color-secondary: #5B7E6B;
+  --color-accent: #B8963E;
+  --color-base: #152238;
+  --color-wine: #7A2841;
 }
 
 html {
@@ -33,8 +34,9 @@ html {
 body {
   margin: 0;
   font-family: var(--font-sans);
-  background-color: var(--color-cream);
+  background-color: #152238;
   color: #FFFFFF;
+  font-weight: 300;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -42,6 +44,7 @@ body {
 #root {
   min-height: 100vh;
 }
+
 
 .font-serif {
   font-family: var(--font-serif);
@@ -121,12 +124,12 @@ img[loading] {
   box-shadow: 0 8px 25px rgba(0,0,0,0.08);
 }
 
-/* Glassmorphism V2 Styles - Elegant Edition */
+/* Elegant Panel Styles - Belle Chapters Edition */
 .glass-panel {
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
   backdrop-filter: blur(20px) saturate(180%);
   -webkit-backdrop-filter: blur(20px) saturate(180%);
-  border: 1px solid rgba(184, 151, 106, 0.08);
+  border: 1px solid rgba(184, 150, 62, 0.08);
   box-shadow:
     0 8px 32px -4px rgba(0, 0, 0, 0.25),
     inset 0 1px 1px rgba(255, 255, 255, 0.05);
@@ -134,10 +137,10 @@ img[loading] {
 }
 
 .glass-panel:hover {
-  border-color: rgba(184, 151, 106, 0.2);
+  border-color: rgba(184, 150, 62, 0.2);
   box-shadow:
     0 12px 48px -8px rgba(0, 0, 0, 0.3),
-    0 0 40px rgba(184, 151, 106, 0.08),
+    0 0 40px rgba(184, 150, 62, 0.08),
     inset 0 1px 1px rgba(255, 255, 255, 0.08);
   transform: translateY(-3px);
 }
@@ -146,20 +149,19 @@ img[loading] {
   background: linear-gradient(145deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
-  border: 1px solid rgba(184, 151, 106, 0.06);
+  border: 1px solid rgba(184, 150, 62, 0.06);
   box-shadow:
     0 4px 20px rgba(0, 0, 0, 0.15),
     inset 0 1px 1px rgba(255, 255, 255, 0.03);
 }
 
-/* Ambient Orbs */
+/* Ambient Orbs - subtle for light theme */
 .ambient-orb {
   position: fixed;
   border-radius: 50%;
   filter: blur(120px);
   z-index: -1;
-  opacity: 0.4;
-  animation: pulse-slow 8s infinite alternate;
+  opacity: 0.08;
   pointer-events: none;
 }
 
@@ -168,7 +170,7 @@ img[loading] {
   left: -10%;
   width: 50vw;
   height: 50vw;
-  background: rgba(184, 101, 74, 0.2);
+  background: rgba(184, 150, 62, 0.3);
 }
 
 .orb-2 {
@@ -176,7 +178,7 @@ img[loading] {
   right: -10%;
   width: 60vw;
   height: 60vw;
-  background: rgba(107, 144, 128, 0.15);
+  background: rgba(91, 126, 107, 0.2);
 }
 
 .orb-3 {
@@ -184,7 +186,7 @@ img[loading] {
   left: 50%;
   width: 40vw;
   height: 40vw;
-  background: rgba(184, 151, 106, 0.1);
+  background: rgba(122, 40, 65, 0.1);
   transform: translate(-50%, -50%);
 }
 
@@ -199,7 +201,7 @@ img[loading] {
 
 /* Text Gradient Gold */
 .text-gradient-gold {
-  background: linear-gradient(135deg, #ffffff 0%, #E8DDD0 25%, #B8976A 50%, #D4AF37 75%, #B8976A 100%);
+  background: linear-gradient(135deg, #1C1C1C 0%, #152238 25%, #B8963E 50%, #D4B76A 75%, #B8963E 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

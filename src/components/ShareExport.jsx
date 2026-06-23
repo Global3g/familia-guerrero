@@ -17,7 +17,7 @@ function QRCode({ url, size = 150 }) {
     <div style={{ width: size, height: size, padding: 8, background: 'rgba(255,255,255,0.05)', borderRadius: 12 }}>
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(11, 1fr)', gap: 1, width: '100%', height: '100%' }}>
         {cells.map((filled, i) => (
-          <div key={i} style={{ backgroundColor: filled ? '#0F172A' : 'transparent', borderRadius: 1 }} />
+          <div key={i} style={{ backgroundColor: filled ? '#152238' : 'transparent', borderRadius: 1 }} />
         ))}
       </div>
     </div>
@@ -61,7 +61,7 @@ function ShareExport() {
       description: 'Comparte el formulario para que la familia agregue sus datos al arbol.',
       action: () => copyToClipboard(FORMULARIO_URL, 'formulario'),
       buttonLabel: 'Copiar Link',
-      color: '#B8654A',
+      color: '#B8963E',
     },
     {
       id: 'pagina',
@@ -112,6 +112,7 @@ function ShareExport() {
         padding: '3rem 1rem',
         maxWidth: '1600px',
         margin: '0 auto',
+        backgroundColor: '#F5F0E8',
       }}
     >
       {/* Title */}
@@ -124,8 +125,10 @@ function ShareExport() {
           textAlign: 'center',
           fontSize: '2rem',
           fontWeight: '700',
-          color: '#FFFFFF',
+          color: '#1C1C1C',
           marginBottom: '0.5rem',
+          fontFamily: "'Bodoni Moda', serif",
+          fontStyle: 'italic',
         }}
       >
         Comparte con la Familia
@@ -137,7 +140,7 @@ function ShareExport() {
         transition={{ duration: 0.5, delay: 0.15 }}
         style={{
           textAlign: 'center',
-          color: 'rgba(255,255,255,0.5)',
+          color: '#8A8A8A',
           marginBottom: '2.5rem',
           fontSize: '1.05rem',
         }}
@@ -167,11 +170,11 @@ function ShareExport() {
               variants={cardVariants}
               whileHover={{ y: -6, boxShadow: '0 12px 32px rgba(0,0,0,0.12)' }}
               style={{
-                background: 'rgba(255,255,255,0.05)',
+                background: '#FFFDF7',
                 borderRadius: '16px',
                 padding: '1.75rem',
-                boxShadow: '0 4px 16px rgba(0,0,0,0.06)',
-                border: '4px solid rgba(255,255,255,0.8)',
+                boxShadow: '0 4px 16px rgba(0,0,0,0.04)',
+                border: '2px solid rgba(184,150,62,0.3)',
                 display: 'flex',
                 flexDirection: 'column',
                 gap: '0.75rem',
@@ -199,7 +202,7 @@ function ShareExport() {
                 style={{
                   fontSize: '1.1rem',
                   fontWeight: '600',
-                  color: '#FFFFFF',
+                  color: '#1C1C1C',
                   margin: 0,
                 }}
               >
@@ -208,7 +211,7 @@ function ShareExport() {
               <p
                 style={{
                   fontSize: '0.9rem',
-                  color: 'rgba(255,255,255,0.5)',
+                  color: '#8A8A8A',
                   lineHeight: '1.5',
                   margin: 0,
                   flex: 1,
@@ -269,7 +272,7 @@ function ShareExport() {
             bottom: '2rem',
             left: '50%',
             transform: 'translateX(-50%)',
-            background: '#0F172A',
+            background: '#152238',
             color: '#FFF',
             padding: '0.75rem 1.5rem',
             borderRadius: '12px',

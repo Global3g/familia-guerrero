@@ -12,8 +12,8 @@ const typeConfig = {
     label: 'Nacimiento',
   },
   boda: {
-    color: '#B8654A',
-    gradient: 'from-[#B8654A] to-[#a4553a]',
+    color: '#B8963E',
+    gradient: 'from-[#B8963E] to-[#a4553a]',
     icon: Heart,
     label: 'Boda',
   },
@@ -25,7 +25,7 @@ const typeConfig = {
   },
   reunion: {
     color: '#FFFFFF',
-    gradient: 'from-[#0F172A] to-[#1a252f]',
+    gradient: 'from-[#152238] to-[#1a252f]',
     icon: Users,
     label: 'Reunion',
   },
@@ -39,7 +39,7 @@ const typeConfig = {
 
 const defaultConfig = {
   color: '#FFFFFF',
-  gradient: 'from-[#0F172A] to-[#3e2a25]',
+  gradient: 'from-[#152238] to-[#3e2a25]',
   icon: Star,
   label: 'Evento',
 };
@@ -210,7 +210,7 @@ export default function HorizontalTimeline() {
   };
 
   return (
-    <section className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#0F172A' }}>
+    <section className="py-20 px-4 sm:px-6 lg:px-8" style={{ backgroundColor: '#F5F0E8' }}>
       <div className="max-w-[1600px] mx-auto">
         {/* Section title */}
         <motion.div
@@ -220,12 +220,12 @@ export default function HorizontalTimeline() {
           transition={{ duration: 0.6 }}
           className="text-center mb-12"
         >
-          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Linea del tiempo</p>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
+          <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] mb-4" style={{ color: 'rgba(28,28,28,0.45)' }}>Linea del tiempo</p>
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold italic mb-5" style={{ color: '#1C1C1C' }}>
             Momentos Clave
           </h2>
-          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
-          <p className="text-base text-white/50 max-w-md mx-auto leading-relaxed">
+          <div className="w-8 h-[1px] bg-[#B8963E] mx-auto mb-5" />
+          <p className="text-base max-w-md mx-auto leading-relaxed" style={{ color: 'rgba(28,28,28,0.55)' }}>
             Un recorrido por los eventos mas importantes de nuestra familia.
           </p>
         </motion.div>
@@ -236,7 +236,8 @@ export default function HorizontalTimeline() {
             {[...Array(4)].map((_, i) => (
               <div
                 key={i}
-                className="flex-shrink-0 w-[280px] h-[320px] rounded-2xl bg-white/5 animate-pulse"
+                className="flex-shrink-0 w-[280px] h-[320px] rounded-2xl animate-pulse"
+                style={{ backgroundColor: 'rgba(184,150,62,0.08)' }}
               />
             ))}
           </div>
@@ -249,7 +250,8 @@ export default function HorizontalTimeline() {
             {canScrollLeft && (
               <button
                 onClick={() => scroll('left')}
-                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-white/10 shadow-lg border-4 border-white/80 flex items-center justify-center text-white/50 hover:bg-white/20 hover:shadow-xl transition -ml-2 backdrop-blur-sm"
+                className="absolute left-0 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full shadow-lg flex items-center justify-center transition -ml-2 backdrop-blur-sm"
+                style={{ backgroundColor: '#FFFDF7', border: '2px solid rgba(184,150,62,0.3)', color: '#B8963E' }}
               >
                 <ChevronLeft size={22} />
               </button>
@@ -259,7 +261,8 @@ export default function HorizontalTimeline() {
             {canScrollRight && (
               <button
                 onClick={() => scroll('right')}
-                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full bg-white/10 shadow-lg border-4 border-white/80 flex items-center justify-center text-white/50 hover:bg-white/20 hover:shadow-xl transition -mr-2 backdrop-blur-sm"
+                className="absolute right-0 top-1/2 -translate-y-1/2 z-10 w-11 h-11 rounded-full shadow-lg flex items-center justify-center transition -mr-2 backdrop-blur-sm"
+                style={{ backgroundColor: '#FFFDF7', border: '2px solid rgba(184,150,62,0.3)', color: '#B8963E' }}
               >
                 <ChevronRight size={22} />
               </button>
@@ -291,8 +294,8 @@ export default function HorizontalTimeline() {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true, margin: '-40px' }}
                     transition={{ duration: 0.4, delay: Math.min(index * 0.05, 0.3) }}
-                    className="flex-shrink-0 w-[280px] h-[320px] rounded-2xl shadow-lg overflow-hidden cursor-default hover:shadow-xl transition-shadow duration-300 bg-white/5 border-4 border-white/80"
-                    style={{ scrollSnapAlign: 'start' }}
+                    className="flex-shrink-0 w-[280px] h-[320px] rounded-2xl shadow-lg overflow-hidden cursor-default hover:shadow-xl transition-shadow duration-300"
+                    style={{ scrollSnapAlign: 'start', backgroundColor: '#FFFDF7', border: '2px solid rgba(184,150,62,0.3)' }}
                   >
                     {/* Top half: gradient or photo */}
                     <div
@@ -329,26 +332,27 @@ export default function HorizontalTimeline() {
                     <div className="h-[180px] bg-transparent p-5 flex flex-col">
                       {/* Year */}
                       <span
-                        className="text-3xl font-serif font-bold leading-none mb-1 text-white"
+                        className="text-3xl font-serif font-bold leading-none mb-1"
+                        style={{ color: '#B8963E' }}
                       >
                         {event.year}
                       </span>
 
                       {/* Date */}
                       {event.date && (
-                        <p className="text-[11px] text-white/50 tracking-wide uppercase mb-2">
+                        <p className="text-[11px] tracking-wide uppercase mb-2" style={{ color: 'rgba(28,28,28,0.45)' }}>
                           {formatDate(event.date)}
                         </p>
                       )}
 
                       {/* Title */}
-                      <h3 className="font-serif text-base font-bold text-white leading-snug line-clamp-2 mb-1">
+                      <h3 className="font-serif text-base font-bold leading-snug line-clamp-2 mb-1" style={{ color: '#1C1C1C' }}>
                         {event.title}
                       </h3>
 
                       {/* Description */}
                       {event.description && (
-                        <p className="text-xs text-white/50 leading-relaxed line-clamp-2 mt-auto">
+                        <p className="text-xs leading-relaxed line-clamp-2 mt-auto" style={{ color: 'rgba(28,28,28,0.55)' }}>
                           {event.description}
                         </p>
                       )}
@@ -363,10 +367,10 @@ export default function HorizontalTimeline() {
         {/* Empty state */}
         {!loading && events.length === 0 && (
           <div className="text-center py-16">
-            <div className="w-16 h-16 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-4">
-              <Star className="w-8 h-8 text-white/30" />
+            <div className="w-16 h-16 rounded-full flex items-center justify-center mx-auto mb-4" style={{ backgroundColor: 'rgba(184,150,62,0.1)' }}>
+              <Star className="w-8 h-8" style={{ color: 'rgba(184,150,62,0.5)' }} />
             </div>
-            <p className="text-lg font-serif font-bold text-white/60">
+            <p className="text-lg font-serif font-bold" style={{ color: 'rgba(28,28,28,0.5)' }}>
               Sin momentos clave todavia
             </p>
           </div>

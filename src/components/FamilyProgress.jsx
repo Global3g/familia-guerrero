@@ -103,7 +103,7 @@ export default function FamilyProgress() {
           animate={{ width: `${data.percentage}%` }}
           transition={{ duration: 1.2, ease: 'easeOut' }}
           className="h-full rounded-full"
-          style={{ backgroundColor: '#0F172A' }}
+          style={{ backgroundColor: '#152238' }}
         />
       </div>
 

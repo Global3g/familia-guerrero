@@ -27,7 +27,7 @@ function ProfileCard({ member }) {
       className="rounded-2xl shadow-lg overflow-hidden bg-white/5 border-4 border-white/80"
     >
       {/* Photo placeholder */}
-      <div className="relative h-56 bg-gradient-to-br from-[#B8654A]/20 via-[#6B9080]/15 to-[#0F172A]/10 flex items-center justify-center">
+      <div className="relative h-56 bg-gradient-to-br from-[#B8963E]/20 via-[#6B9080]/15 to-[#152238]/10 flex items-center justify-center">
         {member.photo ? (
           <img
             src={member.photo}
@@ -41,7 +41,7 @@ function ProfileCard({ member }) {
           </div>
         )}
         {/* Overlay name badge */}
-        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#0F172A]/70 to-transparent pt-10 pb-4 px-5">
+        <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-[#152238]/70 to-transparent pt-10 pb-4 px-5">
           <h3 className="text-xl font-serif font-bold text-white leading-tight">
             {member.fullName}
           </h3>
@@ -58,7 +58,7 @@ function ProfileCard({ member }) {
         {/* Role */}
         {member.role && (
           <div className="flex items-center gap-2 text-white">
-            <User size={16} className="text-[#B8654A] flex-shrink-0" />
+            <User size={16} className="text-[#B8963E] flex-shrink-0" />
             <span className="text-sm font-medium">{member.role}</span>
           </div>
         )}
@@ -66,7 +66,7 @@ function ProfileCard({ member }) {
         {/* Spouse */}
         {member.spouse && (
           <div className="flex items-center gap-2 text-white">
-            <Heart size={16} className="text-[#B8654A] flex-shrink-0" />
+            <Heart size={16} className="text-[#B8963E] flex-shrink-0" />
             <span className="text-sm">
               Casado(a) con <span className="font-semibold">{member.spouse}</span>
             </span>
@@ -115,7 +115,7 @@ export default function FamilyProfiles() {
           <h2 className="font-serif text-4xl sm:text-5xl font-bold text-white tracking-tight">
             Nuestra Familia
           </h2>
-          <div className="mt-4 mx-auto w-24 h-1 rounded-full bg-gradient-to-r from-[#B8654A] to-[#6B9080]" />
+          <div className="mt-4 mx-auto w-24 h-1 rounded-full bg-gradient-to-r from-[#B8963E] to-[#6B9080]" />
         </motion.div>
 
         {/* Profiles grid */}

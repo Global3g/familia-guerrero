@@ -3,7 +3,7 @@ import { Heart } from "lucide-react";
 export default function Footer() {
   return (
     <footer
-      className="border-t border-white/5 bg-[#0F172A] relative z-20 py-12"
+      className="border-t border-white/5 bg-[#152238] relative z-20 py-12"
       aria-label="Pie de pagina"
     >
       <div className="max-w-[1600px] mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-6">

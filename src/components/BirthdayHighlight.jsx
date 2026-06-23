@@ -183,7 +183,7 @@ function BirthdayHighlight() {
 
   if (loading) {
     return (
-      <section id="cumpleanos" className="py-16" style={{ backgroundColor: '#0F172A' }}>
+      <section id="cumpleanos" className="py-16" style={{ backgroundColor: '#152238' }}>
         <div className="max-w-[1600px] mx-auto px-4 text-center">
           <div className="animate-pulse flex flex-col items-center gap-4">
             <div className="h-10 w-64 bg-white/10 rounded-lg" />
@@ -195,7 +195,7 @@ function BirthdayHighlight() {
   }
 
   return (
-    <section id="cumpleanos" className="py-32" style={{ backgroundColor: '#0F172A' }}>
+    <section id="cumpleanos" className="py-32" style={{ backgroundColor: '#152238' }}>
       <div className="max-w-[1600px] mx-auto px-4">
         {/* Title */}
         <motion.div
@@ -213,7 +213,7 @@ function BirthdayHighlight() {
             className="decorative-line mx-auto mb-8"
           />
           <p className="elegant-caps text-white/60 mb-6">Celebraciones</p>
-          <h2 className="elegant-heading text-5xl sm:text-6xl md:text-7xl text-white mb-6" style={{ letterSpacing: '-0.02em' }}>
+          <h2 className="elegant-heading text-5xl sm:text-6xl md:text-7xl italic text-white mb-6" style={{ letterSpacing: '-0.02em' }}>
             Cumpleañeros del Mes
           </h2>
           <div className="flex items-center justify-center gap-3 mb-8">
@@ -264,7 +264,7 @@ function BirthdayHighlight() {
                       style={{
                         background: person.photo
                           ? `url(${person.photo}) center/cover`
-                          : 'linear-gradient(135deg, #B8654A, #C8846A)',
+                          : 'linear-gradient(135deg, #B8963E, #C8846A)',
                         border: '3px solid #B8976A'
                       }}
                     >
@@ -308,8 +308,8 @@ function BirthdayHighlight() {
                       className="inline-flex items-center gap-2 px-4 py-2 rounded-full"
                       style={{ background: 'rgba(196, 112, 75, 0.15)' }}
                     >
-                      <Clock size={16} style={{ color: '#B8654A' }} />
-                      <span className="text-sm" style={{ color: '#B8654A' }}>
+                      <Clock size={16} style={{ color: '#B8963E' }} />
+                      <span className="text-sm" style={{ color: '#B8963E' }}>
                         Faltan{' '}
                         <motion.span
                           className="font-bold text-lg"
@@ -328,7 +328,7 @@ function BirthdayHighlight() {
                       animate={{ scale: [1, 1.05, 1] }}
                       transition={{ repeat: Infinity, duration: 1.5 }}
                       className="inline-flex items-center gap-2 px-4 py-2 rounded-full"
-                      style={{ background: 'linear-gradient(135deg, #B8654A, #C8846A)', color: 'white' }}
+                      style={{ background: 'linear-gradient(135deg, #B8963E, #C8846A)', color: 'white' }}
                     >
                       <Cake size={16} />
                       <span className="font-bold">¡Hoy es su cumpleaños!</span>
@@ -448,7 +448,7 @@ function BirthdayHighlight() {
                     style={{
                       background: person.photo
                         ? `url(${person.photo}) center/cover`
-                        : 'linear-gradient(135deg, #B8654A, #C8846A)',
+                        : 'linear-gradient(135deg, #B8963E, #C8846A)',
                       border: '2px solid #B8976A'
                     }}
                   >

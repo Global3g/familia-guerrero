@@ -24,7 +24,7 @@ export default function Modal({ isOpen, onClose, title, children }) {
           {/* Modal Card */}
           <motion.div
             className="relative w-full max-w-lg rounded-2xl shadow-2xl"
-            style={{ backgroundColor: '#0F172A' }}
+            style={{ backgroundColor: '#152238' }}
             initial={{ scale: 0.85, opacity: 0 }}
             animate={{ scale: 1, opacity: 1 }}
             exit={{ scale: 0.85, opacity: 0 }}
@@ -42,7 +42,7 @@ export default function Modal({ isOpen, onClose, title, children }) {
               <button
                 onClick={onClose}
                 className="p-1 rounded-full transition-colors hover:bg-[#F0E0D0]"
-                style={{ color: '#B8654A' }}
+                style={{ color: '#B8963E' }}
                 aria-label="Cerrar"
               >
                 <X size={24} />

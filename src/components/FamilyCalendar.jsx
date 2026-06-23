@@ -12,7 +12,7 @@ const DAY_NAMES = ['Lun', 'Mar', 'Mie', 'Jue', 'Vie', 'Sab', 'Dom']
 
 const EVENT_COLORS = {
   birthday: '#6B9080',
-  anniversary: '#B8654A',
+  anniversary: '#B8963E',
   memorial: '#B8976A',
 }
 
@@ -199,7 +199,7 @@ export default function FamilyCalendar() {
 
   if (loading) {
     return (
-      <section className="py-12 px-4">
+      <section className="py-12 px-4" style={{ backgroundColor: '#152238' }}>
         <div className="max-w-4xl mx-auto text-center">
           <div className="animate-pulse space-y-4">
             <div className="h-8 bg-white/10 rounded w-48 mx-auto" />
@@ -211,7 +211,7 @@ export default function FamilyCalendar() {
   }
 
   return (
-    <section className="py-12 px-4">
+    <section className="py-12 px-4" style={{ backgroundColor: '#152238' }}>
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
@@ -222,10 +222,10 @@ export default function FamilyCalendar() {
         {/* Title */}
         <div className="text-center mb-6">
           <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Calendario</p>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif italic font-bold text-white mb-5">
             Calendario Familiar
           </h2>
-          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
+          <div className="w-8 h-[1px] bg-[#B8963E] mx-auto mb-5" />
         </div>
 
         <div className="bg-white/5 rounded-2xl shadow-md border-4 border-white/80 overflow-hidden">
@@ -284,8 +284,8 @@ export default function FamilyCalendar() {
                   <span
                     className={`
                       w-7 h-7 flex items-center justify-center rounded-full text-sm leading-none
-                      ${isTodayCell ? 'bg-[#B8654A] text-white font-bold' : 'text-white'}
-                      ${isSelected && !isTodayCell ? 'ring-2 ring-[#B8654A]/40' : ''}
+                      ${isTodayCell ? 'bg-[#B8963E] text-white font-bold' : 'text-white'}
+                      ${isSelected && !isTodayCell ? 'ring-2 ring-[#B8963E]/40' : ''}
                     `}
                   >
                     {cell.day}

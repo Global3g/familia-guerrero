@@ -135,10 +135,10 @@ export default function Messages() {
     <section
       id="mensajes"
       className="relative py-24 overflow-hidden"
-      style={{ backgroundColor: '#0F172A' }}
+      style={{ backgroundColor: '#152238' }}
     >
       {/* Background warmth */}
-      <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-[#B8654A] opacity-[0.04] blur-[100px] pointer-events-none" />
+      <div className="absolute top-0 right-0 w-80 h-80 rounded-full bg-[#B8963E] opacity-[0.04] blur-[100px] pointer-events-none" />
       <div className="absolute bottom-0 left-0 w-72 h-72 rounded-full bg-[#B8976A] opacity-[0.04] blur-[80px] pointer-events-none" />
 
       <div className="relative z-10 max-w-[1600px] mx-auto px-6">
@@ -152,10 +152,10 @@ export default function Messages() {
           className="text-center mb-16"
         >
           <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] text-white/40 mb-4">Voces de familia</p>
-          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold text-white mb-5">
+          <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold italic text-white mb-5">
             Voces de la Familia
           </h2>
-          <div className="w-8 h-[1px] bg-[#B8654A] mx-auto mb-5" />
+          <div className="w-8 h-[1px] bg-[#B8963E] mx-auto mb-5" />
           <p className="text-base text-white/50 max-w-md mx-auto leading-relaxed">
             Palabras que nacen del coraz&oacute;n y se quedan para siempre.
           </p>
@@ -168,7 +168,7 @@ export default function Messages() {
             whileTap={{ scale: 0.97 }}
             onClick={openCreate}
             className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-white font-semibold shadow-lg transition-colors"
-            style={{ backgroundColor: '#B8654A' }}
+            style={{ backgroundColor: '#B8963E' }}
           >
             <Plus className="w-5 h-5" />
             Agregar mensaje
@@ -178,7 +178,7 @@ export default function Messages() {
         {/* Loading */}
         {loading && (
           <div className="flex justify-center py-16">
-            <Loader2 className="w-8 h-8 text-[#B8654A] animate-spin" />
+            <Loader2 className="w-8 h-8 text-[#B8963E] animate-spin" />
           </div>
         )}
 
@@ -193,8 +193,8 @@ export default function Messages() {
             className="max-w-md mx-auto"
           >
             <div className="text-center py-16">
-              <div className="w-16 h-16 rounded-full bg-[#B8654A]/10 flex items-center justify-center mx-auto mb-4">
-                <MessageCircle className="w-8 h-8 text-[#B8654A]/50" />
+              <div className="w-16 h-16 rounded-full bg-[#B8963E]/10 flex items-center justify-center mx-auto mb-4">
+                <MessageCircle className="w-8 h-8 text-[#B8963E]/50" />
               </div>
               <p className="text-lg font-serif font-bold text-white/60 mb-2">
                 Sin mensajes aun
@@ -220,7 +220,8 @@ export default function Messages() {
                   viewport={{ once: true, margin: '-30px' }}
                   custom={i * 0.08}
                   exit={{ opacity: 0, scale: 0.9 }}
-                  className="group relative rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow bg-white/5 border-4 border-white/80"
+                  className="group relative rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow"
+                  style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '2px solid rgba(184,150,62,0.3)' }}
                 >
                   {/* Edit / Delete buttons */}
                   <div className="absolute top-3 right-3 flex gap-1.5 z-10">
@@ -246,7 +247,7 @@ export default function Messages() {
                       <img
                         src={msg.photoURL}
                         alt={msg.author}
-                        className="w-10 h-10 rounded-full object-cover ring-2 ring-[#B8654A]/20"
+                        className="w-10 h-10 rounded-full object-cover ring-2 ring-[#B8963E]/20"
                       />
                     ) : (
                       <div className="w-10 h-10 rounded-full flex items-center justify-center text-white font-bold text-sm bg-[#6B9080]">
@@ -287,7 +288,7 @@ export default function Messages() {
               placeholder="Nombre del familiar"
               value={form.author}
               onChange={(e) => setForm({ ...form, author: e.target.value })}
-              className="w-full rounded-xl border-4 border-white/80 bg-white/5 px-4 py-2.5 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#B8654A]/40"
+              className="w-full rounded-xl border-4 border-white/80 bg-white/5 px-4 py-2.5 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#B8963E]/40"
             />
           </div>
 
@@ -299,7 +300,7 @@ export default function Messages() {
               placeholder="Escribe un recuerdo o mensaje..."
               value={form.message}
               onChange={(e) => setForm({ ...form, message: e.target.value })}
-              className="w-full rounded-xl border-4 border-white/80 bg-white/5 px-4 py-2.5 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#B8654A]/40 resize-none"
+              className="w-full rounded-xl border-4 border-white/80 bg-white/5 px-4 py-2.5 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#B8963E]/40 resize-none"
             />
           </div>
 
@@ -310,7 +311,7 @@ export default function Messages() {
               type="date"
               value={form.date}
               onChange={(e) => setForm({ ...form, date: e.target.value })}
-              className="w-full rounded-xl border-4 border-white/80 bg-white/5 px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-[#B8654A]/40"
+              className="w-full rounded-xl border-4 border-white/80 bg-white/5 px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-[#B8963E]/40"
             />
           </div>
 

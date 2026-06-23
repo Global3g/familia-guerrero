@@ -27,7 +27,6 @@ function createCroppedImage(imageSrc, pixelCrop) {
         )
         canvas.toBlob((blob) => {
           if (blob) {
-            console.log('Crop blob created:', blob.size, 'bytes')
             resolve(blob)
           } else {
             console.error('toBlob returned null, falling back to dataURL')
@@ -77,7 +76,6 @@ export default function ImageCropper({ isOpen, imageSrc, onComplete, onCancel, c
         return
       }
       const file = new File([blob], `crop-${Date.now()}.jpg`, { type: 'image/jpeg' })
-      console.log('Crop file created:', file.name, file.size, 'bytes')
       onComplete(file)
     } catch (e) {
       console.error('Crop error:', e)
@@ -86,7 +84,6 @@ export default function ImageCropper({ isOpen, imageSrc, onComplete, onCancel, c
         const res = await fetch(imageSrc)
         const blob = await res.blob()
         const file = new File([blob], `photo-${Date.now()}.jpg`, { type: blob.type })
-        console.log('Fallback file created:', file.name, file.size)
         onComplete(file)
       } catch (e2) {
         console.error('Fallback also failed:', e2)

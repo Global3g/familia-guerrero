@@ -74,24 +74,24 @@ export default function WeeklyBanner() {
   }
 
   const getColors = (e) => {
-    if (e.diffDays === 0) return { bg: '#B8654A', text: 'white', accent: '#BFDBFE' }
-    if (e.diffDays <= 7) return { bg: '#EFF6FF', text: '#B8654A', accent: '#B8654A' }
+    if (e.diffDays === 0) return { bg: '#B8963E', text: 'white', accent: '#BFDBFE' }
+    if (e.diffDays <= 7) return { bg: '#EFF6FF', text: '#B8963E', accent: '#B8963E' }
     if (e.type === 'anniversary') return { bg: '#F8FAFC', text: '#B8976A', accent: '#B8976A' }
-    return { bg: '#F1F5F9', text: '#0F172A', accent: '#6B9080' }
+    return { bg: '#F1F5F9', text: '#152238', accent: '#6B9080' }
   }
 
   const initials = (name) => (name || '?').split(' ').filter(Boolean).slice(0, 2).map(w => w[0]).join('').toUpperCase()
 
   return (
-    <section className="py-16" style={{ backgroundColor: '#0F172A' }}>
+    <section className="py-16" style={{ backgroundColor: '#F5F0E8' }}>
       <div className="mx-auto px-8 lg:px-16">
         {/* Title */}
         <div className="flex items-center justify-between mb-8">
           <div>
-            <p className="text-lg font-sans font-semibold uppercase tracking-[5px] text-white mb-2">Calendario</p>
-            <h3 className="text-3xl md:text-4xl font-serif font-bold text-white">Proximos Eventos</h3>
+            <p className="text-lg font-sans font-semibold uppercase tracking-[5px] mb-2" style={{ color: '#B8963E' }}>Calendario</p>
+            <h3 className="text-3xl md:text-4xl font-serif font-bold italic" style={{ color: '#1C1C1C' }}>Próximos Eventos</h3>
           </div>
-          <Calendar className="w-5 h-5 text-white/20" />
+          <Calendar className="w-5 h-5" style={{ color: '#B8963E40' }} />
         </div>
 
         {/* Scrollable cards */}
@@ -113,18 +113,18 @@ export default function WeeklyBanner() {
                 transition={{ delay: i * 0.06, duration: 0.4 }}
                 className="flex-shrink-0 rounded-2xl overflow-hidden"
                 style={{
-                  backgroundColor: isToday ? '#B8654A' : 'rgba(255,255,255,0.05)',
+                  backgroundColor: isToday ? '#B8963E' : '#FFFDF7',
                   width: 260,
-                  border: '6px solid rgba(255,255,255,0.8)',
+                  border: isToday ? '3px solid #B8963E' : '3px solid rgba(184,150,62,0.4)',
                 }}
               >
                 <div className="flex flex-col h-full">
                   {/* Date - fixed height */}
                   <div className="text-center pt-10 pb-4 px-5 h-[110px] flex flex-col items-center justify-center">
-                    <p className={`text-5xl font-serif font-bold leading-none ${isToday ? 'text-white' : 'text-white/90'}`}>
+                    <p className={`text-5xl font-serif font-bold leading-none ${isToday ? 'text-white' : ''}`} style={isToday ? {} : { color: '#1C1C1C' }}>
                       {e.day}
                     </p>
-                    <p className={`text-sm font-medium uppercase tracking-wider mt-1 ${isToday ? 'text-white/70' : 'text-white/30'}`}>
+                    <p className={`text-sm font-medium uppercase tracking-wider mt-1 ${isToday ? 'text-white/70' : ''}`} style={isToday ? {} : { color: '#8A8A8A' }}>
                       {MESES[e.month]}
                     </p>
                   </div>
@@ -135,11 +135,11 @@ export default function WeeklyBanner() {
                       <img
                         src={e.photoURL}
                         alt={e.name}
-                        className="w-20 h-20 rounded-full object-cover border-4 border-white/30 cursor-pointer hover:border-white/60 transition-all hover:scale-105"
+                        className="w-24 h-24 rounded-full object-cover border-4 border-white/30 cursor-pointer hover:border-white/60 transition-all hover:scale-105"
                         onClick={() => setLightboxPhoto({ url: e.photoURL, name: e.fullName })}
                       />
                     ) : (
-                      <div className="w-20 h-20 rounded-full flex items-center justify-center text-base font-bold bg-white/10 text-white/60">
+                      <div className="w-24 h-24 rounded-full flex items-center justify-center text-base font-bold" style={{ backgroundColor: 'rgba(184,150,62,0.1)', color: '#B8963E' }}>
                         {initials(e.name)}
                       </div>
                     )}
@@ -147,15 +147,15 @@ export default function WeeklyBanner() {
 
                   {/* Name - fixed height */}
                   <div className="h-[56px] flex items-center justify-center px-4">
-                    <p className={`text-base font-bold leading-tight text-center ${isToday ? 'text-white' : 'text-white/90'}`}>
+                    <p className={`text-base font-bold leading-tight text-center ${isToday ? 'text-white' : ''}`} style={isToday ? {} : { color: '#1C1C1C' }}>
                       {e.fullName}
                     </p>
                   </div>
 
                   {/* Type - fixed height */}
                   <div className="h-[36px] flex items-center justify-center gap-1.5">
-                    <Icon className={`w-4 h-4 ${isToday ? 'text-white/60' : 'text-white/40'}`} />
-                    <span className={`text-xs ${isToday ? 'text-white/60' : 'text-white/40'}`}>
+                    <Icon className={`w-4 h-4 ${isToday ? 'text-white/60' : ''}`} style={isToday ? {} : { color: '#8A8A8A' }} />
+                    <span className={`text-xs ${isToday ? 'text-white/60' : ''}`} style={isToday ? {} : { color: '#8A8A8A' }}>
                       {e.type === 'birthday' ? 'Cumpleaños' : 'Aniversario'}
                     </span>
                   </div>
@@ -163,7 +163,7 @@ export default function WeeklyBanner() {
                   {/* Days remaining - fixed height, always at bottom */}
                   <div className="h-[64px] flex items-center justify-center pb-6">
                     <span className={`inline-block text-xs font-semibold px-3 py-1.5 rounded-full ${
-                      isToday ? 'bg-white/20 text-white' : isSoon ? 'bg-[#B8654A]/20 text-[#B8654A]' : 'bg-white/5 text-white/40'
+                      isToday ? 'bg-white/20 text-white' : isSoon ? 'bg-[#B8963E]/20 text-[#B8963E]' : 'bg-[#B8963E]/10 text-[#B8963E]'
                     }`}>
                       {isToday && <PartyPopper className="w-3 h-3 inline mr-0.5 -mt-0.5" />}
                       {formatDiff(e.diffDays)}

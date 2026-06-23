@@ -19,7 +19,7 @@ import {
 } from 'lucide-react'
 import { getFamilyMembers, getGrandparents } from '../firebase/familyService'
 
-const NODE_W = 180
+const NODE_W = 220
 const V_GAP = 300
 const H_GAP = 25
 const SNAP_GRID = [20, 20]
@@ -27,7 +27,7 @@ const SNAP_GRID = [20, 20]
 // ── Person Node ─────────────────────────────────────────────
 function PersonNode({ data, selected }) {
   const { name, photoURL, gender, isDeceased, role, spouse, isGrandparent, isGrouped, hasChildren, isExpanded, onToggle } = data
-  const borderColor = isGrandparent ? '#B8976A' : gender === 'F' ? '#B8654A' : '#6B9080'
+  const borderColor = isGrandparent ? '#B8976A' : gender === 'F' ? '#B8963E' : '#6B9080'
   const bgColor = isGrandparent ? '#FFFFFF' : '#F1F5F9'
 
   return (
@@ -51,22 +51,22 @@ function PersonNode({ data, selected }) {
           </div>
         )}
         <div className="flex-1 min-w-0 text-left">
-          <p className="text-xs font-bold leading-tight truncate" style={{ color: '#0F172A' }}>{name}{isDeceased && <span className="ml-0.5 text-sm font-bold" style={{ color: '#D4A843' }}>✝</span>}</p>
+          <p className="text-xs font-bold leading-tight" style={{ color: '#152238' }}>{name}{isDeceased && <span className="ml-0.5 text-sm font-bold" style={{ color: '#D4A843' }}>✝</span>}</p>
           {role && <p className="text-[11px] text-[#6B9080] font-medium">{role}</p>}
           {isDeceased && <p className="text-[11px] text-[#B8976A] italic">En memoria</p>}
         </div>
       </div>
       {spouse && (
         <div className="mt-1.5 pt-1.5 border-t flex items-center gap-1.5" style={{ borderColor: `${borderColor}30` }}>
-          <Heart className="w-3 h-3 text-[#B8654A] flex-shrink-0" />
+          <Heart className="w-3 h-3 text-[#B8963E] flex-shrink-0" />
           {spouse.photoURL ? (
             <img src={spouse.photoURL} alt={spouse.name} className="w-6 h-6 rounded-full object-cover" />
           ) : (
-            <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#B8654A15' }}>
-              <User className="w-3 h-3 text-[#B8654A]" />
+            <div className="w-6 h-6 rounded-full flex items-center justify-center" style={{ backgroundColor: '#B8963E15' }}>
+              <User className="w-3 h-3 text-[#B8963E]" />
             </div>
           )}
-          <p className="text-[11px] truncate" style={{ color: '#0F172A' }}>{typeof spouse === 'object' ? spouse.name : spouse}</p>
+          <p className="text-[11px]" style={{ color: '#152238' }}>{typeof spouse === 'object' ? spouse.name : spouse}</p>
         </div>
       )}
       {/* Expand/collapse button */}
@@ -74,7 +74,7 @@ function PersonNode({ data, selected }) {
         <button
           onClick={(e) => { e.stopPropagation(); onToggle?.() }}
           className="absolute -bottom-3 left-1/2 -translate-x-1/2 w-6 h-6 rounded-full flex items-center justify-center text-white z-10 shadow-md hover:scale-110 transition-transform"
-          style={{ backgroundColor: isExpanded ? '#B8654A' : '#6B9080' }}
+          style={{ backgroundColor: isExpanded ? '#B8963E' : '#6B9080' }}
         >
           {isExpanded ? <ChevronDown className="w-3.5 h-3.5" /> : <ChevronRight className="w-3.5 h-3.5" />}
         </button>
@@ -110,7 +110,7 @@ function buildTree(members, grandparentsData, expandedSet, onToggleNode) {
   const getId = () => `n${nodeId++}`
 
   const edgeStyles = [
-    { stroke: '#B8654A', strokeWidth: 3 },
+    { stroke: '#B8963E', strokeWidth: 3 },
     { stroke: '#6B9080', strokeWidth: 2.5 },
     { stroke: '#B8976A', strokeWidth: 2.5 },
     { stroke: '#94A3B8', strokeWidth: 2 },
@@ -238,15 +238,15 @@ function collectFirstLevel(members, grandparentsData) {
 }
 
 // ── Toolbar Button ──────────────────────────────────────────
-function ToolBtn({ onClick, active, icon: Icon, label, color = '#0F172A', tip }) {
+function ToolBtn({ onClick, active, icon: Icon, label, color = '#152238', tip }) {
   return (
     <button
       onClick={onClick}
       title={tip || label}
       className={`flex items-center gap-1 px-2.5 py-1.5 rounded-lg shadow-md text-[11px] font-medium transition ${
-        active ? 'text-white' : 'bg-white/5 hover:bg-white'
+        active ? 'text-white' : 'bg-white/5 hover:bg-white/10'
       }`}
-      style={active ? { backgroundColor: color, color: 'white' } : { color }}
+      style={active ? { backgroundColor: color, color: 'white' } : { color: '#FFFFFF' }}
     >
       <Icon className="w-3.5 h-3.5" />
       <span className="hidden sm:inline">{label}</span>
@@ -467,7 +467,7 @@ export default function InteractiveTree() {
   const selectedCount = nodes.filter(n => n.selected).length
 
   return (
-    <section id="arbol-visual" className="py-20 px-4 sm:px-6 lg:px-10" style={{ backgroundColor: '#0F172A' }}>
+    <section id="arbol-visual" className="py-20 px-4 sm:px-6 lg:px-10" style={{ backgroundColor: '#152238' }}>
       <div className="max-w-[1600px] mx-auto">
         {/* Header */}
         <motion.div
@@ -477,20 +477,20 @@ export default function InteractiveTree() {
           transition={{ duration: 0.7 }}
           className="text-center mb-10"
         >
-          <span className="inline-flex items-center gap-2 text-sm font-medium tracking-wide uppercase mb-3" style={{ color: '#6B9080' }}>
+          <span className="inline-flex items-center gap-2 text-sm font-medium tracking-wide uppercase mb-3" style={{ color: '#B8963E' }}>
             <GitBranch className="w-4 h-4" />
             Vista Interactiva
           </span>
-          <h2 className="text-4xl md:text-5xl font-serif font-bold mb-4" style={{ color: '#FFFFFF' }}>
+          <h2 className="text-4xl md:text-5xl font-serif font-bold italic mb-4" style={{ color: '#FFFFFF' }}>
             Arbol Genealogico Visual
           </h2>
-          <p className="text-base max-w-2xl mx-auto mb-2" style={{ color: '#64748B' }}>
+          <p className="text-base max-w-2xl mx-auto mb-2" style={{ color: '#94A3B8' }}>
             Haz clic en el boton de cada nodo para expandir o colapsar sus hijos. Doble clic para seleccionar toda una rama.
           </p>
           <div className="flex items-center justify-center gap-6 text-xs text-white/50 mt-3">
             <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-[#B8976A]" /> Abuelos</span>
             <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-[#6B9080]" /> Hombres</span>
-            <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-[#B8654A]" /> Mujeres</span>
+            <span className="flex items-center gap-1"><span className="w-3 h-3 rounded-full bg-[#B8963E]" /> Mujeres</span>
           </div>
         </motion.div>
 
@@ -500,13 +500,13 @@ export default function InteractiveTree() {
           whileInView={{ opacity: 1 }}
           viewport={{ once: true }}
           transition={{ duration: 0.5 }}
-          className={`rounded-2xl overflow-hidden shadow-lg border-4 border-white/80 ${isFullscreen ? 'fixed inset-0 z-[60] rounded-none' : 'h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px]'}`}
-          style={{ backgroundColor: '#0F172A', touchAction: 'none' }}
+          className={`rounded-2xl overflow-hidden shadow-lg ${isFullscreen ? 'fixed inset-0 z-[60] rounded-none' : 'h-[400px] sm:h-[500px] md:h-[600px] lg:h-[700px]'}`}
+          style={{ backgroundColor: '#152238', border: '2px solid rgba(184,150,62,0.3)', touchAction: 'none' }}
         >
           {loading ? (
             <div className="h-full flex items-center justify-center">
               <div className="text-center">
-                <div className="inline-block w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#B8654A', borderTopColor: 'transparent' }} />
+                <div className="inline-block w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#B8963E', borderTopColor: 'transparent' }} />
                 <p className="mt-3 text-sm text-white/60">Cargando arbol...</p>
               </div>
             </div>
@@ -537,7 +537,7 @@ export default function InteractiveTree() {
               <Controls position="top-right" style={{ borderRadius: '12px', overflow: 'hidden' }} />
               {showGrid && (
                 <Background
-                  color={snapToGrid ? '#B8654A30' : '#E2E8F030'}
+                  color={snapToGrid ? '#B8963E30' : '#E2E8F030'}
                   gap={snapToGrid ? SNAP_GRID[0] : 20}
                   variant={snapToGrid ? 'lines' : 'dots'}
                 />
@@ -548,7 +548,7 @@ export default function InteractiveTree() {
                 nodeColor={(n) => {
                   if (n.selected) return '#3B82F6'
                   if (n.data?.isGrandparent) return '#B8976A'
-                  if (n.data?.gender === 'F') return '#B8654A'
+                  if (n.data?.gender === 'F') return '#B8963E'
                   return '#6B9080'
                 }}
                 maskColor="rgba(253, 248, 240, 0.7)"
@@ -569,7 +569,7 @@ export default function InteractiveTree() {
                     icon={Maximize2}
                     label={isFullscreen ? 'Salir' : 'Completa'}
                     active={isFullscreen}
-                    color="#B8654A"
+                    color="#B8963E"
                     onClick={() => setIsFullscreen(!isFullscreen)}
                     tip="Pantalla completa"
                   />
@@ -581,74 +581,7 @@ export default function InteractiveTree() {
                     onClick={() => setSnapToGrid(!snapToGrid)}
                     tip="Activar cuadricula de alineacion (snap)"
                   />
-                  <ToolBtn
-                    icon={BoxSelect}
-                    label={tool === 'select' ? 'Seleccion' : 'Seleccionar'}
-                    active={tool === 'select'}
-                    color="#3B82F6"
-                    onClick={() => setTool(t => t === 'select' ? 'move' : 'select')}
-                    tip="Arrastra para seleccionar multiples tarjetas"
-                  />
-                  <ToolBtn
-                    icon={FoldVertical}
-                    label="Agrupar"
-                    color="#8B5CF6"
-                    onClick={groupSelected}
-                    tip="Selecciona varias tarjetas y agrupa para moverlas como un solo bloque"
-                  />
-                  <ToolBtn
-                    icon={UnfoldVertical}
-                    label="Desagrupar"
-                    color="#8B5CF6"
-                    onClick={ungroupSelected}
-                    active={groups.length > 0}
-                    tip="Desagrupar para que se muevan independiente"
-                  />
-                  <ToolBtn
-                    icon={RotateCcw}
-                    label="Restablecer"
-                    onClick={() => { deselectAll(); collapseAll() }}
-                    tip="Recargar arbol al estado inicial"
-                  />
                 </div>
-
-                {/* Row 2: Alignment tools (show when nodes selected) */}
-                {selectedCount >= 2 && (
-                  <div className="flex flex-wrap gap-1.5 items-center">
-                    <span className="text-[10px] font-medium text-white bg-blue-500 px-2 py-0.5 rounded-full">
-                      {selectedCount} seleccionados
-                    </span>
-                    <ToolBtn
-                      icon={AlignCenterHorizontal}
-                      label="Alinear H"
-                      color="#0F172A"
-                      onClick={alignSelectedH}
-                      tip="Alinear horizontalmente (misma fila)"
-                    />
-                    <ToolBtn
-                      icon={AlignCenterVertical}
-                      label="Alinear V"
-                      color="#0F172A"
-                      onClick={alignSelectedV}
-                      tip="Alinear verticalmente (misma columna)"
-                    />
-                    {selectedCount >= 3 && (
-                      <ToolBtn
-                        icon={ChevronDown}
-                        label="Distribuir"
-                        color="#0F172A"
-                        onClick={distributeSelectedH}
-                        tip="Distribuir horizontalmente con espacio parejo"
-                      />
-                    )}
-                    <button
-                      onClick={deselectAll}
-                      className="text-[10px] text-white/60 underline hover:text-white ml-1"
-                    >
-                      Deseleccionar
-                    </button>
-                  </div>
-                )}
               </Panel>
 
               {/* ── Info Panel ────────────────────────────── */}
@@ -656,16 +589,13 @@ export default function InteractiveTree() {
                 <div className="flex items-center gap-3 px-2.5 py-1 rounded-lg bg-white/5 shadow text-[11px] text-white/60">
                   <span>{nodes.length} nodos visibles</span>
                   <span>{edges.length} conexiones</span>
-                  {snapToGrid && <span className="text-[#6B9080] font-medium">Snap activo</span>}
-                  {tool === 'select' && <span className="text-blue-500 font-medium">Modo seleccion</span>}
-                  {groups.length > 0 && <span className="text-[#8B5CF6] font-medium">{groups.length} grupo{groups.length > 1 ? 's' : ''}</span>}
                 </div>
               </Panel>
             </ReactFlow>
           ) : (
             <div className="h-full flex items-center justify-center">
               <div className="text-center">
-                <Users className="w-12 h-12 mx-auto mb-3 text-[#B8654A]/30" />
+                <Users className="w-12 h-12 mx-auto mb-3 text-[#B8963E]/30" />
                 <p className="text-white/50">Agrega familiares para ver el arbol</p>
               </div>
             </div>

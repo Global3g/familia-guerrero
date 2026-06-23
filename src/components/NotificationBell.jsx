@@ -18,11 +18,11 @@ function timeAgo(dateStr) {
 
 const typeConfig = {
   form_response: { icon: UserPlus, color: '#6B9080', label: 'Nuevo formulario' },
-  birthday: { icon: Gift, color: '#B8654A', label: 'Cumpleanos' },
+  birthday: { icon: Gift, color: '#B8963E', label: 'Cumpleanos' },
   anniversary: { icon: Heart, color: '#C8846A', label: 'Aniversario' },
   new_photo: { icon: Image, color: '#B8976A', label: 'Nueva foto' },
   new_event: { icon: Calendar, color: '#6B9080', label: 'Nuevo evento' },
-  milestone: { icon: Star, color: '#B8654A', label: 'Hito familiar' },
+  milestone: { icon: Star, color: '#B8963E', label: 'Hito familiar' },
 }
 
 export default function NotificationBell() {
@@ -145,14 +145,14 @@ export default function NotificationBell() {
       {/* Bell button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="relative p-2 rounded-full transition-colors hover:bg-[#0F172A]/10"
+        className="relative p-2 rounded-full transition-colors hover:bg-[#152238]/10"
       >
         <Bell className="w-5 h-5" style={{ color: '#FFFFFF' }} />
         {unreadCount > 0 && (
           <motion.span
             initial={{ scale: 0 }}
             animate={{ scale: 1 }}
-            className="absolute -top-0.5 -right-0.5 w-5 h-5 rounded-full bg-[#B8654A] text-white text-[11px] font-bold flex items-center justify-center"
+            className="absolute -top-0.5 -right-0.5 w-5 h-5 rounded-full bg-[#B8963E] text-white text-[11px] font-bold flex items-center justify-center"
           >
             {unreadCount > 9 ? '9+' : unreadCount}
           </motion.span>
@@ -170,7 +170,7 @@ export default function NotificationBell() {
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
               transition={{ duration: 0.2 }}
               className="absolute right-0 top-12 z-50 w-80 sm:w-96 rounded-2xl shadow-2xl overflow-hidden"
-              style={{ backgroundColor: '#0F172A', border: '1px solid #E2E8F0' }}
+              style={{ backgroundColor: '#152238', border: '1px solid #E2E8F0' }}
             >
               {/* Header */}
               <div className="flex items-center justify-between px-4 py-3 border-b" style={{ borderColor: 'rgba(255,255,255,0.8)' }}>

@@ -49,8 +49,8 @@ export default function CoachMarks() {
             <X className="w-5 h-5" />
           </button>
 
-          <div className="w-14 h-14 rounded-full bg-[#B8654A]/10 flex items-center justify-center mx-auto mb-4">
-            <span className="text-2xl font-bold text-[#B8654A]">{step + 1}</span>
+          <div className="w-14 h-14 rounded-full bg-[#B8963E]/10 flex items-center justify-center mx-auto mb-4">
+            <span className="text-2xl font-bold text-[#B8963E]">{step + 1}</span>
           </div>
 
           <h3 className="text-lg font-serif font-bold text-white mb-2">{current.title}</h3>
@@ -66,7 +66,7 @@ export default function CoachMarks() {
             <span className="text-xs text-white/30">{step + 1} / {steps.length}</span>
             <button
               onClick={() => step < steps.length - 1 ? setStep(step + 1) : finish()}
-              className="flex items-center gap-1 px-4 py-2 rounded-lg bg-[#B8654A] text-white text-sm font-medium hover:bg-[#B8654A]/90 transition"
+              className="flex items-center gap-1 px-4 py-2 rounded-lg bg-[#B8963E] text-white text-sm font-medium hover:bg-[#B8963E]/90 transition"
             >
               {step < steps.length - 1 ? <>Siguiente <ChevronRight className="w-4 h-4" /></> : 'Comenzar!'}
             </button>

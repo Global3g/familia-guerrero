@@ -90,7 +90,7 @@ export default function GrandparentForm({ isOpen, onClose, grandparentData, type
   };
 
   const inputClass =
-    'w-full rounded-lg border-4 border-white/80 bg-white/5 px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-[#B8654A]/30';
+    'w-full rounded-lg border-4 border-white/80 bg-white/5 px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-[#B8963E]/30';
   const labelClass = 'block text-sm font-medium text-white mb-1';
 
   const title = type === 'grandfather' ? 'Editar Abuelo' : 'Editar Abuela';
@@ -111,10 +111,10 @@ export default function GrandparentForm({ isOpen, onClose, grandparentData, type
               <img
                 src={photoPreview}
                 alt="Preview"
-                className="w-28 h-28 rounded-full object-cover border-2 border-[#B8654A]/30 group-hover:opacity-80 transition"
+                className="w-28 h-28 rounded-full object-cover border-2 border-[#B8963E]/30 group-hover:opacity-80 transition"
               />
             ) : (
-              <div className="w-28 h-28 rounded-full border-2 border-dashed border-[#B8654A]/40 flex flex-col items-center justify-center text-[#B8654A]/60 group-hover:border-[#B8654A] transition">
+              <div className="w-28 h-28 rounded-full border-2 border-dashed border-[#B8963E]/40 flex flex-col items-center justify-center text-[#B8963E]/60 group-hover:border-[#B8963E] transition">
                 <Camera className="w-8 h-8 mb-1" />
                 <span className="text-xs">Subir foto</span>
               </div>
@@ -262,7 +262,7 @@ export default function GrandparentForm({ isOpen, onClose, grandparentData, type
 
         {/* Wedding section - shown for grandfather type */}
         {type === 'grandfather' && (
-          <div className="border-t border-[#B8654A]/20 pt-5 mt-5 space-y-4">
+          <div className="border-t border-[#B8963E]/20 pt-5 mt-5 space-y-4">
             <h3 className="text-sm font-semibold text-white uppercase tracking-wide">
               Informacion de boda
             </h3>
@@ -310,7 +310,7 @@ export default function GrandparentForm({ isOpen, onClose, grandparentData, type
           <button
             type="submit"
             disabled={loading}
-            className="flex items-center gap-2 bg-[#B8654A] text-white rounded-lg px-6 py-2.5 hover:bg-[#B8654A]/90 disabled:opacity-50 transition"
+            className="flex items-center gap-2 bg-[#B8963E] text-white rounded-lg px-6 py-2.5 hover:bg-[#B8963E]/90 disabled:opacity-50 transition"
           >
             {loading ? (
               <>

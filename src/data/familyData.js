@@ -220,6 +220,9 @@ export const messages = [
 export const galleryCategories = [
   { id: 'todos', label: 'Todos' },
   { id: 'abuelos', label: 'Abuelos' },
+  { id: 'abuelo-pepe', label: 'Papá Pepe' },
+  { id: 'abuela-licha', label: 'Mamá Licha' },
+  { id: 'abuelos-juntos', label: 'Juntos' },
   { id: 'infancia', label: 'Infancia' },
   { id: 'bodas', label: 'Bodas' },
   { id: 'cumpleaños', label: 'Cumpleaños' },

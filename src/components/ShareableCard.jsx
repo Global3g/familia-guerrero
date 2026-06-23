@@ -19,31 +19,31 @@ export default function ShareableCard({ person, onClose }) {
     ctx.fillRect(0, 0, 600, 400)
 
     // Decorative line
-    ctx.fillStyle = '#B8654A'
+    ctx.fillStyle = '#B8963E'
     ctx.fillRect(0, 0, 600, 4)
 
     // Name
-    ctx.fillStyle = '#0F172A'
+    ctx.fillStyle = '#152238'
     ctx.font = 'bold 28px Georgia, serif'
     ctx.textAlign = 'center'
     ctx.fillText(person.name || 'Familia Guerrero', 300, 180)
 
     // Nickname
     if (person.nickname) {
-      ctx.fillStyle = '#B8654A'
+      ctx.fillStyle = '#B8963E'
       ctx.font = 'italic 18px Georgia, serif'
       ctx.fillText(`"${person.nickname}"`, 300, 210)
     }
 
     // Details
-    ctx.fillStyle = '#0F172AAA'
+    ctx.fillStyle = '#152238AA'
     ctx.font = '14px Inter, sans-serif'
     let y = 250
     if (person.birthDate) { ctx.fillText(person.birthDate, 300, y); y += 25 }
     if (person.location) { ctx.fillText(person.location, 300, y); y += 25 }
 
     // Branding
-    ctx.fillStyle = '#B8654A60'
+    ctx.fillStyle = '#B8963E60'
     ctx.font = '12px Inter, sans-serif'
     ctx.fillText('Familia Guerrero', 300, 380)
 

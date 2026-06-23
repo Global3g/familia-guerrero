@@ -27,11 +27,11 @@ export default function ExportTree() {
       const ctx = canvas.getContext('2d')
 
       // Background
-      ctx.fillStyle = '#F8FAFC'
+      ctx.fillStyle = '#F5F0E8'
       ctx.fillRect(0, 0, canvasW, canvasH)
 
       // Title
-      ctx.fillStyle = '#0F172A'
+      ctx.fillStyle = '#152238'
       ctx.font = 'bold 32px Georgia, serif'
       ctx.textAlign = 'center'
       ctx.fillText('Familia Guerrero', canvasW / 2, 50)
@@ -53,7 +53,7 @@ export default function ExportTree() {
         ctx.roundRect(x, y, nodeW, nodeH, 12)
         ctx.fill()
         ctx.stroke()
-        ctx.fillStyle = '#0F172A'
+        ctx.fillStyle = '#152238'
         ctx.font = 'bold 14px Inter, sans-serif'
         ctx.textAlign = 'center'
         const shortName = name.length > 22 ? name.substring(0, 20) + '...' : name
@@ -64,13 +64,13 @@ export default function ExportTree() {
       drawNode(gmX, gpY, gmName, '#B8976A')
 
       // Heart between grandparents
-      ctx.fillStyle = '#B8654A'
+      ctx.fillStyle = '#B8963E'
       ctx.font = '20px sans-serif'
       ctx.textAlign = 'center'
       ctx.fillText('❤', canvasW / 2, gpY + nodeH / 2 + 7)
 
       // Line down from grandparents
-      ctx.strokeStyle = '#B8654A80'
+      ctx.strokeStyle = '#B8963E80'
       ctx.lineWidth = 2
       ctx.beginPath()
       ctx.moveTo(canvasW / 2, gpY + nodeH)
@@ -90,7 +90,7 @@ export default function ExportTree() {
       // Draw each member
       members.forEach((m, i) => {
         const x = startX + i * (nodeW + gapX)
-        const color = i % 2 === 0 ? '#6B9080' : '#B8654A'
+        const color = i % 2 === 0 ? '#6B9080' : '#B8963E'
 
         // Vertical tick
         ctx.beginPath()
@@ -110,7 +110,7 @@ export default function ExportTree() {
       })
 
       // Watermark
-      ctx.fillStyle = '#0F172A40'
+      ctx.fillStyle = '#15223840'
       ctx.font = '11px Inter, sans-serif'
       ctx.textAlign = 'center'
       ctx.fillText('familia-guerrero.vercel.app', canvasW / 2, canvasH - 15)
@@ -129,7 +129,7 @@ export default function ExportTree() {
   }
 
   return (
-    <button onClick={handleExport} disabled={exporting} className="flex items-center gap-2 px-4 py-2 rounded-xl bg-[#B8976A] text-white text-sm font-medium hover:bg-[#B8976A]/90 transition shadow-lg disabled:opacity-50">
+    <button onClick={handleExport} disabled={exporting} className="flex items-center gap-2 px-4 py-2 rounded-xl text-white text-sm font-medium transition shadow-lg disabled:opacity-50" style={{ backgroundColor: '#B8963E' }} onMouseOver={e => e.currentTarget.style.backgroundColor = 'rgba(184,150,62,0.85)'} onMouseOut={e => e.currentTarget.style.backgroundColor = '#B8963E'}>
       {exporting ? <Loader2 className="w-4 h-4 animate-spin" /> : <Download className="w-4 h-4" />}
       {exporting ? 'Exportando...' : 'Exportar Arbol'}
     </button>
