@@ -678,7 +678,7 @@ export default function Memorial() {
                         if (person.id) {
                           await saveMemorial(person.id, { memories: updatedMemories })
                         } else {
-                          await saveMemorial(null, {
+                          const newId = await saveMemorial(null, {
                             name: person.name,
                             photoURL: person.photoURL || null,
                             birthDate: person.birthDate || '',
@@ -688,6 +688,8 @@ export default function Memorial() {
                             legacy: person.legacy || '',
                             memories: updatedMemories,
                           })
+                          // ponytail: assign id so subsequent saves don't create duplicates
+                          if (newId) person.id = newId
                         }
                         textInput.value = ''
                         authorInput.value = ''
