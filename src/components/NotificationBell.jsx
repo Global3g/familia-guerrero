@@ -169,7 +169,7 @@ export default function NotificationBell() {
               animate={{ opacity: 1, y: 0, scale: 1 }}
               exit={{ opacity: 0, y: -10, scale: 0.95 }}
               transition={{ duration: 0.2 }}
-              className="absolute right-0 top-12 z-50 w-80 sm:w-96 rounded-2xl shadow-2xl overflow-hidden"
+              className="fixed right-2 left-2 sm:left-auto sm:absolute sm:right-0 top-14 sm:top-12 z-50 sm:w-96 rounded-2xl shadow-2xl overflow-hidden"
               style={{ backgroundColor: '#152238', border: '1px solid #E2E8F0' }}
             >
               {/* Header */}
