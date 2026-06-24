@@ -8,6 +8,28 @@ service cloud.firestore {
       return request.auth != null;
     }
 
+    // Recuerdos en Homenaje — abierto para toda la familia
+    match /memorials/{doc} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+    // Tradiciones — abierto para toda la familia
+    match /traditions/{doc} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+    // Mensajes — abierto para toda la familia
+    match /messages/{doc} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+    // Frases/Quotes — abierto para toda la familia
+    match /familyQuotes/{doc} {
+      allow read: if isSignedIn();
+      allow write: if isSignedIn();
+    }
+
+    // Todo lo demás: lectura para logueados, escritura solo admin
     match /{document=**} {
       allow read: if isSignedIn();
       allow write: if isAdmin();
