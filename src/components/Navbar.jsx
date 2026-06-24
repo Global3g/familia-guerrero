@@ -41,7 +41,7 @@ export default function Navbar({ user, isAdmin, onLogout }) {
             }}
             className="flex items-center gap-2 group flex-1"
           >
-            <img src="/logo.svg" alt="FG" className="w-7 h-7" />
+            <span className="font-serif italic text-2xl" style={{ color: '#E8C84A' }}>G</span>
             <span
               className={`font-serif text-xl sm:text-2xl font-bold tracking-wide transition-colors duration-500 ${
                 scrolled ? 'text-white' : 'text-[#F8FAFC]'

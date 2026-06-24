@@ -1,45 +1,13 @@
 import { useState } from 'react'
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
-import { auth, db } from '../firebase/config'
-import { doc, setDoc } from 'firebase/firestore'
-import { motion, AnimatePresence } from 'framer-motion'
-import { Heart, Lock, Mail, Loader2, UserPlus, LogIn, User, Phone, MapPin, X, Users } from 'lucide-react'
-
-const inputStyle = "w-full pl-10 pr-4 py-2.5 rounded-xl border-2 text-sm focus:outline-none transition"
-const labelStyle = "block text-xs font-bold uppercase tracking-wide mb-1.5"
-
-function InputField({ icon: Icon, label, color = '#B8963E', ...props }) {
-  return (
-    <div>
-      <label className={labelStyle} style={{ color }}>{label}</label>
-      <div className="relative">
-        <Icon className="absolute left-3 top-3 w-4 h-4" style={{ color: '#B8976A' }} />
-        <input
-          {...props}
-          className={inputStyle}
-          style={{ borderColor: 'rgba(255,255,255,0.8)', color: '#FFFFFF', backgroundColor: 'rgba(255,255,255,0.05)' }}
-          onFocus={(e) => e.target.style.borderColor = color}
-          onBlur={(e) => e.target.style.borderColor = '#E2E8F0'}
-        />
-      </div>
-    </div>
-  )
-}
+import { signInWithEmailAndPassword } from 'firebase/auth'
+import { auth } from '../firebase/config'
+import { Loader2 } from 'lucide-react'
 
 export default function Login() {
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
-  const [showRegister, setShowRegister] = useState(false)
-
-  // Register form
-  const [regStep, setRegStep] = useState(1)
-  const [reg, setReg] = useState({
-    name: '', nickname: '', phone: '', location: '', email: '', password: '', confirmPassword: '', relationship: '',
-  })
-  const [regLoading, setRegLoading] = useState(false)
-  const [regError, setRegError] = useState('')
 
   const handleLogin = async (e) => {
     e.preventDefault()
@@ -50,260 +18,118 @@ export default function Login() {
     } catch (err) {
       const messages = {
         'auth/user-not-found': 'No existe una cuenta con este correo',
-        'auth/wrong-password': 'Contrasena incorrecta',
-        'auth/invalid-credential': 'Correo o contrasena incorrectos',
-        'auth/invalid-email': 'Correo invalido',
+        'auth/wrong-password': 'Contraseña incorrecta',
+        'auth/invalid-credential': 'Correo o contraseña incorrectos',
+        'auth/invalid-email': 'Correo inválido',
       }
-      setError(messages[err.code] || 'Correo o contrasena incorrectos')
+      setError(messages[err.code] || 'Correo o contraseña incorrectos')
     } finally {
       setLoading(false)
     }
   }
 
-  const handleRegister = async () => {
-    setRegError('')
-
-    if (regStep === 1) {
-      if (!reg.name.trim()) return setRegError('El nombre es obligatorio')
-      setRegStep(2)
-      return
-    }
-
-    if (regStep === 2) {
-      if (!reg.email.trim()) return setRegError('El correo es obligatorio')
-      if (!reg.password) return setRegError('La contrasena es obligatoria')
-      if (reg.password.length < 6) return setRegError('La contrasena debe tener al menos 6 caracteres')
-      if (reg.password !== reg.confirmPassword) return setRegError('Las contrasenas no coinciden')
-
-      setRegLoading(true)
-      try {
-        const cred = await createUserWithEmailAndPassword(auth, reg.email, reg.password)
-        await updateProfile(cred.user, { displayName: reg.name })
-
-        // Save profile to Firestore
-        await setDoc(doc(db, 'userProfiles', cred.user.uid), {
-          name: reg.name,
-          nickname: reg.nickname,
-          phone: reg.phone,
-          location: reg.location,
-          email: reg.email,
-          relationship: reg.relationship,
-          createdAt: new Date().toISOString(),
-        })
-      } catch (err) {
-        const messages = {
-          'auth/email-already-in-use': 'Este correo ya tiene cuenta',
-          'auth/weak-password': 'Contrasena muy debil (minimo 6 caracteres)',
-          'auth/invalid-email': 'Correo invalido',
-        }
-        setRegError(messages[err.code] || 'Error al crear cuenta')
-      } finally {
-        setRegLoading(false)
-      }
-    }
+  const handleForgotPassword = async () => {
+    if (!email) { setError('Escribe tu correo primero'); return }
+    try {
+      const { sendPasswordResetEmail } = await import('firebase/auth')
+      await sendPasswordResetEmail(auth, email)
+      setError('')
+      alert('Se envió un correo para restablecer tu contraseña')
+    } catch (e) { setError('Error al enviar correo de recuperación') }
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 relative" style={{ background: 'linear-gradient(135deg, #F8FAFC 0%, #F8FAFC 50%, #F1F5F9 100%)' }}>
-      <div className="absolute inset-0 opacity-[0.03] pointer-events-none" style={{ backgroundImage: 'radial-gradient(circle at 25% 25%, #B8963E 1px, transparent 1px), radial-gradient(circle at 75% 75%, #B8976A 1px, transparent 1px)', backgroundSize: '40px 40px' }} />
-      <div className="w-full max-w-sm">
-        {/* Header */}
-        <div className="text-center mb-8">
-          <div className="w-20 h-20 rounded-full mx-auto mb-4 flex items-center justify-center shadow-lg" style={{ background: 'linear-gradient(135deg, #B8963E, #B8976A)' }}>
-            <img src="/logo.svg" alt="Familia Guerrero" className="w-14 h-14" />
-          </div>
-          <h1 className="text-3xl font-serif font-bold italic" style={{ color: '#152238' }}>Familia Guerrero</h1>
-          <p className="text-sm mt-1" style={{ color: '#64748B' }}>Preservando nuestro legado</p>
-        </div>
+    <div className="min-h-screen flex flex-col sm:flex-row" style={{ background: '#FFFDF7' }}>
+      {/* Left — Navy monogram panel */}
+      <div className="flex-1 flex flex-col items-center justify-center p-12 relative overflow-hidden" style={{ background: '#152238' }}>
+        {/* Gold line separator */}
+        <div className="absolute top-0 right-0 w-px h-full hidden sm:block" style={{ background: 'linear-gradient(to bottom, transparent, rgba(184,150,62,0.4), transparent)' }} />
+        <div className="absolute bottom-0 left-0 w-full h-px sm:hidden" style={{ background: 'linear-gradient(to right, transparent, rgba(184,150,62,0.4), transparent)' }} />
 
-        {/* Login Form */}
-        <div className="rounded-2xl shadow-xl p-6" style={{ backgroundColor: '#152238', border: '1px solid #E2E8F0' }}>
-          <h2 className="text-lg font-bold text-center mb-5" style={{ color: '#FFFFFF' }}>Iniciar sesion</h2>
+        <h1 className="font-serif italic leading-none mb-4" style={{ fontSize: 'clamp(140px, 18vw, 220px)', color: '#E8C84A', fontWeight: 400 }}>
+          G
+        </h1>
+        <div className="text-2xl mb-6" style={{ color: 'rgba(184,150,62,0.6)' }}>&#10086;</div>
+        <p className="font-serif italic text-5xl mb-2" style={{ color: '#FFFDF7', fontWeight: 500 }}>Familia Guerrero</p>
+        <p className="text-sm font-light uppercase tracking-[0.15em]" style={{ color: 'rgba(255,253,247,0.5)' }}>Preservando nuestro legado</p>
+      </div>
 
-          <form onSubmit={handleLogin} className="space-y-4">
-            <InputField icon={Mail} label="Correo" type="email" value={email} onChange={(e) => setEmail(e.target.value)} required placeholder="tucorreo@gmail.com" />
-            <InputField icon={Lock} label="Contrasena" type="password" value={password} onChange={(e) => setPassword(e.target.value)} required placeholder="Tu contrasena" />
+      {/* Right — Login form */}
+      <div className="flex-1 flex items-center justify-center p-10 sm:p-12" style={{ background: '#FFFDF7' }}>
+        <div className="w-full max-w-[360px]">
+          <h2 className="font-serif text-2xl mb-2" style={{ color: '#152238', fontWeight: 500 }}>Bienvenido</h2>
+          <p className="text-sm font-light mb-10" style={{ color: 'rgba(21,34,56,0.6)' }}>Ingresa tus credenciales para acceder al archivo familiar.</p>
 
+          <form onSubmit={handleLogin}>
+            {/* Email */}
+            <div className="mb-6">
+              <label className="block text-xs font-medium uppercase tracking-[0.1em] mb-2" style={{ color: 'rgba(21,34,56,0.5)' }}>
+                Correo electrónico
+              </label>
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                placeholder="tu@correo.com"
+                className="w-full bg-transparent border-0 border-b-[1.5px] py-2.5 font-sans text-base outline-none transition-colors"
+                style={{ borderColor: 'rgba(184,150,62,0.3)', color: '#152238' }}
+                onFocus={(e) => e.target.style.borderColor = '#B8963E'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(184,150,62,0.3)'}
+              />
+            </div>
+
+            {/* Password */}
+            <div className="mb-2">
+              <label className="block text-xs font-medium uppercase tracking-[0.1em] mb-2" style={{ color: 'rgba(21,34,56,0.5)' }}>
+                Contraseña
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                required
+                placeholder="••••••••"
+                className="w-full bg-transparent border-0 border-b-[1.5px] py-2.5 font-sans text-base outline-none transition-colors"
+                style={{ borderColor: 'rgba(184,150,62,0.3)', color: '#152238' }}
+                onFocus={(e) => e.target.style.borderColor = '#B8963E'}
+                onBlur={(e) => e.target.style.borderColor = 'rgba(184,150,62,0.3)'}
+              />
+            </div>
+
+            {/* Forgot password */}
+            <button
+              type="button"
+              onClick={handleForgotPassword}
+              className="text-sm transition-opacity hover:opacity-100"
+              style={{ color: '#B8963E', opacity: 0.8 }}
+            >
+              Olvidé mi contraseña
+            </button>
+
+            {/* Error */}
             {error && (
-              <p className="text-xs text-center py-2 px-3 rounded-lg" style={{ backgroundColor: '#FEE2E2', color: '#DC2626' }}>{error}</p>
+              <p className="text-xs text-center py-2 px-3 rounded-lg mt-4" style={{ backgroundColor: '#FEE2E2', color: '#DC2626' }}>{error}</p>
             )}
 
-            <button type="submit" disabled={loading} className="w-full py-3 rounded-xl font-bold text-white text-sm flex items-center justify-center gap-2 transition hover:opacity-90" style={{ backgroundColor: '#B8963E' }}>
-              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : <><LogIn className="w-4 h-4" /> Entrar</>}
+            {/* Submit */}
+            <button
+              type="submit"
+              disabled={loading}
+              className="w-full mt-8 py-3.5 font-sans text-sm font-medium uppercase tracking-[0.1em] transition-all hover:-translate-y-px active:translate-y-0 flex items-center justify-center gap-2"
+              style={{ background: '#B8963E', color: '#FFFDF7', border: 'none' }}
+              onMouseEnter={(e) => e.target.style.background = '#a07e2f'}
+              onMouseLeave={(e) => e.target.style.background = '#B8963E'}
+            >
+              {loading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Entrar'}
             </button>
           </form>
 
-          <div className="text-center mt-3">
-            <button
-              type="button"
-              onClick={async () => {
-                if (!email) { setError('Escribe tu correo primero'); return }
-                try {
-                  const { sendPasswordResetEmail } = await import('firebase/auth')
-                  await sendPasswordResetEmail(auth, email)
-                  setError('')
-                  alert('Se envio un correo para restablecer tu contrasena')
-                } catch (e) { setError('Error al enviar correo de recuperacion') }
-              }}
-              className="text-xs font-medium transition"
-              style={{ color: '#B8976A' }}
-            >
-              Olvide mi contrasena
-            </button>
-          </div>
-
-          {/* TODO: Descomentar cuando se abra el registro al publico */}
-          {false && <><div className="flex items-center gap-3 my-5">
-            <div className="flex-1 h-px" style={{ backgroundColor: '#E2E8F0' }} />
-            <span className="text-[11px] uppercase tracking-wider" style={{ color: '#64748B' }}>o</span>
-            <div className="flex-1 h-px" style={{ backgroundColor: '#E2E8F0' }} />
-          </div>
-
-          <button
-            onClick={() => { setShowRegister(true); setRegStep(1); setRegError(''); setReg({ name: '', nickname: '', phone: '', location: '', email: '', password: '', confirmPassword: '', relationship: '' }) }}
-            className="w-full py-3 rounded-xl font-bold text-sm flex items-center justify-center gap-2 transition hover:opacity-90"
-            style={{ backgroundColor: '#6B9080', color: 'white' }}
-          >
-            <UserPlus className="w-4 h-4" /> Soy nuevo, registrarme
-          </button></>}
+          <p className="mt-8 text-center text-xs font-light italic" style={{ color: 'rgba(21,34,56,0.4)' }}>
+            Solo para miembros de la familia Guerrero
+          </p>
         </div>
-
-        <p className="text-center text-[11px] mt-6" style={{ color: '#64748B' }}>Solo para miembros de la familia Guerrero</p>
       </div>
-
-      {/* Register Modal */}
-      <AnimatePresence>
-        {showRegister && (
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4"
-            style={{ backgroundColor: 'rgba(0,0,0,0.5)' }}
-          >
-            <motion.div
-              initial={{ scale: 0.9, opacity: 0 }}
-              animate={{ scale: 1, opacity: 1 }}
-              exit={{ scale: 0.9, opacity: 0 }}
-              className="w-full max-w-md rounded-2xl shadow-2xl overflow-hidden"
-              style={{ backgroundColor: '#152238' }}
-            >
-              {/* Modal Header */}
-              <div className="flex items-center justify-between px-6 py-4 border-b" style={{ borderColor: 'rgba(255,255,255,0.8)', background: 'linear-gradient(135deg, #B8963E15, #B8976A10)' }}>
-                <div>
-                  <h2 className="text-lg font-serif font-bold" style={{ color: '#FFFFFF' }}>Crear cuenta</h2>
-                  <p className="text-[11px]" style={{ color: '#64748B' }}>Paso {regStep} de 2</p>
-                </div>
-                <button onClick={() => setShowRegister(false)} className="p-1.5 rounded-full hover:bg-[#152238]/10 transition">
-                  <X className="w-5 h-5" style={{ color: '#FFFFFF' }} />
-                </button>
-              </div>
-
-              {/* Progress */}
-              <div className="flex gap-2 px-6 pt-4">
-                <div className="flex-1 h-1 rounded-full" style={{ backgroundColor: '#B8963E' }} />
-                <div className="flex-1 h-1 rounded-full" style={{ backgroundColor: regStep >= 2 ? '#B8963E' : '#E2E8F0' }} />
-              </div>
-
-              {/* Modal Body */}
-              <div className="px-6 py-5 max-h-[70vh] overflow-y-auto">
-                {regStep === 1 && (
-                  <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-4">
-                    <div className="text-center mb-2">
-                      <div className="w-14 h-14 rounded-full mx-auto mb-2 flex items-center justify-center" style={{ backgroundColor: '#6B908015' }}>
-                        <User className="w-7 h-7" style={{ color: '#6B9080' }} />
-                      </div>
-                      <p className="text-sm font-medium" style={{ color: '#FFFFFF' }}>Datos personales</p>
-                      <p className="text-[11px]" style={{ color: '#64748B' }}>Para que la familia te identifique</p>
-                    </div>
-
-                    <InputField icon={User} label="Nombre completo *" color="#6B9080" type="text" value={reg.name} onChange={(e) => setReg(p => ({ ...p, name: e.target.value }))} placeholder="Tu nombre completo" />
-                    <InputField icon={Heart} label="Apodo" color="#6B9080" type="text" value={reg.nickname} onChange={(e) => setReg(p => ({ ...p, nickname: e.target.value }))} placeholder="Como te dicen (opcional)" />
-                    <InputField icon={Phone} label="Telefono" color="#6B9080" type="tel" value={reg.phone} onChange={(e) => setReg(p => ({ ...p, phone: e.target.value }))} placeholder="Tu numero (opcional)" />
-                    <InputField icon={MapPin} label="Donde vives" color="#6B9080" type="text" value={reg.location} onChange={(e) => setReg(p => ({ ...p, location: e.target.value }))} placeholder="Ciudad, Estado (opcional)" />
-
-                    <div>
-                      <label className={labelStyle} style={{ color: '#6B9080' }}>Parentesco</label>
-                      <div className="relative">
-                        <Users className="absolute left-3 top-3 w-4 h-4" style={{ color: '#B8976A' }} />
-                        <select
-                          value={reg.relationship}
-                          onChange={(e) => setReg(p => ({ ...p, relationship: e.target.value }))}
-                          className={inputStyle}
-                          style={{ borderColor: 'rgba(255,255,255,0.8)', color: '#FFFFFF', backgroundColor: 'rgba(255,255,255,0.05)' }}
-                        >
-                          <option value="">Selecciona tu parentesco</option>
-                          <option value="hijo">Hijo(a) de los abuelos</option>
-                          <option value="nieto">Nieto(a)</option>
-                          <option value="bisnieto">Bisnieto(a)</option>
-                          <option value="esposo">Esposo(a) de familiar</option>
-                          <option value="otro">Otro</option>
-                        </select>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-
-                {regStep === 2 && (
-                  <motion.div initial={{ opacity: 0, x: 20 }} animate={{ opacity: 1, x: 0 }} className="space-y-4">
-                    <div className="text-center mb-2">
-                      <div className="w-14 h-14 rounded-full mx-auto mb-2 flex items-center justify-center" style={{ backgroundColor: '#B8963E15' }}>
-                        <Lock className="w-7 h-7" style={{ color: '#B8963E' }} />
-                      </div>
-                      <p className="text-sm font-medium" style={{ color: '#FFFFFF' }}>Datos de acceso</p>
-                      <p className="text-[11px]" style={{ color: '#64748B' }}>Para iniciar sesion</p>
-                    </div>
-
-                    {/* Show name summary */}
-                    <div className="flex items-center gap-3 p-3 rounded-xl" style={{ backgroundColor: '#6B908010', border: '1px solid #6B908020' }}>
-                      <div className="w-10 h-10 rounded-full flex items-center justify-center" style={{ backgroundColor: '#6B908020' }}>
-                        <User className="w-5 h-5" style={{ color: '#6B9080' }} />
-                      </div>
-                      <div>
-                        <p className="text-sm font-bold" style={{ color: '#FFFFFF' }}>{reg.name}</p>
-                        {reg.nickname && <p className="text-[11px]" style={{ color: '#6B9080' }}>"{reg.nickname}"</p>}
-                      </div>
-                    </div>
-
-                    <InputField icon={Mail} label="Correo electronico *" type="email" value={reg.email} onChange={(e) => setReg(p => ({ ...p, email: e.target.value }))} placeholder="tucorreo@gmail.com" />
-                    <InputField icon={Lock} label="Contrasena *" type="password" value={reg.password} onChange={(e) => setReg(p => ({ ...p, password: e.target.value }))} placeholder="Minimo 6 caracteres" />
-                    <InputField icon={Lock} label="Confirmar contrasena *" type="password" value={reg.confirmPassword} onChange={(e) => setReg(p => ({ ...p, confirmPassword: e.target.value }))} placeholder="Repite tu contrasena" />
-                  </motion.div>
-                )}
-
-                {regError && (
-                  <p className="text-xs text-center py-2 px-3 rounded-lg mt-3" style={{ backgroundColor: '#FEE2E2', color: '#DC2626' }}>{regError}</p>
-                )}
-              </div>
-
-              {/* Modal Footer */}
-              <div className="flex gap-3 px-6 py-4 border-t" style={{ borderColor: 'rgba(255,255,255,0.8)' }}>
-                <button
-                  onClick={() => regStep === 1 ? setShowRegister(false) : setRegStep(1)}
-                  className="flex-1 py-2.5 rounded-xl font-bold text-sm transition"
-                  style={{ color: '#FFFFFF', border: '2px solid #E2E8F0' }}
-                >
-                  {regStep === 1 ? 'Cancelar' : 'Atras'}
-                </button>
-                <button
-                  onClick={handleRegister}
-                  disabled={regLoading}
-                  className="flex-1 py-2.5 rounded-xl font-bold text-white text-sm flex items-center justify-center gap-2 transition hover:opacity-90"
-                  style={{ backgroundColor: regStep === 1 ? '#6B9080' : '#B8963E' }}
-                >
-                  {regLoading ? (
-                    <Loader2 className="w-5 h-5 animate-spin" />
-                  ) : regStep === 1 ? (
-                    'Siguiente'
-                  ) : (
-                    <><UserPlus className="w-4 h-4" /> Crear cuenta</>
-                  )}
-                </button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   )
 }

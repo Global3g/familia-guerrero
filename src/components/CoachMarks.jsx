@@ -43,27 +43,28 @@ export default function CoachMarks() {
           initial={{ opacity: 0, scale: 0.9, y: 20 }}
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9 }}
-          className="relative bg-white rounded-2xl shadow-2xl max-w-sm w-full mx-4 p-6 text-center"
+          className="relative rounded-2xl shadow-2xl max-w-sm w-full mx-4 p-6 text-center"
+          style={{ background: '#152238', border: '2px solid rgba(184,150,62,0.3)' }}
         >
-          <button onClick={finish} className="absolute top-3 right-3 text-white/30 hover:text-white/60">
-            <X className="w-5 h-5" />
+          <button onClick={finish} className="absolute top-3 right-3 opacity-40 hover:opacity-70 transition">
+            <X className="w-5 h-5 text-white" />
           </button>
 
-          <div className="w-14 h-14 rounded-full bg-[#B8963E]/10 flex items-center justify-center mx-auto mb-4">
-            <span className="text-2xl font-bold text-[#B8963E]">{step + 1}</span>
+          <div className="w-14 h-14 rounded-full flex items-center justify-center mx-auto mb-4" style={{ background: 'rgba(184,150,62,0.15)' }}>
+            <span className="text-2xl font-bold" style={{ color: '#B8963E' }}>{step + 1}</span>
           </div>
 
           <h3 className="text-lg font-serif font-bold text-white mb-2">{current.title}</h3>
-          <p className="text-sm text-white/70 leading-relaxed mb-6">{current.text}</p>
+          <p className="text-sm leading-relaxed mb-6" style={{ color: 'rgba(255,255,255,0.7)' }}>{current.text}</p>
 
           <div className="flex items-center justify-between">
             <button
               onClick={() => step > 0 ? setStep(step - 1) : finish()}
-              className="flex items-center gap-1 text-sm text-white/50 hover:text-white"
+              className="flex items-center gap-1 text-sm transition" style={{ color: 'rgba(255,255,255,0.5)' }}
             >
               {step > 0 ? <><ChevronLeft className="w-4 h-4" /> Anterior</> : 'Saltar'}
             </button>
-            <span className="text-xs text-white/30">{step + 1} / {steps.length}</span>
+            <span className="text-xs" style={{ color: 'rgba(255,255,255,0.3)' }}>{step + 1} / {steps.length}</span>
             <button
               onClick={() => step < steps.length - 1 ? setStep(step + 1) : finish()}
               className="flex items-center gap-1 px-4 py-2 rounded-lg bg-[#B8963E] text-white text-sm font-medium hover:bg-[#B8963E]/90 transition"
