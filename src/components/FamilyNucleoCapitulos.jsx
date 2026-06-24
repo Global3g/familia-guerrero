@@ -124,8 +124,8 @@ export default function FamilyNucleoCapitulos({ selectedMember, onClickPhoto }) 
           </div>
 
           {/* Parents photos + info */}
-          <div className="flex flex-col sm:flex-row items-start justify-center gap-36 mb-10">
-            <div className="text-center w-[280px]">
+          <div className="flex flex-col items-center sm:flex-row sm:items-start sm:justify-center gap-6 sm:gap-36 mb-10">
+            <div className="text-center w-full sm:w-[280px]">
               <div className="flex justify-center"><PersonPhoto person={selectedMember} size="xl" onClickPhoto={onClickPhoto} /></div>
               <h3 className="text-2xl font-serif italic mt-4" style={{ color: '#1C1C1C' }}>
                 {selectedMember.name || selectedMember.fullName}<DeceasedCross deathDate={selectedMember.deathDate} />
@@ -135,7 +135,7 @@ export default function FamilyNucleoCapitulos({ selectedMember, onClickPhoto }) 
             </div>
 
             {sp && (
-              <div className="text-center w-[280px]">
+              <div className="text-center w-full sm:w-[280px]">
                 <div className="flex justify-center"><PersonPhoto person={typeof sp === 'object' ? sp : { name: spouseName }} size="xl" onClickPhoto={onClickPhoto} /></div>
                 <h3 className="text-2xl font-serif italic mt-4" style={{ color: '#1C1C1C' }}>
                   {spouseName}{typeof sp === 'object' && <DeceasedCross deathDate={sp.deathDate} />}
@@ -221,8 +221,8 @@ export default function FamilyNucleoCapitulos({ selectedMember, onClickPhoto }) 
               {childSpouseName ? (
                 /* Married: side-by-side photos with info below */
                 <div className="mb-10">
-                  <div className="flex flex-col sm:flex-row items-start justify-center gap-44 mb-8">
-                    <div className="text-center w-[220px]">
+                  <div className="flex flex-col items-center sm:flex-row sm:items-start sm:justify-center gap-6 sm:gap-44 mb-8">
+                    <div className="text-center w-full sm:w-[220px]">
                       <div className="flex justify-center"><PersonPhoto person={child} size="lg" onClickPhoto={onClickPhoto} /></div>
                       <h3 className="text-xl font-serif italic mt-3" style={{ color: '#1C1C1C' }}>
                         {child.name}<DeceasedCross deathDate={child.deathDate} />
@@ -231,7 +231,7 @@ export default function FamilyNucleoCapitulos({ selectedMember, onClickPhoto }) 
                       <AgeBadge birthDate={child.birthDate} deathDate={child.deathDate} />
                     </div>
 
-                    <div className="text-center w-[220px]">
+                    <div className="text-center w-full sm:w-[220px]">
                       <div className="flex justify-center"><PersonPhoto person={typeof childSpouse === 'object' ? childSpouse : { name: childSpouseName }} size="lg" onClickPhoto={onClickPhoto} /></div>
                       <h3 className="text-xl font-serif italic mt-3" style={{ color: '#1C1C1C' }}>
                         {childSpouseName}{typeof childSpouse === 'object' && <DeceasedCross deathDate={childSpouse.deathDate} />}
@@ -261,7 +261,7 @@ export default function FamilyNucleoCapitulos({ selectedMember, onClickPhoto }) 
 
                   {/* Bios */}
                   {(child.bio || (typeof childSpouse === 'object' && childSpouse.bio)) && (
-                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-44 mt-6 max-w-4xl mx-auto">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-44 mt-6 max-w-4xl mx-auto">
                       {child.bio && (
                         <div className="p-6" style={{ background: bgColor === '#FFFDF7' ? '#F5F0E8' : '#FFFDF7', border: '1px solid rgba(184,150,62,0.15)' }}>
                           <div className="w-8 h-0.5 mb-4" style={{ background: accent }} />
@@ -317,7 +317,7 @@ export default function FamilyNucleoCapitulos({ selectedMember, onClickPhoto }) 
                     </p>
                   </div>
 
-                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-44 gap-y-8">
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 sm:gap-x-44 sm:gap-y-8">
                     {childChildren.map((gc, gi) => {
                       const gcSpouse = gc.spouse
                       const gcSpouseName = gcSpouse ? (typeof gcSpouse === 'object' ? gcSpouse.name : gcSpouse) : null
