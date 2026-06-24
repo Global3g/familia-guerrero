@@ -1458,7 +1458,7 @@ export default function FamilyTree() {
                                   style={familiaView === 'capitulos' || familiaView === 'tarjetas' ? { background: 'rgba(184,150,62,0.3)' } : {}}
                                 >
                                   <BookOpen className="w-4 h-4" />
-                                  <span className="hidden sm:inline">Capítulos</span>
+                                  <span className="hidden sm:inline">Ramas</span>
                                 </button>
                                 <button
                                   onClick={() => setFamiliaView('arbol-visual')}
@@ -1472,29 +1472,12 @@ export default function FamilyTree() {
                                   <GitBranch className="w-4 h-4" />
                                   <span className="hidden sm:inline">Árbol</span>
                                 </button>
-                                <button
-                                  onClick={() => setFamiliaView('arbol')}
-                                  className={`flex items-center gap-1.5 px-3 py-2 rounded-lg text-xs sm:text-sm font-medium transition-all ${
-                                    familiaView === 'arbol'
-                                      ? 'text-white shadow-md'
-                                      : 'text-white/60 hover:text-white'
-                                  }`}
-                                  style={familiaView === 'arbol' ? { background: 'rgba(184,150,62,0.3)' } : {}}
-                                >
-                                  <GitBranch className="w-4 h-4" />
-                                  <span className="hidden sm:inline">Interactivo</span>
-                                </button>
                               </div>
                             </div>
                           )}
                       {/* TAB: Familia - Swim Lanes Tree View (fullscreen) */}
                       {familiaView === 'arbol-visual' && selectedMember.children?.length > 0 && (
                         <NucleusSwimLanes member={selectedMember} onClose={() => setFamiliaView('capitulos')} onClickPhoto={setLightboxPhoto} />
-                      )}
-
-                      {/* TAB: Familia - Interactive Tree View */}
-                      {familiaView === 'arbol' && selectedMember.children?.length > 0 && (
-                        <NucleusTreeView member={selectedMember} />
                       )}
 
                       {/* TAB: Familia - Capítulos View (also default for legacy 'tarjetas' state) */}

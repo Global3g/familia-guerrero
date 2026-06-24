@@ -208,7 +208,7 @@ export default function FamilyNucleoCapitulos({ selectedMember, onClickPhoto }) 
                   {String(i + 1).padStart(2, '0')}
                 </div>
                 <p className="text-xs tracking-[6px] uppercase relative" style={{ color: '#B8963E' }}>
-                  Capítulo {romanNumerals[i] || i + 1}
+                  Rama {romanNumerals[i] || i + 1}
                 </p>
                 <h2 className="text-3xl sm:text-4xl font-serif italic font-normal relative mt-2" style={{ color: '#1C1C1C' }}>
                   {child.name}<DeceasedCross deathDate={child.deathDate} />
