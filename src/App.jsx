@@ -22,7 +22,7 @@ import ShareExport from './components/ShareExport'
 import PresentationMode, { PresentationButton } from './components/PresentationMode'
 import ExportTree from './components/ExportTree'
 import Gamification from './components/Gamification'
-import FamilyChat from './components/FamilyChat'
+// import FamilyChat from './components/FamilyChat' // ponytail: removido, nadie lo usa teniendo WhatsApp
 import FamilyCalendar from './components/FamilyCalendar'
 import WeeklyBanner from './components/WeeklyBanner'
 import CoachMarks from './components/CoachMarks'
@@ -292,7 +292,7 @@ function App() {
       )}
 
       <PresentationMode isOpen={showPresentation} onClose={() => setShowPresentation(false)} />
-      <FamilyChat />
+      {/* ponytail: FamilyChat removido */}
       <CoachMarks />
       <Footer />
     </div>
