@@ -83,6 +83,7 @@ export default function Navbar({ user, isAdmin, onLogout }) {
           {/* Mobile: Salir directo + Hamburguesa */}
           {user && (
             <div className="md:hidden flex items-center gap-1">
+              <NotificationBell />
               <button
                 onClick={onLogout}
                 className={`flex items-center gap-1.5 font-sans text-sm font-medium px-3 py-2 rounded-lg transition-colors duration-300 ${
@@ -123,11 +124,6 @@ export default function Navbar({ user, isAdmin, onLogout }) {
           <div className="flex flex-col px-4 py-4 gap-2">
             <SearchBar />
 
-            {/* Notification Bell */}
-            <div className="flex items-center gap-3 px-4 py-3 rounded-lg hover:bg-[#152238]/5 transition-colors duration-200">
-              <NotificationBell />
-              <span className="font-sans text-base font-medium text-white">Notificaciones</span>
-            </div>
 
             {/* Logout */}
             <button
