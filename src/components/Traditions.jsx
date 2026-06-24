@@ -13,12 +13,9 @@ import {
   Trash2,
   Save,
   Loader2,
-  X,
 } from "lucide-react";
 
-
 import { db } from "../firebase/config";
-import { useAuth } from "../firebase/useAuth";
 import { collection, getDocs, doc, setDoc, deleteDoc } from "firebase/firestore";
 import Modal from "./Modal";
 
@@ -39,9 +36,6 @@ const iconMap = {
   wine: Wine,
   scroll: ScrollText,
 };
-
-const inputClass = 'w-full rounded-lg border-4 border-white/80 bg-white/5 px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-[#6B9080]/30'
-const labelClass = 'block text-xs font-medium text-white mb-1'
 
 const iconOptions = [
   { value: 'utensils', label: 'Comida' },
@@ -65,85 +59,97 @@ const saveTradition = async (id, data) => {
 }
 const deleteTradition = async (id) => { await deleteDoc(doc(db, 'traditions', id)) }
 
-const getValues = async () => {
-  try {
-    const snap = await getDocs(collection(db, 'familyValues'))
-    return snap.docs.map(d => ({ id: d.id, ...d.data() }))
-  } catch (e) { return [] }
-}
-const saveValue = async (id, data) => {
-  const docId = id || doc(collection(db, 'familyValues')).id
-  await setDoc(doc(db, 'familyValues', docId), data, { merge: true })
-}
-const deleteValue = async (id) => { await deleteDoc(doc(db, 'familyValues', id)) }
+const emptyForm = { author: '', description: '', icon: 'utensils' }
 
 export default function Traditions() {
-  const { isAdmin } = useAuth()
   const [traditions, setTraditions] = useState([])
-  const [values, setValues] = useState([])
-  const [editingTrad, setEditingTrad] = useState(null)
-  const [showTradForm, setShowTradForm] = useState(false)
-  const [deletingTrad, setDeletingTrad] = useState(null)
-  const [newValue, setNewValue] = useState('')
+  const [loading, setLoading] = useState(true)
+  const [saving, setSaving] = useState(false)
 
-  // Tradition form state
-  const [tradForm, setTradForm] = useState({ title: '', description: '', icon: 'utensils' })
-  const [tradLoading, setTradLoading] = useState(false)
+  // Modal state
+  const [formOpen, setFormOpen] = useState(false)
+  const [deleteOpen, setDeleteOpen] = useState(false)
+  const [editingId, setEditingId] = useState(null)
+  const [deleteTarget, setDeleteTarget] = useState(null)
+  const [form, setForm] = useState(emptyForm)
 
   useEffect(() => {
-    loadData()
+    fetchTraditions()
   }, [])
 
-  const loadData = async () => {
-    const [t, v] = await Promise.all([getTraditions(), getValues()])
-    if (t.length > 0) setTraditions(t)
-    if (v.length > 0) setValues(v)
-  }
-
-  const displayTraditions = traditions
-  const displayValues = values
-
-  const openTradForm = (trad = null) => {
-    setTradForm(trad ? { title: trad.title, description: trad.description, icon: trad.icon || 'utensils' } : { title: '', description: '', icon: 'utensils' })
-    setEditingTrad(trad)
-    setShowTradForm(true)
-  }
-
-  const handleSaveTrad = async () => {
-    setTradLoading(true)
+  const fetchTraditions = async () => {
+    setLoading(true)
     try {
-      await saveTradition(editingTrad?.id || null, tradForm)
-      setShowTradForm(false)
-      setEditingTrad(null)
-      await loadData()
-    } catch (e) {
-      console.error(e)
+      const list = await getTraditions()
+      setTraditions(list)
+    } catch (err) {
+      console.error('Error fetching traditions:', err)
     } finally {
-      setTradLoading(false)
+      setLoading(false)
     }
   }
 
-  const handleDeleteTrad = async () => {
-    if (deletingTrad?.id && !deletingTrad.id.startsWith('default')) {
-      await deleteTradition(deletingTrad.id)
-      await loadData()
+  // ---------- Save (create / update) ----------
+  const handleSave = async () => {
+    if (!form.author.trim() || !form.description.trim()) return
+    setSaving(true)
+    try {
+      await saveTradition(editingId, {
+        author: form.author.trim(),
+        description: form.description.trim(),
+        icon: form.icon,
+      })
+      await fetchTraditions()
+      closeForm()
+    } catch (err) {
+      console.error('Error saving tradition:', err)
+    } finally {
+      setSaving(false)
     }
-    setDeletingTrad(null)
   }
 
-  const handleAddValue = async () => {
-    if (!newValue.trim()) return
-    await saveValue(null, { value: newValue.trim() })
-    setNewValue('')
-    await loadData()
+  // ---------- Delete ----------
+  const handleDelete = async () => {
+    if (!deleteTarget) return
+    setSaving(true)
+    try {
+      await deleteTradition(deleteTarget.id)
+      await fetchTraditions()
+      setDeleteOpen(false)
+      setDeleteTarget(null)
+    } catch (err) {
+      console.error('Error deleting tradition:', err)
+    } finally {
+      setSaving(false)
+    }
   }
 
-  const handleDeleteValue = async (v) => {
-    if (!confirm(`¿Eliminar "${v.value || 'este valor'}"?`)) return
-    if (v.id && !v.id.startsWith('default')) {
-      await deleteValue(v.id)
-      await loadData()
-    }
+  // ---------- Helpers ----------
+  const openCreate = () => {
+    setEditingId(null)
+    setForm(emptyForm)
+    setFormOpen(true)
+  }
+
+  const openEdit = (trad) => {
+    setEditingId(trad.id)
+    setForm({
+      author: trad.author || trad.submittedBy || '',
+      description: trad.description || trad.title || '',
+      icon: trad.icon || 'utensils',
+    })
+    setFormOpen(true)
+  }
+
+  const openDelete = (trad) => {
+    setDeleteTarget(trad)
+    setDeleteOpen(true)
+  }
+
+  const closeForm = () => {
+    setFormOpen(false)
+    setEditingId(null)
+    setForm(emptyForm)
   }
 
   return (
@@ -169,186 +175,194 @@ export default function Traditions() {
         >
           <p className="text-[11px] font-sans font-medium uppercase tracking-[5px] mb-4" style={{ color: '#8A8A8A' }}>Nuestras raices</p>
           <h2 className="text-4xl sm:text-5xl md:text-6xl font-serif font-bold italic mb-5" style={{ color: '#1C1C1C' }}>
-            Tradiciones y Valores
+            Tradiciones
           </h2>
           <div className="w-8 h-[1px] bg-[#B8963E] mx-auto mb-5" />
           <p className="text-base max-w-md mx-auto leading-relaxed" style={{ color: '#4A4A4A' }}>
-            Las costumbres que nos unen y los principios que nos gu&iacute;an.
+            Las costumbres que nos unen y nos definen como familia.
           </p>
         </motion.div>
 
-        {/* Traditions grid */}
-        {displayTraditions.length > 0 ? (
-          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3 mb-10">
-            {displayTraditions.map((tradition, index) => {
-              const IconComponent = iconMap[tradition.icon] || Sparkles;
-              return (
-                <motion.article
-                  key={tradition.id || tradition.title}
-                  variants={fadeIn}
-                  initial="hidden"
-                  whileInView="visible"
-                  viewport={{ once: true, margin: "-50px" }}
-                  custom={index * 0.15 + 0.2}
-                  className="group relative rounded-2xl p-6 hover:shadow-lg transition-all duration-500"
-                  style={{ backgroundColor: '#FFFDF7', border: '2px solid rgba(184,150,62,0.3)' }}
-                >
-                  {/* Edit/Delete */}
-                  {isAdmin && (
-                    <div className="absolute top-3 right-3 flex gap-1.5 z-10">
-                      <button onClick={() => openTradForm(tradition)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/5 hover:bg-[#B8976A]/10 shadow text-[#B8976A] transition">
-                        <Pencil className="w-3.5 h-3.5" />
-                      </button>
-                      <button onClick={() => setDeletingTrad(tradition)} className="w-7 h-7 rounded-full flex items-center justify-center bg-white/5 hover:bg-red-500/10 shadow text-red-400 hover:text-red-600 transition">
-                        <Trash2 className="w-3.5 h-3.5" />
-                      </button>
-                    </div>
-                  )}
+        {/* Add button */}
+        <div className="flex justify-center mb-10">
+          <motion.button
+            whileHover={{ scale: 1.04 }}
+            whileTap={{ scale: 0.97 }}
+            onClick={openCreate}
+            className="inline-flex items-center gap-2 px-6 py-3 rounded-full text-white font-semibold shadow-lg transition-colors"
+            style={{ backgroundColor: '#B8963E' }}
+          >
+            <Plus className="w-5 h-5" />
+            Agregar tradicion
+          </motion.button>
+        </div>
 
-                  <div className="mb-4 w-12 h-12 rounded-xl bg-gradient-to-br from-[#6B9080]/15 to-[#B8976A]/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
-                    <IconComponent className="w-6 h-6" style={{ color: '#B8963E' }} />
-                  </div>
-                  <h3 className="font-serif text-xl font-bold mb-2" style={{ color: '#1C1C1C' }}>{tradition.description || tradition.title}</h3>
-                  {tradition.submittedBy && (
-                    <p className="font-sans text-sm text-[#B8976A] mt-3 font-medium">— {tradition.submittedBy}</p>
-                  )}
-                </motion.article>
-              );
-            })}
+        {/* Loading */}
+        {loading && (
+          <div className="flex justify-center py-16">
+            <Loader2 className="w-8 h-8 text-[#B8963E] animate-spin" />
           </div>
-        ) : (
-          <div className="text-center py-16 mb-10">
-            <div className="w-16 h-16 rounded-full bg-[#B8963E]/10 flex items-center justify-center mx-auto mb-4">
-              <UtensilsCrossed className="w-8 h-8 text-[#B8963E]/50" />
+        )}
+
+        {/* Empty state */}
+        {!loading && traditions.length === 0 && (
+          <motion.div
+            variants={fadeIn}
+            initial="hidden"
+            whileInView="visible"
+            viewport={{ once: true, margin: "-50px" }}
+            custom={0.2}
+            className="max-w-md mx-auto"
+          >
+            <div className="text-center py-16">
+              <div className="w-16 h-16 rounded-full bg-[#B8963E]/10 flex items-center justify-center mx-auto mb-4">
+                <UtensilsCrossed className="w-8 h-8 text-[#B8963E]/50" />
+              </div>
+              <p className="text-lg font-serif font-bold mb-2" style={{ color: '#4A4A4A' }}>Sin tradiciones todavia</p>
+              <p className="text-sm" style={{ color: '#8A8A8A' }}>Registra las tradiciones que hacen unica a tu familia</p>
             </div>
-            <p className="text-lg font-serif font-bold mb-2" style={{ color: '#4A4A4A' }}>Sin tradiciones todavia</p>
-            <p className="text-sm mb-6" style={{ color: '#8A8A8A' }}>Registra las tradiciones que hacen unica a tu familia</p>
-            {isAdmin && (
-              <button
-                onClick={() => openTradForm()}
-                className="inline-flex items-center gap-2 px-6 py-3 rounded-xl bg-[#B8963E] text-white hover:bg-[#B8963E]/90 transition font-medium shadow-md"
-              >
-                <Plus className="w-5 h-5" />
-                Agregar primera tradicion
-              </button>
-            )}
-          </div>
+          </motion.div>
         )}
 
-        {/* Add tradition button */}
-        {displayTraditions.length > 0 && isAdmin && (
-          <div className="flex justify-center mb-20">
-            <button onClick={() => openTradForm()} className="flex items-center gap-2 px-6 py-3 rounded-xl border-2 border-dashed border-[#6B9080]/40 text-[#6B9080] hover:bg-[#6B9080]/5 hover:border-[#6B9080] transition font-medium">
-              <Plus className="w-5 h-5" /> Agregar tradicion
-            </button>
-          </div>
-        )}
-
-        {/* Values section */}
-        <motion.div
-          variants={fadeIn}
-          initial="hidden"
-          whileInView="visible"
-          viewport={{ once: true, margin: "-50px" }}
-          custom={0}
-          className="text-center"
-        >
-          <h3 className="font-serif text-2xl sm:text-3xl font-bold mb-8" style={{ color: '#1C1C1C' }}>
-            Nuestros Valores
-          </h3>
-
-          {displayValues.length > 0 ? (
-            <div className="flex flex-wrap justify-center gap-3 max-w-3xl mx-auto mb-6">
-              {displayValues.map((v, index) => {
-                const val = typeof v === 'string' ? v : v.value
+        {/* Traditions grid */}
+        {!loading && traditions.length > 0 && (
+          <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+            <AnimatePresence mode="popLayout">
+              {traditions.map((tradition, index) => {
+                const IconComponent = iconMap[tradition.icon] || Sparkles;
+                const author = tradition.author || tradition.submittedBy;
                 return (
-                  <motion.span
-                    key={v.id || val}
+                  <motion.article
+                    key={tradition.id}
+                    layout
                     variants={fadeIn}
                     initial="hidden"
                     whileInView="visible"
-                    viewport={{ once: true, margin: "-50px" }}
-                    custom={index * 0.1 + 0.1}
-                    className="group/val inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-white/60 border border-[#B8963E]/20 font-sans text-sm font-medium hover:bg-[#B8976A]/10 hover:border-[#B8976A]/30 transition-colors duration-300 backdrop-blur-sm shadow-sm" style={{ color: '#1C1C1C' }}
+                    viewport={{ once: true, margin: "-30px" }}
+                    custom={index * 0.08}
+                    exit={{ opacity: 0, scale: 0.9 }}
+                    className="group relative rounded-2xl p-6 hover:shadow-lg transition-all duration-500"
+                    style={{ backgroundColor: '#FFFDF7', border: '2px solid rgba(184,150,62,0.3)' }}
                   >
-                    <span className="w-1.5 h-1.5 rounded-full" style={{ backgroundColor: index % 3 === 0 ? "#6B9080" : index % 3 === 1 ? "#B8963E" : "#B8976A" }} />
-                    {val}
-                    {isAdmin && (
-                      <button onClick={() => handleDeleteValue(v)} className="opacity-0 group-hover/val:opacity-100 transition ml-1 text-red-400 hover:text-red-600">
-                        <X className="w-3 h-3" />
+                    {/* Edit/Delete */}
+                    <div className="absolute top-3 right-3 flex gap-1.5 z-10">
+                      <button
+                        onClick={() => openEdit(tradition)}
+                        className="p-1.5 rounded-full hover:bg-[#B8976A]/15 text-[#B8976A] transition-colors"
+                      >
+                        <Pencil className="w-4 h-4" />
                       </button>
-                    )}
-                  </motion.span>
-                )
-              })}
-            </div>
-          ) : (
-            <div className="mb-6">
-              <p className="text-sm mb-2" style={{ color: '#8A8A8A' }}>Agrega los valores que definen a tu familia</p>
-            </div>
-          )}
+                      <button
+                        onClick={() => openDelete(tradition)}
+                        className="p-1.5 rounded-full hover:bg-red-100 text-red-400 transition-colors"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
 
-          {/* Add value */}
-          {isAdmin && (
-            <div className="flex items-center justify-center gap-2 max-w-sm mx-auto">
-              <input
-                type="text"
-                value={newValue}
-                onChange={(e) => setNewValue(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleAddValue()}
-                placeholder="Nuevo valor..."
-                className="flex-1 px-4 py-2 rounded-full border border-[#B8963E]/30 bg-white/60 text-sm focus:outline-none focus:border-[#B8976A]/50" style={{ color: '#1C1C1C' }}
-              />
-              <button onClick={handleAddValue} className="w-10 h-10 rounded-full bg-[#B8976A] text-white flex items-center justify-center hover:bg-[#B8976A]/90 transition shadow">
-                <Plus className="w-5 h-5" />
-              </button>
-            </div>
-          )}
-        </motion.div>
+                    <div className="mb-4 w-12 h-12 rounded-xl bg-gradient-to-br from-[#6B9080]/15 to-[#B8976A]/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
+                      <IconComponent className="w-6 h-6" style={{ color: '#B8963E' }} />
+                    </div>
+                    <h3 className="font-serif text-xl font-bold mb-2" style={{ color: '#1C1C1C' }}>
+                      {tradition.description || tradition.title}
+                    </h3>
+                    {author && (
+                      <p className="font-sans text-sm text-[#B8976A] mt-3 font-medium">— {author}</p>
+                    )}
+                  </motion.article>
+                );
+              })}
+            </AnimatePresence>
+          </div>
+        )}
       </div>
 
-      {/* Tradition Form Modal */}
-      <Modal isOpen={showTradForm} onClose={() => setShowTradForm(false)} title={editingTrad ? 'Editar Tradicion' : 'Nueva Tradicion'}>
-        <div className="space-y-4">
+      {/* ---------- Form Modal ---------- */}
+      <Modal
+        isOpen={formOpen}
+        onClose={closeForm}
+        title={editingId ? 'Editar tradicion' : 'Nueva tradicion'}
+      >
+        <div className="space-y-5">
+          {/* Author */}
           <div>
-            <label className={labelClass}>Titulo</label>
-            <input type="text" value={tradForm.title} onChange={(e) => setTradForm(p => ({ ...p, title: e.target.value }))} className={inputClass} placeholder="Nombre de la tradicion" />
+            <label className="block text-sm font-semibold text-white mb-1">Autor</label>
+            <input
+              type="text"
+              placeholder="Quien comparte esta tradicion"
+              value={form.author}
+              onChange={(e) => setForm({ ...form, author: e.target.value })}
+              className="w-full rounded-xl border-4 border-white/80 bg-white/5 px-4 py-2.5 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#B8963E]/40"
+            />
           </div>
+
+          {/* Tradition */}
           <div>
-            <label className={labelClass}>Descripcion</label>
-            <textarea value={tradForm.description} onChange={(e) => setTradForm(p => ({ ...p, description: e.target.value }))} rows={3} className={inputClass + ' resize-none'} placeholder="Describe esta tradicion..." />
+            <label className="block text-sm font-semibold text-white mb-1">Tradicion</label>
+            <textarea
+              rows={4}
+              placeholder="Describe la tradicion familiar..."
+              value={form.description}
+              onChange={(e) => setForm({ ...form, description: e.target.value })}
+              className="w-full rounded-xl border-4 border-white/80 bg-white/5 px-4 py-2.5 text-white placeholder:text-white/30 focus:outline-none focus:ring-2 focus:ring-[#B8963E]/40 resize-none"
+            />
           </div>
+
+          {/* Icon */}
           <div>
-            <label className={labelClass}>Icono</label>
-            <select value={tradForm.icon} onChange={(e) => setTradForm(p => ({ ...p, icon: e.target.value }))} className={inputClass}>
+            <label className="block text-sm font-semibold text-white mb-1">Icono</label>
+            <select
+              value={form.icon}
+              onChange={(e) => setForm({ ...form, icon: e.target.value })}
+              className="w-full rounded-xl border-4 border-white/80 bg-white/5 px-4 py-2.5 text-white focus:outline-none focus:ring-2 focus:ring-[#B8963E]/40"
+            >
               {iconOptions.map(o => <option key={o.value} value={o.value}>{o.label}</option>)}
             </select>
           </div>
-          <div className="flex justify-end pt-2">
-            <button onClick={handleSaveTrad} disabled={tradLoading} className="flex items-center gap-2 rounded-lg bg-[#6B9080] px-6 py-2.5 text-white hover:bg-[#6B9080]/90 transition disabled:opacity-60">
-              {tradLoading ? <Loader2 className="h-5 w-5 animate-spin" /> : <Save className="h-5 w-5" />}
-              {tradLoading ? 'Guardando...' : 'Guardar'}
+
+          {/* Save button */}
+          <button
+            onClick={handleSave}
+            disabled={saving || !form.author.trim() || !form.description.trim()}
+            className="w-full flex items-center justify-center gap-2 py-3 rounded-xl text-white font-semibold transition-opacity disabled:opacity-40"
+            style={{ backgroundColor: '#6B9080' }}
+          >
+            {saving ? <Loader2 className="w-5 h-5 animate-spin" /> : <Save className="w-5 h-5" />}
+            {editingId ? 'Guardar cambios' : 'Publicar tradicion'}
+          </button>
+        </div>
+      </Modal>
+
+      {/* ---------- Delete Confirmation Modal ---------- */}
+      <Modal
+        isOpen={deleteOpen}
+        onClose={() => { setDeleteOpen(false); setDeleteTarget(null) }}
+        title="Eliminar tradicion"
+      >
+        <div className="space-y-5">
+          <p className="text-white/50">
+            Estas seguro de eliminar la tradicion de{' '}
+            <span className="font-bold text-white">{deleteTarget?.author || deleteTarget?.submittedBy}</span>? Esta
+            accion no se puede deshacer.
+          </p>
+          <div className="flex gap-3">
+            <button
+              onClick={() => { setDeleteOpen(false); setDeleteTarget(null) }}
+              className="flex-1 py-2.5 rounded-xl border-4 border-white/80 text-white font-semibold hover:bg-white/5 transition-colors"
+            >
+              Cancelar
+            </button>
+            <button
+              onClick={handleDelete}
+              disabled={saving}
+              className="flex-1 flex items-center justify-center gap-2 py-2.5 rounded-xl bg-red-500 text-white font-semibold hover:bg-red-600 transition-colors disabled:opacity-40"
+            >
+              {saving ? <Loader2 className="w-4 h-4 animate-spin" /> : <Trash2 className="w-4 h-4" />}
+              Eliminar
             </button>
           </div>
         </div>
       </Modal>
-
-      {/* Delete confirmation */}
-      <AnimatePresence>
-        {deletingTrad && (
-          <motion.div className="fixed inset-0 z-50 flex items-center justify-center p-4" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}>
-            <div className="absolute inset-0 bg-black/50 backdrop-blur-sm" onClick={() => setDeletingTrad(null)} />
-            <motion.div className="relative bg-[#1E293B] rounded-2xl shadow-2xl p-6 max-w-sm w-full text-center border-4 border-white/80" initial={{ scale: 0.9, opacity: 0 }} animate={{ scale: 1, opacity: 1 }} exit={{ scale: 0.9, opacity: 0 }}>
-              <h3 className="text-lg font-serif font-bold text-white mb-2">Eliminar tradicion</h3>
-              <p className="text-sm text-white/50 mb-6">¿Eliminar <strong>"{deletingTrad.title}"</strong>?</p>
-              <div className="flex gap-3 justify-center">
-                <button onClick={() => setDeletingTrad(null)} className="px-5 py-2 rounded-lg border-4 border-white/80 text-white hover:bg-white/5 transition text-sm font-medium">Cancelar</button>
-                <button onClick={handleDeleteTrad} className="px-5 py-2 rounded-lg bg-red-500 text-white hover:bg-red-600 transition text-sm font-medium">Eliminar</button>
-              </div>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
     </section>
   );
 }

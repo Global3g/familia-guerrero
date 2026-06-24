@@ -2217,7 +2217,8 @@ export default function FamilyTree() {
 
                       </div>
 
-                      {/* Actions footer - sticky frosted glass */}
+                      {/* Actions footer - only for admins */}
+                      {isAdmin && (
                       <div className="sticky bottom-0 -mx-6 sm:-mx-8 -mb-6 sm:-mb-8 px-6 sm:px-8 py-4 bg-[#1E293B]/90 backdrop-blur-md border-t border-white/80">
                         <div className="flex gap-3">
                           <button
@@ -2235,6 +2236,7 @@ export default function FamilyTree() {
                           </button>
                         </div>
                       </div>
+                      )}
                     </>
                   )
                 })()}

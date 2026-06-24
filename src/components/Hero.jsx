@@ -183,15 +183,6 @@ export default function Hero() {
         transition={{ delay: 0.4, duration: 1 }}
         className="text-center z-10 w-full mx-auto space-y-6"
       >
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 0.7, duration: 0.8 }}
-          className="text-[13px] font-sans tracking-[8px] uppercase"
-          style={{ color: '#B8963E' }}
-        >
-          Familia
-        </motion.p>
 
         <motion.h1
           initial={{ opacity: 0, scale: 0.98 }}
@@ -207,10 +198,10 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 0.9, duration: 0.8 }}
-          className="text-[13px] font-sans tracking-[5px] uppercase"
-          style={{ color: '#8A8A8A' }}
+          className="text-lg font-sans font-bold tracking-[5px] uppercase"
+          style={{ color: '#1C1C1C' }}
         >
-          Tres generaciones · Un legado
+          Cinco generaciones · Un legado
         </motion.p>
 
         {/* Decorative ornament */}
@@ -229,8 +220,8 @@ export default function Hero() {
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ delay: 1.2, duration: 0.8 }}
-          className="font-serif italic text-xl md:text-2xl max-w-xl mx-auto px-6 leading-relaxed"
-          style={{ color: '#8A8A8A' }}
+          className="font-serif italic font-semibold text-3xl md:text-4xl max-w-2xl mx-auto px-6 leading-relaxed"
+          style={{ color: '#1C1C1C' }}
         >
           {stats?.generations > 0 ? `${stats.generations} generaciones` : 'Generaciones'} unidas por el amor, la fe y la memoria
         </motion.p>
