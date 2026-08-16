@@ -196,16 +196,20 @@ function App() {
           transition={{ duration: 0.3 }}
         >
           <FamilyTree />
-          <div className="flex justify-center gap-3 py-4">
-            <PresentationButton onClick={() => setShowPresentation(true)} />
-            <ExportTree />
-          </div>
-          <Suspense fallback={<div className="flex justify-center py-20"><div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#B8963E', borderTopColor: 'transparent' }} /></div>}>
-            <InteractiveTree />
-          </Suspense>
-          <Suspense fallback={<div className="flex justify-center py-10"><div className="w-8 h-8 border-4 rounded-full animate-spin" style={{ borderColor: '#B8963E', borderTopColor: 'transparent' }} /></div>}>
-            <Tree3D />
-          </Suspense>
+          {isAdmin && (
+            <>
+              <div className="flex justify-center gap-3 py-4">
+                <PresentationButton onClick={() => setShowPresentation(true)} />
+                <ExportTree />
+              </div>
+              <Suspense fallback={<div className="flex justify-center py-20"><div className="w-10 h-10 border-4 rounded-full animate-spin" style={{ borderColor: '#B8963E', borderTopColor: 'transparent' }} /></div>}>
+                <InteractiveTree />
+              </Suspense>
+              <Suspense fallback={<div className="flex justify-center py-10"><div className="w-8 h-8 border-4 rounded-full animate-spin" style={{ borderColor: '#B8963E', borderTopColor: 'transparent' }} /></div>}>
+                <Tree3D />
+              </Suspense>
+            </>
+          )}
         </motion.div>
       )}
 

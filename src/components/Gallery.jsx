@@ -210,6 +210,8 @@ function PhotoCollage({ photos, onPhotoClick }) {
                 <img
                   src={photo.photoURL}
                   alt={photo.caption || ''}
+                  loading="lazy"
+                  decoding="async"
                   className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
                 />
                 <div className="absolute inset-0 bg-gradient-to-t from-black/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
@@ -271,7 +273,7 @@ function FilmStripMarquee({ photos }) {
               key={`strip-${i}`}
               className="flex-shrink-0 w-80 h-60 sm:w-96 sm:h-72 rounded-xl overflow-hidden relative group"
             >
-              <img src={photo.photoURL} alt={photo.caption || ''} className="w-full h-full object-cover" />
+              <img src={photo.photoURL} alt={photo.caption || ''} loading="lazy" decoding="async" className="w-full h-full object-cover" />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity">
                 <p className="absolute bottom-1.5 left-2 right-2 text-[9px] text-white truncate">{photo.caption}</p>
               </div>
@@ -405,7 +407,7 @@ function FeaturedPhoto({ photos, onPhotoClick }) {
           onClick={() => onPhotoClick(featured)}
         >
           <div className="h-64 sm:h-96 w-full relative">
-            <img src={featured.photoURL} alt={featured.caption} className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
+            <img src={featured.photoURL} alt={featured.caption} decoding="async" className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-105" />
             <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/20 to-transparent" />
             <div className="absolute bottom-0 left-0 right-0 p-6 sm:p-8">
               <p className="text-xl sm:text-2xl font-serif font-bold text-white mb-2">{featured.caption}</p>
@@ -901,7 +903,7 @@ export default function Gallery() {
                           className={`${heights[idx % heights.length]} w-full relative flex items-center justify-center ${photo.photoURL ? '' : `bg-gradient-to-br ${gradients[idx % gradients.length]}`}`}
                         >
                           {photo.photoURL ? (
-                            <img src={photo.photoURL} alt={photo.caption} className="w-full h-full object-cover" />
+                            <img src={photo.photoURL} alt={photo.caption} loading="lazy" decoding="async" className="w-full h-full object-cover" />
                           ) : (
                             <Camera className="w-10 h-10 transition-transform duration-300 group-hover:scale-110 " style={{ color: "rgba(184,150,62,0.25)" }} />
                           )}
@@ -1103,7 +1105,7 @@ export default function Gallery() {
 
               <div className={`h-72 sm:h-[500px] w-full flex items-center justify-center ${selectedPhoto.photoURL ? 'bg-black' : `bg-gradient-to-br ${gradients[0]}`}`}>
                 {selectedPhoto.photoURL ? (
-                  <img src={selectedPhoto.photoURL} alt={selectedPhoto.caption} className="w-full h-full object-contain" />
+                  <img src={selectedPhoto.photoURL} alt={selectedPhoto.caption} decoding="async" className="w-full h-full object-contain" />
                 ) : (
                   <Camera className="w-16 h-16" style={{ color: 'rgba(255,255,255,0.5)' }} />
                 )}

@@ -73,7 +73,9 @@ export async function deleteFamilyMember(id) {
 export async function uploadPhoto(file, path) {
   try {
     const storageRef = ref(storage, path)
-    const snapshot = await uploadBytes(storageRef, file)
+    const snapshot = await uploadBytes(storageRef, file, {
+      cacheControl: 'public, max-age=31536000, immutable',
+    })
     const downloadURL = await getDownloadURL(snapshot.ref)
     return downloadURL
   } catch (error) {
