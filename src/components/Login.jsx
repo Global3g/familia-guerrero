@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword } from 'firebase/auth'
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
 import { auth } from '../firebase/config'
 import { Loader2 } from 'lucide-react'
 
@@ -7,6 +7,7 @@ const FAMILY_CODE = import.meta.env.VITE_FAMILY_CODE || ''
 
 export default function Login() {
   const [mode, setMode] = useState('login') // 'login' | 'signup'
+  const [fullName, setFullName] = useState('')
   const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
   const [familyCode, setFamilyCode] = useState('')
@@ -45,7 +46,8 @@ export default function Login() {
     }
     setLoading(true)
     try {
-      await createUserWithEmailAndPassword(auth, email, password)
+      const { user } = await createUserWithEmailAndPassword(auth, email, password)
+      await updateProfile(user, { displayName: fullName.trim() })
     } catch (err) {
       const messages = {
         'auth/email-already-in-use': 'Ya existe una cuenta con este correo, inicia sesión',
@@ -95,6 +97,26 @@ export default function Login() {
           </p>
 
           <form onSubmit={mode === 'login' ? handleLogin : handleSignup}>
+            {/* Full name — solo en registro */}
+            {mode === 'signup' && (
+              <div className="mb-6">
+                <label className="block text-xs font-medium uppercase tracking-[0.1em] mb-2" style={{ color: 'rgba(21,34,56,0.5)' }}>
+                  Nombre completo
+                </label>
+                <input
+                  type="text"
+                  value={fullName}
+                  onChange={(e) => setFullName(e.target.value)}
+                  required
+                  placeholder="Como aparece en el árbol familiar"
+                  className="w-full bg-transparent border-0 border-b-[1.5px] py-2.5 font-sans text-base outline-none transition-colors"
+                  style={{ borderColor: 'rgba(184,150,62,0.3)', color: '#152238' }}
+                  onFocus={(e) => e.target.style.borderColor = '#B8963E'}
+                  onBlur={(e) => e.target.style.borderColor = 'rgba(184,150,62,0.3)'}
+                />
+              </div>
+            )}
+
             {/* Email */}
             <div className="mb-6">
               <label className="block text-xs font-medium uppercase tracking-[0.1em] mb-2" style={{ color: 'rgba(21,34,56,0.5)' }}>
