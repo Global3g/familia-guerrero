@@ -4,12 +4,14 @@ service firebase.storage {
     function isAdmin() {
       return request.auth != null && request.auth.token.email == 'gusguecas@gmail.com';
     }
-    function isSignedIn() {
-      return request.auth != null;
+    // Familia = anotada con el código familiar (ver firestore.rules, members/{uid}).
+    function isFamily() {
+      return isAdmin() || (request.auth != null
+        && firestore.exists(/databases/(default)/documents/members/$(request.auth.uid)));
     }
 
     match /{allPaths=**} {
-      allow read: if isSignedIn();
+      allow read: if isFamily();
       allow write: if isAdmin();
     }
   }

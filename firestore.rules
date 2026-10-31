@@ -4,38 +4,54 @@ service cloud.firestore {
     function isAdmin() {
       return request.auth != null && request.auth.token.email == 'gusguecas@gmail.com';
     }
-    function isSignedIn() {
-      return request.auth != null;
+    // Familia = quien se anotó con el código familiar (members/{uid}) o el admin.
+    // Tener cuenta de Firebase NO basta: cualquiera puede crear una.
+    function isFamily() {
+      return isAdmin() || (request.auth != null
+        && exists(/databases/$(database)/documents/members/$(request.auth.uid)));
+    }
+
+    // El código familiar. Nadie lo lee desde la app; solo estas reglas lo consultan.
+    match /config/familyCode {
+      allow read: if false;
+      allow write: if isAdmin();
+    }
+
+    // Anotarse como familia: solo con el código correcto y solo para uno mismo.
+    match /members/{uid} {
+      allow read: if isAdmin() || (request.auth != null && request.auth.uid == uid);
+      allow create: if request.auth != null && request.auth.uid == uid
+        && request.resource.data.keys().hasOnly(['code', 'name', 'email', 'joinedAt'])
+        && request.resource.data.code
+           == get(/databases/$(database)/documents/config/familyCode).data.code;
+      allow update, delete: if isAdmin();
     }
 
     // Recuerdos en Homenaje — abierto para toda la familia
     match /memorials/{doc} {
-      allow read: if isSignedIn();
-      allow write: if isSignedIn();
+      allow read, write: if isFamily();
     }
     // Tradiciones — abierto para toda la familia
     match /traditions/{doc} {
-      allow read: if isSignedIn();
-      allow write: if isSignedIn();
+      allow read, write: if isFamily();
     }
     // Mensajes — abierto para toda la familia
     match /messages/{doc} {
-      allow read: if isSignedIn();
-      allow write: if isSignedIn();
+      allow read, write: if isFamily();
     }
     match /familyMessages/{doc} {
-      allow read: if isSignedIn();
-      allow write: if isSignedIn();
+      allow read, write: if isFamily();
     }
     // Frases/Quotes — abierto para toda la familia
     match /familyQuotes/{doc} {
-      allow read: if isSignedIn();
-      allow write: if isSignedIn();
+      allow read, write: if isFamily();
     }
 
-    // Todo lo demás: lectura para logueados, escritura solo admin
-    match /{document=**} {
-      allow read: if isSignedIn();
+    // Todo lo demás: lectura para la familia, escritura solo admin.
+    // Las reglas se suman (OR): sin excluir config/members, esta regla dejaría
+    // a la familia leer el código.
+    match /{collection}/{document=**} {
+      allow read: if isFamily() && !(collection in ['config', 'members']);
       allow write: if isAdmin();
     }
   }

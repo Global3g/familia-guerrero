@@ -1,9 +1,10 @@
 import { useState, useEffect, lazy, Suspense } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 import { onAuthStateChanged, signOut } from 'firebase/auth'
-import { auth } from './firebase/config'
+import { doc, onSnapshot } from 'firebase/firestore'
+import { auth, db } from './firebase/config'
 import { Home, GitBranch, Clock, Users, Heart, Star, Image, Calendar } from 'lucide-react'
-import Login from './components/Login'
+import Login, { JoinFamily } from './components/Login'
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Origin from './components/Origin'
@@ -55,6 +56,8 @@ function App() {
   const [user, setUser] = useState(null)
   const [isAdmin, setIsAdmin] = useState(false)
   const [loading, setLoading] = useState(true)
+  const [membership, setMembership] = useState({ uid: null, ok: false })
+  const isMember = membership.uid === user?.uid ? membership.ok : null // null = revisando
   const [activeTab, setActiveTab] = useState('inicio')
   const [showPresentation, setShowPresentation] = useState(false)
 
@@ -68,6 +71,18 @@ function App() {
     return unsubscribe
   }, [])
 
+  // Las reglas solo dejan ver datos a quien está en members/{uid}. Se escucha
+  // en vivo para entrar en cuanto el registro o JoinFamily lo crea.
+  useEffect(() => {
+    if (!user || isAdmin) return
+    const uid = user.uid
+    return onSnapshot(
+      doc(db, 'members', uid),
+      (snap) => setMembership({ uid, ok: snap.exists() }),
+      () => setMembership({ uid, ok: false }),
+    )
+  }, [user, isAdmin])
+
   useEffect(() => {
     const handler = (e) => {
       setActiveTab('arbol')
@@ -79,7 +94,7 @@ function App() {
     return () => window.removeEventListener('navigate-to-person', handler)
   }, [])
 
-  if (loading) {
+  if (loading || (user && !isAdmin && isMember === null)) {
     return (
       <div className="min-h-screen flex flex-col items-center justify-center bg-cream">
         <motion.div
@@ -111,6 +126,7 @@ function App() {
   }
 
   if (!user) return <Login />
+  if (!isAdmin && !isMember) return <JoinFamily user={user} />
 
   return (
     <div className="min-h-screen bg-cream">

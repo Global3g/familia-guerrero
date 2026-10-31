@@ -1,9 +1,8 @@
-import { useState } from 'react'
-import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile } from 'firebase/auth'
+import { useState, useEffect } from 'react'
+import { signInWithEmailAndPassword, createUserWithEmailAndPassword, updateProfile, signOut } from 'firebase/auth'
 import { auth } from '../firebase/config'
+import { joinFamily, markCodeRejected, takeCodeRejected } from '../firebase/membership'
 import { Loader2 } from 'lucide-react'
-
-const FAMILY_CODE = import.meta.env.VITE_FAMILY_CODE || ''
 
 export default function Login() {
   const [mode, setMode] = useState('login') // 'login' | 'signup'
@@ -36,10 +35,6 @@ export default function Login() {
   const handleSignup = async (e) => {
     e.preventDefault()
     setError('')
-    if (FAMILY_CODE && familyCode.trim().toUpperCase() !== FAMILY_CODE.toUpperCase()) {
-      setError('Código familiar incorrecto')
-      return
-    }
     if (password.length < 6) {
       setError('La contraseña debe tener al menos 6 caracteres')
       return
@@ -48,6 +43,8 @@ export default function Login() {
     try {
       const { user } = await createUserWithEmailAndPassword(auth, email, password)
       await updateProfile(user, { displayName: fullName.trim() })
+      // Si el código está mal, la cuenta existe pero no ve nada: JoinFamily lo vuelve a pedir.
+      await joinFamily(user, familyCode).catch(() => markCodeRejected())
     } catch (err) {
       const messages = {
         'auth/email-already-in-use': 'Ya existe una cuenta con este correo, inicia sesión',
@@ -212,6 +209,69 @@ export default function Login() {
           </p>
         </div>
       </div>
+    </div>
+  )
+}
+
+// Cuentas creadas antes de que el código se validara en Firestore: lo piden una vez.
+export function JoinFamily({ user }) {
+  const [code, setCode] = useState('')
+  const [loading, setLoading] = useState(false)
+  const [error, setError] = useState(() => (takeCodeRejected() ? 'Código familiar incorrecto' : ''))
+
+  useEffect(() => {
+    const onRejected = () => { takeCodeRejected(); setError('Código familiar incorrecto') }
+    window.addEventListener('family-code-rejected', onRejected)
+    return () => window.removeEventListener('family-code-rejected', onRejected)
+  }, [])
+
+  const handleSubmit = async (e) => {
+    e.preventDefault()
+    setLoading(true)
+    setError('')
+    try {
+      await joinFamily(user, code) // App escucha members/{uid} y entra sola
+    } catch {
+      setError('Código familiar incorrecto')
+      setLoading(false)
+    }
+  }
+
+  return (
+    <div className="min-h-screen flex items-center justify-center p-10" style={{ background: '#FFFDF7' }}>
+      <form onSubmit={handleSubmit} className="w-full max-w-[360px]">
+        <h2 className="font-serif text-2xl mb-2" style={{ color: '#152238', fontWeight: 500 }}>Un paso más</h2>
+        <p className="text-sm font-light mb-10" style={{ color: 'rgba(21,34,56,0.6)' }}>
+          Escribe el código familiar que te compartieron por WhatsApp. Solo te lo pediremos esta vez.
+        </p>
+        <label className="block text-xs font-medium uppercase tracking-[0.1em] mb-2" style={{ color: 'rgba(21,34,56,0.5)' }}>
+          Código familiar
+        </label>
+        <input
+          type="text"
+          value={code}
+          onChange={(e) => setCode(e.target.value)}
+          required
+          autoFocus
+          className="w-full bg-transparent border-0 border-b-[1.5px] py-2.5 font-sans text-base outline-none"
+          style={{ borderColor: 'rgba(184,150,62,0.3)', color: '#152238' }}
+        />
+        {error && (
+          <p className="text-xs text-center py-2 px-3 rounded-lg mt-4" style={{ backgroundColor: '#FEE2E2', color: '#DC2626' }}>{error}</p>
+        )}
+        <button
+          type="submit"
+          disabled={loading}
+          className="w-full mt-8 py-3.5 font-sans text-sm font-medium uppercase tracking-[0.1em] flex items-center justify-center gap-2"
+          style={{ background: '#B8963E', color: '#FFFDF7', border: 'none' }}
+        >
+          {loading && <Loader2 className="w-4 h-4 animate-spin" />}
+          Entrar
+        </button>
+        <button type="button" onClick={() => signOut(auth)} className="w-full mt-4 text-sm" style={{ color: '#B8963E' }}>
+          Salir
+        </button>
+      </form>
     </div>
   )
 }
