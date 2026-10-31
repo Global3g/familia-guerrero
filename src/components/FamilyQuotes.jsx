@@ -4,6 +4,7 @@ import { Quote, Plus, Pencil, Trash2, Save, Loader2, MessageSquareQuote } from '
 import Modal from './Modal'
 import { db } from '../firebase/config'
 import { collection, getDocs, doc, setDoc, deleteDoc } from 'firebase/firestore'
+import { authorUidFor, canEdit } from '../firebase/ownership'
 
 /* ── Firestore helpers ── */
 const getQuotes = async () => {
@@ -90,6 +91,7 @@ export default function FamilyQuotes() {
         authorPhoto: form.authorPhoto.trim(),
         context: form.context.trim(),
         updatedAt: Date.now(),
+        authorUid: authorUidFor(editingQuote),
       }
       await saveQuote(editingQuote?.id || null, data)
       await loadQuotes()
@@ -260,8 +262,8 @@ export default function FamilyQuotes() {
                       </p>
                     )}
 
-                    {/* Action buttons */}
-                    <div className="absolute top-3 right-3 flex gap-1.5 z-10">
+                    {/* Action buttons — solo el autor o el admin */}
+                    {canEdit(q) && <div className="absolute top-3 right-3 flex gap-1.5 z-10">
                       <button
                         onClick={() => openEdit(q)}
                         className="w-7 h-7 rounded-full flex items-center justify-center bg-white/10 hover:bg-white/20 transition-colors"
@@ -278,7 +280,7 @@ export default function FamilyQuotes() {
                       >
                         <Trash2 size={13} />
                       </button>
-                    </div>
+                    </div>}
                   </motion.div>
                 )
               })}

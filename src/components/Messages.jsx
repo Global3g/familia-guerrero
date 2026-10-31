@@ -4,6 +4,7 @@ import { MessageCircle, Plus, Pencil, Trash2, Save, Loader2, User } from 'lucide
 import Modal from './Modal'
 import { db } from '../firebase/config'
 import { collection, getDocs, doc, setDoc, deleteDoc } from 'firebase/firestore'
+import { authorUidFor, canEdit } from '../firebase/ownership'
 
 const fadeIn = {
   hidden: { opacity: 0, y: 30 },
@@ -60,6 +61,7 @@ export default function Messages() {
         message: form.message.trim(),
         date: form.date || new Date().toISOString().slice(0, 10),
         ...(form.photoURL?.trim() ? { photoURL: form.photoURL.trim() } : {}),
+        authorUid: authorUidFor(messages.find((m) => m.id === editingId)),
       })
       await fetchMessages()
       closeForm()
@@ -223,8 +225,8 @@ export default function Messages() {
                   className="group relative rounded-2xl p-6 shadow-sm hover:shadow-md transition-shadow"
                   style={{ backgroundColor: 'rgba(255,255,255,0.05)', border: '2px solid rgba(184,150,62,0.3)' }}
                 >
-                  {/* Edit / Delete buttons */}
-                  <div className="absolute top-3 right-3 flex gap-1.5 z-10">
+                  {/* Edit / Delete buttons — solo el autor o el admin */}
+                  {canEdit(msg) && <div className="absolute top-3 right-3 flex gap-1.5 z-10">
                     <button
                       onClick={() => openEdit(msg)}
                       className="p-1.5 rounded-full hover:bg-[#B8976A]/15 text-[#B8976A] transition-colors"
@@ -239,7 +241,7 @@ export default function Messages() {
                     >
                       <Trash2 className="w-4 h-4" />
                     </button>
-                  </div>
+                  </div>}
 
                   {/* Avatar + author */}
                   <div className="flex items-center gap-3 mb-4">

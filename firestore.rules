@@ -27,24 +27,42 @@ service cloud.firestore {
       allow update, delete: if isAdmin();
     }
 
-    // Recuerdos en Homenaje — abierto para toda la familia
+    // Lo que escribe la familia: cada quien crea a su nombre (authorUid) y solo
+    // edita o borra lo suyo. El admin puede todo (regla de abajo). Lectura: abajo.
+    function ownCreate() {
+      return isFamily() && request.resource.data.authorUid == request.auth.uid;
+    }
+    function ownChange() {
+      return isFamily() && resource.data.get('authorUid', '') == request.auth.uid
+        && request.resource.data.authorUid == request.auth.uid;
+    }
+    function ownDelete() {
+      return isFamily() && resource.data.get('authorUid', '') == request.auth.uid;
+    }
+    match /{col}/{doc} {
+      allow create: if col in ['traditions', 'messages', 'familyMessages', 'familyQuotes'] && ownCreate();
+      allow update: if col in ['traditions', 'messages', 'familyMessages', 'familyQuotes'] && ownChange();
+      allow delete: if col in ['traditions', 'messages', 'familyMessages', 'familyQuotes'] && ownDelete();
+    }
+
+    // Homenaje: los recuerdos van en una lista dentro de cada tarjeta. La familia
+    // solo puede tocar esa lista, y solo agregar/cambiar/quitar UN recuerdo suyo.
+    function memoriesChangeIsOwn() {
+      let before = resource.data.get('memories', []);
+      let after = request.resource.data.get('memories', []);
+      let removed = before.removeAll(after);
+      let added = after.removeAll(before);
+      return request.resource.data.diff(resource.data).affectedKeys().hasOnly(['memories'])
+        && removed.size() <= 1 && added.size() <= 1
+        && after.size() - before.size() == added.size() - removed.size()
+        && (removed.size() == 0 || removed[0].get('authorUid', '') == request.auth.uid)
+        && (added.size() == 0 || added[0].get('authorUid', '') == request.auth.uid);
+    }
     match /memorials/{doc} {
-      allow read, write: if isFamily();
-    }
-    // Tradiciones — abierto para toda la familia
-    match /traditions/{doc} {
-      allow read, write: if isFamily();
-    }
-    // Mensajes — abierto para toda la familia
-    match /messages/{doc} {
-      allow read, write: if isFamily();
-    }
-    match /familyMessages/{doc} {
-      allow read, write: if isFamily();
-    }
-    // Frases/Quotes — abierto para toda la familia
-    match /familyQuotes/{doc} {
-      allow read, write: if isFamily();
+      // Primera vez que alguien escribe en la tarjeta de una persona del árbol.
+      allow create: if isFamily() && request.resource.data.get('memories', []).size() == 1
+        && request.resource.data.memories[0].get('authorUid', '') == request.auth.uid;
+      allow update: if isFamily() && memoriesChangeIsOwn();
     }
 
     // Todo lo demás: lectura para la familia, escritura solo admin.

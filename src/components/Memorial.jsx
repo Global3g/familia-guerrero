@@ -4,6 +4,7 @@ import { Star, Heart, Sun, Camera, Plus, Pencil, Trash2, Save, Loader2, MessageC
 import { memorials as defaultMemorials } from "../data/familyData";
 import { getMemorials, saveMemorial, deleteMemorial, uploadPhoto, getFamilyMembers, getGrandparents } from "../firebase/familyService";
 import { useAuth } from '../firebase/useAuth';
+import { authorUidFor, canEdit } from '../firebase/ownership';
 import { SkeletonGrid } from './Skeleton';
 import Modal from './Modal';
 import sounds from '../utils/sounds';
@@ -610,7 +611,7 @@ export default function Memorial() {
                           <span className="text-[10px] font-semibold text-[#B8976A]">{mem.author}</span>
                           <div className="flex items-center gap-2">
                             {mem.date && <span className="text-[10px]" style={{ color: '#8A8A8A' }}>{new Date(mem.date).toLocaleDateString('es-MX', { day: 'numeric', month: 'short', year: 'numeric' })}</span>}
-                            <div className="flex gap-1 sm:opacity-0 sm:group-hover/mem:opacity-100 transition-opacity">
+                            {canEdit(mem) && <div className="flex gap-1 sm:opacity-0 sm:group-hover/mem:opacity-100 transition-opacity">
                               <button
                                 onClick={() => {
                                   const textInput = document.getElementById(`mem-text-${person.id || index}`)
@@ -641,7 +642,7 @@ export default function Memorial() {
                               >
                                 <Trash2 className="w-2.5 h-2.5" />
                               </button>
-                            </div>
+                            </div>}
                           </div>
                         </div>
                       </div>
@@ -671,7 +672,7 @@ export default function Memorial() {
                           textInput.removeAttribute('data-editing')
                         } else {
                           // New memory
-                          const newMemory = { text: textInput.value.trim(), author: authorInput?.value.trim() || 'Anonimo', date: new Date().toISOString() }
+                          const newMemory = { text: textInput.value.trim(), author: authorInput?.value.trim() || 'Anonimo', date: new Date().toISOString(), authorUid: authorUidFor(null) }
                           updatedMemories = [...(person.memories || []), newMemory]
                         }
 

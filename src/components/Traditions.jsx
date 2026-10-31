@@ -17,6 +17,7 @@ import {
 
 import { db } from "../firebase/config";
 import { collection, getDocs, doc, setDoc, deleteDoc } from "firebase/firestore";
+import { authorUidFor, canEdit } from '../firebase/ownership'
 import Modal from "./Modal";
 
 const fadeIn = {
@@ -98,6 +99,7 @@ export default function Traditions() {
         author: form.author.trim(),
         description: form.description.trim(),
         icon: form.icon,
+        authorUid: authorUidFor(traditions.find((t) => t.id === editingId)),
       })
       await fetchTraditions()
       closeForm()
@@ -244,8 +246,8 @@ export default function Traditions() {
                     className="group relative rounded-2xl p-6 hover:shadow-lg transition-all duration-500"
                     style={{ backgroundColor: '#FFFDF7', border: '2px solid rgba(184,150,62,0.3)' }}
                   >
-                    {/* Edit/Delete */}
-                    <div className="absolute top-3 right-3 flex gap-1.5 z-10">
+                    {/* Edit/Delete — solo el autor o el admin */}
+                    {canEdit(tradition) && <div className="absolute top-3 right-3 flex gap-1.5 z-10">
                       <button
                         onClick={() => openEdit(tradition)}
                         className="p-1.5 rounded-full hover:bg-[#B8976A]/15 text-[#B8976A] transition-colors"
@@ -258,7 +260,7 @@ export default function Traditions() {
                       >
                         <Trash2 className="w-4 h-4" />
                       </button>
-                    </div>
+                    </div>}
 
                     <div className="mb-4 w-12 h-12 rounded-xl bg-gradient-to-br from-[#6B9080]/15 to-[#B8976A]/10 flex items-center justify-center group-hover:scale-110 transition-transform duration-300">
                       <IconComponent className="w-6 h-6" style={{ color: '#B8963E' }} />
